@@ -1,6 +1,6 @@
 # medrouter
 
-This is a educational project
+This is a educational project and was made as step to finish the web applications development course of PUC-Minas University
 
 # General Features
 
@@ -36,7 +36,7 @@ incluir integracao automatizada de pagamento.
 15. Incluir responsividade.
 16. Devo usar apenas boostrap..? Verificar com a coordenação.
 
-# Histórias de usuário.
+## Histórias de usuário.
 
 **PACIENTE**
 
@@ -48,7 +48,7 @@ Eu como cliente da clinica posso escrever ao médico antecipando minhas queixas 
 Eu como cliente da clinica posso consultar meu histórico de exames.
 Eu como paciente devo ser capaz de enviar copia dos meus documentos para adiantar o cadastro na clinica.
 
-**\***MÉDICO**\*\***
+**MÉDICO**
 
 Eu como médico posso visualizar o histórico de meus pacientes.
 Eu como médico devo ser capaz de cadastrar mes a mes minha agenda de atendimentos.
@@ -60,14 +60,14 @@ Eu como médico devo ser capaz de visualizar o total de receita estimado de acor
 Eu como medico devo ser capaz de visualizar a estatisca de atendimentos disponiveis e tambem um ranking de avaliacao de
 atendimento.
 
-\***\*GERENTE\*\*\*\***
+**GERENTE**
 
 Eu como gerente devo ser capaz de gerenciar novas/os recepcionistas da clinica
 Eu como gerente devo ser capaz de consultar dados da quantidade de consultas marcadas. Horarios disponiveis
 Estatisticas de atendimento. Faturamento de Clinica via meios de pagamentos integrados.
 Eu como gerente devo ser capaz de visualizar os dados de avaliacao de qualidade da clinica.
 
-\***\*RECEPCIONISTA\*\***
+**RECEPCIONISTA**
 
 Eu como recepcionita da clinica devo ser capaz de marcar consultas para pacientes prensencialmente.
 Eu como re... devo ser capaz de indicar se é atendimento agendado ou emergencia.
@@ -76,9 +76,10 @@ Eu como re .. deve ser capaz de verificar a agenda de determinado médico.
 Eu como re .. devo ser capaz de realizar encaixes de consulta.
 Eu como re .. deve ser capaz de escanear documentos de identificacao dos pacientes.
 
-**\*** ACTORS **\***
-// Owner - Dono da Clinica/Gerente
-// Manager - Gerente da Clinica
-// Client - Paciente da Clinica
-// Doctor - Médico da Clinica
-// Recept - Recepcionista
+**ACTORS**
+
+- Owner - Dono da Clinica/Gerente
+- Manager - Gerente da Clinica
+- Client - Paciente da Clinica
+- Doctor - Médico da Clinica
+- Recept - Recepcionista
