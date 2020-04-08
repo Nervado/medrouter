@@ -4,7 +4,7 @@ This is a educational project
 
 # General Features
 
-/\*Hi Med - Sistema de Gerenciamento de Clinica Médica
+## MedRouter - Sistema de Gerenciamento de Clinica Médica
 
 ... Requisitos genéricos...Paginas acessiveis apenas a médicos, paginas acessíveis a pacientes,
 paginas acessiveis ao dono da clinica ou donos, emissao de notas ficais ?? para pagamentos particulares
@@ -36,9 +36,9 @@ incluir integracao automatizada de pagamento.
 15. Incluir responsividade.
 16. Devo usar apenas boostrap..? Verificar com a coordenação.
 
-// Histórias de usuário.
+# Histórias de usuário.
 
-**\***PACIENTE**\***
+**PACIENTE**
 
 Eu como cliente da clinica posso solicitar consultas online, escolhendo datas e horários disponiveis.
 Eu como cliente da clinica devo poder consultar meu historico de atendimentos, de acordo com tipo de especilidade.
@@ -76,7 +76,7 @@ Eu como re .. deve ser capaz de verificar a agenda de determinado médico.
 Eu como re .. devo ser capaz de realizar encaixes de consulta.
 Eu como re .. deve ser capaz de escanear documentos de identificacao dos pacientes.
 
-\*/
+**\*** ACTORS **\***
 // Owner - Dono da Clinica/Gerente
 // Manager - Gerente da Clinica
 // Client - Paciente da Clinica
