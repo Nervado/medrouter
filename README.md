@@ -82,4 +82,8 @@ Eu como re .. deve ser capaz de escanear documentos de identificacao dos pacient
 - Manager - Gerente da Clinica
 - Client - Paciente da Clinica
 - Doctor - Médico da Clinica
-- Recept - Recepcionista
+- Receptionist - Recepcionista
+
+# Comand to generate modules
+
+nest g module <name> && nest g controller <name> && nest g service <name> && nest g class src/<name>/models/<name>.entity

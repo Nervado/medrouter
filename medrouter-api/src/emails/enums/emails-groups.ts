@@ -1,0 +1,6 @@
+export enum EmailsGroups {
+  ADMINS = 'ADMINS',
+  CLIENTS = 'CLIENTS',
+  NONCLIENTS = 'NONCLIENTS',
+  PROFESSIONALS = 'PROFESSIONALS',
+}
