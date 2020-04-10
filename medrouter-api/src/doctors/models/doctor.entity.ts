@@ -3,21 +3,21 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  Unique,
   OneToOne,
   JoinColumn,
-  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
 } from 'typeorm';
 
 import { User } from '../../users/models/user.entity';
-import { Receptionist } from '../../receptionist/models/receptionist.entity';
+
 import { Exclude } from 'class-transformer';
 
-@Entity({ name: 'ManagerTable' })
-export class Manager extends BaseEntity {
+import { Specialty } from '../enums/specialty.enum';
+
+@Entity({ name: 'DoctorTable' })
+export class Doctor extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -33,16 +33,18 @@ export class Manager extends BaseEntity {
   @Column({ nullable: true })
   ishired: boolean;
 
-  @OneToOne(type => User, { eager: true })
+  @OneToOne(() => User, { eager: true })
   @JoinColumn()
   user: User;
 
-  @OneToMany(
-    type => Receptionist,
-    receptionist => receptionist.manager,
-  )
-  @JoinColumn()
-  receptionist: Receptionist[];
+  @Column()
+  @Column({
+    type: 'enum',
+    enum: Specialty,
+    default: [Specialty.CMD],
+    array: true,
+  })
+  specialty: Specialty[];
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', nullable: true })

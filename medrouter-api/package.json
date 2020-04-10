@@ -2,9 +2,9 @@
   "name": "medrouter-api",
   "version": "0.0.1",
   "description": "",
-  "author": "Evandro",
+  "author": "Evandro Abreu de Oliveira",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "migration:generate": "MODE_ENV=development ts-node ./node_modules/typeorm/cli migration:generate -f src/scripts/loader.ts -n",
     "migration:create": "MODE_ENV=development ts-node ./node_modules/typeorm/cli migration:create -f src/scripts/loader.ts -n",

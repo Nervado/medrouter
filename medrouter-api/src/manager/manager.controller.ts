@@ -1,4 +1,79 @@
-import { Controller } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Param,
+  Delete,
+  Patch,
+  Put,
+  Body,
+  UseGuards,
+  Query,
+  ValidationPipe,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+} from '@nestjs/common';
+import { Manager } from './models/manager.entity';
+import { ManagerService } from './manager.service';
+import { ManagerDto } from './dto/manager.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { PageFilterDto } from 'src/users/dto/page-filter.dto';
 
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('manager')
-export class ManagerController {}
+export class ManagerController {
+  constructor(private managerService: ManagerService) {}
+
+  @Post()
+  @Roles('client')
+  @UseInterceptors(ClassSerializerInterceptor)
+  createManager(@Body() body: ManagerDto): Promise<Manager> {
+    return this.managerService.createOne(body);
+  }
+
+  @Get()
+  @Roles('client')
+  @UseInterceptors(ClassSerializerInterceptor)
+  getAllManager(
+    @Query(ValidationPipe) page: PageFilterDto,
+  ): Promise<Manager[]> {
+    return this.managerService.getMany(page.page);
+  }
+
+  @Get('/:id')
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Roles('client')
+  getManager(@Param('id') id: number): Promise<Manager> {
+    return this.managerService.getOne(id);
+  }
+
+  @Delete('/:id')
+  @UseInterceptors(ClassSerializerInterceptor)
+  dismissManager(@Param('id') id: number): void {
+    this.managerService.deleteOne(id);
+  }
+
+  @Put('/:id')
+  @UseInterceptors(ClassSerializerInterceptor)
+  updateManager(@Param('id') id: number, body: any): Promise<Manager> {
+    return this.managerService.updateOne(id, body);
+  }
+
+  @Patch('/status/:id')
+  changeStatusManager(
+    @Param() id: number,
+    @Body('status') body: ManagerDto,
+  ): Promise<Manager> {
+    return this.managerService.modifyOne(id, body);
+  }
+
+  @Patch('/diff/:id')
+  changeSalaryManager(
+    @Param() id: number,
+    @Body('salary') body: ManagerDto,
+  ): Promise<Manager> {
+    return this.managerService.modifyOne(id, body);
+  }
+}

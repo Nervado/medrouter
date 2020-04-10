@@ -18,16 +18,16 @@ export class AuthSingUpDto {
   @IsString()
   @MaxLength(200)
   @IsOptional()
-  surname: string;
+  surname?: string;
 
   @IsString()
   @MaxLength(200)
   @IsOptional()
   @IsPhoneNumber('BR')
-  phoneNumber: string;
+  phoneNumber?: string;
 
   @IsString()
-  @MaxLength(5)
+  @MinLength(5)
   @MaxLength(200)
   @IsNotEmpty()
   @Matches(

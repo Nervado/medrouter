@@ -7,6 +7,9 @@ import {
   OneToOne,
   JoinColumn,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 
 import { Avatar } from '../../avatars/models/avatar.entity';
@@ -15,6 +18,7 @@ import { Exclude, Expose } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 // import { Budget } from '../../budgets/models/budget.entity';
 import { Address } from '../../address/models/address.entity';
+import { Doc } from '../../docs/models/doc.entity';
 
 @Entity({ name: 'UserTable' })
 @Unique(['email'])
@@ -40,10 +44,19 @@ export class User extends BaseEntity {
   email: string;
 
   @Column()
-  admin: boolean;
+  admin: boolean; // manager
 
   @Column()
-  ispro: boolean;
+  recept: boolean; // receptionist
+
+  @Column()
+  doctor: boolean; // doctors
+
+  @Column()
+  client: boolean; //pacients
+
+  @Column()
+  owner: boolean; // owner
 
   @Exclude()
   @Column()
@@ -57,18 +70,28 @@ export class User extends BaseEntity {
   @JoinColumn()
   avatar: Avatar;
 
-  @OneToOne(() => Address, { eager: true })
-  @JoinColumn()
-  adress: Address;
-
-  /**
-   *  @OneToMany(
-    () => Budget,
-    budget => budget.user,
+  @OneToMany(
+    () => Doc,
+    doc => doc.user,
   )
   @JoinColumn()
-  budget: Budget[];
-   */
+  doc: Doc[];
+
+  @OneToOne(() => Address, { eager: true })
+  @JoinColumn()
+  address: Address;
+
+  @Exclude()
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
+
+  @Exclude()
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt: Date;
+
+  @Exclude()
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt: Date;
 
   @Expose()
   get fullname() {

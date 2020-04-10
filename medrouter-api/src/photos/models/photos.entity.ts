@@ -22,16 +22,6 @@ export class Photo extends BaseEntity {
   @Column()
   path: string;
 
-  /**
-   *   @OneToMany(
-    () => Budget,
-    budget => budget.photo,
-  )
-  @JoinColumn()
-  budget: Budget;
-   * 
-   */
-
   @Expose()
   get url() {
     return `${configService.getServerUrl()}/photos/${this.filename}`;

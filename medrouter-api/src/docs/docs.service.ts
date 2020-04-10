@@ -22,7 +22,7 @@ export class DocsService {
   }
 
   async delete(id: number): Promise<any> {
-    return this.docRepository.delete({ docId: id });
+    return this.docRepository.delete({ id });
   }
 
   async create(docDto: DocDto): Promise<DocDto> {

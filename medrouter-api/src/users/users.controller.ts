@@ -23,7 +23,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles-auth.guard';
 
-// @UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('users')
 export class UsersController {
   private logger = new Logger('UsersController');
@@ -31,7 +31,7 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get()
-  @Roles('admin')
+  @Roles('client')
   @UseInterceptors(ClassSerializerInterceptor)
   getUsers(
     @Query(ValidationPipe) pageFilterDto: PageFilterDto,
@@ -49,11 +49,13 @@ export class UsersController {
   }
 
   @Put('/:id')
+  @Roles('client')
   @UseInterceptors(ClassSerializerInterceptor)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: UserUpdateDto,
+    @GetUser() loggedUser: User,
   ): Promise<User> {
-    return this.usersService.update(id, body);
+    return this.usersService.update(id, body, loggedUser);
   }
 }

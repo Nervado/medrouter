@@ -1,9 +1,11 @@
 import { AvatarDto } from 'src/avatars/dto/avatar.dto';
 import { AddressDto } from 'src/address/dto/adress.dto';
+import { PhotoDto } from 'src/photos/dto/photo.dto';
 
 export class UserUpdateDto {
   username?: string;
   surname?: string;
-  adress?: AddressDto;
+  address?: AddressDto;
   avatar?: AvatarDto;
+  photos?: PhotoDto;
 }

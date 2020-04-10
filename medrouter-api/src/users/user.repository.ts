@@ -7,9 +7,9 @@ import {
 import * as bcrypt from 'bcrypt';
 import { User } from './models/user.entity';
 import { AuthSingUpDto } from '../auth/dto/auth-signup.dto';
-import { LoginDto } from '../auth/dto/auth-login.dto';
 import { PageFilterDto } from './dto/page-filter.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
+import { Address } from 'src/address/models/address.entity';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -32,8 +32,12 @@ export class UserRepository extends Repository<User> {
     user.email = email;
     user.phoneNumber = phoneNumber;
     user.surname = surname;
-    user.ispro = false;
+
+    user.client = true;
     user.admin = false;
+    user.recept = false;
+    user.doctor = false;
+    user.owner = true;
 
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
@@ -84,9 +88,24 @@ export class UserRepository extends Repository<User> {
     return users;
   }
 
-  async updateOne(id: number, updateUserDto: UserUpdateDto): Promise<User> {
+  async updateOne(
+    id: number,
+    updateUserDto: UserUpdateDto,
+    address?: Address,
+  ): Promise<User> {
     const user = await this.findOne(id);
+
+    user.address = address;
+
     this.merge(user, updateUserDto);
-    return await this.save(user);
+
+    try {
+      await this.save(user);
+    } catch (error) {
+      throw new InternalServerErrorException('fail to update user');
+    }
+
+    delete user.address;
+    return user;
   }
 }
