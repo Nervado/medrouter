@@ -49,10 +49,10 @@ export class ManagerRepository extends Repository<Manager> {
     return managers;
   }
 
-  async updateOne(id: any, body: any, operation?: string): Promise<Manager> {
+  async updateOne(id: number, body: any, operation?: string): Promise<Manager> {
     const manager = await this.findOne({ id });
 
-    if (operation === 'status' && body === 're-hired') {
+    if (operation === 'status' && body === 're-hired' && !manager.ishired) {
       try {
         manager.ishired = true;
         manager.user.admin = true; // update all privilleges
@@ -61,11 +61,11 @@ export class ManagerRepository extends Repository<Manager> {
 
         return await this.save(manager);
       } catch (error) {
-        throw new BadRequestException('Erro em operacao', operation);
+        throw new BadRequestException('Operation fail', operation);
       }
     }
 
-    if (operation === 'status' && body === 'dismiss') {
+    if (operation === 'status' && body === 'dismiss' && manager.ishired) {
       try {
         manager.ishired = false;
         manager.salary = 0;
@@ -73,26 +73,22 @@ export class ManagerRepository extends Repository<Manager> {
         manager.dismissdate = new Date();
         return await this.save(manager);
       } catch (error) {
-        throw new BadRequestException('Erro em operacao', operation);
+        throw new BadRequestException('Operation fail', operation);
       }
     }
 
     if (operation === 'diff') {
-      await this.createQueryBuilder()
-        .update(Manager)
-        .set({ salary: () => `salary + ${body}` })
-        .where({ id })
-        .execute();
+      try {
+        await this.createQueryBuilder()
+          .update(Manager)
+          .set({ salary: () => `salary + ${body}` })
+          .where({ id })
+          .execute();
 
-      return await this.findOne(id);
-    }
-
-    this.merge(manager, body);
-
-    try {
-      return await this.save(manager);
-    } catch (error) {
-      throw new InternalServerErrorException('Operation have some problems');
+        return await this.findOne(id);
+      } catch (error) {
+        throw new InternalServerErrorException('Unable to update');
+      }
     }
   }
 }

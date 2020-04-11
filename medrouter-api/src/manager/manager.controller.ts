@@ -55,12 +55,6 @@ export class ManagerController {
     this.managerService.deleteOne(id);
   }
 
-  @Put('/:id')
-  @UseInterceptors(ClassSerializerInterceptor)
-  updateManager(@Param('id') id: number, body: any): Promise<Manager> {
-    return this.managerService.updateOne(id, body);
-  }
-
   @Patch('/:id/status')
   @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)

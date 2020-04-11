@@ -26,7 +26,10 @@ export class UsersService {
     return this.userRepository.index(pageFilterDto);
   }
 
-  async get(id): Promise<User> {
+  async get(id, user: User): Promise<User> {
+    if (id !== user.userId && !user.admin && !user.recept) {
+      throw new UnauthorizedException('User has not correct privileges');
+    }
     return this.userRepository.findOne(id);
   }
 
@@ -75,5 +78,13 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async deleteOne(id: number, user: User): Promise<any> {
+    console.log(user);
+    if (id !== user.userId && !user.admin && !user.owner) {
+      throw new UnauthorizedException('User has not privillegs to exec');
+    }
+    this.userRepository.softDelete({ userId: id });
   }
 }

@@ -8,12 +8,15 @@ import {
   Param,
   ValidationPipe,
   Query,
+  Delete,
+  Patch,
 } from '@nestjs/common';
 import { DoctorsService } from './doctors.service';
 import { DoctorDto } from './dto/doctor.dto';
 import { Doctor } from './models/doctor.entity';
 
 import { IntFilterDto } from '../utils/int-filter.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @Controller('doctors')
 export class DoctorsController {
@@ -35,5 +38,31 @@ export class DoctorsController {
   @UseInterceptors(ClassSerializerInterceptor)
   get(@Param('id') id: number): Promise<Doctor> {
     return this.doctorService.getOne(id);
+  }
+
+  @Delete('/:id')
+  @UseInterceptors(ClassSerializerInterceptor)
+  deleteDoctor(@Param('id') id: number) {
+    return this.doctorService.deleteOne(id);
+  }
+
+  @Patch('/:id/status')
+  @Roles('owner')
+  @UseInterceptors(ClassSerializerInterceptor)
+  changeStatus(
+    @Param('id') id: number,
+    @Body('status', ValidationPipe) body: DoctorDto,
+  ): Promise<Doctor> {
+    return this.doctorService.modifyOne(id, body, 'status');
+  }
+
+  @Patch('/:id/diff')
+  @Roles('owner')
+  @UseInterceptors(ClassSerializerInterceptor)
+  changeSalary(
+    @Param('id') id: number,
+    @Body('diff', ValidationPipe) body: DoctorDto,
+  ): Promise<Doctor> {
+    return this.doctorService.modifyOne(id, body, 'diff');
   }
 }

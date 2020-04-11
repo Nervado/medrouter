@@ -38,7 +38,7 @@ export class ManagerService
     body: ManagerDto,
     operation: string,
   ): Promise<Manager> {
-    return this.managerRepository.updateOne(id, body, operation);
+    return await this.managerRepository.updateOne(id, body, operation);
   }
 
   async deleteOne(id: number): Promise<void> {

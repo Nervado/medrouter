@@ -31,6 +31,7 @@ export class ManagerDto {
   user: AuthSingUpDto;
 
   @ValidateNested()
+  @IsOptional()
   receptionist?: ReceptionistDto[];
 
   @IsOptional()

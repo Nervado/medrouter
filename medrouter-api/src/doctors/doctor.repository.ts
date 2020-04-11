@@ -2,6 +2,7 @@ import { Repository, EntityRepository } from 'typeorm';
 import {
   ConflictException,
   InternalServerErrorException,
+  BadRequestException,
 } from '@nestjs/common';
 
 import { Doctor } from './models/doctor.entity';
@@ -16,7 +17,9 @@ export class DoctorRepository extends Repository<Doctor>
     const doctor = new Doctor();
 
     const { salary, specialty } = doctorDto;
-    console.log(specialty);
+    if (!salary || !specialty) {
+      throw new BadRequestException('Salary or Specialty not provide');
+    }
 
     doctor.ishired = true;
     doctor.hireddate = new Date();
@@ -55,17 +58,66 @@ export class DoctorRepository extends Repository<Doctor>
     return doctors;
   }
 
-  async updateOne(id: any, body: any): Promise<Doctor> {
-    const doctor = await this.findOne(id);
-    this.merge(doctor, body);
-    return await this.save(doctor);
-  }
-
   async getById(id: number) {
     return this.findOne(id);
   }
 
   async deleteOne(id: number) {
     this.deleteOne(id);
+  }
+
+  async updateOne(id: any, body: any, operation?: string): Promise<Doctor> {
+    const doctor = await this.findOne({ id });
+
+    if (operation === 'status' && body === 're-hired') {
+      try {
+        doctor.ishired = true;
+        doctor.user.admin = true; // update all privilleges
+        doctor.dismissdate = null;
+        doctor.hireddate = new Date();
+
+        await this.save(doctor);
+        return doctor;
+      } catch (error) {
+        throw new BadRequestException(
+          'Erro em operacao',
+          'operation: re-hired',
+        );
+      }
+    }
+
+    if (operation === 'status' && body === 'dismiss') {
+      try {
+        doctor.ishired = false;
+        doctor.salary = 0;
+        doctor.user.admin = false;
+        doctor.dismissdate = new Date();
+        return await this.save(doctor);
+      } catch (error) {
+        throw new BadRequestException('Erro em operacao', error);
+      }
+    }
+
+    if (operation === 'diff') {
+      await this.createQueryBuilder()
+        .update(Doctor)
+        .set({ salary: () => `salary + ${body}` })
+        .where({ id })
+        .execute();
+
+      return await this.findOne(id);
+    }
+
+    if (operation !== 'diff' && operation !== 'status') {
+      const { specialty } = body;
+      doctor.specialty = [...specialty];
+      this.merge(doctor, body);
+
+      try {
+        return await this.save(doctor);
+      } catch (error) {
+        throw new InternalServerErrorException('Unable to update');
+      }
+    }
   }
 }

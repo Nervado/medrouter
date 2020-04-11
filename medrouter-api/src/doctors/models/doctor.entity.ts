@@ -21,7 +21,7 @@ export class Doctor extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   salary: number;
 
   @Column({ nullable: true })
@@ -33,7 +33,7 @@ export class Doctor extends BaseEntity {
   @Column({ nullable: true })
   ishired: boolean;
 
-  @OneToOne(() => User, { eager: true })
+  @OneToOne(() => User, { eager: true, cascade: true })
   @JoinColumn()
   user: User;
 

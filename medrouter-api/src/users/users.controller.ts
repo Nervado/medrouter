@@ -11,6 +11,7 @@ import {
   Put,
   Body,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { PageFilterDto } from './dto/page-filter.dto';
@@ -19,11 +20,13 @@ import { UserUpdateDto } from './dto/user-update.dto';
 import { GetUser } from '../users/decorators/get-user.decorator';
 
 import { Roles } from '../auth/decorators/roles.decorator';
+import { Allow } from '../auth/decorators/alow.decorator';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles-auth.guard';
+import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
 
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('users')
 export class UsersController {
   private logger = new Logger('UsersController');
@@ -31,21 +34,20 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get()
-  @Roles('client')
+  @Allow('recept', 'admin', 'owner')
   @UseInterceptors(ClassSerializerInterceptor)
   getUsers(
     @Query(ValidationPipe) pageFilterDto: PageFilterDto,
-    @GetUser() user: User,
   ): Promise<User[]> {
-    this.logger.verbose(`User "${JSON.stringify(user)}" retrieving all users`);
     return this.usersService.index(pageFilterDto);
   }
 
   @Get('/:id')
+  @Roles('client')
   @UseInterceptors(ClassSerializerInterceptor)
   getUser(@Param('id', ParseIntPipe) id: number, @GetUser() user: User) {
     // this.logger.verbose(`User ${user.userId} attempt to get profile data...`);
-    return this.usersService.get(id);
+    return this.usersService.get(id, user);
   }
 
   @Put('/:id')
@@ -58,5 +60,12 @@ export class UsersController {
   ): Promise<User> {
     console.log(loggedUser);
     return this.usersService.update(id, body, loggedUser);
+  }
+
+  @Delete('/:id')
+  @Get()
+  @Allow('recept', 'admin', 'owner')
+  deleteUser(@Param('id') id: number, @GetUser() loggedUser: User) {
+    return this.usersService.deleteOne(id, loggedUser);
   }
 }

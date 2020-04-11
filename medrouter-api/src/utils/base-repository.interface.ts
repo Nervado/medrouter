@@ -3,5 +3,5 @@ export interface RepositoryInterface<T, I, D, R, O> {
   getById(id: I): Promise<T>;
   createOne(data: D, r?: R): Promise<T>;
   updateOne(id: I, data: D, o?: O): Promise<T>;
-  deleteOne(id: I): void;
+  softDelete({ id: I }): void;
 }

@@ -35,6 +35,6 @@ export class Service<
   }
 
   public async deleteOne(id: P): Promise<void> {
-    return await this.repo.deleteOne(id);
+    return await this.repo.softDelete({ id });
   }
 }

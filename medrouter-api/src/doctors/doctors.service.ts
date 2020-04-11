@@ -27,6 +27,14 @@ export class DoctorsService extends Service<
       throw new BadRequestException('Doctor already exists!');
     }
     user.doctor = true;
-    return this.createOne(body, user);
+    return await this.createOne(body, user);
+  }
+
+  async modifyOne(
+    id: number,
+    body: DoctorDto,
+    operation: string,
+  ): Promise<Doctor> {
+    return await this.repo.updateOne(id, body, operation);
   }
 }
