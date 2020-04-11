@@ -1,5 +1,7 @@
 // import { User } from 'src/users/models/user.entity';
 
+import { Role } from './enums/role.enum';
+
 export class JwtPayload {
   userId: number;
   username: string;
@@ -9,4 +11,5 @@ export class JwtPayload {
   recept: boolean;
   doctor: boolean;
   owner: boolean;
+  role: Role[];
 }

@@ -5,7 +5,6 @@ import {
   Param,
   Delete,
   Patch,
-  Put,
   Body,
   UseGuards,
   Query,
@@ -52,7 +51,7 @@ export class ManagerController {
   @Delete('/:id')
   @UseInterceptors(ClassSerializerInterceptor)
   dismissManager(@Param('id') id: number): void {
-    this.managerService.deleteOne(id);
+    this.managerService.delete(id);
   }
 
   @Patch('/:id/status')

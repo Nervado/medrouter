@@ -77,7 +77,7 @@ export class ManagerRepository extends Repository<Manager> {
       }
     }
 
-    if (operation === 'diff') {
+    if (operation === 'diff' && manager.ishired) {
       try {
         await this.createQueryBuilder()
           .update(Manager)
@@ -87,7 +87,7 @@ export class ManagerRepository extends Repository<Manager> {
 
         return await this.findOne(id);
       } catch (error) {
-        throw new InternalServerErrorException('Unable to update');
+        throw new BadRequestException('Operation fail', operation);
       }
     }
   }

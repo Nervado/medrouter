@@ -2,6 +2,7 @@ import {
   Controller,
   Body,
   Post,
+  Put,
   UseInterceptors,
   ClassSerializerInterceptor,
   Get,
@@ -43,7 +44,16 @@ export class DoctorsController {
   @Delete('/:id')
   @UseInterceptors(ClassSerializerInterceptor)
   deleteDoctor(@Param('id') id: number) {
-    return this.doctorService.deleteOne(id);
+    return this.doctorService.delete(id);
+  }
+
+  @Put('/:id')
+  @UseInterceptors(ClassSerializerInterceptor)
+  update(
+    @Param('id') id: number,
+    @Body('specialty', ValidationPipe) body: DoctorDto,
+  ) {
+    return this.doctorService.updateOne(id, body);
   }
 
   @Patch('/:id/status')

@@ -17,7 +17,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: InfoToken) {
     const { email } = payload;
-    console.log('here');
 
     const user = await this.userService.findOne(email);
 

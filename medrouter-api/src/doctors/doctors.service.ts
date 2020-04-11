@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Service } from '../utils/generics.service';
 import { DoctorRepository } from './doctor.repository';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,6 +10,7 @@ import { DoctorDto } from './dto/doctor.dto';
 import { Doctor } from './models/doctor.entity';
 import { User } from 'src/users/models/user.entity';
 import { UsersService } from 'src/users/users.service';
+import { Role } from 'src/auth/enums/role.enum';
 @Injectable()
 export class DoctorsService extends Service<
   DoctorDto,
@@ -27,6 +32,7 @@ export class DoctorsService extends Service<
       throw new BadRequestException('Doctor already exists!');
     }
     user.doctor = true;
+    user.role = [Role.DOCTOR, Role.CLIENT];
     return await this.createOne(body, user);
   }
 
@@ -36,5 +42,15 @@ export class DoctorsService extends Service<
     operation: string,
   ): Promise<Doctor> {
     return await this.repo.updateOne(id, body, operation);
+  }
+
+  async delete(id: number) {
+    const doctor = await this.getOne(id);
+    try {
+      await this.usersService.resetRole(doctor.user.userId);
+      return this.repo.softDelete({ id });
+    } catch (error) {
+      throw new InternalServerErrorException('Fail operation:delete');
+    }
   }
 }

@@ -9,6 +9,7 @@ import { Doctor } from './models/doctor.entity';
 import { User } from 'src/users/models/user.entity';
 import { DoctorDto } from './dto/doctor.dto';
 import { RepositoryInterface } from '../utils/base-repository.interface';
+import { Role } from 'src/auth/enums/role.enum';
 
 @EntityRepository(Doctor)
 export class DoctorRepository extends Repository<Doctor>
@@ -69,54 +70,54 @@ export class DoctorRepository extends Repository<Doctor>
   async updateOne(id: any, body: any, operation?: string): Promise<Doctor> {
     const doctor = await this.findOne({ id });
 
-    if (operation === 'status' && body === 're-hired') {
-      try {
-        doctor.ishired = true;
-        doctor.user.admin = true; // update all privilleges
-        doctor.dismissdate = null;
-        doctor.hireddate = new Date();
-
-        await this.save(doctor);
-        return doctor;
-      } catch (error) {
-        throw new BadRequestException(
-          'Erro em operacao',
-          'operation: re-hired',
-        );
-      }
-    }
-
-    if (operation === 'status' && body === 'dismiss') {
-      try {
-        doctor.ishired = false;
-        doctor.salary = 0;
-        doctor.user.admin = false;
-        doctor.dismissdate = new Date();
-        return await this.save(doctor);
-      } catch (error) {
-        throw new BadRequestException('Erro em operacao', error);
-      }
-    }
-
-    if (operation === 'diff') {
-      await this.createQueryBuilder()
-        .update(Doctor)
-        .set({ salary: () => `salary + ${body}` })
-        .where({ id })
-        .execute();
-
-      return await this.findOne(id);
-    }
-
-    if (operation !== 'diff' && operation !== 'status') {
-      const { specialty } = body;
-      doctor.specialty = [...specialty];
-      this.merge(doctor, body);
+    if (operation === 'status' && body === 're-hired' && !doctor.ishired) {
+      doctor.ishired = true;
+      doctor.user.doctor = true; // update all privilleges
+      doctor.dismissdate = null;
+      doctor.hireddate = new Date();
+      doctor.user.role = [Role.DOCTOR, Role.CLIENT];
 
       try {
         return await this.save(doctor);
       } catch (error) {
-        throw new InternalServerErrorException('Unable to update');
+        throw new BadRequestException('Operation fail', error);
+      }
+    }
+
+    if (operation === 'status' && body === 'dismiss' && doctor.ishired) {
+      doctor.ishired = false;
+      doctor.salary = 0;
+      doctor.user.doctor = false; // remove all privilleges
+      doctor.dismissdate = new Date();
+      doctor.user.role = [Role.CLIENT];
+
+      try {
+        return await this.save(doctor);
+      } catch (error) {
+        throw new BadRequestException('Operation fail', error);
+      }
+    }
+
+    if (operation === 'diff' && doctor.ishired) {
+      try {
+        await this.createQueryBuilder()
+          .update(Doctor)
+          .set({ salary: () => `salary + ${body}` })
+          .where({ id })
+          .execute();
+
+        return await this.findOne(id);
+      } catch (error) {
+        throw new BadRequestException('Operation fail', operation);
+      }
+    }
+    if (operation !== 'diff' && operation !== 'status' && doctor.ishired) {
+      doctor.specialty = body;
+
+      try {
+        return await this.save(doctor);
+      } catch (error) {
+        throw new BadRequestException('Operation fail', error);
       }
     }
   }

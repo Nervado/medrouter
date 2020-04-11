@@ -21,7 +21,7 @@ export class AlowGuard implements CanActivate {
       return true;
     }
 
-    if (!this.matchRoles(allow, user)) {
+    if (!this.matchRoles(allow, user.role)) {
       throw new UnauthorizedException('Not authorized by AllowGuard!');
     }
 
@@ -29,6 +29,10 @@ export class AlowGuard implements CanActivate {
     return true;
   }
 
+  matchRoles(roles: string[], userRoles: string[]) {
+    return userRoles.some(role => !!roles.find(item => item === role));
+  }
+  /** 
   matchRoles(
     allow: string[],
     usersAllowed: { [key: string]: boolean },
@@ -36,4 +40,5 @@ export class AlowGuard implements CanActivate {
     console.log(allow, usersAllowed);
     return allow.reduce((p, c) => p || usersAllowed[c] === true, false);
   }
+  */
 }

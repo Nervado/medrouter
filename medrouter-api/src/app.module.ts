@@ -19,6 +19,10 @@ import { OwnerModule } from './owner/owner.module';
 import { ManagerModule } from './manager/manager.module';
 import { ClientModule } from './client/client.module';
 import { DoctorsModule } from './doctors/doctors.module';
+import { LabsModule } from './labs/labs.module';
+import { ExamsModule } from './exams/exams.module';
+import { PrescriptionsModule } from './prescriptions/prescriptions.module';
+import { AppointmentsModule } from './appointments/appointments.module';
 
 @Module({
   imports: [
@@ -40,6 +44,14 @@ import { DoctorsModule } from './doctors/doctors.module';
     ClientModule,
 
     DoctorsModule,
+
+    LabsModule,
+
+    ExamsModule,
+
+    PrescriptionsModule,
+
+    AppointmentsModule,
   ],
 })
 export class AppModule {}

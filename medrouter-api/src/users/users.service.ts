@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   UnauthorizedException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,6 +14,8 @@ import { EmailsService } from '../emails/emails.service';
 import { EmailTypes } from '../emails/enums/email-types';
 import { EmailsGroups } from '../emails/enums/emails-groups';
 import { AddressService } from '../address/address.service';
+import { Role } from 'src/auth/enums/role.enum';
+import { throws } from 'assert';
 
 @Injectable()
 export class UsersService {
@@ -86,5 +89,15 @@ export class UsersService {
       throw new UnauthorizedException('User has not privillegs to exec');
     }
     this.userRepository.softDelete({ userId: id });
+  }
+
+  async resetRole(id: number): Promise<User> {
+    const user = await this.userRepository.findOne({ userId: id });
+    user.role = [Role.CLIENT];
+    try {
+      return await this.userRepository.save(user);
+    } catch (error) {
+      throw new InternalServerErrorException('Fail do reset role');
+    }
   }
 }

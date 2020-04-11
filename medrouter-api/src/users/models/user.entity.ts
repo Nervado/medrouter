@@ -20,6 +20,8 @@ import * as bcrypt from 'bcrypt';
 import { Address } from '../../address/models/address.entity';
 import { Doc } from '../../docs/models/doc.entity';
 
+import { Role } from '../../auth/enums/role.enum';
+
 @Entity({ name: 'UserTable' })
 @Unique(['email'])
 @Unique(['cpf'])
@@ -57,6 +59,9 @@ export class User extends BaseEntity {
 
   @Column()
   owner: boolean; // owner
+
+  @Column({ type: 'enum', enum: Role, default: [Role.CLIENT], array: true })
+  role: Role[];
 
   @Exclude()
   @Column()

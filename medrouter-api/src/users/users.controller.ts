@@ -34,11 +34,13 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get()
-  @Allow('recept', 'admin', 'owner')
+  @Allow('client', 'admin')
   @UseInterceptors(ClassSerializerInterceptor)
   getUsers(
     @Query(ValidationPipe) pageFilterDto: PageFilterDto,
+    @GetUser() user: User,
   ): Promise<User[]> {
+    console.log('logged User', user);
     return this.usersService.index(pageFilterDto);
   }
 

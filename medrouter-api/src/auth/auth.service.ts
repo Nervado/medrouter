@@ -28,6 +28,7 @@ export class AuthService {
       userId,
       email,
       client,
+      role,
 
       admin,
       recept,
@@ -43,7 +44,7 @@ export class AuthService {
       username,
       userId,
       email,
-
+      role,
       client,
       admin,
       recept,

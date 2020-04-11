@@ -22,7 +22,6 @@ export class DoctorDto {
   @IsOptional()
   salary: number;
 
-  @IsNotEmpty()
   @IsOptional()
   @IsEnum(Specialty, { each: true })
   specialty?: Specialty[];

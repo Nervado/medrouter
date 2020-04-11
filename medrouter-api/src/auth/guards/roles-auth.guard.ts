@@ -21,14 +21,19 @@ export class RolesGuard implements CanActivate {
       return true;
     }
 
-    if (!this.matchRoles(roles, user)) {
+    if (!this.matchRoles(roles, user.role)) {
+      console.log(roles, user.role);
       throw new UnauthorizedException('Not authorized by RolesGuard!');
     }
 
     return true;
   }
 
-  matchRoles(roles: string[], userRoles: { [key: string]: boolean }): boolean {
-    return roles.reduce((p, c) => p && userRoles[c] === true, true);
+  matchRoles(roles: string[], userRoles: string[]): boolean {
+    return roles.reduce(
+      (p, el) => p && !!userRoles.find(le => le === el),
+      true,
+    );
+    //    some((p, c) => p && userRoles[c] === true, true);
   }
 }
