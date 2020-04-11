@@ -1,4 +1,4 @@
-export interface ServiceInterface<T, I, D> {
+export interface ServiceInterface<T, I, D, O> {
   getMany(page: I): Promise<Array<T>>;
 
   getOne(id: I): Promise<T>;
@@ -7,7 +7,7 @@ export interface ServiceInterface<T, I, D> {
 
   updateOne(id: I, body: D): Promise<T>;
 
-  modifyOne(id: I, body: D): Promise<T>;
+  modifyOne(id: I, body: D, o?: O): Promise<T>;
 
   deleteOne(id: I): Promise<void>;
 }

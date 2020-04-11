@@ -2,6 +2,7 @@ import { Repository, EntityRepository } from 'typeorm';
 import {
   ConflictException,
   InternalServerErrorException,
+  BadRequestException,
 } from '@nestjs/common';
 
 import { Manager } from './models/manager.entity';
@@ -12,6 +13,10 @@ export class ManagerRepository extends Repository<Manager> {
     const manager = new Manager();
 
     const { salary } = managerDto;
+
+    if (!salary) {
+      throw new BadRequestException('Salary not provide');
+    }
 
     manager.ishired = true;
     manager.hireddate = new Date();
@@ -44,10 +49,50 @@ export class ManagerRepository extends Repository<Manager> {
     return managers;
   }
 
-  async updateOne(id: any, body: any): Promise<Manager> {
-    const manager = await this.findOne(id);
+  async updateOne(id: any, body: any, operation?: string): Promise<Manager> {
+    const manager = await this.findOne({ id });
+
+    if (operation === 'status' && body === 're-hired') {
+      try {
+        manager.ishired = true;
+        manager.user.admin = true; // update all privilleges
+        manager.dismissdate = null;
+        manager.hireddate = new Date();
+
+        return await this.save(manager);
+      } catch (error) {
+        throw new BadRequestException('Erro em operacao', operation);
+      }
+    }
+
+    if (operation === 'status' && body === 'dismiss') {
+      try {
+        manager.ishired = false;
+        manager.salary = 0;
+        manager.user.admin = false;
+        manager.dismissdate = new Date();
+        return await this.save(manager);
+      } catch (error) {
+        throw new BadRequestException('Erro em operacao', operation);
+      }
+    }
+
+    if (operation === 'diff') {
+      await this.createQueryBuilder()
+        .update(Manager)
+        .set({ salary: () => `salary + ${body}` })
+        .where({ id })
+        .execute();
+
+      return await this.findOne(id);
+    }
 
     this.merge(manager, body);
-    return await this.save(manager);
+
+    try {
+      return await this.save(manager);
+    } catch (error) {
+      throw new InternalServerErrorException('Operation have some problems');
+    }
   }
 }

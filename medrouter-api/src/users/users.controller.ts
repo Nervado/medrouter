@@ -56,6 +56,7 @@ export class UsersController {
     @Body() body: UserUpdateDto,
     @GetUser() loggedUser: User,
   ): Promise<User> {
+    console.log(loggedUser);
     return this.usersService.update(id, body, loggedUser);
   }
 }

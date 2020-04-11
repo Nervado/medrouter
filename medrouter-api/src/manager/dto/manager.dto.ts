@@ -4,6 +4,9 @@ import {
   IsNotEmpty,
   Max,
   Min,
+  IsOptional,
+  IsDecimal,
+  IsString,
 } from 'class-validator';
 import { AvatarDto } from '../../avatars/dto/avatar.dto';
 import { AddressDto } from '../../address/dto/adress.dto';
@@ -15,6 +18,7 @@ export class ManagerDto {
   @IsNotEmpty()
   @Max(100000)
   @Min(100)
+  @IsOptional()
   salary: number;
 
   @ValidateNested()
@@ -28,4 +32,15 @@ export class ManagerDto {
 
   @ValidateNested()
   receptionist?: ReceptionistDto[];
+
+  @IsOptional()
+  @IsString()
+  status: string;
+
+  @IsOptional()
+  @IsNumber()
+  @Max(100000)
+  @Min(-100000)
+  @IsDecimal()
+  diff: number;
 }

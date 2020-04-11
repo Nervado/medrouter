@@ -12,7 +12,8 @@ export class DoctorsService extends Service<
   Doctor,
   DoctorRepository,
   number,
-  User
+  User,
+  string
 > {
   constructor(
     @InjectRepository(DoctorRepository) repo: DoctorRepository,

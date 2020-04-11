@@ -7,10 +7,11 @@ import { ServiceInterface } from './service.interface';
 export class Service<
   K, //dto
   T, //local entity
-  S extends RepositoryInterface<T, P, K, I>, // Repository of local entity
+  S extends RepositoryInterface<T, P, K, I, O>, // Repository of local entity
   P, //paginator
-  I //external entity
-> implements ServiceInterface<T, P, K> {
+  I, //external entity
+  O
+> implements ServiceInterface<T, P, K, O> {
   constructor(protected repo: S) {}
 
   public async updateOne(id: P, obj: K): Promise<T> {
@@ -29,8 +30,8 @@ export class Service<
     return await this.repo.index(page);
   }
 
-  public async modifyOne(id: P, body: K): Promise<T> {
-    return await this.repo.updateOne(id, body);
+  public async modifyOne(id: P, body: K, o?: O): Promise<T> {
+    return await this.repo.updateOne(id, body, o);
   }
 
   public async deleteOne(id: P): Promise<void> {

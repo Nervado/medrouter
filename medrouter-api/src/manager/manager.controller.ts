@@ -61,19 +61,23 @@ export class ManagerController {
     return this.managerService.updateOne(id, body);
   }
 
-  @Patch('/status/:id')
+  @Patch('/:id/status')
+  @Roles('owner')
+  @UseInterceptors(ClassSerializerInterceptor)
   changeStatusManager(
-    @Param() id: number,
-    @Body('status') body: ManagerDto,
+    @Param('id') id: number,
+    @Body('status', ValidationPipe) body: ManagerDto,
   ): Promise<Manager> {
-    return this.managerService.modifyOne(id, body);
+    return this.managerService.modifyOne(id, body, 'status');
   }
 
-  @Patch('/diff/:id')
+  @Patch('/:id/diff')
+  @Roles('owner')
+  @UseInterceptors(ClassSerializerInterceptor)
   changeSalaryManager(
-    @Param() id: number,
-    @Body('salary') body: ManagerDto,
+    @Param('id') id: number,
+    @Body('diff', ValidationPipe) body: ManagerDto,
   ): Promise<Manager> {
-    return this.managerService.modifyOne(id, body);
+    return this.managerService.modifyOne(id, body, 'diff');
   }
 }

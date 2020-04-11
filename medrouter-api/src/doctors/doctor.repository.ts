@@ -11,7 +11,7 @@ import { RepositoryInterface } from '../utils/base-repository.interface';
 
 @EntityRepository(Doctor)
 export class DoctorRepository extends Repository<Doctor>
-  implements RepositoryInterface<Doctor, number, DoctorDto, User> {
+  implements RepositoryInterface<Doctor, number, DoctorDto, User, string> {
   async createOne(doctorDto: DoctorDto, user: User): Promise<Doctor> {
     const doctor = new Doctor();
 

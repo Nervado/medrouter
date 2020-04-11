@@ -17,11 +17,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: InfoToken) {
     const { email } = payload;
+    console.log('here');
 
     const user = await this.userService.findOne(email);
 
     if (!user) {
-      throw new UnauthorizedException('User not authorized! here');
+      throw new UnauthorizedException('User not authorized by guard');
     }
 
     return user;

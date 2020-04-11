@@ -100,12 +100,13 @@ export class UserRepository extends Repository<User> {
     this.merge(user, updateUserDto);
 
     try {
-      await this.save(user);
+      return await user.save();
     } catch (error) {
-      throw new InternalServerErrorException('fail to update user');
+      if (error.code === '23505') {
+        throw new ConflictException('User already exists');
+      } else {
+        throw new InternalServerErrorException('Uknow error!');
+      }
     }
-
-    delete user.address;
-    return user;
   }
 }

@@ -3,7 +3,6 @@ import { ManagerController } from './manager.controller';
 import { ManagerService } from './manager.service';
 import { ManagerRepository } from './manager.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersService } from 'src/users/users.service';
 import { UsersModule } from 'src/users/users.module';
 
 @Module({

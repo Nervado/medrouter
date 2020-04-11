@@ -8,7 +8,7 @@ import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class ManagerService
-  implements ServiceInterface<Manager, number, ManagerDto> {
+  implements ServiceInterface<Manager, number, ManagerDto, string> {
   constructor(
     @InjectRepository(ManagerRepository)
     private managerRepository: ManagerRepository,
@@ -33,11 +33,15 @@ export class ManagerService
     return this.managerRepository.updateOne(id, body);
   }
 
-  async modifyOne(id: number, body: ManagerDto): Promise<Manager> {
-    return this.managerRepository.updateOne(id, body);
+  async modifyOne(
+    id: number,
+    body: ManagerDto,
+    operation: string,
+  ): Promise<Manager> {
+    return this.managerRepository.updateOne(id, body, operation);
   }
 
   async deleteOne(id: number): Promise<void> {
-    await this.managerRepository.delete(id);
+    await this.managerRepository.softDelete({ id });
   }
 }
