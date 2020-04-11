@@ -11,7 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude } from 'class-transformer';
 
 import { User } from '../../users/models/user.entity';
 import { Manager } from '../../manager/models/manager.entity';
@@ -44,12 +44,15 @@ export class Receptionist extends BaseEntity {
   @JoinColumn()
   manager: Manager;
 
+  @Exclude()
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
+  @Exclude()
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
+  @Exclude()
   @DeleteDateColumn({ type: 'timestamp' })
   deletedAt: Date;
 }
