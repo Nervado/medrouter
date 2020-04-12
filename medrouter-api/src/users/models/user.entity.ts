@@ -6,7 +6,6 @@ import {
   Unique,
   OneToOne,
   JoinColumn,
-  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
@@ -16,13 +15,11 @@ import { Avatar } from '../../avatars/models/avatar.entity';
 import { Exclude, Expose } from 'class-transformer';
 
 import * as bcrypt from 'bcrypt';
-// import { Budget } from '../../budgets/models/budget.entity';
-import { Address } from '../../address/models/address.entity';
-import { Doc } from '../../docs/models/doc.entity';
 
+import { Address } from '../../address/models/address.entity';
 import { Role } from '../../auth/enums/role.enum';
 
-@Entity({ name: 'UserTable' })
+@Entity('user')
 @Unique(['email'])
 @Unique(['cpf'])
 @Unique(['phoneNumber'])
@@ -74,13 +71,6 @@ export class User extends BaseEntity {
   @OneToOne(() => Avatar, { eager: true })
   @JoinColumn()
   avatar: Avatar;
-
-  @OneToMany(
-    () => Doc,
-    doc => doc.user,
-  )
-  @JoinColumn()
-  doc: Doc[];
 
   @OneToOne(() => Address, { eager: true })
   @JoinColumn()

@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { PrescriptionsController } from './prescriptions.controller';
 import { PrescriptionsService } from './prescriptions.service';
-import { UsersService } from '../users/users.service';
-import { UsersModule } from 'src/users/users.module';
-import { UserRepository } from 'src/users/user.repository';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Prescription } from './models/prescription.entity';
 
 @Module({
-  imports: [UsersModule],
+  imports: [TypeOrmModule.forFeature([Prescription])],
   controllers: [PrescriptionsController],
-  providers: [PrescriptionsService, UsersService, UserRepository],
+  providers: [PrescriptionsService],
 })
 export class PrescriptionsModule {}

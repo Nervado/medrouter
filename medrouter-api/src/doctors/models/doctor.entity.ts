@@ -8,6 +8,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
+  ManyToOne,
 } from 'typeorm';
 
 import { User } from '../../users/models/user.entity';
@@ -15,8 +17,11 @@ import { User } from '../../users/models/user.entity';
 import { Exclude } from 'class-transformer';
 
 import { Specialty } from '../enums/specialty.enum';
+import { Appointment } from 'src/appointments/models/appointment.entity';
+import { Prescription } from 'src/prescriptions/models/prescription.entity';
+import { Schedule } from './schedule.entity';
 
-@Entity({ name: 'DoctorTable' })
+@Entity('doctor')
 export class Doctor extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -45,6 +50,21 @@ export class Doctor extends BaseEntity {
     array: true,
   })
   specialty: Specialty[];
+
+  @OneToMany(
+    () => Appointment,
+    appointment => appointment.doctor,
+  )
+  appointment: Appointment[];
+
+  @ManyToOne(() => Schedule)
+  schedule: Schedule[];
+
+  @OneToMany(
+    () => Prescription,
+    prescription => prescription.doctor,
+  )
+  prescription: Appointment[];
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', nullable: true })

@@ -7,15 +7,15 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 \*\* Define all models [ ]
 
 - [x] Receptionist
-- [ ] Lab
-- [ ] Client
+- [x] Lab
+- [x] Client
 - [x] Doctor
 - [x] Owner
 - [x] Manager
-- [ ] Medicine
-- [ ] Notification
-- [ ] Exam
-- [ ] Appointment
+- [x] Medicine
+- [x] Notification
+- [x] Exam
+- [x] Appointment
 
 \*\* Define all services [ ]
 

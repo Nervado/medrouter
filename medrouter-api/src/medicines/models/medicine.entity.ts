@@ -1,43 +1,50 @@
 import {
   BaseEntity,
-  Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
-  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
   Unique,
+  Entity,
 } from 'typeorm';
-import { User } from 'src/users/models/user.entity';
+import { MedicineSubcategory, MedicineCategory } from '../enums/category.enum';
 import { Exclude } from 'class-transformer';
-import { LabCategory } from '../enums/category.enum';
 
-@Entity('lab')
-@Unique(['cnpj'])
+@Entity('medicine')
 @Unique(['name'])
-export class Lab extends BaseEntity {
+export class Medicine extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  cnpj: string;
-
-  @Column()
   name: string;
 
-  @OneToOne(() => User, { eager: true, cascade: true })
-  @JoinColumn()
-  user: User;
+  @Column()
+  genericname: string;
+
+  @Column()
+  substancy: string;
+
+  @Column()
+  branch: string;
+
+  @Column()
+  laboratoryname: string;
 
   @Column({
     type: 'enum',
-    enum: LabCategory,
-    default: [LabCategory.LABEXM],
-    array: true,
+    enum: MedicineSubcategory,
+    default: MedicineSubcategory.GEN,
   })
-  labcategory: LabCategory[];
+  subcategory: MedicineSubcategory;
+
+  @Column({
+    type: 'enum',
+    enum: MedicineCategory,
+    default: MedicineCategory.NONCONTROLED,
+  })
+  category: MedicineCategory;
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', nullable: true })

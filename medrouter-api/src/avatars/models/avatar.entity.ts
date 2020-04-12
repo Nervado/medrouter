@@ -9,7 +9,7 @@ import {
 import { configService } from 'src/config/config.service';
 import { Exclude } from 'class-transformer';
 
-@Entity({ name: 'AvatarTable' })
+@Entity('avatar')
 export class Avatar extends BaseEntity {
   @PrimaryGeneratedColumn()
   avatarId: number;

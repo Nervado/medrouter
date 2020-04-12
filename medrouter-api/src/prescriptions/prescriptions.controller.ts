@@ -15,11 +15,11 @@ import {
 import { IntFilterDto } from '../utils/int-filter.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 
-import { UsersService } from '../users/users.service';
+import { PrescriptionsService } from './prescriptions.service';
 
 @Controller('prescriptions')
 export class PrescriptionsController {
-  constructor(private userService: UsersService) {}
+  constructor(private prescriptionService: PrescriptionsService) {}
 
   @Post()
   @UseInterceptors(ClassSerializerInterceptor)

@@ -15,9 +15,11 @@ import {
 import { IntFilterDto } from '../utils/int-filter.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 
+import { ExamsService } from './exams.service';
+
 @Controller('exams')
 export class ExamsController {
-  constructor(private geters: number) {}
+  constructor(private examsService: ExamsService) {}
 
   @Post()
   @UseInterceptors(ClassSerializerInterceptor)

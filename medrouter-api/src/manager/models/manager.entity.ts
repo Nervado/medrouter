@@ -16,7 +16,7 @@ import { User } from '../../users/models/user.entity';
 import { Receptionist } from '../../receptionist/models/receptionist.entity';
 import { Exclude } from 'class-transformer';
 
-@Entity({ name: 'ManagerTable' })
+@Entity('manager')
 export class Manager extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;

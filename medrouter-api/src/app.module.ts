@@ -23,6 +23,7 @@ import { LabsModule } from './labs/labs.module';
 import { ExamsModule } from './exams/exams.module';
 import { PrescriptionsModule } from './prescriptions/prescriptions.module';
 import { AppointmentsModule } from './appointments/appointments.module';
+import { MedicinesModule } from './medicines/medicines.module';
 
 @Module({
   imports: [
@@ -35,22 +36,19 @@ import { AppointmentsModule } from './appointments/appointments.module';
     SchedulesModule,
     EmailsModule,
     DocsModule,
-
     PhotosModule,
     AddressModule,
+    // Application core modules
     ReceptionistModule,
     OwnerModule,
     ManagerModule,
     ClientModule,
-
     DoctorsModule,
-
     LabsModule,
-
     ExamsModule,
 
     PrescriptionsModule,
-
+    MedicinesModule,
     AppointmentsModule,
   ],
 })

@@ -12,7 +12,7 @@ import { configService } from 'src/config/config.service';
 import { Exclude, Expose } from 'class-transformer';
 import { User } from 'src/users/models/user.entity';
 
-@Entity({ name: 'DocsTable' })
+@Entity('documents')
 export class Doc extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -23,13 +23,6 @@ export class Doc extends BaseEntity {
   @Exclude()
   @Column()
   path: string;
-
-  @ManyToOne(
-    () => User,
-    user => user.doc,
-  )
-  @JoinColumn()
-  user: User;
 
   @Expose()
   get url() {
