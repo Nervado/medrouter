@@ -4,7 +4,7 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 
 # Todo List
 
-\*\* Define all models [ ]
+## Define all models
 
 - [x] Receptionist
 - [x] Lab
@@ -17,7 +17,7 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 - [x] Exam
 - [x] Appointment
 
-\*\* Define all services [ ]
+## Define all services
 
 - [x] Receptionist
 - [ ] Lab
@@ -30,7 +30,7 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 - [ ] Exam
 - [ ] Appointment
 
-\*\* Define all routes [ ]
+## Define all routes
 
 - [x] Receptionist
 - [ ] Lab
