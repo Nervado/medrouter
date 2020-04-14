@@ -24,27 +24,27 @@ html
             p(class='admin') #{data.username}
       tr
         td
-          p Bem vindo a C&amp;V Reformas e Construções! 
+          p Bem vindo a <span class="enfase">&copy;MedRouter</span>! 
       tr
         td
-          p Fique a vontade para nos enviar seus pedidos !    
+          p Fique a vontade para acessar a plataforma e realizar seus pedidos de consultas!    
 
       tr
         td
-          p Seu nome de usuário é: <p class='enfase'>#{data.email}</p>
+          p Seu nome de usuário é: <span class='enfase'>#{data.email}</span>
       tr
         td
-          p Sua senha provisória é: <p class='enfase'>#{data.password}</p>
+          p Sua senha provisória é: <span class='enfase'>#{data.password}</span>
 
       tr
         td
-          p Por favor click no link abaixo para acessar sua área pessoal e atualizar sua senha!
+          p Por favor click no link abaixo confirmar seu cadastro!
 
       tr 
         td
           p 
             button 
-              a(href="https://reformadossonhos.com.br/signin") Confirmar meu cadastro 
+              a(href=data.link) Confirmar meu cadastro 
       include ./components/footer.pug    
 
 

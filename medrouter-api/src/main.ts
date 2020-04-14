@@ -4,6 +4,8 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 import { configService } from './config/config.service';
+import { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
   const logger = new Logger('bootstrap');
@@ -15,7 +17,10 @@ async function bootstrap() {
     .addTag('cats')
     .build();
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  app.setBaseViewsDir(join(__dirname, '..', 'src', 'emails', 'views'));
+  app.setViewEngine('pug');
 
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);

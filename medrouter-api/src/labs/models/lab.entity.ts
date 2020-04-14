@@ -13,6 +13,7 @@ import {
 import { User } from 'src/users/models/user.entity';
 import { Exclude } from 'class-transformer';
 import { LabCategory } from '../enums/category.enum';
+import { ExamsEnum } from 'src/exams/enums/exams.enum';
 
 @Entity('lab')
 @Unique(['cnpj'])
@@ -38,6 +39,14 @@ export class Lab extends BaseEntity {
     array: true,
   })
   labcategory: LabCategory[];
+
+  @Column({
+    type: 'enum',
+    enum: ExamsEnum,
+    default: [ExamsEnum.ABREU],
+    array: true,
+  })
+  exams: ExamsEnum[];
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', nullable: true })

@@ -27,8 +27,8 @@ export class EmailsService {
       emailJob.opts,
     );
 
-    this.logger.verbose('Add to queue...');
-    this.logger.verbose(emailJob.data);
+    //this.logger.verbose('Add to queue...');
+    //this.logger.verbose(emailJob.data);
 
     return queed ? true : false;
   }

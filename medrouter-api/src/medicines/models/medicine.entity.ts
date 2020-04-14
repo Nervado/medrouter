@@ -10,15 +10,12 @@ import {
 } from 'typeorm';
 import { MedicineSubcategory, MedicineCategory } from '../enums/category.enum';
 import { Exclude } from 'class-transformer';
+import { IsNotEmpty } from 'class-validator';
 
 @Entity('medicine')
-@Unique(['name'])
 export class Medicine extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column()
-  name: string;
 
   @Column()
   genericname: string;
@@ -31,6 +28,9 @@ export class Medicine extends BaseEntity {
 
   @Column()
   laboratoryname: string;
+
+  @Column()
+  editorid: string;
 
   @Column({
     type: 'enum',

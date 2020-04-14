@@ -15,10 +15,18 @@ import { EmailTypes } from '../emails/enums/email-types';
 import { EmailsGroups } from '../emails/enums/emails-groups';
 import { AddressService } from '../address/address.service';
 import { Role } from 'src/auth/enums/role.enum';
-import { throws } from 'assert';
+import { configService } from 'src/config/config.service';
+import * as Redis from 'ioredis';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UsersService {
+  private redisconfig = configService.getRedisConfig();
+  private redis = new Redis(
+    parseInt(this.redisconfig.port),
+    this.redisconfig.host,
+  );
+
   constructor(
     @InjectRepository(UserRepository) private userRepository: UserRepository,
     private emailsService: EmailsService,
@@ -55,17 +63,43 @@ export class UsersService {
 
   async signUp(authSingUpDto: AuthSingUpDto): Promise<User> {
     const newuser = await this.userRepository.signUp(authSingUpDto);
+    const { password } = authSingUpDto;
+    const { username, phoneNumber, email, userId } = newuser;
+    const confirmationToken = uuidv4();
+
+    try {
+      await this.redis.set(confirmationToken, userId);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Fail to set confirmation token...',
+        error,
+      );
+    }
+
+    console.log(
+      confirmationToken,
+      userId,
+      this.setConfirmationLink(confirmationToken),
+    );
+    const data = {
+      username,
+      phoneNumber,
+      password,
+      email,
+      link: this.setConfirmationLink(confirmationToken),
+    };
     newuser &&
       (await this.emailsService.sendEmail(
-        authSingUpDto,
+        data,
         EmailTypes.WELLCOME,
         EmailsGroups.CLIENTS,
       )) &&
       (await this.emailsService.sendEmail(
-        authSingUpDto,
+        data,
         EmailTypes.SUBSCRIBE,
         EmailsGroups.ADMINS,
       ));
+
     return newuser;
   }
 
@@ -99,5 +133,19 @@ export class UsersService {
     } catch (error) {
       throw new InternalServerErrorException('Fail do reset role');
     }
+  }
+
+  async setRole(id: number, role: string): Promise<User> {
+    const user = await this.userRepository.findOne({ userId: id });
+    user.role = [Role[role.toUpperCase()]];
+    try {
+      return await this.userRepository.save(user);
+    } catch (error) {
+      throw new InternalServerErrorException('Fail do set role');
+    }
+  }
+
+  setConfirmationLink(token: string): string {
+    return `${configService.getServerUrl()}/auth/confirmation/${token}`;
   }
 }

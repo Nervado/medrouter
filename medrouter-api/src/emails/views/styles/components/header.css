@@ -5,3 +5,8 @@
 .logo {
   margin-top: 5px;
 }
+
+.logo svg {
+  width: 70px;
+  height: 70px;
+}

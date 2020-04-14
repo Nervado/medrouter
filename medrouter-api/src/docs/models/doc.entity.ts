@@ -1,16 +1,6 @@
-import {
-  BaseEntity,
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToOne,
-  JoinColumn,
-  OneToMany,
-  ManyToOne,
-} from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { configService } from 'src/config/config.service';
 import { Exclude, Expose } from 'class-transformer';
-import { User } from 'src/users/models/user.entity';
 
 @Entity('documents')
 export class Doc extends BaseEntity {

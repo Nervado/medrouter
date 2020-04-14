@@ -8,5 +8,5 @@ h1 {
 }
 
 p.star {
-  color: orange;
+  color: var(--oposta1);
 }

@@ -9,6 +9,7 @@ import {
   JoinColumn,
   ManyToMany,
   JoinTable,
+  Column,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Medicine } from '../../medicines/models/medicine.entity';
@@ -33,6 +34,9 @@ export class Prescription extends BaseEntity {
   )
   @JoinColumn()
   doctor: Doctor;
+
+  @Column('text')
+  recommendations: string;
 
   @ManyToMany(type => Medicine)
   @JoinTable()

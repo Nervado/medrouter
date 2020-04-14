@@ -1,6 +1,8 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
 import { MedicineSubcategory, MedicineCategory } from '../enums/category.enum';
+import { CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 export class MedicineDto {
   @IsString()
@@ -26,4 +28,15 @@ export class MedicineDto {
   @IsNotEmpty()
   @IsString()
   category: MedicineCategory;
+
+  @CreateDateColumn({ type: 'timestamp', nullable: true })
+  createdAt: Date;
+
+  @Exclude()
+  @UpdateDateColumn({ type: 'timestamp', nullable: true })
+  updatedAt: Date;
+
+  @Exclude()
+  @DeleteDateColumn({ type: 'timestamp', nullable: true })
+  deletedAt: Date;
 }

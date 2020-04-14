@@ -1,5 +1,19 @@
+
+
 html,
 body {
+
+
+--oposta: rgba(255,255,255,1);
+--oposta1: rgba(252,204,255,1);
+--medium2: rgba(153,217,255,1);
+--medium1: rgba(41,171,226,1);
+--base1: rgba(0,159,255,1);
+--base: rgba(0,50,160,1);
+--error: rgba(200,50,50,1)
+--warn: rgba(200,255,0,1)
+
+
   padding: 0;
   margin: 0;
   background-color: #eee;
@@ -18,8 +32,8 @@ h3,
 h4,
 h5,
 a {
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.4;
+  font-family: Helvetica, sans-serif;
+  line-height: 2.0;
   margin: 0;
   box-sizing: border-box;
 }
@@ -38,7 +52,7 @@ b,
 em,
 abbr,
 div {
-  font-size: 12px;
+  font-size: 14px;
   color: #222;
 }
 
@@ -59,7 +73,7 @@ table.table {
   width: 800px;
   height: 500px;
   margin: 50px auto;
-  background-color: #fff;
+  background-color: var(--base1);
   border-radius: 4px;
 
   box-shadow: 4px 5px 6px rgba(0, 0, 0, 0.2);

@@ -132,10 +132,10 @@ export class EmailConsumer {
         context: job.data,
       })
       .then(resp => {
-        this.logger.verbose(resp);
+        //this.logger.verbose(resp);
       })
       .catch(error => {
-        this.logger.error(error);
+        // this.logger.error(error);
       });
   }
 }

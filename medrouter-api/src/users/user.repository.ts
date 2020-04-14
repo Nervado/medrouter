@@ -10,6 +10,7 @@ import { AuthSingUpDto } from '../auth/dto/auth-signup.dto';
 import { PageFilterDto } from './dto/page-filter.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
 import { Address } from 'src/address/models/address.entity';
+import { Role } from 'src/auth/enums/role.enum';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -38,6 +39,7 @@ export class UserRepository extends Repository<User> {
     user.recept = false;
     user.doctor = false;
     user.owner = true;
+    user.role = [Role.USER];
 
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);

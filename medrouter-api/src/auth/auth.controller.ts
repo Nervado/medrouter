@@ -2,10 +2,12 @@ import {
   Controller,
   Post,
   Body,
-  ValidationPipe,
   UseGuards,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Get,
+  Param,
+  Render,
 } from '@nestjs/common';
 import { AuthSingUpDto } from './dto/auth-signup.dto';
 import { AuthService } from './auth.service';
@@ -30,5 +32,11 @@ export class AuthController {
   signIn(@Body() loginDto: LoginDto): Promise<CredentailsDto> {
     console.log(loginDto);
     return this.authService.signIn(loginDto);
+  }
+
+  @Get('/confirmation/:token')
+  @Render('confirmation')
+  emailConfirmation(@Param('token') token: string): any {
+    return this.authService.confirmEmail(token);
   }
 }

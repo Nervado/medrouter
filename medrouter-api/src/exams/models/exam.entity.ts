@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 
 import { ExamsEnum } from '../enums/exams.enum';
+import { ExamStatus } from '../enums/status.enum';
 import { Exclude } from 'class-transformer';
 
 import { Photo } from 'src/photos/models/photos.entity';
@@ -28,8 +29,16 @@ export class Exam extends BaseEntity {
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   price: number;
 
-  @Column({ type: 'enum', enum: ExamsEnum, default: ExamsEnum.BLOOD })
-  exams: ExamsEnum;
+  @Column({
+    type: 'enum',
+    enum: ExamsEnum,
+    default: [ExamsEnum.CATET],
+    array: true,
+  })
+  exams: ExamsEnum[];
+
+  @Column({ type: 'enum', enum: ExamStatus, default: ExamStatus.REQUEST })
+  status: ExamStatus[];
 
   @Column({ nullable: true })
   deadline: number;
@@ -39,8 +48,6 @@ export class Exam extends BaseEntity {
 
   @ManyToOne(type => Doc)
   docs: Doc[];
-
-  // falta medico e paciente relacao many to many
 
   @OneToOne(() => Lab, { eager: true })
   @JoinColumn()
