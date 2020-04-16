@@ -1,0 +1,44 @@
+.btn {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  padding: 6px 12px;
+  background-color: #666;
+  color: #fff;
+  font-size: 0.875em;
+  font-weight: bolder;
+  outline: none;
+  cursor: pointer;
+  border: 0;
+  text-shadow: 1px solid rgba(#000000, 0.3);
+
+  &:hover {
+    @if $button-hover-type == "darken" {
+      background-color: darken(#666, $button-hover-amount);
+    } @else {
+      background-color: lighten(#666, $button-hover-amount);
+    }
+  }
+}
+
+@mixin button($color) {
+  background-color: #{$color};
+  color: #fff;
+
+  &:hover {
+    &:hover {
+      @if $button-hover-type == "darken" {
+        background-color: darken($color, $button-hover-amount);
+      } @else {
+        background-color: lighten($color, $button-hover-amount);
+        color: #fff;
+      }
+    }
+  }
+}
+
+@each $color, $value in $theme-colors {
+  .btn-#{$color} {
+    @include button($value);
+  }
+}

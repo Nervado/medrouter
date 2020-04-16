@@ -1,0 +1,32 @@
+$oposity: rgba(255, 255, 255, 1);
+$oposity1: rgba(255, 150, 255, 1);
+$medium1: rgba(153, 217, 255, 1);
+$medium: rgba(41, 171, 226, 1);
+$base1: rgba(0, 159, 255, 1);
+$base: rgba(0, 50, 160, 1);
+$error: rgba(200, 50, 50, 1);
+$warn: rgba(200, 255, 0, 1);
+
+$colorup: #6dd5ed;
+$colordown: #2193b0;
+
+$logoh: 70px;
+$logow: 70px;
+
+$button-hover-type: "lighten";
+$button-hover-amount: 10%;
+
+$theme-colors: () !default;
+$theme-colors: map-merge(
+  (
+    "oposity": $oposity,
+    "oposity1": $oposity1,
+    "medium1": $medium,
+    "medium": $medium,
+    "base1": $base1,
+    "base": $base,
+    "error": $error,
+    "warn": $warn,
+  ),
+  $theme-colors
+);
