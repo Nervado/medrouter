@@ -5,8 +5,8 @@
   padding: 6px 12px;
   background-color: #666;
   color: #fff;
-  font-size: 0.875em;
-  font-weight: bolder;
+  font-size: 1em;
+  font-weight: bold;
   outline: none;
   cursor: pointer;
   border: 0;
@@ -24,6 +24,10 @@
 @mixin button($color) {
   background-color: #{$color};
   color: #fff;
+
+  &:active {
+    border-style: outset;
+  }
 
   &:hover {
     &:hover {

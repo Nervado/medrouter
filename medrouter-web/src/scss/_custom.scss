@@ -1,10 +1,16 @@
+@import "./fonts/OpenSans/opensans";
 @import "./variables";
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
-@font-face {
-  font-family: OpenSans;
-  src: url(assets/fonts/Open_Sans/OpenSans-Regular.ttf) format("opentype");
-}
 @import "./templates/button";
+
+* {
+  font-family: $main_font;
+}
+
+body {
+  height: 100vh;
+  width: 100%;
+}
 
 .logo {
   height: $logoh;
@@ -31,12 +37,3 @@
 }
 
 $body-bg: $oposity;
-
-body {
-  height: 100vh;
-  width: 100%;
-}
-
-* {
-  font-family: "OpenSans";
-}
