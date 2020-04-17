@@ -1,0 +1,30 @@
+<app-appointment-confirm-modal></app-appointment-confirm-modal>
+
+<div class="main">
+  <div class="main-home b-shadow w-100">
+    <div class="container banner h-100 w-100 d-flex align-items-center">
+      <div class="col-4">
+        <div class="text-oposity1 services">
+          <span
+            ><strong class="text-medium"> A melhor </strong> clínica feita sob
+            medida<strong class="text-medium"> para você!</strong>
+          </span>
+        </div>
+        <div class="d-flex my-2">
+          <button class="btn btn-oposity1 text-white" (click)="show()">
+            Quero marcar uma consulta
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-appointment-form
+    [isOpen]="showForm"
+    (openModal)="showModalConfirmation($event)"
+  ></app-appointment-form>
+
+  <div class="d-flex flex-row justify-content-between my-5 mx-5 bg-red">
+    <app-homecards *ngFor="let card of cards" [data]="card"></app-homecards>
+  </div>
+</div>
