@@ -1,55 +1,86 @@
-<div class="container main-header d-flex w-100 justify-content-between">
-  <div class="logo col-3 d-flex h-100 align-items-center header-logo">
-    <img
-      src="../../assets/logo.svg"
-      alt="logo"
-      class="logo align-self-center"
-    />
-    <span class="text-white ml-3 font-weight-bolder">MedRouter</span>
+<div class="main-header">
+  <div class="top-bar">
+    <div class="container d-flex h-100 justify-content-between">
+      <div class="d-flex align-items-center header-logo h-100">
+        <img src="../../assets/logo.svg" alt="logo" class="logo" />
+        <span class="text-white ml-3 font-weight-bolder">MedRouter</span>
+      </div>
+      <div
+        class="top-bar-menu h-100 d-flex flex-column align-items-start justify-content-center"
+      >
+        <div>
+          <fa-icon [icon]="faPhone" class="mx-2 icon"></fa-icon>
+          <span class="info"> +55 (21) 97285-7728 </span> <br />
+        </div>
+
+        <div>
+          <fa-icon [icon]="faMapMarked" class="mx-2 icon"></fa-icon>
+          <span class="info"> Rua das Lambretas, 45, Rio de Janeiro/Rj</span>
+        </div>
+      </div>
+
+      <div
+        class="top-bar-menu h-100 d-flex flex-column align-items-start justify-content-center"
+      >
+        <div>
+          <fa-icon [icon]="faClock" class="mx-2 icon"></fa-icon>
+          <span class="info">24h por dia</span> <br />
+        </div>
+        <div>
+          <fa-icon [icon]="faCalendar" class="mx-2 icon"></fa-icon>
+          <span class="info">7 dias por semana</span> <br />
+        </div>
+      </div>
+    </div>
   </div>
 
-  <nav class="navigation navbar">
-    <nav class="navbar navbar-expand-lg navbar-light">
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  <div class="tool-bar">
+    <nav
+      class="container navigation navbar d-flex justify-content-end h-100 p-0"
+    >
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#">Profissionais</a>
-          </li>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link text-base" href="#">Profissionais</a>
+            </li>
 
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#">Consultas</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#">Contato</a>
-          </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <button
-            class="btn btn-oposity1 my-2 my-sm-0 mx-2 fix-button"
-            type="submit"
-          >
-            Login
-          </button>
-          <button
-            class="btn btn-base1 my-2 my-sm-0 mx-2 fix-button"
-            type="submit"
-          >
-            Cadastrar
-          </button>
-        </form>
-      </div>
+            <li class="nav-item">
+              <a class="nav-link text-base" href="#">Consultas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-base" href="#">Contato</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <button
+              class="bt bt-base1 my-2 my-sm-0 mr-1 fix-button"
+              type="submit"
+            >
+              SignUp
+            </button>
+
+            <button
+              class="bt bt-base my-2 my-sm-0 ml-1 fix-button"
+              type="submit"
+            >
+              Login
+            </button>
+          </form>
+        </div>
+      </nav>
     </nav>
-  </nav>
+  </div>
 </div>

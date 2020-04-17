@@ -1,6 +1,32 @@
+@import "../../../scss/variables";
+
 .main-header {
   font-size: 1em;
-  height: 80px;
+  height: 130px;
+
+  background-color: $oposity;
+
+  .top-bar {
+    height: 60px;
+    background-color: $base;
+
+    .header-logo {
+      padding-right: 20px;
+    }
+
+    .top-bar-menu {
+      color: #fff;
+
+      .info {
+        font-size: 0.7em;
+      }
+    }
+  }
+
+  .tool-bar {
+    height: 70px;
+    background-color: $oposity;
+  }
 
   span {
     font-size: 1.61803em;
@@ -10,5 +36,10 @@
     font-size: 1em;
     font-weight: bolder;
     font-family: "Open Sans";
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.6;
+    }
   }
 }
