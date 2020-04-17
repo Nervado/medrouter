@@ -1,9 +1,11 @@
-import { Component, OnInit, Injectable } from "@angular/core";
+import { Component, OnInit, Injectable, Input } from "@angular/core";
+
 import {
   NgbDateStruct,
   NgbDatepickerI18n,
   NgbDateParserFormatter,
 } from "@ng-bootstrap/ng-bootstrap";
+
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 
 import { Data } from "./models/datepicker.model";
@@ -109,7 +111,5 @@ export class DatepickerComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onClick(): void {
-    console.log("clickou");
-  }
+  onClick(): void {}
 }

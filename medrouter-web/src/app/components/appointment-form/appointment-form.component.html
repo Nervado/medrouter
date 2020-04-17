@@ -1,0 +1,22 @@
+<div
+  class="container bg-medium b-shadow consultant my-2"
+  [@openClose]="isOpen ? 'open' : 'closed'"
+>
+  <div class="text-white mb-1 pt-2 mx-2 consultant-title">
+    Sua consulta
+  </div>
+  <div class="form d-flex justify-content-between">
+    <input type="text" placeholder="Nome" class="m-2 flex-shrink-1" />
+    <input type="text" placeholder="Email" class="m-2 flex-shrink-1" />
+    <input type="text" placeholder="Telefone" class="m-2 flex-shrink-1" />
+    <input type="text" placeholder="Especialista" class="m-2 flex-shrink-1" />
+    <input type="text" placeholder="Horário" class="m-2 flex-shrink-1" />
+    <app-datepicker class="m-2 flex-shrink-1"></app-datepicker>
+    <button
+      class="btn btn-oposity1 text-white my-2 mx-2 flex-shrink-1"
+      (click)="confirm()"
+    >
+      Agendar
+    </button>
+  </div>
+</div>
