@@ -1,6 +1,10 @@
-<app-appointment-confirm-modal></app-appointment-confirm-modal>
+<app-appointment-confirm-modal #modal></app-appointment-confirm-modal>
 
 <div class="main">
+  <app-appointment-form
+    [isOpen]="showForm"
+    (openModal)="showModalConfirmation($event, modal)"
+  ></app-appointment-form>
   <div class="main-home b-shadow w-100">
     <div class="container banner h-100 w-100 d-flex align-items-center">
       <div class="col-4">
@@ -19,12 +23,129 @@
     </div>
   </div>
 
-  <app-appointment-form
-    [isOpen]="showForm"
-    (openModal)="showModalConfirmation($event)"
-  ></app-appointment-form>
-
-  <div class="d-flex flex-row justify-content-between my-5 mx-5 bg-red">
+  <div class="d-flex flex-row justify-content-around m-5">
     <app-homecards *ngFor="let card of cards" [data]="card"></app-homecards>
+  </div>
+
+  <div class="main-home-body bg-oposity my-5">
+    <div class="container">
+      <div class="d-flex justify-content-center my-3">
+        <h1 class="text-base">Informações aos nossos clientes</h1>
+      </div>
+
+      <div class="d-flex">
+        <div
+          class="grow col-4 text-justify card m-2 d-flex flex-column align-items-center"
+        >
+          <h5 class="mt-1">Remarcação de consultas</h5>
+          <span class="my-2 icon">
+            <fa-icon [icon]="faCalendarTimes" size="4x"></fa-icon>
+          </span>
+
+          Remarcações automáticas de consultas poderão ser feitas com pelo menos
+          24horas horas de antecedencia. .
+        </div>
+        <div
+          class="grow col-4 text-justify card m-2 d-flex flex-column align-items-center"
+        >
+          <h5 class="mt-1">Resultados de exames</h5>
+          <span class="my-2 icon">
+            <fa-icon [icon]="faFileMedical" size="4x"></fa-icon>
+          </span>
+
+          Resultados de exames quando liberados pelo seu médico estarão
+          disponíveis em sua área pessoal.
+        </div>
+        <div
+          class="grow col-4 text-justify card m-2 d-flex flex-column align-items-center"
+        >
+          <h5 class="mt-1">Telemedicina</h5>
+          <span class="my-2 icon">
+            <fa-icon [icon]="faLaptopMedical" size="4x"></fa-icon>
+          </span>
+
+          Nossa clinínica dispõe de serviço de telemedicina, a sua consulta pode
+          ser solicitada na sua área exclusiva.
+        </div>
+      </div>
+
+      <div class="d-flex">
+        <div
+          class="grow col-4 text-justify card m-2 d-flex flex-column align-items-center"
+        >
+          <h5 class="mt-1">Agendamentos online</h5>
+          <span class="my-2 icon">
+            <fa-icon [icon]="faCalendarPlus" size="4x"></fa-icon>
+          </span>
+
+          Para clientes recorrentes o agendamento online está disponível em sua
+          agenda de consultas.
+        </div>
+        <div
+          class="grow col-4 text-justify card m-2 d-flex flex-column align-items-center"
+        >
+          <h5 class="mt-1">Pagamentos</h5>
+          <span class="my-2 icon">
+            <fa-icon [icon]="faFileInvoiceDollar" size="4x"></fa-icon>
+          </span>
+
+          Seu relatório de despesas médicas está disponível em seu dashboard com
+          atraso de atualização de no máximo 24 horas.
+        </div>
+        <div
+          class="grow col-4 text-justify card m-2 d-flex flex-column align-items-center"
+        >
+          <h5 class="mt-1">Plantão</h5>
+          <span class="my-2 icon">
+            <fa-icon [icon]="faBusinessTime" size="4x"></fa-icon>
+          </span>
+
+          A plantão está disponível para nossos clientes 24h por dia e 7 dias
+          por semana.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main-home-footer bg-base">
+    <div class="container d-flex p-5 text-oposity">
+      <div class="col-4 text-justify">
+        <h3>Sobre a Clínica</h3>
+        MedRouter é uma clínica de soluções médicas multidisciplinares que atua
+        há 10 anos no mercado e possui em seus quadros mais de 50 Médicos
+        Especialistas.
+      </div>
+      <div class="col-4 text-justify">
+        <h3>Time</h3>
+        Os Profissionais da MedRouter estão em constante processo de
+        atualização. Todos os nossos quadros são Doutores ou Mestres em suas
+        respectivas especialidades.
+      </div>
+      <div class="d-flex align-itens-center justify-content-end col-4">
+        <div class="d-flex align-items-center">
+          <img src="../../assets/logo.svg" alt="logo" class="logo-footer" />
+          <span class="text-white ml-3 font-weight-bolder text-logo-footer"
+            >MedRouter</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="container d-flex p-5 text-oposity">
+      <div class="col-4 mx-1 text-justify">
+        <h3>Endereço</h3>
+        Rua das Lambretas, 43,Rocha, Rio de Janeiro/RJ <br />
+        Cep: 20869-978
+      </div>
+      <div class="col-4 mx-1 text-justify">
+        <h3>Contato</h3>
+        <span class="border-text">Gerencia: ceo@medrouter.com.br</span> <br />
+        <span class="border-text">Recepção: recepcao@medrouter.com.br</span>
+        <br />
+        <span class="border-text">Ouvidoria: ouvir@medrouter.com.br</span>
+        <br />
+        <span class="border-text">Financeiro: financeiro@medrouter.com.br</span>
+        <br />
+      </div>
+    </div>
   </div>
 </div>

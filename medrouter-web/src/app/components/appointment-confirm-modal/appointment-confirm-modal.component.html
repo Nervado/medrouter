@@ -1,9 +1,11 @@
 <ng-template #content let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+  <div class="modal-header bg-medium">
+    <h4 class="modal-title text-oposity" id="modal-basic-title">
+      Pedido de Agendamento
+    </h4>
     <button
       type="button"
-      class="close"
+      class="close text-base"
       aria-label="Close"
       (click)="modal.dismiss('Cross click')"
     >
@@ -13,42 +15,22 @@
   <div class="modal-body">
     <form>
       <div class="form-group">
-        <label for="dateOfBirth">Date of birth</label>
-        <div class="input-group">
-          <input
-            id="dateOfBirth"
-            class="form-control"
-            placeholder="yyyy-mm-dd"
-            name="dp"
-            ngbDatepicker
-            #dp="ngbDatepicker"
-          />
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary calendar"
-              (click)="dp.toggle()"
-              type="button"
-            ></button>
-          </div>
-        </div>
+        <input type="text" placeholder="Nome" />
+        <input type="text" placeholder="Nome" />
+        <input type="text" placeholder="Nome" />
       </div>
     </form>
   </div>
   <div class="modal-footer">
     <button
       type="button"
-      class="btn btn-outline-dark"
+      class="bt bt-oposity1"
       (click)="modal.close('Save click')"
     >
-      Save
+      Enviar
     </button>
   </div>
 </ng-template>
 
-<button class="btn btn-lg btn-outline-primary" (click)="open(content)">
-  Launch demo modal
-</button>
-
-<hr />
-
-<pre>{{ closeResult }}</pre>
+<!--
+<pre>{{ closeResult }}</pre>-->

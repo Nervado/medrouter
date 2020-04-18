@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 
 import {
   trigger,
@@ -6,10 +6,8 @@ import {
   style,
   animate,
   transition,
-  keyframes,
-  // ...
 } from "@angular/animations";
-import { EventEmitter } from "events";
+
 @Component({
   selector: "app-appointment-form",
   templateUrl: "./appointment-form.component.html",
@@ -38,7 +36,7 @@ import { EventEmitter } from "events";
 export class AppointmentFormComponent implements OnInit {
   @Input() isOpen: boolean;
 
-  @Output("") openModal: EventEmitter = new EventEmitter();
+  @Output() openModal: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 
@@ -47,7 +45,6 @@ export class AppointmentFormComponent implements OnInit {
   }
 
   confirm() {
-    console.log("evento ..");
     this.openModal.emit("confirm");
   }
 }

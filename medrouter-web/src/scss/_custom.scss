@@ -13,6 +13,8 @@
 body {
   height: 100vh;
   width: 100%;
+
+  background-color: $oposity;
 }
 
 .logo {
@@ -38,5 +40,3 @@ body {
 .elevation {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
-
-$body-bg: $oposity;

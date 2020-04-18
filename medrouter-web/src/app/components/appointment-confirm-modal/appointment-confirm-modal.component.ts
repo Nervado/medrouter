@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ElementRef, ViewChild } from "@angular/core";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
@@ -11,9 +11,12 @@ export class AppointmentConfirmModalComponent implements OnInit {
 
   constructor(private modalService: NgbModal) {}
 
+  @ViewChild("content") elementRef: ElementRef;
+
   ngOnInit(): void {}
 
-  open(content) {
+  open(_content?) {
+    const content = _content ? _content : this.elementRef;
     this.modalService
       .open(content, { ariaLabelledBy: "modal-basic-title" })
       .result.then(

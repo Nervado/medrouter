@@ -1,5 +1,14 @@
 import { Component, OnInit } from "@angular/core";
 
+import {
+  faFileMedical,
+  faLaptopMedical,
+  faFileInvoiceDollar,
+  faCalendarTimes,
+  faCalendarPlus,
+  faBusinessTime,
+} from "@fortawesome/free-solid-svg-icons";
+
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
@@ -28,6 +37,14 @@ export class HomeComponent implements OnInit {
       category: "Diagnósticos",
     },
   ];
+
+  faFileMedical = faFileMedical;
+  faLaptopMedical = faLaptopMedical;
+  faFileInvoiceDollar = faFileInvoiceDollar;
+  faCalendarTimes = faCalendarTimes;
+  faCalendarPlus = faCalendarPlus;
+  faBusinessTime = faBusinessTime;
+
   constructor() {}
 
   showForm = false;
@@ -38,7 +55,7 @@ export class HomeComponent implements OnInit {
     this.showForm = !this.showForm;
   }
 
-  showModalConfirmation(e) {
-    console.log("evento capiturado");
+  showModalConfirmation(e, modal) {
+    modal.open(modal.content);
   }
 }
