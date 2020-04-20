@@ -13,8 +13,14 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { HomeComponent } from "./views/home/home.component";
 import { HomecardsComponent } from "./components/homecards/homecards.component";
 import { DatepickerComponent } from "./components/datepicker/datepicker.component";
-import { AppointmentFormComponent } from './components/appointment-form/appointment-form.component';
-import { AppointmentConfirmModalComponent } from './components/appointment-confirm-modal/appointment-confirm-modal.component';
+import { AppointmentFormComponent } from "./components/appointment-form/appointment-form.component";
+import { AppointmentConfirmModalComponent } from "./components/appointment-confirm-modal/appointment-confirm-modal.component";
+import { ProfessionalsCardsComponent } from "./components/professionals-cards/professionals-cards.component";
+import { ProfessionalCardComponent } from "./components/professional-card/professional-card.component";
+import { MainFooterComponent } from "./components/main-footer/main-footer.component";
+import { ClientPageComponent } from './views/client-page/client-page.component';
+import { SignInComponent } from './views/sign-in/sign-in.component';
+import { SignUpComponent } from './views/sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -26,8 +32,15 @@ import { AppointmentConfirmModalComponent } from './components/appointment-confi
     DatepickerComponent,
     AppointmentFormComponent,
     AppointmentConfirmModalComponent,
+    ProfessionalsCardsComponent,
+    ProfessionalCardComponent,
+    MainFooterComponent,
+    ClientPageComponent,
+    SignInComponent,
+    SignUpComponent,
   ],
   imports: [
+    AppRoutingModule,
     NgbModule,
     BrowserModule,
     FontAwesomeModule,

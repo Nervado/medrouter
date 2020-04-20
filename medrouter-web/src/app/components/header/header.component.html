@@ -1,4 +1,5 @@
-<div class="main-header">
+<a name="begin"></a>
+<div class="main-header effect1">
   <div class="top-bar">
     <div class="container d-flex h-100 justify-content-between">
       <div class="d-flex align-items-center header-logo h-100">
@@ -54,30 +55,39 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link text-base" href="#">Profissionais</a>
+              <a class="nav-link text-base" href="#professionals"
+                >Profissionais</a
+              >
             </li>
 
             <li class="nav-item">
-              <a class="nav-link text-base" href="#">Consultas</a>
+              <a class="nav-link text-base" href="#appointments">Consultas</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-base" href="#">Contato</a>
+              <a class="nav-link text-base" href="#information">Informações</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-base" href="#contacts">Contato</a>
             </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
-            <button
-              class="bt bt-base1 my-2 my-sm-0 mr-1 fix-button"
-              type="submit"
+            <a routerLink="/auth/signup">
+              <button
+                class="bt bt-base1 my-2 my-sm-0 mr-1 fix-button"
+                type="submit"
+              >
+                SignUp
+              </button></a
             >
-              SignUp
-            </button>
 
-            <button
-              class="bt bt-base my-2 my-sm-0 ml-1 fix-button"
-              type="submit"
+            <a routerLink="/auth/signin">
+              <button
+                class="bt bt-base my-2 my-sm-0 ml-1 fix-button"
+                type="submit"
+              >
+                Login
+              </button></a
             >
-              Login
-            </button>
           </form>
         </div>
       </nav>

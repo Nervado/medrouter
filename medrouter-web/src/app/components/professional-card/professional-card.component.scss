@@ -1,0 +1,64 @@
+@import "../../../scss/variables";
+
+.selected {
+  animation: scale 500ms 500ms ease-in;
+}
+
+@keyframes scale {
+  from {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.professional-card {
+  margin: 20px;
+  width: 200px;
+  cursor: pointer;
+
+  transition: all ease-in;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.avatar img {
+  border-radius: 4px;
+  overflow: hidden;
+  width: 200px;
+  height: 300px;
+  border-radius: 4px;
+  background-color: rgba($color: #666, $alpha: 0.05);
+  object-fit: cover;
+}
+
+.avatar {
+  overflow: hidden;
+  width: 200px;
+  height: 300px;
+}
+
+.body-title {
+  font-family: "Open Sans";
+  color: var(--base1);
+  border-bottom: 1px solid var(--base1);
+}
+.checked {
+  color: var(--oposity1);
+}
+
+.body-card {
+  .body-card-local {
+    border-top: 1px solid var(--base1);
+  }
+
+  .body-card-text {
+    height: 100px;
+    color: var(--base);
+  }
+}

@@ -1,0 +1,43 @@
+<div
+  class="professional-card d-flex flex-column"
+  [@right]="right"
+  [@left]="left"
+  [ngClass]="{ selected: selected && selected }"
+>
+  <div class="avatar">
+    <img [src]="professional.url" alt="avatar" />
+  </div>
+
+  <div class="body-card my-2">
+    <div class="body-title my-2 pb-2">
+      <!-- <fa-icon class="mr-1" [icon]="user"></fa-icon>-->
+
+      {{ professional.name }}
+    </div>
+    <div class="body-card text-base1">
+      <strong>{{ professional.title }}</strong>
+    </div>
+    <div class="body-card-text text-base">
+      Especialista em: <br />
+      <span *ngFor="let specialty of professional.specialty">
+        <fa-icon class="mr-1" [icon]="faCheckSquare"></fa-icon>
+        {{ specialty }} <br />
+      </span>
+    </div>
+    <div class="body-card-local pt-2 text-base">
+      <fa-icon class="mr-1" [icon]="faMapMarkerAlt"></fa-icon>
+      <span>{{ professional.local }}</span>
+    </div>
+    <div class="body-card-work my-1 text-base">
+      <fa-icon class="mr-1" [icon]="faClock"></fa-icon>
+      <span>{{ professional.workscale }}</span>
+    </div>
+    <div class="footer-card d-flex">
+      <fa-icon
+        [icon]="faStar"
+        *ngFor="let star of professional.stars"
+        [ngClass]="{ checked: star }"
+      ></fa-icon>
+    </div>
+  </div>
+</div>

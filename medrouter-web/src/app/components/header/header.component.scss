@@ -26,6 +26,7 @@
   .tool-bar {
     height: 50px;
     background-color: $oposity;
+    background-color: rgba($color: #666, $alpha: 0.05);
   }
 
   span {
