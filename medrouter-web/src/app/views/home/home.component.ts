@@ -7,6 +7,9 @@ import {
   faCalendarTimes,
   faCalendarPlus,
   faBusinessTime,
+  faStar,
+  faArrowLeft,
+  faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
@@ -45,6 +48,11 @@ export class HomeComponent implements OnInit {
   faCalendarPlus = faCalendarPlus;
   faBusinessTime = faBusinessTime;
 
+  faStar = faStar;
+
+  faArrowLeft = faArrowLeft;
+  faArrowRight = faArrowRight;
+
   constructor() {}
 
   showForm = false;
@@ -52,7 +60,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {}
 
   show() {
-    this.showForm = !this.showForm;
+    this.showForm = true;
   }
 
   showModalConfirmation(e, modal) {
