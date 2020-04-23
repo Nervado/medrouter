@@ -59,11 +59,13 @@ export class AuthService {
       })
       .pipe(
         tap(
-          () =>
+          () => {
             this.notificationService.notify({
               message: "Cadastro realizado com sucesso, verifique seu email!",
               type: Types.INFO,
-            }),
+            });
+            this.router.navigate(["/"]);
+          },
           () =>
             this.notificationService.notify({
               message: "Por favor verifique os dados informados",
