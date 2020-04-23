@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+
 import {
   faPlus,
   faPowerOff,
@@ -20,25 +21,12 @@ import {
   faTimesCircle,
   faCheckCircle,
 } from "@fortawesome/free-regular-svg-icons";
-
 @Component({
-  selector: "app-client-page",
-  templateUrl: "./client-page.component.html",
-  styleUrls: ["./client-page.component.scss"],
+  selector: "app-appointments-summary",
+  templateUrl: "./appointments-summary.component.html",
+  styleUrls: ["./appointments-summary.component.scss"],
 })
-export class ClientPageComponent implements OnInit {
-  faPowerOff = faPowerOff;
-  faHome = faHome;
-  faUser = faUser;
-  faFileMedical = faFileMedical;
-  faFileInvoiceDollar = faFileInvoiceDollar;
-  faBookMedical = faBookMedical;
-  faCalendarCheck = faCalendarCheck;
-  faPoll = faPoll;
-  faPlus = faPlus;
-  faBell = faBell;
-  faCommentAlt = faCommentAlt;
-
+export class AppointmentsSummaryComponent implements OnInit {
   faEllipsisH = faEllipsisH;
   faCheckCircle = faCheckCircle;
   faTimesCircle = faTimesCircle;

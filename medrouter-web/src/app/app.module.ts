@@ -1,6 +1,8 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
+
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { NgModule, LOCALE_ID } from "@angular/core";
@@ -18,10 +20,14 @@ import { AppointmentConfirmModalComponent } from "./components/appointment-confi
 import { ProfessionalsCardsComponent } from "./components/professionals-cards/professionals-cards.component";
 import { ProfessionalCardComponent } from "./components/professional-card/professional-card.component";
 import { MainFooterComponent } from "./components/main-footer/main-footer.component";
-import { ClientPageComponent } from './views/client-page/client-page.component';
-import { SignInComponent } from './views/sign-in/sign-in.component';
-import { SignUpComponent } from './views/sign-up/sign-up.component';
+import { ClientPageComponent } from "./views/client-page/client-page.component";
+import { SignInComponent } from "./views/sign-in/sign-in.component";
+import { SignUpComponent } from "./views/sign-up/sign-up.component";
+import { AppointmentsSummaryComponent } from "./components/appointments-summary/appointments-summary.component";
+import { NotificationsSumaryComponent } from "./components/notifications-sumary/notifications-sumary.component";
+import { ClientMainChartComponent } from "./components/client-main-chart/client-main-chart.component";
 
+import { SharedModule } from "./shared/shared.module";
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,14 +44,20 @@ import { SignUpComponent } from './views/sign-up/sign-up.component';
     ClientPageComponent,
     SignInComponent,
     SignUpComponent,
+    AppointmentsSummaryComponent,
+    NotificationsSumaryComponent,
+    ClientMainChartComponent,
   ],
   imports: [
+    SharedModule,
     AppRoutingModule,
     NgbModule,
     BrowserModule,
     FontAwesomeModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
+    HttpClientModule,
   ],
   providers: [{ provide: LOCALE_ID, useValue: "pt-BR" }],
   bootstrap: [AppComponent],

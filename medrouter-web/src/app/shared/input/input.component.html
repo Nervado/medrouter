@@ -1,0 +1,16 @@
+<div
+  class="form-group d-flex align-itens-center justify-content-center h-100"
+  [class.has-success]="hasSuccess()"
+  [class.has-error]="hasError()"
+>
+  <ng-content></ng-content>
+
+  <div class="d-flex flex-column justify-content-center align-itens-center">
+    <span class="text-medium" *ngIf="hasSuccess()">
+      <fa-icon [icon]="faCheck"></fa-icon>
+    </span>
+    <span class="text-oposity1" *ngIf="hasError()">
+      <fa-icon [icon]="faTimes"></fa-icon> {{ errorMessage }}</span
+    >
+  </div>
+</div>

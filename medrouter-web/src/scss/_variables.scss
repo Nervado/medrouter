@@ -1,24 +1,18 @@
-:root {
-  --oposity: rgba(255, 255, 255, 1);
-  --oposity1: rgba(255, 150, 255, 1);
-  --medium1: rgba(153, 217, 255, 1);
-  --medium: rgba(41, 171, 226, 1);
-  --base1: rgba(0, 159, 255, 1);
-  --base1: #028bb1;
-
-  --base: rgba(0, 50, 160, 1);
-  --base: #162e4f;
-}
-
 $oposity: rgba(255, 255, 255, 1);
 $oposity1: rgba(255, 150, 255, 1);
 $medium1: rgba(153, 217, 255, 1);
 $medium: rgba(41, 171, 226, 1);
-$base1: rgba(0, 159, 255, 1);
 $base1: #028bb1;
-
-$base: rgba(0, 50, 160, 1);
 $base: #162e4f;
+
+:root {
+  --oposity: $oposity;
+  --oposity1: $oposity1;
+  --medium1: $medium1;
+  --medium: $medium;
+  --base1: $base1;
+  --base: $base;
+}
 
 $error: rgba(200, 50, 50, 1);
 $warn: rgba(200, 255, 0, 1);

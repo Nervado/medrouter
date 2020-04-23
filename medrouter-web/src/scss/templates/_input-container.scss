@@ -1,0 +1,17 @@
+.in-container {
+  background-color: var(--oposity);
+  height: 50px;
+  width: 250px;
+  display: flex;
+  border-radius: 4px;
+}
+
+@mixin container($color) {
+  background-color: $color;
+}
+
+@each $color, $value in $theme-colors {
+  .in-container-#{$color} {
+    @include container($value);
+  }
+}

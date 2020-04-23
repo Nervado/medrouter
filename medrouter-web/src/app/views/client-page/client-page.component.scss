@@ -1,5 +1,6 @@
 .bg {
   background-color: rgba(128, 128, 128, 0.15);
+  height: 100vh;
 }
 
 .header {
@@ -7,16 +8,74 @@
   width: 100%;
   background-color: var(--oposity);
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+
+  .action-menu {
+    .badge-icon {
+      cursor: pointer;
+      position: relative;
+      color: var(--base1);
+      &:hover {
+        color: var(--base);
+      }
+      &::before {
+        z-index: 10;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--oposity1);
+        content: "";
+      }
+    }
+  }
+
+  .avatar-area {
+    img {
+      height: 70px;
+      width: 70px;
+      border-radius: 50%;
+      border: 2px solid var(--base1);
+    }
+  }
 }
 
 .content {
-  width: 100%;
-  height: 100%;
+  width: calc(100% - 80px);
+  .main-info {
+    padding: 30px;
+    .main-data {
+      font-size: 12px;
+      width: 400px;
+      height: 300px;
+      background-color: var(--oposity);
+
+      border-radius: 4px;
+      box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.1);
+      &.aside {
+        width: 400px;
+      }
+      &.main {
+        width: 600px;
+      }
+
+      .avatar-area {
+        img {
+          height: 50px;
+          width: 50px;
+          border-radius: 50%;
+          border: 2px solid var(--base1);
+        }
+      }
+    }
+  }
 }
 
 .tool-bar {
   z-index: 1;
   width: 80px;
+  min-height: 80px;
   height: 100%;
 
   background-color: var(--base);

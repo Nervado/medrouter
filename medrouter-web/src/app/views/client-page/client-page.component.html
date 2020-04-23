@@ -1,4 +1,4 @@
-<div class="bg w-100 h-100 d-flex">
+<div class="bg w-100 d-flex">
   <div class="tool-bar h-100">
     <div class="too-bar-content">
       <div class="logo">
@@ -35,16 +35,51 @@
     </div>
   </div>
   <div class="content">
-    <div class="header w-100"></div>
-    <div class="container content">
-      <div class="row">
-        <div class="col-6">
-          <div class="main-info">
-            <div>data</div>
-            <div>resums</div>
+    <div class="header">
+      <div class="container d-flex justify-content-end h-100">
+        <div class="action-menu d-flex h-100 align-items-center">
+          <button class="bt bt-oposity1 mx-3 bad">
+            <fa-icon [icon]="faPlus" class="mr-1"></fa-icon>
+            Marcar uma consulta
+          </button>
+          <div class="buttons d-flex mx-2 h-100 align-items-center">
+            <div class="m-2">
+              <fa-icon [icon]="faCommentAlt" class="fa-lg badge-icon"></fa-icon>
+            </div>
+            <div class="m-2">
+              <fa-icon [icon]="faBell" class="fa-lg badge-icon"></fa-icon>
+            </div>
+          </div>
+
+          <div class="avatar-area">
+            <img src="../../../assets/avatarmale.png" alt="avatar" />
+          </div>
+          <div class="grett mx-3">
+            <span>Boa tarde</span> <br />
+            <span class="font-weight-bold text-medium">Evandro</span>
           </div>
         </div>
-        <div class="col-6">esquerda</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="d-flex justify-content-between">
+        <div
+          class="main-info d-flex flex-column align-items-center justify-content-center"
+        >
+          <div class="main-data main my-1">data</div>
+          <div class="main-data main mt-4">reports</div>
+        </div>
+
+        <!--Inicio do aside -->
+        <div
+          class="main-info d-flex flex-column align-items-center justify-content-center"
+        >
+          <app-appointments-summary class="my-1"></app-appointments-summary>
+
+          <app-notifications-sumary class="mt-4"></app-notifications-sumary>
+        </div>
+
+        <!-- fim do aside-->
       </div>
     </div>
   </div>

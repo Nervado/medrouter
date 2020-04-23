@@ -1,0 +1,40 @@
+.snackbar {
+  height: 70px;
+  min-width: 300px;
+  max-width: 300px;
+  margin-left: -150px;
+  background-color: var(--medium);
+
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  padding: 16px;
+  position: fixed;
+
+  z-index: 1;
+  top: 50px;
+
+  overflow: hidden;
+
+  .msg {
+    height: 65px;
+
+    .icon {
+      cursor: pointer;
+    }
+  }
+
+  .bar {
+    border-radius: 4px;
+    height: 5px;
+    width: 100%;
+    background-color: var(--oposity);
+    opacity: 0.8;
+
+    .load {
+      background-color: var(--medium);
+      width: 0%;
+      height: 100%;
+    }
+  }
+}

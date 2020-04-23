@@ -1,0 +1,27 @@
+.in {
+  border-radius: 4px;
+  border: none;
+  width: 200px;
+  height: 100%;
+  color: #000;
+  padding-left: 10px;
+
+  &::placeholder {
+    color: $oposity1;
+    opacity: 0.6;
+  }
+}
+
+@mixin input($color) {
+  color: $color;
+  &::placeholder {
+    opacity: 0.6;
+    color: $oposity1;
+  }
+}
+
+@each $color, $value in $theme-colors {
+  .in-#{$color} {
+    @include input($value);
+  }
+}

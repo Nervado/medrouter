@@ -1,7 +1,15 @@
 <!-- Full Width Column -->
-
-<div class="wrapper w-100 h-100">
+<div class="h-100 w-100">
   <router-outlet></router-outlet>
+  <!-- snackbar deve ser aqui  -->
 </div>
 
-<!-- snackbar deve ser aqui-->
+<app-toast #toast></app-toast>
+
+<!--Teste Zone -->
+
+<!--<div class="d-flex">
+  <button class="btn btn-danger m-1" (click)="toast.show()">Add</button>
+  <button class="btn btn-success m-1" (click)="toast.hide()">Remove</button>
+</div>
+ -->
