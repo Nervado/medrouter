@@ -9,6 +9,7 @@ import { NotificationService } from "../shared/messages/notification.service";
 import { User } from "./models/user.model";
 import { Login } from "./models/login.model";
 import { SignUp } from "./models/signup.model";
+import { Types } from "../shared/messages/toast/enums/types";
 
 @Injectable({
   providedIn: "root",
@@ -33,12 +34,16 @@ export class AuthService {
         tap(
           (User) => {
             this.user = User;
-            this.notificationService.notify(
-              `Bem vindo ${this.user.user.username} !`
-            );
+            this.notificationService.notify({
+              message: `Bem vindo ${this.user.user.username} !`,
+              type: Types.BASE,
+            });
           },
           () => {
-            this.notificationService.notify("Verifique seus dados");
+            this.notificationService.notify({
+              message: "Verifique seus dados",
+              type: Types.OPOSITY1,
+            });
           },
           () => {
             this.router.navigate(["/clients"]);
@@ -55,13 +60,15 @@ export class AuthService {
       .pipe(
         tap(
           () =>
-            this.notificationService.notify(
-              "Cadastro realizado com sucesso, verifique seu email!"
-            ),
+            this.notificationService.notify({
+              message: "Cadastro realizado com sucesso, verifique seu email!",
+              type: Types.INFO,
+            }),
           () =>
-            this.notificationService.notify(
-              "Por favor verifique os dados informados"
-            )
+            this.notificationService.notify({
+              message: "Por favor verifique os dados informados",
+              type: Types.OPOSITY1,
+            })
         )
       );
   }
