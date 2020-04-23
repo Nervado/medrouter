@@ -31,9 +31,7 @@ export class LoginService {
           (User) => {
             this.user = User;
             this.notificationService.notify(
-              `Bem vindo seu filho da puta${
-                this.user.user.username
-              } agora:${new Date()}`
+              `Bem vindo ${this.user.user.username} !`
             );
           },
           () => {

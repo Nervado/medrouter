@@ -42,18 +42,18 @@ import { Status } from "./enums/status";
         })
       ),
       transition("hidden <=> visible", [
-        group([query("@load", [animateChild()]), animate("200ms ease-out")]),
+        group([query("@load", [animateChild()]), animate("400ms ease-out")]),
       ]),
     ]),
     trigger("load", [
       state("hidden", style({ opacity: 1, width: "100%", offset: 0 })),
       state("visible", style({ opacity: 1, width: "0%", offset: 1 })),
-      transition("hidden <=> visible", animate("1.0s ease-out")),
+      transition("hidden <=> visible", animate("2.0s ease-out")),
     ]),
   ],
 })
 export class ToastComponent implements OnInit {
-  toast: Toast = new Toast(2000, "Quero te arregaçar");
+  toast: Toast = new Toast(2000, "Good Night!");
 
   faTimes = faTimes;
   subs: any;
@@ -64,7 +64,7 @@ export class ToastComponent implements OnInit {
 
   ngOnInit(): void {
     this.time = this.toast.timer;
-    this.toast.message = "Quero cu agora";
+    this.toast.message = "Hello Toast";
     this.notificationService.notifier
       .pipe(
         tap((message) => {
@@ -82,5 +82,9 @@ export class ToastComponent implements OnInit {
 
   hide() {
     this.visibility = Status.HIDDEN;
+  }
+
+  stop() {
+    this.visibility = Status.STOPED;
   }
 }

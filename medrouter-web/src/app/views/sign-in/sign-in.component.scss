@@ -22,11 +22,12 @@
     overflow: hidden;
     background-color: var(--oposity);
     border-radius: 4px;
-    height: 12px;
+    height: 15px;
     opacity: 0.8;
 
     .load {
-      background-color: var(--medium);
+      border: 2px solid var(--medium);
+      background-color: var(--base);
       height: 100%;
       width: 100%;
       font-size: 8px;
@@ -37,11 +38,11 @@
 }
 
 .isLoading {
-  animation: loading 2s ease-in-out;
+  animation: loading 5s ease-in-out;
 }
 
 .isVisible {
-  animation: fade 2s ease-in-out;
+  animation: fade 5s ease-in-out;
 }
 
 @keyframes fade {
