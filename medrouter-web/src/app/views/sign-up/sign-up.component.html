@@ -1,44 +1,114 @@
 <div class="bg-base w-100 h-100">
   <div
-    class="container d-flex flex-colum align-items-center justify-content-center h-100"
+    class="container d-flex flex-colum align-items-start justify-content-center h-100"
   >
     <div class="main bg-base1">
       <div
-        class="logo-area w-100 d-flex align-items-center justify-content-center my-3"
+        class="logo-area w-100 d-flex align-items-center justify-content-center my-4"
       >
         <a routerLink="/">
           <img src="../../../assets/logo.svg" alt="logo" />
         </a>
       </div>
 
-      <div class="body m-3 d-flex flex-column align-items-center">
-        <input type="text" name="name" placeholder="Nome" class="my-1 p-1" />
-        <input type="email" name="email" placeholder="Email" class="my-1 p-1" />
-        <input
-          type="password"
-          name="password"
-          placeholder="senha"
-          class="my-1 p-1"
-        />
-        <input
-          type="password"
-          name="passwordConfirmation"
-          placeholder="confirme sua senha"
-          class="my-1 p-1"
-        />
-        <div
-          class="d-flex flex-column align-itens-center justify-content-center mt-1"
-        >
-          <a routerLink="/">
-            <button class="bt bt-oposity1 my-1 w-100">
+      <form [formGroup]="signUpForm">
+        <div class="body d-flex flex-column align-items-center">
+          <app-input-container class="in-container in-container-base my-2">
+            <input
+              formControlName="username"
+              type="text"
+              name="username"
+              placeholder="Seu primeiro nome"
+              autocomplete="name"
+              autocapitalize="sentences"
+              class="in in-medium"
+            />
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faUser" class="text-medium"></fa-icon>
+            </div>
+          </app-input-container>
+          <app-input-container class="in-container in-container-base my-2">
+            <input
+              formControlName="surname"
+              type="text"
+              name="surname"
+              placeholder="Sobrenome"
+              autocomplete="additional-name"
+              class="in in-medium"
+            />
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faUser" class="text-medium"></fa-icon>
+            </div>
+          </app-input-container>
+
+          <app-input-container class="in-container in-container-base my-2">
+            <input
+              formControlName="email"
+              type="text"
+              name="email"
+              placeholder="Email"
+              class="in in-medium"
+              autocomplete="email"
+            />
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faAt" class="text-medium"></fa-icon>
+            </div>
+          </app-input-container>
+          <app-input-container class="in-container in-container-base my-2">
+            <input
+              formControlName="password"
+              type="password"
+              placeholder="Senha"
+              autocomplete="current-password"
+              class="in in-medium"
+            />
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faLock" class="text-medium"></fa-icon>
+            </div>
+          </app-input-container>
+          <app-input-container class="in-container in-container-base my-2">
+            <input
+              formControlName="passwordConfirmation"
+              type="password"
+              name="passwordConfirmation"
+              placeholder="Confirme sua senha"
+              class="in in-medium"
+              autocomplete="new-password"
+            />
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faLock" class="text-medium"></fa-icon>
+            </div>
+          </app-input-container>
+
+          <div
+            class="d-flex flex-column align-itens-center justify-content-center"
+          >
+            <!--<a routerLink="/"> -->
+            <button class="bt bt-base my-1 w-100" (click)="signUp()">
               Enviar
             </button>
-          </a>
-          <a routerLink="/auth/signin">
-            <button class="bt bt-medium my-1 w-100">
-              Já tenho cadastro
-            </button></a
-          >
+            <!-- </a>-->
+            <a routerLink="/auth/signin">
+              <button class="bt bt-medium my-1 w-100">
+                Já tenho cadastro
+              </button></a
+            >
+          </div>
+        </div>
+      </form>
+      <div class="bar mt-5" [ngClass]="{ isVisible: loading }">
+        <div [ngClass]="{ isLoading: loading }" class="load d-flex">
+          <span class="ml-4">loading...</span>
         </div>
       </div>
     </div>

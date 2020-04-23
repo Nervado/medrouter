@@ -1,6 +1,9 @@
 <div
+  *ngIf="toast && toast"
   class="snackbar p-0 d-flex flex-column justify-content-between my-3"
-  [@toast-visibility]="visibility"
+  [@toast-visibility]="toast.getStatus()"
+  [style.background-color]="toast.style.bg"
+  [style.color]="toast.style.color"
 >
   <div class="msg d-flex align-items-center justify-content-between px-1 pl-3">
     <span>{{ toast.message }}</span>
@@ -10,6 +13,13 @@
   </div>
 
   <div class="bar">
-    <div [@load]="visibility" class="load"></div>
+    <div
+      [@load]="{
+        value: toast.getStatus(),
+        params: { load: toast.timer }
+      }"
+      class="load"
+      [style.background-color]="toast.style.bg"
+    ></div>
   </div>
 </div>

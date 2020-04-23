@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 import { NotificationService } from "../notification.service";
@@ -17,7 +17,7 @@ import {
 } from "@angular/animations";
 
 import { Toast } from "./models/toast";
-import { Status } from "./enums/status";
+import { ToastDto } from "./dto/toast-dto";
 
 @Component({
   selector: "app-toast",
@@ -48,43 +48,38 @@ import { Status } from "./enums/status";
     trigger("load", [
       state("hidden", style({ opacity: 1, width: "100%", offset: 0 })),
       state("visible", style({ opacity: 1, width: "0%", offset: 1 })),
-      transition("hidden <=> visible", animate("2.0s ease-out")),
+      transition("hidden => visible", [animate("{{load}}ms ease-out")], {
+        params: { load: 1000 },
+      }),
     ]),
   ],
 })
 export class ToastComponent implements OnInit {
-  toast: Toast = new Toast(2000, "Good Night!");
-
+  toast: Toast;
+  toasts: Array<Toast> = [];
   faTimes = faTimes;
-  subs: any;
-  time: number = 2000;
-  visibility: Status = Status.HIDDEN;
 
   constructor(private notificationService: NotificationService) {}
 
   ngOnInit(): void {
-    this.time = this.toast.timer;
-    this.toast.message = "Hello Toast";
+    this.toast = new Toast();
     this.notificationService.notifier
       .pipe(
-        tap((message) => {
-          this.toast.message = message;
-          this.visibility = Status.VISIBLE;
+        tap((toast: ToastDto) => {
+          this.toast.init(toast);
+          this.toast.show();
+          this.toasts.push(this.toast);
         }),
-        switchMap((message) => timer(this.time))
+        switchMap(() => timer(this.toast.timer))
       )
-      .subscribe((timer) => this.hide());
+      .subscribe(() => this.toast.hide());
   }
 
   show() {
-    this.visibility = Status.VISIBLE;
+    this.toast.show();
   }
 
   hide() {
-    this.visibility = Status.HIDDEN;
-  }
-
-  stop() {
-    this.visibility = Status.STOPED;
+    this.toast.hide();
   }
 }

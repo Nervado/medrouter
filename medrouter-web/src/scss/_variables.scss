@@ -4,6 +4,11 @@ $medium1: rgba(153, 217, 255, 1);
 $medium: rgba(41, 171, 226, 1);
 $base1: #028bb1;
 $base: #162e4f;
+$error: #e85642;
+$warn: #f3ca13;
+$colorup: #6dd5ed;
+$colordown: #2193b0;
+$success: #06c50e;
 
 :root {
   --oposity: $oposity;
@@ -12,13 +17,12 @@ $base: #162e4f;
   --medium: $medium;
   --base1: $base1;
   --base: $base;
+  --error: $error;
+  --warn: $warn;
+  --colorup: #6dd5ed;
+  --colordown: #2193b0;
+  --success: #06c50e;
 }
-
-$error: rgba(200, 50, 50, 1);
-$warn: rgba(200, 255, 0, 1);
-
-$colorup: #6dd5ed;
-$colordown: #2193b0;
 
 $logoh: 50px;
 $logow: 50px;
@@ -37,6 +41,7 @@ $theme-colors: map-merge(
     "base": $base,
     "error": $error,
     "warn": $warn,
+    "success": $success,
   ),
   $theme-colors
 );

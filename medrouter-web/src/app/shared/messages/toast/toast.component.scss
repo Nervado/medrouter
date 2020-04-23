@@ -3,9 +3,8 @@
   min-width: 300px;
   max-width: 300px;
   margin-left: -150px;
-  background-color: var(--medium);
 
-  color: #fff;
+  color: var(--oposity);
   text-align: center;
   border-radius: 4px;
   padding: 16px;
@@ -32,7 +31,6 @@
     opacity: 0.8;
 
     .load {
-      background-color: var(--medium);
       width: 0%;
       height: 100%;
     }

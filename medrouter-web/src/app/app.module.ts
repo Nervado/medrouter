@@ -2,11 +2,8 @@ import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
-
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-
 import { NgModule, LOCALE_ID } from "@angular/core";
-
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./components/header/header.component";
@@ -28,6 +25,7 @@ import { NotificationsSumaryComponent } from "./components/notifications-sumary/
 import { ClientMainChartComponent } from "./components/client-main-chart/client-main-chart.component";
 
 import { SharedModule } from "./shared/shared.module";
+import { AuthModule } from "./auth/auth.module";
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,6 +47,7 @@ import { SharedModule } from "./shared/shared.module";
     ClientMainChartComponent,
   ],
   imports: [
+    AuthModule,
     SharedModule,
     AppRoutingModule,
     NgbModule,

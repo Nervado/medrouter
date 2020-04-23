@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { LoginService } from "./login.service";
+import { AuthService } from "../../auth/auth.service";
 
 import { faLock, faAt } from "@fortawesome/free-solid-svg-icons";
 
@@ -17,7 +17,7 @@ export class SignInComponent implements OnInit {
   faLock = faLock;
   faAt = faAt;
 
-  constructor(private fb: FormBuilder, private loginService: LoginService) {}
+  constructor(private fb: FormBuilder, private AuthService: AuthService) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -28,8 +28,7 @@ export class SignInComponent implements OnInit {
 
   login() {
     this.loading = true;
-    this.loginService.login(this.loginForm.value).subscribe(
-      (user) => (this.loading = false),
+    this.AuthService.login(this.loginForm.value).subscribe(
       () => (this.loading = false)
     );
   }
