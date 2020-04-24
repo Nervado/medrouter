@@ -14,12 +14,17 @@ export class Toast {
     this.style = Style[toast.type] || this.style;
     this.timer = toast.timer || this.timer;
   }
+
   show(): void {
     this.visibility = Status.VISIBLE;
   }
 
   hide(): void {
     this.visibility = Status.HIDDEN;
+  }
+
+  setMsg(msg: string) {
+    this.message = msg;
   }
 
   getStatus(): Status {

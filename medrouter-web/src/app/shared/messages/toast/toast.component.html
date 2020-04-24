@@ -1,14 +1,17 @@
 <div
-  *ngIf="toast && toast"
   class="snackbar p-0 d-flex flex-column justify-content-between my-3"
-  [@toast-visibility]="toast.getStatus()"
   [style.background-color]="toast.style.bg"
   [style.color]="toast.style.color"
+  [@toast-visibility]="toast.getStatus()"
 >
   <div class="msg d-flex align-items-center justify-content-between px-1 pl-3">
     <span>{{ toast.message }}</span>
     <div class="h-100 d-flex flex-column justify-content-start">
-      <fa-icon class="mx-1 icon" [icon]="faTimes" (click)="hide()"></fa-icon>
+      <fa-icon
+        class="mx-1 icon"
+        [icon]="faTimes"
+        (click)="toast.hide()"
+      ></fa-icon>
     </div>
   </div>
 

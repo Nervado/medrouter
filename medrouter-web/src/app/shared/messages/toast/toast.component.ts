@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 import { NotificationService } from "../notification.service";
-import { timer, Observable } from "rxjs";
+import { timer } from "rxjs";
 import { switchMap, tap } from "rxjs/operators";
 
 import {
@@ -14,6 +14,7 @@ import {
   query,
   animateChild,
   group,
+  keyframes,
 } from "@angular/animations";
 
 import { Toast } from "./models/toast";
@@ -41,8 +42,70 @@ import { ToastDto } from "./dto/toast-dto";
           visibility: "visible",
         })
       ),
-      transition("hidden <=> visible", [
-        group([query("@load", [animateChild()]), animate("400ms ease-out")]),
+      transition(
+        "hidden => visible",
+        group([
+          query("@load", [animateChild()]),
+          animate(
+            "300ms ease-out",
+            keyframes([
+              style({
+                opacity: 0,
+                right: "0px",
+                visibility: "hidden",
+              }),
+              style({
+                opacity: 1,
+                right: "130px",
+                visibility: "visible",
+              }),
+              style({
+                opacity: 1,
+                right: "100px",
+                visibility: "visible",
+              }),
+              style({
+                opacity: 1,
+                right: "130px",
+                visibility: "visible",
+              }),
+              style({
+                opacity: 1,
+                right: "100px",
+                visibility: "visible",
+              }),
+            ])
+          ),
+        ])
+      ),
+      ,
+      transition("visible => hidden", [
+        group([
+          query("@load", [animateChild()]),
+          animate(
+            "300ms ease-out",
+            keyframes([
+              style({
+                opacity: 1,
+                right: "150px",
+                visibility: "visible",
+                //transform: "translateY(-10px)",
+              }),
+              style({
+                opacity: 1,
+                right: "130px",
+                visibility: "visible",
+                //transform: "translateY(-15px)",
+              }),
+              style({
+                opacity: 0,
+                right: "0px",
+                visibility: "hidden",
+                //transform: "translateY(-20px)",
+              }),
+            ])
+          ),
+        ]),
       ]),
     ]),
     trigger("load", [
@@ -56,7 +119,7 @@ import { ToastDto } from "./dto/toast-dto";
 })
 export class ToastComponent implements OnInit {
   toast: Toast;
-  toasts: Array<Toast> = [];
+
   faTimes = faTimes;
 
   constructor(private notificationService: NotificationService) {}
@@ -68,18 +131,130 @@ export class ToastComponent implements OnInit {
         tap((toast: ToastDto) => {
           this.toast.init(toast);
           this.toast.show();
-          this.toasts.push(this.toast);
         }),
         switchMap(() => timer(this.toast.timer))
       )
       .subscribe(() => this.toast.hide());
   }
+}
 
-  show() {
-    this.toast.show();
-  }
+/** 
 
-  hide() {
-    this.toast.hide();
+import { Component, OnInit } from "@angular/core";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { timer, Observable } from "rxjs";
+import { switchMap, tap } from "rxjs/operators";
+
+import { NotificationService } from "../notification.service";
+
+import {
+  trigger,
+  style,
+  transition,
+  animate,
+  state,
+  query,
+  animateChild,
+  group,
+  keyframes,
+} from "@angular/animations";
+
+import { Toast } from "./models/toast";
+import { ToastDto } from "./dto/toast-dto";
+import { Status } from "./enums/status";
+
+@Component({
+  selector: "app-toast",
+  templateUrl: "./toast.component.html",
+  styleUrls: ["./toast.component.scss"],
+  animations: [
+    trigger("toast-visibility", [
+      transition(
+        "visible => hidden",
+        group([
+          query("@load", [animateChild()]),
+          animate(
+            "300ms ease-out",
+            keyframes([
+              style({
+                opacity: 1,
+                right: "150px",
+                visibility: "visible",
+              }),
+              style({
+                opacity: 1,
+                right: "130px",
+                visibility: "visible",
+              }),
+              style({
+                opacity: 0,
+                right: "0px",
+                visibility: "hidden",
+              }),
+            ])
+          ),
+        ])
+      ),
+
+      transition("visible => visible", animate("400ms ease-out")),
+
+      transition(
+        "hidden => visible",
+        group([
+          query("@load", [animateChild()]),
+          animate(
+            "300ms ease-out",
+            keyframes([
+              style({
+                opacity: 0,
+                right: "0px",
+                visibility: "hidden",
+              }),
+              style({
+                opacity: 1,
+                right: "130px",
+                visibility: "visible",
+              }),
+              style({
+                opacity: 1,
+                right: "100px",
+                visibility: "visible",
+              }),
+            ])
+          ),
+        ])
+      ),
+    ]),
+
+    trigger("load", [
+      state("*", style({ opacity: 1, width: "100%", offset: 0 })),
+      state("visible", style({ opacity: 1, width: "0%", offset: 1 })),
+      transition("* => visible", [animate("{{load}}ms ease-out")], {
+        params: { load: 1000 },
+      }),
+    ]),
+  ],
+})
+export class ToastComponent implements OnInit {
+  toast: Toast = new Toast();
+  faTimes = faTimes;
+
+  constructor(private notificationService: NotificationService) {}
+
+  ngOnInit(): void {
+    this.notificationService.notifier
+      .pipe(
+        tap((toast: ToastDto) => {
+          this.toast.init(toast);
+          this.toast.show();
+          console.log("Estado: ", this.toast.getStatus());
+        }),
+        switchMap(() => {
+          return timer(this.toast.timer);
+        })
+      )
+      .subscribe(() => this.toast.hide());
   }
 }
+
+*/
