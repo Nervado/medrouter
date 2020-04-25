@@ -1,0 +1,6 @@
+input {
+  &::placeholder {
+    color: var(--base1);
+    opacity: 0.6;
+  }
+}

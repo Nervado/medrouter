@@ -1,20 +1,24 @@
 import { NgModule, ModuleWithProviders } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { InputComponent } from "./input/input.component";
+import { InputComponent } from "./components/input/input.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { ToastComponent } from "./messages/toast/toast.component";
-import { NotificationService } from "./messages/notification.service";
+
+import { DatepickerComponent } from "./components/datepicker/datepicker.component";
+
+import { AppointmentConfirmModalComponent } from "./components/appointment-confirm-modal/appointment-confirm-modal.component";
 
 @NgModule({
-  declarations: [InputComponent, ToastComponent],
+  declarations: [
+    InputComponent,
+    DatepickerComponent,
+    AppointmentConfirmModalComponent,
+  ],
   imports: [CommonModule, FontAwesomeModule],
-  exports: [InputComponent, CommonModule, ToastComponent],
+  exports: [
+    InputComponent,
+    CommonModule,
+    DatepickerComponent,
+    AppointmentConfirmModalComponent,
+  ],
 })
-export class SharedModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: SharedModule,
-      providers: [NotificationService],
-    };
-  }
-}
+export class SharedModule {}

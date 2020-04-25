@@ -4,12 +4,14 @@ import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
-import { MEDROUTER_API } from "../app.api";
-import { NotificationService } from "../shared/messages/notification.service";
+import { MEDROUTER_API } from "../api/app.api";
+
 import { User } from "./models/user.model";
 import { Login } from "./models/login.model";
 import { SignUp } from "./models/signup.model";
-import { Types } from "../shared/messages/toast/enums/types";
+
+import { NotificationService } from "../messages/notification.service";
+import { Types } from "../messages/toast/enums/types";
 
 @Injectable({
   providedIn: "root",
