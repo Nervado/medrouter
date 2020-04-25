@@ -8,6 +8,7 @@ import { AppointmentsSummaryComponent } from "./components/appointments-summary/
 import { NotificationsSumaryComponent } from "./components/notifications-sumary/notifications-sumary.component";
 import { ClientMainChartComponent } from "./components/client-main-chart/client-main-chart.component";
 
+import { ROUTES } from "./routes";
 @NgModule({
   declarations: [
     ClientPageComponent,
@@ -15,7 +16,6 @@ import { ClientMainChartComponent } from "./components/client-main-chart/client-
     ClientMainChartComponent,
     NotificationsSumaryComponent,
   ],
-  imports: [CommonModule, FontAwesomeModule, RouterModule],
-  exports: [ClientPageComponent],
+  imports: [FontAwesomeModule, CommonModule, RouterModule.forChild(ROUTES)],
 })
 export class ClientsModule {}

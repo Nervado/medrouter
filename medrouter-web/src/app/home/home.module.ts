@@ -13,14 +13,14 @@ import { ProfessionalCardComponent } from "./components/professional-card/profes
 import { MainFooterComponent } from "./components/main-footer/main-footer.component";
 
 // views
-import { MainComponent } from "./views/main/main.component";
+import { HomeComponent } from "./views/home/home.component";
 import { SignInComponent } from "./views/sign-in/sign-in.component";
 import { SignUpComponent } from "./views/sign-up/sign-up.component";
 import { SharedModule } from "../shared/shared.module";
 
 @NgModule({
   declarations: [
-    MainComponent,
+    HomeComponent,
     SignInComponent,
     SignUpComponent,
     HeaderComponent,
@@ -33,12 +33,11 @@ import { SharedModule } from "../shared/shared.module";
   ],
   imports: [
     CommonModule,
+    RouterModule,
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule,
   ],
-  providers: [RouterModule],
-  exports: [MainComponent],
+  exports: [HomeComponent],
 })
 export class HomeModule {}
