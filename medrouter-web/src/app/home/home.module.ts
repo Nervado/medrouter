@@ -1,5 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 
 // components
 import { HeaderComponent } from "./components/header/header.component";
@@ -14,6 +16,7 @@ import { MainFooterComponent } from "./components/main-footer/main-footer.compon
 import { MainComponent } from "./views/main/main.component";
 import { SignInComponent } from "./views/sign-in/sign-in.component";
 import { SignUpComponent } from "./views/sign-up/sign-up.component";
+import { SharedModule } from "../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -28,6 +31,14 @@ import { SignUpComponent } from "./views/sign-up/sign-up.component";
     ProfessionalsCardsComponent,
     MainFooterComponent,
   ],
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+  ],
+  providers: [RouterModule],
+  exports: [MainComponent],
 })
 export class HomeModule {}

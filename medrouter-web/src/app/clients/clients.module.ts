@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-
+import { RouterModule } from "@angular/router";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { ClientPageComponent } from "./views/client-page/client-page.component";
 
 import { AppointmentsSummaryComponent } from "./components/appointments-summary/appointments-summary.component";
@@ -14,6 +15,7 @@ import { ClientMainChartComponent } from "./components/client-main-chart/client-
     ClientMainChartComponent,
     NotificationsSumaryComponent,
   ],
-  imports: [CommonModule],
+  imports: [CommonModule, FontAwesomeModule, RouterModule],
+  exports: [ClientPageComponent],
 })
 export class ClientsModule {}

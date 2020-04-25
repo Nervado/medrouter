@@ -1,10 +1,10 @@
-import { NgModule, ModuleWithProviders } from "@angular/core";
+import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { InputComponent } from "./components/input/input.component";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { InputComponent } from "./components/input/input.component";
 import { DatepickerComponent } from "./components/datepicker/datepicker.component";
-
 import { AppointmentConfirmModalComponent } from "./components/appointment-confirm-modal/appointment-confirm-modal.component";
 
 @NgModule({
@@ -13,12 +13,20 @@ import { AppointmentConfirmModalComponent } from "./components/appointment-confi
     DatepickerComponent,
     AppointmentConfirmModalComponent,
   ],
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   exports: [
     InputComponent,
     CommonModule,
     DatepickerComponent,
     AppointmentConfirmModalComponent,
+    FontAwesomeModule,
+    NgbModule,
   ],
 })
 export class SharedModule {}

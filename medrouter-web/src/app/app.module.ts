@@ -8,7 +8,7 @@ import { AppRoutingModule } from "./routes/app-routing.module";
 import { AppComponent } from "./app.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
-import { SharedModule } from "./shared/shared.module";
+// import { SharedModule } from "./shared/shared.module";
 import { MessagesModule } from "./messages/messages.module";
 import { AuthModule } from "./auth/auth.module";
 import { HomeModule } from "./home/home.module";
@@ -29,7 +29,6 @@ import { ReceptionistsModule } from "./receptionists/receptionists.module";
     ReceptionistsModule,
     HomeModule,
     AuthModule,
-    SharedModule,
     AppRoutingModule,
     NgbModule,
     BrowserModule,
@@ -40,6 +39,7 @@ import { ReceptionistsModule } from "./receptionists/receptionists.module";
     HttpClientModule,
   ],
   providers: [{ provide: LOCALE_ID, useValue: "pt-BR" }],
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}
