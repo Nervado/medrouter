@@ -1,16 +1,20 @@
 import { Routes } from "@angular/router";
 import { HomeComponent } from "../home/views/home/home.component";
+import { NotFoundComponent } from "../home/views/not-found/not-found.component";
 import { SignInComponent } from "../home/views/sign-in/sign-in.component";
 import { SignUpComponent } from "../home/views/sign-up/sign-up.component";
+import { ClientGuard } from "../auth/guard/client.guard";
 
 export const ROUTES: Routes = [
   { path: "", component: HomeComponent },
+  { path: "auth/signin/:to", component: SignInComponent },
   { path: "auth/signin", component: SignInComponent },
   { path: "auth/signup", component: SignUpComponent },
   {
     path: "clients",
     loadChildren: () =>
       import("../clients/clients.module").then((m) => m.ClientsModule),
+    canLoad: [ClientGuard],
   },
 
   {
@@ -38,4 +42,9 @@ export const ROUTES: Routes = [
       ),
   },
   */
+
+  {
+    path: "**",
+    component: NotFoundComponent,
+  },
 ];

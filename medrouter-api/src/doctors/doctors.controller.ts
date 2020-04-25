@@ -11,6 +11,7 @@ import {
   Query,
   Delete,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
 import { DoctorsService } from './doctors.service';
 import { DoctorDto } from './dto/doctor.dto';
@@ -18,7 +19,11 @@ import { Doctor } from './models/doctor.entity';
 
 import { IntFilterDto } from '../utils/int-filter.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
+import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
 
+@UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('doctors')
 export class DoctorsController {
   constructor(private readonly doctorService: DoctorsService) {}
@@ -30,6 +35,7 @@ export class DoctorsController {
   }
 
   @Get()
+  @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
   getAll(@Query(ValidationPipe) page: IntFilterDto): Promise<Doctor[]> {
     return this.doctorService.getMany(page.page);

@@ -1,0 +1,65 @@
+.main {
+  margin-top: 5%;
+  width: 300px;
+  height: 400px;
+  border-radius: 8px;
+  background-color: var(--medium);
+  div img {
+    height: 100px;
+    width: 100px;
+  }
+
+  .body {
+    button {
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  .bar {
+    visibility: hidden;
+    overflow: hidden;
+    background-color: var(--oposity);
+    border-radius: 4px;
+    height: 15px;
+    opacity: 0.8;
+
+    .load {
+      border: 2px solid var(--oposity);
+      background-color: var(--base);
+      height: 100%;
+      width: 100%;
+      font-size: 8px;
+      font-weight: bold;
+      color: var(--base);
+    }
+  }
+}
+
+.isLoading {
+  animation: loading 2s ease-in-out;
+}
+
+.isVisible {
+  animation: fade 2s ease-in-out;
+}
+
+@keyframes fade {
+  from {
+    visibility: visible;
+  }
+
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes loading {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}

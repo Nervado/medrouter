@@ -7,7 +7,6 @@ import { AppComponent } from "./app.component";
 import { MessagesModule } from "./messages/messages.module";
 import { AuthModule } from "./auth/auth.module";
 import { HomeModule } from "./home/home.module";
-
 @NgModule({
   declarations: [AppComponent],
   imports: [

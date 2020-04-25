@@ -36,7 +36,6 @@ export class SignUpComponent implements OnInit {
   signUp() {
     //toDo
     this.loading = true;
-
     this.authService.signUp(this.signUpForm.value).subscribe(
       () => (this.loading = false),
       () => (this.loading = false),

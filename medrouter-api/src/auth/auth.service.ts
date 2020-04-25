@@ -43,7 +43,6 @@ export class AuthService {
       email,
       client,
       role,
-
       admin,
       recept,
       doctor,
@@ -79,11 +78,7 @@ export class AuthService {
       username,
       userId,
       email,
-      client,
-      admin,
-      recept,
-      doctor,
-      owner,
+      role,
     };
 
     return authCredentailsDto;

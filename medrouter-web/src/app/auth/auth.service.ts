@@ -11,13 +11,16 @@ import { Login } from "./models/login.model";
 import { SignUp } from "./models/signup.model";
 
 import { NotificationService } from "../messages/notification.service";
+
+import { DefaultRoutes } from "./enums/default-routes";
 import { Types } from "../messages/toast/enums/types";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  private user: User;
+  user: User;
+  defaultRoute: string;
 
   constructor(
     private http: HttpClient,
@@ -33,24 +36,10 @@ export class AuthService {
     return this.http
       .post<User>(`${MEDROUTER_API}/auth/signin`, { ...login })
       .pipe(
-        tap(
-          (User) => {
-            this.user = User;
-            this.notificationService.notify({
-              message: `Bem vindo ${this.user.user.username} !`,
-              type: Types.BASE,
-            });
-          },
-          () => {
-            this.notificationService.notify({
-              message: "Verifique seus dados",
-              type: Types.OPOSITY1,
-            });
-          },
-          () => {
-            this.router.navigate(["/clients"]);
-          }
-        )
+        tap((User) => {
+          this.user = User;
+          this.defaultRoute = DefaultRoutes[User.user.role[0]];
+        })
       );
   }
 
@@ -61,19 +50,23 @@ export class AuthService {
       })
       .pipe(
         tap(
-          () => {
+          () =>
             this.notificationService.notify({
               message: "Cadastro realizado com sucesso, verifique seu email!",
               type: Types.INFO,
-            });
-            this.router.navigate(["/"]);
-          },
+            }),
           () =>
             this.notificationService.notify({
               message: "Por favor verifique os dados informados",
               type: Types.OPOSITY1,
-            })
+            }),
+          () => {
+            this.router.navigate(["/"]);
+          }
         )
       );
+  }
+  handlelogin(url?: string) {
+    this.router.navigate(["/auth/signin", url]);
   }
 }

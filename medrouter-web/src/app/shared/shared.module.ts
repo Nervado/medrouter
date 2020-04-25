@@ -27,6 +27,8 @@ import { AppointmentConfirmModalComponent } from "./components/appointment-confi
     AppointmentConfirmModalComponent,
     FontAwesomeModule,
     NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class SharedModule {}

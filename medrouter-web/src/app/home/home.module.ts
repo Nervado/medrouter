@@ -17,6 +17,7 @@ import { HomeComponent } from "./views/home/home.component";
 import { SignInComponent } from "./views/sign-in/sign-in.component";
 import { SignUpComponent } from "./views/sign-up/sign-up.component";
 import { SharedModule } from "../shared/shared.module";
+import { NotFoundComponent } from './views/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { SharedModule } from "../shared/shared.module";
     ProfessionalCardComponent,
     ProfessionalsCardsComponent,
     MainFooterComponent,
+    NotFoundComponent,
   ],
   imports: [
     CommonModule,

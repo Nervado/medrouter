@@ -1,3 +1,5 @@
+import { Role } from "../enums/roles-types";
+
 export class User {
   token: string;
   user: {
@@ -9,5 +11,6 @@ export class User {
     recept: boolean;
     doctor: boolean;
     owner: boolean;
+    role: Array<Role>;
   };
 }
