@@ -16,6 +16,7 @@ import { Types } from "src/app/messages/toast/enums/types";
 export class SignInComponent implements OnInit {
   loginForm: FormGroup;
   loading: boolean = false;
+  rememberme: boolean = false;
   navigateTo: string;
 
   faLock = faLock;
@@ -30,9 +31,11 @@ export class SignInComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.rememberme = this.AuthService.isloggedIn();
     this.loginForm = this.fb.group({
       username: this.fb.control("", [Validators.required, Validators.email]),
       password: this.fb.control("", [Validators.required]),
+      rememberme: this.fb.control(this.rememberme),
     });
 
     // at load component save the activated route

@@ -67,7 +67,9 @@ export class AuthService {
             localStorage.setItem("user", null); // on error clear user from local storage
           },
           () => {
-            localStorage.setItem("user", JSON.stringify(this.user));
+            if (login.rememberme) {
+              localStorage.setItem("user", JSON.stringify(this.user));
+            }
           }
         )
       );

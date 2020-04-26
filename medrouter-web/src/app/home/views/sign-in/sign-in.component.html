@@ -49,7 +49,11 @@
             style="height: 35px;"
           >
             <label class="container-checkbox">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                [(checked)]="rememberme"
+                formControlName="rememberme"
+              />
               <span class="checkmark-checkbox"></span>
               <span class="check">Lembrar-me</span>
             </label>
