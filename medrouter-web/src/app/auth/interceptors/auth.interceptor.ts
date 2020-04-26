@@ -8,6 +8,8 @@ import {
 import { Observable } from "rxjs";
 import { AuthService } from "../auth.service";
 
+import { MEDROUTER_API } from "../../api/app.api";
+
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   private AUTH_HEADER = "Authorization";
@@ -19,9 +21,12 @@ export class AuthInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (this.authService.isloggedIn()) {
-      this.token = this.authService.user.token;
+    if (!this.authService.isloggedIn()) {
+      this.token = "";
+      return next.handle(req);
     }
+
+    this.token = this.authService.user.token;
 
     if (!req.headers.has("Content-Type")) {
       req = req.clone({
@@ -39,7 +44,7 @@ export class AuthInterceptor implements HttpInterceptor {
       return request;
     }
 
-    if (!request.url.match(/localhost:3001\//)) {
+    if (!request.url.match(MEDROUTER_API)) {
       return request;
     }
 

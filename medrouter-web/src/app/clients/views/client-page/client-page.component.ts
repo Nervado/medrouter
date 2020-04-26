@@ -14,12 +14,17 @@ import {
   faEllipsisH,
   faClock,
   faCalendarDay,
+  faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
   faTimesCircle,
   faCheckCircle,
 } from "@fortawesome/free-regular-svg-icons";
+import { AuthService } from "src/app/auth/auth.service";
+import { User } from "src/app/auth/models/user.model";
+import { NotificationService } from "src/app/messages/notification.service";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
   selector: "app-client-page",
@@ -44,7 +49,23 @@ export class ClientPageComponent implements OnInit {
   faTimesCircle = faTimesCircle;
   faClock = faClock;
   faCalendarDay = faCalendarDay;
-  constructor() {}
 
-  ngOnInit(): void {}
+  faSignOutAlt = faSignOutAlt;
+  constructor(
+    private authService: AuthService,
+    private notificationService: NotificationService
+  ) {}
+
+  user: User;
+  ngOnInit(): void {
+    this.user = this.authService.getUser();
+  }
+
+  logout() {
+    this.authService.logout();
+    this.notificationService.notify({
+      message: `Até a próxima ${this.user.user.username}`,
+      type: Types.INFO,
+    });
+  }
 }

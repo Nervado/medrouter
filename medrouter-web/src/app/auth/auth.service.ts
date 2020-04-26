@@ -36,10 +36,18 @@ export class AuthService {
     return this.http
       .post<User>(`${MEDROUTER_API}/auth/signin`, { ...login })
       .pipe(
-        tap((User) => {
-          this.user = User;
-          this.defaultRoute = DefaultRoutes[User.user.role[0]];
-        })
+        tap(
+          (User) => {
+            this.user = User;
+            this.defaultRoute = DefaultRoutes[User.user.role[0]];
+          },
+          () => {},
+          () => {
+            localStorage.setItem("User", this.user.user.username);
+            localStorage.setItem("Role", this.user.user.role[0]);
+            localStorage.setItem("userId", this.user.user.userId.toString());
+          }
+        )
       );
   }
 
@@ -68,5 +76,15 @@ export class AuthService {
   }
   handlelogin(url?: string) {
     this.router.navigate(["/auth/signin", url]);
+  }
+
+  getUser(): User {
+    return this.user;
+  }
+
+  logout() {
+    this.user = undefined;
+    localStorage.removeItem("User");
+    this.router.navigate(["/"]);
   }
 }
