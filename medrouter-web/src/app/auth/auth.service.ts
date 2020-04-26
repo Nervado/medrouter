@@ -44,7 +44,10 @@ export class AuthService {
     private notificationService: NotificationService,
     private router: Router
   ) {
-    this.user = JSON.parse(localStorage.getItem("user"));
+    const usersaved: User = JSON.parse(localStorage.getItem("user"));
+    if (usersaved) {
+      this.user = usersaved;
+    }
   }
 
   isloggedIn() {
@@ -106,5 +109,13 @@ export class AuthService {
     this.user = undefined;
     localStorage.removeItem("user");
     this.router.navigate(["/"]);
+  }
+
+  subscribe() {
+    this.router.navigate(["/auth/signup"]);
+  }
+
+  session() {
+    this.router.navigate(["/auth/signin"]);
   }
 }

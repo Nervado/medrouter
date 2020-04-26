@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { RouterModule } from "@angular/router";
 
 // components
 import { HeaderComponent } from "./components/header/header.component";
@@ -17,7 +16,7 @@ import { HomeComponent } from "./views/home/home.component";
 import { SignInComponent } from "./views/sign-in/sign-in.component";
 import { SignUpComponent } from "./views/sign-up/sign-up.component";
 import { SharedModule } from "../shared/shared.module";
-import { NotFoundComponent } from './views/not-found/not-found.component';
+import { NotFoundComponent } from "./views/not-found/not-found.component";
 
 @NgModule({
   declarations: [
@@ -33,13 +32,7 @@ import { NotFoundComponent } from './views/not-found/not-found.component';
     MainFooterComponent,
     NotFoundComponent,
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    SharedModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
+  imports: [CommonModule, SharedModule, FormsModule, ReactiveFormsModule],
   exports: [HomeComponent],
 })
 export class HomeModule {}

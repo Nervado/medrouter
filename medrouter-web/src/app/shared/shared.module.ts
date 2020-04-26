@@ -6,12 +6,14 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { InputComponent } from "./components/input/input.component";
 import { DatepickerComponent } from "./components/datepicker/datepicker.component";
 import { AppointmentConfirmModalComponent } from "./components/appointment-confirm-modal/appointment-confirm-modal.component";
+import { UserSnippetComponent } from "./components/user-snippet/user-snippet.component";
 
 @NgModule({
   declarations: [
     InputComponent,
     DatepickerComponent,
     AppointmentConfirmModalComponent,
+    UserSnippetComponent,
   ],
   imports: [
     CommonModule,
@@ -29,6 +31,7 @@ import { AppointmentConfirmModalComponent } from "./components/appointment-confi
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    UserSnippetComponent,
   ],
 })
 export class SharedModule {}

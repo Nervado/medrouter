@@ -1,0 +1,34 @@
+.action-menu {
+  .badge-icon {
+    cursor: pointer;
+    position: relative;
+    color: var(--base1);
+    &:hover {
+      color: var(--base);
+    }
+    &::before {
+      z-index: 10;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--oposity1);
+      content: "";
+    }
+  }
+
+  .cursor {
+    cursor: pointer;
+  }
+
+  .avatar-area {
+    img {
+      height: 70px;
+      width: 70px;
+      border-radius: 50%;
+      border: 2px solid var(--base1);
+    }
+  }
+}

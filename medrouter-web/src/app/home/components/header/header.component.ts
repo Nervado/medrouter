@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import {
   faMapMarked,
   faPhone,
@@ -19,7 +19,14 @@ export class HeaderComponent implements OnInit {
   faClock = faClock;
   faCalendar = faCalendarAlt;
 
+  snipettState: boolean = false;
+
   constructor() {}
 
   ngOnInit(): void {}
+
+  reciverFeedback(e) {
+    this.snipettState = e;
+    console.log(this.snipettState);
+  }
 }
