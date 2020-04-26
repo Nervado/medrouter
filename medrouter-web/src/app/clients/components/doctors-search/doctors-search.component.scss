@@ -8,6 +8,10 @@
 
 .cursor {
   cursor: pointer;
+
+  &:hover {
+    color: var(--oposity1);
+  }
 }
 
 .marker {

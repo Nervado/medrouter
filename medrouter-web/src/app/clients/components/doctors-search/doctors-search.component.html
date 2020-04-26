@@ -1,26 +1,30 @@
-<div class="main-data aside bg-base text-oposity">
+<div class="main-data aside bg-base1 text-oposity">
   <div class="px-4 py-3 d-flex justify-content-between align-itens-center">
-    <h4>Busca</h4>
+    <h4>Encontre seu médico</h4>
 
-    <form [formGroup]="searchForm">
-      <app-input-container class="my-2">
-        <input
-          formControlName="search"
-          type="text"
-          placeholder="Digite o nome do médico"
-          class="in in-medium"
-          autocomplete="off"
-        />
-      </app-input-container>
-    </form>
+    <div class="bg-success">
+      <form [formGroup]="searchForm">
+        <app-input-container class="my-2 in-container-base" [tick]="false">
+          <input
+            formControlName="search"
+            type="text"
+            placeholder="Digite o nome do médico"
+            class="in in-medium"
+            style="font-size: medium;"
+            autocomplete="off"
+          />
+        </app-input-container>
+      </form>
 
-    <div>
-      <fa-icon
-        [icon]="faEllipsisH"
-        size="2x"
-        class="cursor text-oposity"
-        (click)="handleSearch()"
-      ></fa-icon>
+      <div>
+        <span class="cursor">
+          <fa-icon
+            [icon]="faSearch"
+            size="2x"
+            (click)="handleSearch()"
+          ></fa-icon>
+        </span>
+      </div>
     </div>
   </div>
   <div

@@ -6,10 +6,10 @@
   <ng-content></ng-content>
 
   <div class="d-flex flex-column justify-content-center align-itens-center">
-    <span class="text-medium" *ngIf="hasSuccess()">
+    <span class="text-medium" *ngIf="tick && hasSuccess()">
       <fa-icon [icon]="faCheck"></fa-icon>
     </span>
-    <span class="text-oposity1" *ngIf="hasError()">
+    <span class="text-oposity1" *ngIf="tick && hasError()">
       <fa-icon [icon]="faTimes"></fa-icon> {{ errorMessage }}</span
     >
   </div>

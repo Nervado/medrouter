@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisH, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 import {
   FormBuilder,
@@ -19,6 +19,7 @@ import { Doctor } from "../../models/doctor";
 })
 export class DoctorsSearchComponent implements OnInit {
   faEllipsisH = faEllipsisH;
+  faSearch = faSearch;
 
   searchForm: FormGroup;
 

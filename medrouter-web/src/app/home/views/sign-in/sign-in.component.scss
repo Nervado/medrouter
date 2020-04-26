@@ -38,11 +38,11 @@
 }
 
 .isLoading {
-  animation: loading 2s ease-in-out;
+  animation: loading 10s ease-in-out;
 }
 
 .isVisible {
-  animation: fade 2s ease-in-out;
+  animation: fade 10s ease-in-out;
 }
 
 @keyframes fade {

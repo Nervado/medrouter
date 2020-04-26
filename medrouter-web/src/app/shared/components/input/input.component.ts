@@ -13,6 +13,7 @@ export class InputComponent implements OnInit {
 
   @ContentChild(FormControlName) control: FormControlName;
 
+  @Input() tick: boolean = true;
   @Input() label: string;
   @Input() errorMessage: string;
 

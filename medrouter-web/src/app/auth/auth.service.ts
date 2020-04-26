@@ -22,11 +22,30 @@ export class AuthService {
   user: User;
   defaultRoute: string;
 
+  /*
+  constructor(public afAuth: AngularFireAuth) {
+    this.afAuth.authState.subscribe((user) => {
+      
+      if (user) {
+        this.userState = user;
+        localStorage.setItem("user", JSON.stringify(this.userState));
+        JSON.parse(localStorage.getItem("user"));
+      } else {
+        localStorage.setItem("user", null);
+        JSON.parse(localStorage.getItem("user"));
+      }
+    });
+  }
+
+  */
+
   constructor(
     private http: HttpClient,
     private notificationService: NotificationService,
     private router: Router
-  ) {}
+  ) {
+    this.user = JSON.parse(localStorage.getItem("user"));
+  }
 
   isloggedIn() {
     return this.user !== undefined;
@@ -39,13 +58,13 @@ export class AuthService {
         tap(
           (User) => {
             this.user = User;
-            this.defaultRoute = DefaultRoutes[User.user.role[0]];
+            this.defaultRoute = DefaultRoutes[User.user.role[0]]; // setup default route
           },
-          () => {},
           () => {
-            localStorage.setItem("User", this.user.user.username);
-            localStorage.setItem("Role", this.user.user.role[0]);
-            localStorage.setItem("userId", this.user.user.userId.toString());
+            localStorage.setItem("user", null); // on error clear user from local storage
+          },
+          () => {
+            localStorage.setItem("user", JSON.stringify(this.user));
           }
         )
       );
@@ -74,6 +93,7 @@ export class AuthService {
         )
       );
   }
+
   handlelogin(url?: string) {
     this.router.navigate(["/auth/signin", url]);
   }
@@ -84,7 +104,7 @@ export class AuthService {
 
   logout() {
     this.user = undefined;
-    localStorage.removeItem("User");
+    localStorage.removeItem("user");
     this.router.navigate(["/"]);
   }
 }
