@@ -35,7 +35,7 @@ export class DoctorsController {
   }
 
   @Get()
-  @Roles('owner')
+  //@Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
   getAll(@Query(ValidationPipe) page: IntFilterDto): Promise<Doctor[]> {
     return this.doctorService.getMany(page.page);

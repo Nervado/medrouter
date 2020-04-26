@@ -11,16 +11,7 @@ import { AuthService } from "../auth/auth.service";
 export class ClientsService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  headers: HttpHeaders;
-
   search(string): Observable<Array<Doctor>> {
-    if (this.authService.isloggedIn()) {
-      this.headers = new HttpHeaders({
-        Authorization: `Bearer ${this.authService.user.token}`,
-      });
-    }
-    return this.http.get<Array<Doctor>>(`${MEDROUTER_API}/doctors?page=1`, {
-      headers: this.headers,
-    });
+    return this.http.get<Array<Doctor>>(`${MEDROUTER_API}/doctors?page=1`);
   }
 }
