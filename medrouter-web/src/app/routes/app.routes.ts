@@ -15,6 +15,7 @@ export const ROUTES: Routes = [
     loadChildren: () =>
       import("../clients/clients.module").then((m) => m.ClientsModule),
     canLoad: [ClientGuard],
+    canActivate: [ClientGuard],
   },
 
   {
