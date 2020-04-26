@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 
 // components
 import { HeaderComponent } from "./components/header/header.component";
@@ -32,7 +33,13 @@ import { NotFoundComponent } from "./views/not-found/not-found.component";
     MainFooterComponent,
     NotFoundComponent,
   ],
-  imports: [CommonModule, SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   exports: [HomeComponent],
 })
 export class HomeModule {}

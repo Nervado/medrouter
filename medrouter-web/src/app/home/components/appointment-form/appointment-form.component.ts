@@ -29,12 +29,12 @@ import {
           "max-height": "0px",
         })
       ),
-      transition("* => *", [animate("250ms 0s ease-in-out")]),
+      transition("closed => open", [animate("300ms 0s ease-in")]),
     ]),
   ],
 })
 export class AppointmentFormComponent implements OnInit {
-  @Input() isOpen: boolean;
+  @Input() isOpen: boolean = false;
 
   @Output() openModal: EventEmitter<any> = new EventEmitter();
 
