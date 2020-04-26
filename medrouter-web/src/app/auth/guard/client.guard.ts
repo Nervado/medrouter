@@ -20,9 +20,7 @@ export class ClientGuard implements CanLoad {
     activatedRoute: ActivatedRouteSnapshot,
     routerState: RouterStateSnapshot
   ): boolean {
-    console.log(activatedRoute, routerState);
-
-    return true;
+    return this.checkAuthentication(activatedRoute.routeConfig.path);
   }
 
   checkAuthentication(path: string): boolean {
