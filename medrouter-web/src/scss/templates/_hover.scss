@@ -1,0 +1,33 @@
+.hover {
+  color: $oposity;
+  &:hover {
+    span,
+    fa-icon {
+      color: $base;
+      font-weight: bold;
+    }
+  }
+}
+
+@mixin hover($color) {
+  color: $oposity;
+  a {
+    color: $oposity;
+  }
+  &:hover {
+    transform: scale(1.1);
+    a {
+      span,
+      fa-icon {
+        color: $color;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+@each $color, $value in $theme-colors {
+  .hover-#{$color} {
+    @include hover($value);
+  }
+}

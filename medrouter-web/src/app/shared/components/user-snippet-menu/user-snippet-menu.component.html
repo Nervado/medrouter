@@ -1,0 +1,33 @@
+<div class="burger-menu">
+  <fa-icon
+    class="burger cursor"
+    [icon]="faBars"
+    (click)="toogle()"
+    [style.color]="mainColor"
+  ></fa-icon>
+  <div
+    class="burger-menu-hidden text-oposity d-flex flex-column justify-content-start align-items-start p-1 pl-3"
+    [@showup]="!hide ? 'visible' : 'hidden'"
+  >
+    <div
+      class="d-flex justify-content-start align-itens-center my-1"
+      [ngClass]="hoverStyle"
+      *ngFor="let role of roles"
+    >
+      <a [routerLink]="[menuLinks[role].path]">
+        <fa-icon [icon]="menuLinks[role].icon" class="mr-2"></fa-icon>
+        <span>{{ menuLinks[role].label }}</span></a
+      >
+    </div>
+
+    <div
+      class="text-oposity d-flex justify-content-start align-itens-center my-1"
+      [ngClass]="hoverStyle"
+    >
+      <a [routerLink]="['/profile']">
+        <fa-icon [icon]="menuLinks['user'].icon" class="mr-2"></fa-icon>
+        <span>{{ menuLinks["user"].label }}</span></a
+      >
+    </div>
+  </div>
+</div>

@@ -2,7 +2,7 @@
   <div class="tool-bar h-100">
     <div class="too-bar-content">
       <div class="logo">
-        <a routerLink="/">
+        <a [routerLink]="['/']">
           <img src="../../../assets/logo.svg" alt="logo" />
         </a>
       </div>
@@ -42,32 +42,8 @@
             <fa-icon [icon]="faPlus" class="mr-1"></fa-icon>
             Marcar uma consulta
           </button>
-          <div class="buttons d-flex mx-2 h-100 align-items-center">
-            <div class="m-2">
-              <fa-icon [icon]="faCommentAlt" class="fa-lg badge-icon"></fa-icon>
-            </div>
-            <div class="m-2">
-              <fa-icon [icon]="faBell" class="fa-lg badge-icon"></fa-icon>
-            </div>
-          </div>
 
-          <div class="avatar-area">
-            <img src="../../../assets/avatarmale.png" alt="avatar" />
-          </div>
-          <div class="grett mx-3">
-            <span>Boa tarde</span> <br />
-            <span class="font-weight-bold text-medium">{{
-              user.user.username
-            }}</span>
-            <br />
-            <span class="font-weight-bold cursor">
-              <fa-icon
-                [icon]="faSignOutAlt"
-                (click)="logout()"
-                class="text-medium"
-              ></fa-icon>
-            </span>
-          </div>
+          <app-user-snippet> </app-user-snippet>
         </div>
       </div>
     </div>

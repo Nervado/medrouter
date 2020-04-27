@@ -3,7 +3,7 @@ export const DefaultRoutes = {
   admin: "/managers",
   recept: "/receptionists",
   owner: "/owners",
-  lab: "/labs",
+  lab: "/laboratories",
   client: "/clients",
   doctor: "/doctors",
 };

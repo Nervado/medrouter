@@ -1,15 +1,18 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 
 import {
   faBell,
   faCommentAlt,
   faSignOutAlt,
+  faHome,
+  faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthService } from "src/app/auth/auth.service";
 import { NotificationService } from "src/app/messages/notification.service";
 import { Types } from "src/app/messages/toast/enums/types";
 import { User } from "src/app/auth/models/user.model";
 import { Gretting } from "./enums/gretting";
+import { Colors } from "src/app/messages/toast/enums/colors";
 
 @Component({
   selector: "app-user-snippet",
@@ -18,11 +21,14 @@ import { Gretting } from "./enums/gretting";
 })
 export class UserSnippetComponent implements OnInit {
   faBell = faBell;
-
+  faHome = faHome;
   faCommentAlt = faCommentAlt;
   faSignOutAlt = faSignOutAlt;
+  faBars = faBars;
 
   user: User;
+
+  @Input() mainColor: Colors = Colors.BASE;
 
   constructor(
     private authService: AuthService,

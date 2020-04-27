@@ -2,27 +2,51 @@
   <div class="action-menu d-flex h-100 align-items-center">
     <div class="buttons d-flex mx-2 h-100 align-items-center">
       <div class="m-2">
-        <fa-icon [icon]="faCommentAlt" class="fa-lg badge-icon"></fa-icon>
+        <fa-icon
+          [icon]="faCommentAlt"
+          class="fa-lg badge-icon"
+          [style.color]="mainColor"
+        ></fa-icon>
       </div>
       <div class="m-2">
-        <fa-icon [icon]="faBell" class="fa-lg badge-icon"></fa-icon>
+        <fa-icon
+          [icon]="faBell"
+          class="fa-lg badge-icon"
+          [style.color]="mainColor"
+        ></fa-icon>
       </div>
     </div>
 
     <div class="avatar-area">
-      <img src="../../../assets/avatarmale.png" alt="avatar" />
+      <img
+        src="../../../assets/avatarmale.png"
+        alt="avatar"
+        [style.border-color]="mainColor"
+      />
     </div>
     <div class="grett mx-3">
       <span>{{ gretting() }}</span> <br />
-      <span class="font-weight-bold text-medium">{{ user.user.username }}</span>
+      <span class="font-weight-bold" [style.color]="mainColor">{{
+        user.user.username
+      }}</span>
       <br />
-      <span class="font-weight-bold cursor">
+
+      <div class="font-weight-bold d-flex">
+        <app-user-snippet-menu [roles]="user.user.role">
+        </app-user-snippet-menu>
+
+        <a [routerLink]="['/']" class="ml-2">
+          <fa-icon [icon]="faHome" class="cursor" [style.color]="mainColor">
+          </fa-icon
+        ></a>
+
         <fa-icon
           [icon]="faSignOutAlt"
           (click)="logout()"
-          class="text-medium"
+          class="cursor ml-2"
+          [style.color]="mainColor"
         ></fa-icon>
-      </span>
+      </div>
     </div>
   </div>
 </ng-container>

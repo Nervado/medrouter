@@ -7,6 +7,8 @@ import { AuthService } from "../../../auth/auth.service";
 import { faLock, faAt } from "@fortawesome/free-solid-svg-icons";
 import { NotificationService } from "src/app/messages/notification.service";
 import { Types } from "src/app/messages/toast/enums/types";
+import { User } from "src/app/auth/models/user.model";
+import { Role } from "src/app/auth/enums/roles-types";
 
 @Component({
   selector: "app-sign-in",
@@ -47,10 +49,7 @@ export class SignInComponent implements OnInit {
     this.AuthService.login(this.loginForm.value).subscribe(
       (user) => {
         this.loading = false;
-        this.notificationService.notify({
-          message: `Bem vindo ${user.user.username} !`,
-          type: Types.BASE,
-        });
+        this.loginMessage(user);
       }, // ok
       (error) => {
         this.loading = false;
@@ -58,6 +57,7 @@ export class SignInComponent implements OnInit {
           message: "Verifique seus dados",
           type: Types.OPOSITY1,
         });
+        console.log(error);
       },
       () => {
         if (this.navigateTo !== "/") {
@@ -67,5 +67,20 @@ export class SignInComponent implements OnInit {
         }
       }
     );
+  }
+
+  loginMessage(user: User): void {
+    if (user.user.role[0] === Role.USER) {
+      this.notificationService.notify({
+        message: `Olá ${user.user.username}, por favor verifique seu email de cadastro !`,
+        type: Types.INFO,
+      });
+
+      return null;
+    }
+    this.notificationService.notify({
+      message: `Bem vindo ${user.user.username} !`,
+      type: Types.BASE,
+    });
   }
 }

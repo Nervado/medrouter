@@ -1,0 +1,40 @@
+.burger-menu {
+  position: relative;
+  cursor: pointer;
+
+  .burger-menu-hidden {
+    overflow: hidden;
+    z-index: 10;
+    position: absolute;
+    right: 0px;
+    width: 160px;
+    height: 160px;
+    border-radius: 2px;
+    background-color: rgba(22, 46, 79, 0.6);
+
+    div {
+      font-weight: normal;
+      font-size: 14px;
+
+      a {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+/**
+&:hover {
+        transform: scale(1.1);
+ span,
+      fa-icon {
+        color: var(--oposity);
+      }
+        span,
+        fa-icon {
+          color: var(--base);
+          font-weight: bold;
+        }
+      }
+
+*/

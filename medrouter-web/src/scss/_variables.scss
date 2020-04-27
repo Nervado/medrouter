@@ -2,13 +2,21 @@ $oposity: rgba(255, 255, 255, 1);
 $oposity1: rgba(255, 150, 255, 1);
 $medium1: rgba(153, 217, 255, 1);
 $medium: rgba(41, 171, 226, 1);
-$base1: #028bb1;
-$base: #162e4f;
+$base1: rgb(2, 139, 177);
+$base: rgb(22, 46, 79);
 $error: #e85642;
 $warn: #f3ca13;
 $colorup: #6dd5ed;
 $colordown: #2193b0;
 $success: #06c50e;
+
+$doctor: #7255c0;
+$client: #006811;
+$owner: #3ba34413;
+$admin: #2624c9;
+$user: #5768c9;
+$recept: #0eaf16;
+$lab: #69d188;
 
 :root {
   --oposity: $oposity;
@@ -22,6 +30,14 @@ $success: #06c50e;
   --colorup: #6dd5ed;
   --colordown: #2193b0;
   --success: #06c50e;
+
+  --doctor: #7255c0;
+  --client: #006811;
+  --owner: #3ba34413;
+  --admin: #2624c9;
+  --user: #5768c9;
+  --recept: #0eaf16;
+  --lab: #69d188;
 }
 
 $logoh: 50px;
@@ -42,6 +58,13 @@ $theme-colors: map-merge(
     "error": $error,
     "warn": $warn,
     "success": $success,
+    "doctor": $doctor,
+    "client": $client,
+    "owner": $owner,
+    "admin": $admin,
+    "user": $user,
+    "recept": $recept,
+    "lab": $lab,
   ),
   $theme-colors
 );

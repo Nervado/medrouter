@@ -2,9 +2,9 @@
   .badge-icon {
     cursor: pointer;
     position: relative;
-    color: var(--base1);
+
     &:hover {
-      color: var(--base);
+      opacity: 0.8;
     }
     &::before {
       z-index: 10;
@@ -24,11 +24,60 @@
   }
 
   .avatar-area {
+    position: relative;
+
     img {
       height: 70px;
       width: 70px;
       border-radius: 50%;
       border: 2px solid var(--base1);
     }
+
+    &::before {
+      z-index: 1;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--oposity1);
+      background: var(--success);
+      border: 2px solid green;
+      content: "";
+    }
+  }
+}
+
+.online-marker {
+  &::before {
+    z-index: 1;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--oposity1);
+    background: var(--success);
+    border: 2px solid green;
+    content: "";
+  }
+}
+
+.offline-marker {
+  &::before {
+    z-index: 1;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--oposity1);
+    background: var(--success);
+    background: var(--error);
+    border: 2px solid var(--error);
+    content: "";
   }
 }

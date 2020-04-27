@@ -11,4 +11,11 @@ export enum Colors {
   BASE = "#162e4f",
   COLORUP = "#6dd5ed",
   COLORDOWN = "#2193b0",
+  DOCTOR = "#7255c0",
+  CLIENT = "#006811",
+  OWNER = "#3ba34413",
+  ADMIN = "#2624c9",
+  USER = "#5768c9",
+  RECEPT = "#0eaf16",
+  LAB = "#69d188",
 }

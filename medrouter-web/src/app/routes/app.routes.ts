@@ -29,7 +29,7 @@ export const ROUTES: Routes = [
     loadChildren: () =>
       import("../managers/managers.module").then((m) => m.ManagersModule),
   },
-  /*
+
   {
     path: "owners",
     loadChildren: () =>
@@ -42,8 +42,18 @@ export const ROUTES: Routes = [
         (m) => m.ReceptionistsModule
       ),
   },
-  */
-
+  {
+    path: "laboratories",
+    loadChildren: () =>
+      import("../laboratories/laboratories.module").then(
+        (m) => m.LaboratoriesModule
+      ),
+  },
+  {
+    path: "profile",
+    loadChildren: () =>
+      import("../profile/profile.module").then((m) => m.ProfileModule),
+  },
   {
     path: "**",
     component: NotFoundComponent,

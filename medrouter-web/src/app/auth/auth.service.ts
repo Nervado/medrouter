@@ -76,27 +76,9 @@ export class AuthService {
   }
 
   signUp(signUp: SignUp): Observable<void> {
-    return this.http
-      .post<void>(`${MEDROUTER_API}/auth/signup`, {
-        ...signUp,
-      })
-      .pipe(
-        tap(
-          () =>
-            this.notificationService.notify({
-              message: "Cadastro realizado com sucesso, verifique seu email!",
-              type: Types.INFO,
-            }),
-          () =>
-            this.notificationService.notify({
-              message: "Por favor verifique os dados informados",
-              type: Types.OPOSITY1,
-            }),
-          () => {
-            this.router.navigate(["/"]);
-          }
-        )
-      );
+    return this.http.post<void>(`${MEDROUTER_API}/auth/signup`, {
+      ...signUp,
+    });
   }
 
   handlelogin(url?: string) {
