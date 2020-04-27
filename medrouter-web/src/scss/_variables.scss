@@ -14,7 +14,8 @@ $doctor: #7255c0;
 $client: #006811;
 $owner: #3ba34413;
 $admin: #2624c9;
-$user: #5768c9;
+$user: $base;
+$profile: #5768c9;
 $recept: #0eaf16;
 $lab: #69d188;
 
@@ -35,7 +36,8 @@ $lab: #69d188;
   --client: #006811;
   --owner: #3ba34413;
   --admin: #2624c9;
-  --user: #5768c9;
+  --user: $base;
+  --profile: #5768c9;
   --recept: #0eaf16;
   --lab: #69d188;
 }
@@ -65,6 +67,7 @@ $theme-colors: map-merge(
     "user": $user,
     "recept": $recept,
     "lab": $lab,
+    "profile": $profile,
   ),
   $theme-colors
 );

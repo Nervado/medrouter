@@ -6,12 +6,12 @@ import {
   faConciergeBell,
   faUserCog,
   faFlask,
-  faUser,
   faHeartbeat,
+  faUserTie,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const MenuLinks = {
-  user: { icon: faUser, path: "/profile", label: "Meu perfil" },
+  user: { icon: faUserTie, path: "/profile", label: "Meu perfil" },
   admin: {
     icon: faUsersCog,
     path: DefaultRoutes.admin,

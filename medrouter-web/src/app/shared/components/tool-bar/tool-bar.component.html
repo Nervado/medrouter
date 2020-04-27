@@ -1,26 +1,33 @@
 <div class="tool-bar h-100" [style.background-color]="bg">
   <div class="too-bar-content">
-    <div class="logo">
-      <a [routerLink]="['/']">
-        <fa-icon [icon]="menuLinks[role].icon" size="3x"></fa-icon>
-        <img src="../../../assets/logo.svg" alt="logo" />
-      </a>
+    <div class="page-icon">
+      <fa-icon
+        [icon]="menuLinks[role].icon"
+        size="2x"
+        class="text-oposity"
+      ></fa-icon>
     </div>
     <div class="tool-bar-menu d-flex flex-column align-items-center">
       <div class="my-3">
-        <fa-icon [icon]="faHome" class="fa-lg"></fa-icon>
+        <a [routerLink]="['../doctors']">
+          <fa-icon [icon]="faHome" class="fa-lg"></fa-icon>
+        </a>
       </div>
       <div class="my-3">
         <fa-icon [icon]="faUser" class="fa-lg"></fa-icon>
       </div>
       <div class="my-3">
-        <fa-icon [icon]="faFileMedical" class="fa-lg"></fa-icon>
+        <a [routerLink]="['../doctors/doctor-schedule']">
+          <fa-icon [icon]="faFileMedical" class="fa-lg"></fa-icon>
+        </a>
       </div>
       <div class="my-3">
         <fa-icon [icon]="faPoll" class="fa-lg"></fa-icon>
       </div>
       <div class="my-3">
-        <fa-icon [icon]="faCalendarCheck" class="fa-lg"></fa-icon>
+        <a [routerLink]="['../doctors/schedule']">
+          <fa-icon [icon]="faCalendarCheck" class="fa-lg"></fa-icon>
+        </a>
       </div>
       <div class="my-3">
         <fa-icon [icon]="faBookMedical" class="fa-lg"></fa-icon>
@@ -28,8 +35,13 @@
       <div class="my-3">
         <fa-icon [icon]="faFileInvoiceDollar" class="fa-lg"></fa-icon>
       </div>
-      <div class="my-2">
+      <div class="my-3">
         <fa-icon [icon]="faPowerOff" class="fa-lg"></fa-icon>
+      </div>
+      <div class="logo-icon my-3">
+        <a [routerLink]="['/']">
+          <img src="../../../assets/logo.svg" alt="logo"
+        /></a>
       </div>
     </div>
   </div>

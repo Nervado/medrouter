@@ -6,4 +6,5 @@ export const DefaultRoutes = {
   lab: "/laboratories",
   client: "/clients",
   doctor: "/doctors",
+  profile: "/profile",
 };

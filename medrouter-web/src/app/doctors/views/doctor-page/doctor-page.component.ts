@@ -8,8 +8,6 @@ import { Role } from "src/app/auth/enums/roles-types";
   styleUrls: ["./doctor-page.component.scss"],
 })
 export class DoctorPageComponent implements OnInit {
-  toolBarColor: Colors = Colors.DOCTOR;
-
   mainColor: Colors = Colors.DOCTOR;
 
   role: Role = Role.DOCTOR;

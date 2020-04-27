@@ -28,6 +28,7 @@ import {} from "@fortawesome/free-solid-svg-icons";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { MenuLinks } from "../user-snippet-menu/enums/menu-links";
 import { Role } from "src/app/auth/enums/roles-types";
+import { Icon } from "@fortawesome/fontawesome-svg-core";
 
 @Component({
   selector: "app-tool-bar",
@@ -59,6 +60,8 @@ export class ToolBarComponent implements OnInit {
   @Input() bg: Colors = Colors.BASE;
 
   @Input() role: Role = Role.USER;
+
+  menuIcons: Array<Icon> = [];
 
   constructor() {}
 

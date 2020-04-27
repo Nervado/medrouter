@@ -3,10 +3,23 @@ import { Routes, RouterModule } from "@angular/router";
 
 import { DoctorPageComponent } from "./views/doctor-page/doctor-page.component";
 
+import { ScheduleComponent } from "./components/schedule/schedule.component";
+import { DoctorScheduleComponent } from "./components/doctor-schedule/doctor-schedule.component";
+
 const routes: Routes = [
   {
     path: "",
     component: DoctorPageComponent,
+    children: [
+      {
+        path: "schedule",
+        component: ScheduleComponent,
+      },
+      {
+        path: "doctor-schedule",
+        component: DoctorScheduleComponent,
+      },
+    ],
   },
 ];
 

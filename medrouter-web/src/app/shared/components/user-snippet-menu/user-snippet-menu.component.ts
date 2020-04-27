@@ -71,5 +71,7 @@ export class UserSnippetMenuComponent implements OnInit {
     search
       ? (this.hoverStyle = `hover-${search} : true`)
       : (this.hoverStyle = "hover-base : true");
+
+    console.log(search);
   }
 }
