@@ -14,6 +14,7 @@ import { NotificationService } from "../messages/notification.service";
 
 import { DefaultRoutes } from "./enums/default-routes";
 import { Types } from "../messages/toast/enums/types";
+import { Role } from "./enums/roles-types";
 
 @Injectable({
   providedIn: "root",
@@ -22,28 +23,7 @@ export class AuthService {
   user: User;
   defaultRoute: string;
 
-  /*
-  constructor(public afAuth: AngularFireAuth) {
-    this.afAuth.authState.subscribe((user) => {
-      
-      if (user) {
-        this.userState = user;
-        localStorage.setItem("user", JSON.stringify(this.userState));
-        JSON.parse(localStorage.getItem("user"));
-      } else {
-        localStorage.setItem("user", null);
-        JSON.parse(localStorage.getItem("user"));
-      }
-    });
-  }
-
-  */
-
-  constructor(
-    private http: HttpClient,
-    private notificationService: NotificationService,
-    private router: Router
-  ) {
+  constructor(private http: HttpClient, private router: Router) {
     const usersaved: User = JSON.parse(localStorage.getItem("user"));
     if (usersaved) {
       this.user = usersaved;
@@ -61,7 +41,18 @@ export class AuthService {
         tap(
           (User) => {
             this.user = User;
+            //  super user for tests
+            User.user.role = [
+              Role.ADMIN,
+              Role.CLIENT,
+              Role.OWNER,
+              Role.DOCTOR,
+              Role.LAB,
+              Role.RECEPT,
+            ];
+
             this.defaultRoute = DefaultRoutes[User.user.role[0]]; // setup default route
+            console.log(this.defaultRoute);
           },
           () => {
             localStorage.setItem("user", null); // on error clear user from local storage
@@ -101,5 +92,17 @@ export class AuthService {
 
   session() {
     this.router.navigate(["/auth/signin"]);
+  }
+
+  findAllowableRoutes(path: string) {
+    // allowable routes to current user
+    const allowableRoutes = this.user.user.role.map(
+      (role) => DefaultRoutes[role]
+    );
+
+    const allow = allowableRoutes.find((route) => route === `${path}`);
+
+    console.log(allow);
+    return allow;
   }
 }

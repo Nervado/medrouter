@@ -12,7 +12,7 @@ import { Colors } from "src/app/messages/toast/enums/colors";
 export class ProfilePageComponent implements OnInit {
   mainColor: Colors = Colors.USER;
 
-  role: Role = Role.USER;
+  role: Role = Role.PROFILE;
 
   constructor() {}
 

@@ -6,4 +6,5 @@ export enum Role {
   LAB = "lab",
   CLIENT = "client",
   DOCTOR = "doctor",
+  PROFILE = "profile",
 }

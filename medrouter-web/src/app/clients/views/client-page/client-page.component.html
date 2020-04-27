@@ -1,73 +1,13 @@
-<div class="bg w-100 d-flex">
-  <div class="tool-bar h-100">
-    <div class="too-bar-content">
-      <div class="logo">
-        <a [routerLink]="['/']">
-          <img src="../../../assets/logo.svg" alt="logo" />
-        </a>
-      </div>
-      <div class="tool-bar-menu d-flex flex-column align-items-center">
-        <div class="my-3">
-          <fa-icon [icon]="faHome" class="fa-lg"></fa-icon>
-        </div>
-        <div class="my-3">
-          <fa-icon [icon]="faUser" class="fa-lg"></fa-icon>
-        </div>
-        <div class="my-3">
-          <fa-icon [icon]="faFileMedical" class="fa-lg"></fa-icon>
-        </div>
-        <div class="my-3">
-          <fa-icon [icon]="faPoll" class="fa-lg"></fa-icon>
-        </div>
-        <div class="my-3">
-          <fa-icon [icon]="faCalendarCheck" class="fa-lg"></fa-icon>
-        </div>
-        <div class="my-3">
-          <fa-icon [icon]="faBookMedical" class="fa-lg"></fa-icon>
-        </div>
-        <div class="my-3">
-          <fa-icon [icon]="faFileInvoiceDollar" class="fa-lg"></fa-icon>
-        </div>
-        <div class="my-2">
-          <fa-icon [icon]="faPowerOff" class="fa-lg"></fa-icon>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="content">
-    <div class="header">
-      <div class="container d-flex justify-content-end h-100">
-        <div class="action-menu d-flex h-100 align-items-center">
-          <button class="bt bt-oposity1 mx-3 bad">
-            <fa-icon [icon]="faPlus" class="mr-1"></fa-icon>
-            Marcar uma consulta
-          </button>
-
-          <app-user-snippet> </app-user-snippet>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="d-flex justify-content-between">
-        <div
-          class="main-info d-flex flex-column align-items-center justify-content-center"
-        >
-          <app-doctors-search class="my-1"></app-doctors-search>
-
-          <div class="main-data main mt-4">reports</div>
-        </div>
-
-        <!--Inicio do aside -->
-        <div
-          class="main-info d-flex flex-column align-items-center justify-content-center"
-        >
-          <app-appointments-summary class="my-1"></app-appointments-summary>
-
-          <app-notifications-sumary class="mt-4"></app-notifications-sumary>
-        </div>
-
-        <!-- fim do aside-->
-      </div>
-    </div>
-  </div>
-</div>
+<app-wrapper class="w-100">
+  <app-tool-bar [bg]="mainColor" [role]="role"></app-tool-bar>
+  <app-wrapper-content class="w-100 d-flex flex-column">
+    <app-menubar>
+      <button class="bt bt-client">
+        <fa-icon [icon]="faPlus" class=""></fa-icon>
+        Consulta
+      </button>
+      <app-user-snippet [mainColor]="mainColor"></app-user-snippet>
+    </app-menubar>
+    <router-outlet></router-outlet>
+  </app-wrapper-content>
+</app-wrapper>

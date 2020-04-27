@@ -13,7 +13,7 @@ export enum Colors {
   COLORDOWN = "#2193b0",
   DOCTOR = "#7255c0",
   CLIENT = "#006811",
-  OWNER = "#3ba34413",
+  OWNER = "#1da15f",
   ADMIN = "#2624c9",
   USER = "#5768c9",
   RECEPT = "#0eaf16",

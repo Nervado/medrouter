@@ -2,18 +2,20 @@
   <div class="px-4 py-3 d-flex justify-content-between align-itens-center">
     <h4>Encontre seu médico</h4>
 
-    <div class="bg-success">
+    <div class="d-flex bg-success align-items-center" style="height: 100px;">
       <form [formGroup]="searchForm">
-        <app-input-container class="my-2 in-container-base" [tick]="false">
-          <input
-            formControlName="search"
-            type="text"
-            placeholder="Digite o nome do médico"
-            class="in in-medium"
-            style="font-size: medium;"
-            autocomplete="off"
-          />
-        </app-input-container>
+        <div class="h-100">
+          <app-input-container class="my-2 in-container-doctor" [tick]="false">
+            <input
+              formControlName="search"
+              type="text"
+              placeholder="Digite o nome do médico"
+              class="in in-doctor"
+              style="font-size: medium;"
+              autocomplete="off"
+            />
+          </app-input-container>
+        </div>
       </form>
 
       <div>

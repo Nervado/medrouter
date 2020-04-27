@@ -36,14 +36,7 @@ export class UserSnippetMenuComponent implements OnInit {
     if (this.roles[0] !== Role.USER) {
       this.isVerify = true;
     }
-    this.roles = [
-      Role.ADMIN,
-      Role.CLIENT,
-      Role.OWNER,
-      Role.DOCTOR,
-      Role.LAB,
-      Role.RECEPT,
-    ];
+
     this.setHoverClass();
   }
 

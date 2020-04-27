@@ -29,6 +29,7 @@ import { Colors } from "src/app/messages/toast/enums/colors";
 import { MenuLinks } from "../user-snippet-menu/enums/menu-links";
 import { Role } from "src/app/auth/enums/roles-types";
 import { Icon } from "@fortawesome/fontawesome-svg-core";
+import { Buttons } from "./theme/buttons.theme";
 
 @Component({
   selector: "app-tool-bar",
@@ -65,5 +66,15 @@ export class ToolBarComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.menuIcons = Buttons[this.role];
+  }
+
+  _atob(url: string): any {
+    return atob(url);
+  }
+
+  _btoa(url: string): any {
+    return btoa(url);
+  }
 }

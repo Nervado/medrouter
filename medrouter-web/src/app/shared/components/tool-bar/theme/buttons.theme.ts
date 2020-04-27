@@ -1,4 +1,4 @@
-import { faUserEdit } from "@fortawesome/free-solid-svg-icons";
+import { faUserEdit, faLock } from "@fortawesome/free-solid-svg-icons";
 
 import {
   faPlus,
@@ -27,11 +27,23 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export const Buttons = {
-  profile: [faUserEdit, faHouseUser, faUserCircle], //
+  profile: [
+    { icon: faUserEdit, path: "../profile/profile" },
+    { icon: faHouseUser, path: "/address" },
+    { icon: faUserCircle, path: "/avatar" },
+    { icon: faLock, path: "../profile/client-profile" },
+    { icon: faPowerOff, path: "/unsubscribe" },
+  ], //
   owner: [],
-  client: [],
+  client: [
+    { icon: faCalendarDay, path: "/schedules" },
+    { icon: faLock, path: "../clients/new" },
+  ],
   recept: [],
-  doctor: [],
+  doctor: [
+    { icon: faUserEdit, path: "../doctors/schedule" },
+    { icon: faHouseUser, path: "../doctors/doctor-schedule" },
+  ],
   admin: [],
   lab: [],
 };

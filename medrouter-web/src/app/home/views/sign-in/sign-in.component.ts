@@ -50,6 +50,7 @@ export class SignInComponent implements OnInit {
       (user) => {
         this.loading = false;
         this.loginMessage(user);
+        console.log("Aqui");
       }, // ok
       (error) => {
         this.loading = false;
@@ -57,14 +58,10 @@ export class SignInComponent implements OnInit {
           message: "Verifique seus dados",
           type: Types.OPOSITY1,
         });
-        console.log(error);
       },
       () => {
-        if (this.navigateTo !== "/") {
-          this.router.navigate([this.navigateTo]);
-        } else {
-          this.router.navigate([this.AuthService.defaultRoute]);
-        }
+        console.log(this.AuthService.defaultRoute);
+        this.router.navigate([this.AuthService.defaultRoute]);
       }
     );
   }

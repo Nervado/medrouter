@@ -25,6 +25,8 @@ import { AuthService } from "src/app/auth/auth.service";
 import { User } from "src/app/auth/models/user.model";
 import { NotificationService } from "src/app/messages/notification.service";
 import { Types } from "src/app/messages/toast/enums/types";
+import { Colors } from "src/app/messages/toast/enums/colors";
+import { Role } from "src/app/auth/enums/roles-types";
 
 @Component({
   selector: "app-client-page",
@@ -51,6 +53,10 @@ export class ClientPageComponent implements OnInit {
   faCalendarDay = faCalendarDay;
 
   faSignOutAlt = faSignOutAlt;
+
+  mainColor: Colors = Colors.CLIENT;
+
+  role: Role = Role.CLIENT;
   constructor(
     private authService: AuthService,
     private notificationService: NotificationService

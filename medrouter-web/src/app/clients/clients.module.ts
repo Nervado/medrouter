@@ -8,6 +8,9 @@ import { ClientMainChartComponent } from "./components/client-main-chart/client-
 import { SharedModule } from "../shared/shared.module";
 import { ClientsRoutingModule } from "./clients-routing.module";
 import { DoctorsSearchComponent } from "./components/doctors-search/doctors-search.component";
+import { ClientDashboardComponent } from "./components/client-dashboard/client-dashboard.component";
+
+import { NewscheduleComponent } from "./components/newschedule/newschedule.component";
 
 @NgModule({
   declarations: [
@@ -16,6 +19,9 @@ import { DoctorsSearchComponent } from "./components/doctors-search/doctors-sear
     ClientMainChartComponent,
     NotificationsSumaryComponent,
     DoctorsSearchComponent,
+    ClientDashboardComponent,
+
+    NewscheduleComponent,
   ],
   imports: [CommonModule, ClientsRoutingModule, SharedModule],
 })
