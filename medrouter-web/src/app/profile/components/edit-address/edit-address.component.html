@@ -12,13 +12,15 @@
               type="text"
               name="streetName"
               placeholder="Nome da Rua"
-              autocomplete="street-address"
+              autocomplete="off"
               class="in in-medium"
             />
+
             <div
               class="d-flex mx-2 flex-column justify-content-center align-items-center"
             >
-              <fa-icon [icon]="faUser" class="text-medium"></fa-icon>
+              <!---->
+              <fa-icon [icon]="faRoad" class="text-medium"></fa-icon>
             </div>
           </app-input-container>
         </div>
@@ -33,7 +35,7 @@
               name="houseNumber"
               placeholder="Número"
               class="in in-medium"
-              autocomplete="street-address"
+              autocomplete="off"
               id="houseNumber"
             />
             <div
@@ -54,7 +56,7 @@
               name="complement"
               placeholder="Complemento"
               class="in in-medium"
-              autocomplete="street-address"
+              autocomplete="off"
             />
             <div
               class="d-flex mx-2 flex-column justify-content-center align-items-center"
@@ -73,7 +75,7 @@
               name=" neighborhood"
               placeholder="Bairro"
               class="in in-medium"
-              autocomplete="street-address"
+              autocomplete="off"
               id="neighborhood"
             />
             <div
@@ -94,7 +96,7 @@
               name="city"
               placeholder="Cidade"
               class="in in-medium"
-              autocomplete="street-address"
+              autocomplete="off"
               id="city"
             />
             <div
@@ -114,7 +116,7 @@
               name="fu"
               placeholder="Estado"
               class="in in-medium"
-              autocomplete="street-address"
+              autocomplete="off"
             />
             <div
               class="d-flex mx-2 flex-column justify-content-center align-items-center"
@@ -133,8 +135,7 @@
               type="text"
               name="cep"
               placeholder="cep"
-              autocomplete="cep"
-              autocapitalize="sentences"
+              autocomplete="off"
               class="in in-medium"
               id="cep"
             />
@@ -152,7 +153,7 @@
           <div
             class="in-container buttons-container my-4 d-flex justify-content-center align-items-center bg-profile"
           >
-            <button class="bt bt-medium mr-2" id="buttons">
+            <button class="bt bt-medium mr-2" id="buttons" (click)="send()">
               Enviar
             </button>
             <!-- </a>-->

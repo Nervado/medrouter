@@ -22,8 +22,8 @@
 }
 
 .buttons-container {
-  border: 2px solid var(--oposity);
-  animation: blink infinite 2s ease-in-out;
+  border: 2px solid var(--profile);
+  //animation: blink infinite 2s ease-in-out;
 }
 
 @keyframes blink {

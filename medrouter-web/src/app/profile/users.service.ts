@@ -22,21 +22,31 @@ export class UsersService {
   }
 
   getUserById(userId: any): Observable<Profile> {
-    return this.http.get<Profile>(`${MEDROUTER_API}/users/${userId}`).pipe(
-      tap(
-        (profile: Profile) => (this.profile = profile),
+    return this.http
+      .get<Profile>(`${MEDROUTER_API}/users/${userId}`)
+      .pipe(this.setProfile());
+  }
 
-        () => {
-          sessionStorage.setItem("profile", null); // on error clear user from local storage
-        },
-        () => {
-          sessionStorage.setItem("profile", JSON.stringify(this.profile));
-        }
-      )
-    );
+  update(profile: Profile, userId: any): Observable<Profile> {
+    return this.http
+      .put<Profile>(`${MEDROUTER_API}/users/${userId}`, { ...profile })
+      .pipe(this.setProfile());
   }
 
   getUserProfile() {
     return this.profile;
+  }
+
+  setProfile() {
+    return tap(
+      (profile: Profile) => (this.profile = profile),
+
+      () => {
+        sessionStorage.setItem("profile", null);
+      },
+      () => {
+        sessionStorage.setItem("profile", JSON.stringify(this.profile));
+      }
+    );
   }
 }

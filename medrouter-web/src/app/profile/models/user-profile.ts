@@ -1,7 +1,8 @@
 import { Role } from "src/app/auth/enums/roles-types";
+import { Address } from "./address";
 
 export class Profile {
-  userId: number;
+  userId: any;
   username: number;
   surname: string;
   cpf: string;
@@ -18,15 +19,6 @@ export class Profile {
     filename: string;
     url: string;
   };
-  address: {
-    id: number;
-    cep: string;
-    streetName: string;
-    houseNumber: string;
-    complement: string;
-    neighborhood: string;
-    city: string;
-    fu: string;
-  };
+  address: Address;
   fullname: string;
 }
