@@ -1,11 +1,14 @@
-<div class="main-data aside bg-base1 text-oposity">
+<div class="main-data aside text-oposity bg-client">
   <div class="px-4 py-3 d-flex justify-content-between align-itens-center">
-    <h4>Encontre seu médico</h4>
+    <span style="font-size: 14px;">Encontre seu médico</span>
 
-    <div class="d-flex bg-success align-items-center" style="height: 100px;">
+    <div class="d-flex align-items-center" style="height: 100px;">
       <form [formGroup]="searchForm">
         <div class="h-100">
-          <app-input-container class="my-2 in-container-doctor" [tick]="false">
+          <app-input-container
+            class="in in-container-client my-2 in-container-doctor"
+            [tick]="false"
+          >
             <input
               formControlName="search"
               type="text"

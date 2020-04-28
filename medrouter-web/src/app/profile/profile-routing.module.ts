@@ -10,7 +10,7 @@ const routes: Routes = [
     component: ProfilePageComponent,
     children: [
       {
-        path: "",
+        path: ":id",
         component: ProfileViewComponent,
       },
       {

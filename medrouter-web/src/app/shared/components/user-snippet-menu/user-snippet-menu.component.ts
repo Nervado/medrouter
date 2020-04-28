@@ -11,6 +11,8 @@ import { Colors } from "src/app/messages/toast/enums/colors";
 
 import { ActivatedRoute } from "@angular/router";
 import { DefaultRoutes } from "src/app/auth/enums/default-routes";
+import { UserLogged } from "src/app/profile/models/logged-user";
+//import { User } from "src/app/auth/models/user.model";
 
 @Component({
   selector: "app-user-snippet-menu",
@@ -24,9 +26,10 @@ export class UserSnippetMenuComponent implements OnInit {
   menuLinks: any = MenuLinks;
   isVerify: boolean = false;
   timer: any;
+  roles: Role[] = [];
 
   @Input() mainColor: Colors = Colors.BASE;
-  @Input() roles: Role[] = [];
+  @Input() user: UserLogged = null;
 
   hoverStyle: string = "hover-base : true";
 
@@ -38,6 +41,10 @@ export class UserSnippetMenuComponent implements OnInit {
     }
 
     this.setHoverClass();
+
+    this.roles = this.user.role;
+
+    console.log(this.user);
   }
 
   toogle() {
@@ -64,7 +71,5 @@ export class UserSnippetMenuComponent implements OnInit {
     search
       ? (this.hoverStyle = `hover-${search} : true`)
       : (this.hoverStyle = "hover-base : true");
-
-    console.log(search);
   }
 }

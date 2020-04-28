@@ -28,7 +28,7 @@ import {
 
 export const Buttons = {
   profile: [
-    { icon: faUserEdit, path: "../profile/profile" },
+    { icon: faUserEdit, path: "../profile/editprofile" },
     { icon: faHouseUser, path: "/address" },
     { icon: faUserCircle, path: "/avatar" },
     { icon: faLock, path: "../profile/client-profile" },

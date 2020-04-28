@@ -11,6 +11,7 @@ import { DoctorsSearchComponent } from "./components/doctors-search/doctors-sear
 import { ClientDashboardComponent } from "./components/client-dashboard/client-dashboard.component";
 
 import { NewscheduleComponent } from "./components/newschedule/newschedule.component";
+import { ReportsComponent } from './components/reports/reports.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,8 @@ import { NewscheduleComponent } from "./components/newschedule/newschedule.compo
     ClientDashboardComponent,
 
     NewscheduleComponent,
+
+    ReportsComponent,
   ],
   imports: [CommonModule, ClientsRoutingModule, SharedModule],
 })

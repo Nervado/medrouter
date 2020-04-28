@@ -1,13 +1,112 @@
-<app-wrapper-component>
-  <div class="d-flex justify-content center align-content-center">
-    <div class="profile-view">
-      <div class="avatar">
-        <img src="'../../../../../../assets/avatarmale.png'" alt="" />
-      </div>
-
-      <span>{{ userLogged.username }}</span> <br />
-      <span>{{ userLogged.email }}</span> <br />
-      <span>{{ userLogged.userId }} </span> <br />
+<ng-container *ngIf="loading; else elseTemplate">
+  <div
+    class="wrapper-component d-flex justify-content-center align-items-center"
+  >
+    <div
+      class="row profile d-flex justify-content-center align-items-center bg-profile"
+    >
+      <app-loading> </app-loading>
     </div>
   </div>
-</app-wrapper-component>
+</ng-container>
+<ng-template #elseTemplate>
+  <div
+    class="wrapper-component d-flex justify-content-center align-items-center"
+  >
+    <div class="row profile">
+      <div
+        class="col-5 d-flex flex-column justify-content-start align-itens-center"
+      >
+        <ng-container *ngIf="userProfile.avatar?.url; else elseTemplate">
+          <div class="avatar my-2">
+            <img [src]="userProfile.avatar.url" alt="avatar" />
+          </div>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <div class="avatar my-2">
+            <img
+              [src]="'../../../../assets/avatarmale.png'"
+              alt="avatar"
+            /></div
+        ></ng-template>
+
+        <div class="d-flex">
+          <span class="client">Cliente</span>
+        </div>
+        <div class="role">
+          Conosco desde 2012
+        </div>
+
+        <div class="ranking d-flex flex-column">
+          <div>
+            <div>
+              <fa-icon [icon]="faStar"></fa-icon>
+              <fa-icon [icon]="faStar"></fa-icon>
+              <fa-icon [icon]="faStar"></fa-icon>
+              <fa-icon [icon]="faStar"></fa-icon>
+              <fa-icon [icon]="faStar"></fa-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-7 d-flex flex-column justify-content-start align-itens-center"
+      >
+        <div class="header">
+          <div class="username">
+            {{ userProfile.username }}
+          </div>
+
+          <div class="location">
+            <div>
+              <fa-icon [icon]="faLocationArrow" class="ml-2 mr-1"></fa-icon>
+              {{ userProfile.address && userProfile.address.city }}
+            </div>
+          </div>
+        </div>
+
+        <div class="about d-flex flex-column">
+          <div class="about-title d-flex">
+            <fa-icon [icon]="faUserTie" class="my-2"></fa-icon>
+            <div class="ml-2 my-2">Sobre</div>
+          </div>
+          <div class="contact d-flex flex-column">
+            <div class="row my-3">
+              <div class="col-6">Telefone:</div>
+              <div class="col-6">{{ userProfile.phoneNumber }}</div>
+            </div>
+            <div class="row my-3">
+              <div class="col-6">Address:</div>
+              <div class="col-6 text-profile" *ngIf="userProfile.address">
+                {{ userProfile.address.streetName }},
+                {{ userProfile.address.houseNumber }}, <br />
+
+                {{ userProfile.address.neighborhood }},
+                {{ userProfile.address.city }}, Cep:
+                {{ userProfile.address.cep }}
+              </div>
+            </div>
+            <div class="row my-3">
+              <div class="col-6">Email</div>
+              <div class="col-6 text-profile">
+                {{ userProfile.email }}
+              </div>
+            </div>
+          </div>
+          <div class="basic-info d-flex flex-column">
+            <div class="row my-3">
+              <div class="col-6">Inscrito em:</div>
+              <div class="col-6 text-profile">
+                25-05-1989
+              </div>
+            </div>
+            <div class="row my-3">
+              <div class="col-6">Genero</div>
+              <div class="col-6 text-profile">Masculino</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

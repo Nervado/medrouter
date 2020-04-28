@@ -30,7 +30,7 @@
       <br />
 
       <div class="font-weight-bold d-flex">
-        <app-user-snippet-menu [roles]="user.user.role" [mainColor]="mainColor">
+        <app-user-snippet-menu [mainColor]="mainColor" [user]="user.user">
         </app-user-snippet-menu>
 
         <a [routerLink]="['/']" class="ml-2">

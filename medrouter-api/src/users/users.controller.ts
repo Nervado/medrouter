@@ -53,7 +53,7 @@ export class UsersController {
   }
 
   @Put('/:id')
-  @Roles('client')
+  //@Roles('client')
   @UseInterceptors(ClassSerializerInterceptor)
   update(
     @Param('id', ParseIntPipe) id: number,

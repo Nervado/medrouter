@@ -11,7 +11,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export const MenuLinks = {
-  profile: { icon: faUserTie, path: "/profile", label: "Meu perfil" },
+  profile: {
+    icon: faUserTie,
+    path: ["profile", "user.userId"],
+    label: "Meu perfil",
+  },
   admin: {
     icon: faUsersCog,
     path: DefaultRoutes.admin,

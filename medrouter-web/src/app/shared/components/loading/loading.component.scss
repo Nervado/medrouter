@@ -1,0 +1,38 @@
+.lds-heart {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  transform-origin: 40px 40px;
+}
+.lds-heart div {
+  top: 0px;
+  left: 0px;
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background-image: url("../../../../assets/logo.svg");
+  background-repeat: no-repeat;
+  animation: lds-heart 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+@keyframes lds-heart {
+  0% {
+    transform: scale(0.95);
+  }
+  5% {
+    transform: scale(1.1);
+  }
+  39% {
+    transform: scale(0.85);
+  }
+  45% {
+    transform: scale(1);
+  }
+  60% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(0.9);
+  }
+}

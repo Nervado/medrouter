@@ -13,6 +13,8 @@ import { ToolBarComponent } from "./components/tool-bar/tool-bar.component";
 import { WrapperComponent } from "./components/wrapper/wrapper.component";
 import { MenubarComponent } from "./components/menubar/menubar.component";
 import { WrapperContentComponent } from "./components/wrapper-content/wrapper-content.component";
+import { WrapperComponentComponent } from "./components/wrapper-component/wrapper-component.component";
+import { LoadingComponent } from "./components/loading/loading.component";
 //import { ContentHeaderComponent } from './components/content-header/content-header.component';
 
 @NgModule({
@@ -26,6 +28,8 @@ import { WrapperContentComponent } from "./components/wrapper-content/wrapper-co
     WrapperComponent,
     MenubarComponent,
     WrapperContentComponent,
+    WrapperComponentComponent,
+    LoadingComponent,
   ],
   imports: [
     CommonModule,
@@ -48,7 +52,9 @@ import { WrapperContentComponent } from "./components/wrapper-content/wrapper-co
     ToolBarComponent,
     WrapperComponent,
     WrapperContentComponent,
+    WrapperComponentComponent,
     MenubarComponent,
+    LoadingComponent,
   ],
 })
 export class SharedModule {}

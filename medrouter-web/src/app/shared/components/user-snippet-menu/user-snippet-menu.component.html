@@ -24,7 +24,7 @@
       class="text-oposity d-flex justify-content-start align-itens-center my-1"
       [ngClass]="hoverStyle"
     >
-      <a [routerLink]="['/profile']">
+      <a [routerLink]="['../profile', user.userId]">
         <fa-icon [icon]="menuLinks['profile'].icon" class="mr-2"></fa-icon>
         <span>{{ menuLinks["profile"].label }}</span></a
       >

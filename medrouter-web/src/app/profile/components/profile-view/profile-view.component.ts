@@ -6,6 +6,12 @@ import { UsersService } from "../../users.service";
 import { Profile } from "../../models/user-profile";
 import { Types } from "src/app/messages/toast/enums/types";
 
+import {
+  faUserTie,
+  faStar,
+  faMapMarkerAlt,
+} from "@fortawesome/free-solid-svg-icons";
+
 @Component({
   selector: "app-profile-view",
   templateUrl: "./profile-view.component.html",
@@ -17,6 +23,9 @@ export class ProfileViewComponent implements OnInit {
     private usersService: UsersService,
     private notificationService: NotificationService
   ) {}
+  faUserTie = faUserTie;
+  faLocationArrow = faMapMarkerAlt;
+  faStar = faStar;
 
   userLogged: UserLogged = null;
   userProfile: Profile = null;
@@ -28,6 +37,7 @@ export class ProfileViewComponent implements OnInit {
     this.usersService.getUserById(this.userLogged.userId).subscribe(
       (profile: Profile) => {
         this.userProfile = profile;
+        console.log(profile);
       },
       (error) => {
         this.notificationService.notify({
