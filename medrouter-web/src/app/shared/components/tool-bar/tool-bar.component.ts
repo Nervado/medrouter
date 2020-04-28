@@ -62,6 +62,8 @@ export class ToolBarComponent implements OnInit {
 
   @Input() role: Role = Role.USER;
 
+  @Input() link: any = ["/profile", 21];
+
   menuIcons: Array<Icon> = [];
 
   constructor() {}

@@ -28,11 +28,11 @@ import {
 
 export const Buttons = {
   profile: [
-    { icon: faUserEdit, path: "../profile/editprofile" },
-    { icon: faHouseUser, path: "/address" },
-    { icon: faUserCircle, path: "/avatar" },
-    { icon: faLock, path: "../profile/client-profile" },
-    { icon: faPowerOff, path: "/unsubscribe" },
+    { icon: faUserEdit, path: "edit-profile" },
+    { icon: faHouseUser, path: "edit-address" },
+    { icon: faUserCircle, path: "edit-avatar" },
+    { icon: faLock, path: "security" },
+    { icon: faPowerOff, path: "unsubscribe" },
   ], //
   owner: [],
   client: [

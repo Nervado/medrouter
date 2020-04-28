@@ -3,6 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { Role } from "src/app/auth/enums/roles-types";
 import { Colors } from "src/app/messages/toast/enums/colors";
+import { UsersService } from "../../users.service";
 
 @Component({
   selector: "app-profile-page",
@@ -14,7 +15,11 @@ export class ProfilePageComponent implements OnInit {
 
   role: Role = Role.PROFILE;
 
-  constructor() {}
+  link: any = ["/profile", null];
 
-  ngOnInit(): void {}
+  constructor(private usersService: UsersService) {}
+
+  ngOnInit(): void {
+    this.link[1] = this.usersService.getUserProfile().userId;
+  }
 }

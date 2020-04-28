@@ -1,0 +1,169 @@
+<div class="wrapper-component d-flex justify-content-center align-items-center">
+  <div
+    class="row profile d-flex justify-content-center align-items-center bg-profile text-oposity"
+  >
+    <form [formGroup]="addressForm">
+      <div class="d-flex flex-wrap justify-content-between px-5 mx-3">
+        <div class="">
+          <label for="streetName">Nome da Rua</label>
+          <app-input-container class="in-container in-container-base my-4">
+            <input
+              formControlName="streetName"
+              type="text"
+              name="streetName"
+              placeholder="Nome da Rua"
+              autocomplete="street-address"
+              class="in in-medium"
+            />
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faUser" class="text-medium"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+
+        <div class="">
+          <label for="houseNumber">Número</label>
+
+          <app-input-container class="in-container in-container-base my-4">
+            <input
+              formControlName="houseNumber"
+              type="text"
+              name="houseNumber"
+              placeholder="Número"
+              class="in in-medium"
+              autocomplete="street-address"
+              id="houseNumber"
+            />
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faAt" class="text-oposity1"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+
+        <div>
+          <label for="complement"> Complemento </label>
+
+          <app-input-container class="in-container in-container-base my-4">
+            <input
+              formControlName="complement"
+              type="text"
+              name="complement"
+              placeholder="Complemento"
+              class="in in-medium"
+              autocomplete="street-address"
+            />
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faAt" class="text-oposity1"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+
+        <div>
+          <label for="neighborhood">Bairro</label>
+          <app-input-container class="in-container in-container-base my-4">
+            <input
+              formControlName="neighborhood"
+              type="text"
+              name=" neighborhood"
+              placeholder="Bairro"
+              class="in in-medium"
+              autocomplete="street-address"
+              id="neighborhood"
+            />
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faAt" class="text-oposity1"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+
+        <div>
+          <label for="city">Cidade</label>
+
+          <app-input-container class="in-container in-container-base my-4">
+            <input
+              formControlName="city"
+              type="text"
+              name="city"
+              placeholder="Cidade"
+              class="in in-medium"
+              autocomplete="street-address"
+              id="city"
+            />
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faAt" class="text-oposity1"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+        <div>
+          <label for="fu">Estado</label>
+
+          <app-input-container class="in-container in-container-base my-4">
+            <input
+              formControlName="fu"
+              type="text"
+              name="fu"
+              placeholder="Estado"
+              class="in in-medium"
+              autocomplete="street-address"
+            />
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faAt" class="text-oposity1"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+
+        <div>
+          <label for="cep">Cep</label>
+
+          <app-input-container class="in-container in-container-base my-4">
+            <input
+              formControlName="cep"
+              type="text"
+              name="cep"
+              placeholder="cep"
+              autocomplete="cep"
+              autocapitalize="sentences"
+              class="in in-medium"
+              id="cep"
+            />
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faUser" class="text-oposity1"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+
+        <div class="d-flex flex-column flex-center">
+          <label for="buttons">Deseja enviar alterações ?</label>
+
+          <div
+            class="in-container buttons-container my-4 d-flex justify-content-center align-items-center bg-profile"
+          >
+            <button class="bt bt-medium mr-2" id="buttons">
+              Enviar
+            </button>
+            <!-- </a>-->
+
+            <button class="bt bt-base ml-2" id="buttons">
+              Cancelar
+            </button>
+          </div>
+          <!--<a routerLink="/"> -->
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

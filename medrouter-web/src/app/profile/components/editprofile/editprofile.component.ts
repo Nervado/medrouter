@@ -3,6 +3,8 @@ import {
   faUserTie,
   faMapMarkerAlt,
   faStar,
+  faTrash,
+  faEdit,
 } from "@fortawesome/free-solid-svg-icons";
 import { UserLogged } from "../../models/logged-user";
 import { Profile } from "../../models/user-profile";
@@ -19,6 +21,9 @@ export class EditprofileComponent implements OnInit {
   faUserTie = faUserTie;
   faLocationArrow = faMapMarkerAlt;
   faStar = faStar;
+
+  faTrash = faTrash;
+  faEdit = faEdit;
 
   userLogged: UserLogged = null;
   userProfile: Profile = null;

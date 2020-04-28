@@ -1,11 +1,13 @@
 <div class="tool-bar h-100" [style.background-color]="bg">
   <div class="too-bar-content">
     <div class="page-icon">
-      <fa-icon
-        [icon]="menuLinks[role].icon"
-        size="2x"
-        class="text-oposity"
-      ></fa-icon>
+      <a [routerLink]="link">
+        <fa-icon
+          [icon]="menuLinks[role].icon"
+          size="3x"
+          class="text-oposity"
+        ></fa-icon>
+      </a>
     </div>
 
     <div class="tool-bar-menu d-flex flex-column align-items-center">

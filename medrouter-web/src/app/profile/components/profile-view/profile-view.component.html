@@ -73,11 +73,13 @@
           <div class="contact d-flex flex-column">
             <div class="row my-3">
               <div class="col-6">Telefone:</div>
-              <div class="col-6">{{ userProfile.phoneNumber }}</div>
+              <div class="col-6 text-oposity1">
+                {{ userProfile.phoneNumber }}
+              </div>
             </div>
             <div class="row my-3">
               <div class="col-6">Address:</div>
-              <div class="col-6 text-profile" *ngIf="userProfile.address">
+              <div class="col-6 text-oposity1" *ngIf="userProfile.address">
                 {{ userProfile.address.streetName }},
                 {{ userProfile.address.houseNumber }}, <br />
 
@@ -88,7 +90,7 @@
             </div>
             <div class="row my-3">
               <div class="col-6">Email</div>
-              <div class="col-6 text-profile">
+              <div class="col-6 text-oposity1">
                 {{ userProfile.email }}
               </div>
             </div>
@@ -96,13 +98,13 @@
           <div class="basic-info d-flex flex-column">
             <div class="row my-3">
               <div class="col-6">Inscrito em:</div>
-              <div class="col-6 text-profile">
+              <div class="col-6 text-oposity1">
                 25-05-1989
               </div>
             </div>
             <div class="row my-3">
               <div class="col-6">Genero</div>
-              <div class="col-6 text-profile">Masculino</div>
+              <div class="col-6 text-oposity1">Masculino</div>
             </div>
           </div>
         </div>
