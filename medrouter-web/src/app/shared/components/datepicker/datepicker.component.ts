@@ -1,4 +1,11 @@
-import { Component, OnInit, Injectable } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Injectable,
+  Input,
+  Output,
+  EventEmitter,
+} from "@angular/core";
 
 import {
   NgbDateStruct,
@@ -6,9 +13,14 @@ import {
   NgbDateParserFormatter,
 } from "@ng-bootstrap/ng-bootstrap";
 
-import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCalendarAlt,
+  faCheck,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { Data } from "./models/datepicker.model";
+import { Colors } from "src/app/messages/toast/enums/colors";
 
 const I18N_VALUES = {
   br: {
@@ -104,12 +116,34 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   ],
 })
 export class DatepickerComponent implements OnInit {
-  model: Data;
+  formater = new CustomDateParserFormatter();
+
+  @Input() btColor: Colors = Colors.OPOSITY1;
+  @Input() tick: boolean = false;
+  @Output() date: EventEmitter<Data> = new EventEmitter();
+  @Input() old: Data;
+
   faCalendarAlt = faCalendarAlt;
+  faTimes = faTimes;
+  faCheck = faCheck;
+  values: Data;
+  default: string = "Data";
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.values = this.old;
+    this.default = this.formater.format(this.old) || this.default;
+  }
 
-  onClick(): void {}
+  hasValue(): boolean {
+    if ((this.values && this.values) || this.old) {
+      return true;
+    }
+    return false;
+  }
+
+  onDateSelect(e) {
+    this.date.emit(e);
+  }
 }

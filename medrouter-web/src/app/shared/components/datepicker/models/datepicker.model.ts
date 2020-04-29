@@ -1,5 +1,5 @@
 export class Data {
   day: number;
-  mounth: number;
+  month: number;
   year: number;
 }

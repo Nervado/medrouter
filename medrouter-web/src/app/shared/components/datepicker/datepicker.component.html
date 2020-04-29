@@ -1,26 +1,35 @@
 <form class="form-inline w-100">
   <div class="form-group w-100">
     <div class="input-group">
+      <!--  [(ngModel)]="values"-->
       <input
         class="form-control text-base1"
-        placeholder="Data"
         name="dp"
-        [(ngModel)]="model"
         ngbDatepicker
         #d="ngbDatepicker"
+        [(ngModel)]="values"
+        (dateSelect)="onDateSelect($event)"
+        [placeholder]="default"
       />
       <div class="input-group-append">
         <button
-          class="bt bt-oposity1 calendar"
+          class="bt calendar"
           (click)="d.toggle()"
           type="button"
+          [ngStyle]="{ 'background-color': btColor }"
         >
-          <fa-icon
-            [icon]="faCalendarAlt"
-            class="text-oposity"
-            (click)="onClick()"
-          ></fa-icon>
+          <fa-icon [icon]="faCalendarAlt" class="text-oposity"></fa-icon>
         </button>
+        <div
+          class="d-flex flex-column justify-content-center align-itens-center"
+        >
+          <span class="text-medium" *ngIf="tick && hasValue()">
+            <fa-icon [icon]="faCheck"></fa-icon>
+          </span>
+          <span class="text-oposity1" *ngIf="tick && !hasValue()">
+            <fa-icon [icon]="faTimes"></fa-icon>
+          </span>
+        </div>
       </div>
     </div>
   </div>
