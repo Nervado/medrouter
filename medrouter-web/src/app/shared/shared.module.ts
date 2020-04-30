@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { NgModule, ModuleWithProviders } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -15,6 +15,7 @@ import { MenubarComponent } from "./components/menubar/menubar.component";
 import { WrapperContentComponent } from "./components/wrapper-content/wrapper-content.component";
 import { WrapperComponentComponent } from "./components/wrapper-component/wrapper-component.component";
 import { LoadingComponent } from "./components/loading/loading.component";
+import { RadioComponent } from "./components/radio/radio.component";
 //import { ContentHeaderComponent } from './components/content-header/content-header.component';
 
 @NgModule({
@@ -30,6 +31,7 @@ import { LoadingComponent } from "./components/loading/loading.component";
     WrapperContentComponent,
     WrapperComponentComponent,
     LoadingComponent,
+    RadioComponent,
   ],
   imports: [
     CommonModule,
@@ -55,6 +57,7 @@ import { LoadingComponent } from "./components/loading/loading.component";
     WrapperComponentComponent,
     MenubarComponent,
     LoadingComponent,
+    RadioComponent,
   ],
 })
 export class SharedModule {}

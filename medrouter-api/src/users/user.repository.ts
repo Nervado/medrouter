@@ -11,9 +11,29 @@ import { PageFilterDto } from './dto/page-filter.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
 import { Address } from 'src/address/models/address.entity';
 import { Role } from 'src/auth/enums/role.enum';
+import { AuthPasswordChange } from 'src/auth/dto/auth-password-change.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
+  async changePassword(newPass: AuthPasswordChange, user: User): Promise<User> {
+    const { password, newPassword, passwordConfirmation } = newPass;
+
+    if (newPassword === passwordConfirmation && password !== newPassword) {
+      throw new BadRequestException('Old password can not be used');
+    }
+
+    // user can change password now
+    user.salt = await bcrypt.genSalt();
+    user.password = await this.hashPassword(newPassword, user.salt);
+
+    // save update uses with new password
+    try {
+      return await user.save();
+    } catch (error) {
+      throw new InternalServerErrorException('Uknow error!');
+    }
+  }
+
   async signUp(authSingUpDto: AuthSingUpDto): Promise<User> {
     const {
       email,
@@ -63,8 +83,6 @@ export class UserRepository extends Repository<User> {
         where: { email: username },
       });
 
-      console.log(user);
-
       if (user && (await user.validatePassword(password))) {
         return user;
       }
@@ -107,7 +125,7 @@ export class UserRepository extends Repository<User> {
       if (error.code === '23505') {
         throw new ConflictException('User already exists');
       } else {
-        throw new InternalServerErrorException('Uknow error!');
+        throw new InternalServerErrorException('Uknow error here!');
       }
     }
   }

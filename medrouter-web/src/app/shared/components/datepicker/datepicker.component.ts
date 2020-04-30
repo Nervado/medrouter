@@ -5,6 +5,7 @@ import {
   Input,
   Output,
   EventEmitter,
+  forwardRef,
 } from "@angular/core";
 
 import {
@@ -21,6 +22,11 @@ import {
 
 import { Data } from "./models/datepicker.model";
 import { Colors } from "src/app/messages/toast/enums/colors";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+
+import { setDateModel } from "../../../utils/setDateModel";
+import { adjustDate } from "../../../utils/setdate";
+import { compileNgModule } from "@angular/compiler";
 
 const I18N_VALUES = {
   br: {
@@ -113,37 +119,81 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     I18n,
     { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DatepickerComponent),
+      multi: true,
+    },
   ],
 })
-export class DatepickerComponent implements OnInit {
+export class DatepickerComponent implements OnInit, ControlValueAccessor {
   formater = new CustomDateParserFormatter();
 
   @Input() btColor: Colors = Colors.OPOSITY1;
   @Input() tick: boolean = false;
-  @Output() date: EventEmitter<Data> = new EventEmitter();
-  @Input() old: Data;
+  //@Output() date: EventEmitter<Data> = new EventEmitter();
+  //@Input() old: Date;
+
+  value: any;
 
   faCalendarAlt = faCalendarAlt;
   faTimes = faTimes;
   faCheck = faCheck;
-  values: Data;
-  default: string = "Data";
+  @Input() values: Data;
+
+  @Input() defaut: any = "Data";
+
+  onChange: any;
 
   constructor() {}
 
   ngOnInit(): void {
-    this.values = this.old;
-    this.default = this.formater.format(this.old) || this.default;
+    if (this.defaut !== "Data") {
+      const currentDate = new Date(this.defaut);
+      this.values = {
+        year: currentDate.getFullYear(),
+        month: currentDate.getMonth(),
+        day: currentDate.getDate(),
+      };
+    }
   }
 
   hasValue(): boolean {
+    if (this.value !== null) {
+      return true;
+    }
+
+    return false;
+    /** 
     if ((this.values && this.values) || this.old) {
       return true;
     }
     return false;
+    */
   }
 
-  onDateSelect(e) {
-    this.date.emit(e);
+  setValue(value: any) {
+    const newdate = new Date(value.year, value.month, value.day, 0, 0, 0);
+    this.value = newdate;
+    console.log(this.value);
+    this.onChange(this.value);
   }
+
+  writeValue(obj: any): void {
+    const newdate = new Date(obj);
+
+    this.value = newdate;
+
+    this.values = {
+      year: newdate.getFullYear(),
+      month: newdate.getMonth(),
+      day: newdate.getDate(),
+    };
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched() {}
 }

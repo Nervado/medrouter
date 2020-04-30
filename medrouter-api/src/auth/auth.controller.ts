@@ -8,6 +8,7 @@ import {
   Get,
   Param,
   Render,
+  Patch,
 } from '@nestjs/common';
 import { AuthSingUpDto } from './dto/auth-signup.dto';
 import { AuthService } from './auth.service';
@@ -15,6 +16,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { LoginDto } from './dto/auth-login.dto';
 import { CredentailsDto } from './dto/auth-credentials.dto';
 import { UserDto } from '../users/dto/user-dto';
+import { AuthPasswordChange } from './dto/auth-password-change.dto';
+import { GetUser } from 'src/users/decorators/get-user.decorator';
+import { User } from 'src/users/models/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -24,6 +28,15 @@ export class AuthController {
   @UseInterceptors(ClassSerializerInterceptor)
   signUp(@Body() authSingUpDto: AuthSingUpDto): Promise<UserDto> {
     return this.authService.signUp(authSingUpDto);
+  }
+
+  @Patch('/signup')
+  @UseInterceptors(ClassSerializerInterceptor)
+  patch(
+    @Body() body: AuthPasswordChange,
+    @GetUser() user: User,
+  ): Promise<CredentailsDto> {
+    return this.authService.changePassword(body, user);
   }
 
   @Post('/signin')

@@ -1,1 +1,73 @@
-<p>edit-avatar works!</p>
+<div class="wrapper-component d-flex justify-content-center align-items-center">
+  <div
+    class="row profile d-flex justify-content-center align-items-center bg-profile text-oposity"
+  >
+    <div class="d-flex flex-column w-75">
+      <div class="d-flex flex-wrap align-itens-center justify-content-center">
+        <div class="avatar-old m-3">
+          <div>Foto atual</div>
+          <label htmlFor="avatar">
+            <ng-container *ngIf="avatar?.url; else preview">
+              <div class="avatar">
+                <img [src]="avatar.url" alt="avatar" />
+              </div>
+            </ng-container>
+            <ng-template #preview>
+              <div class="avatar">
+                <img
+                  [src]="'../../../../assets/avatarmale.png'"
+                  alt="avatar"
+                /></div
+            ></ng-template>
+          </label>
+          <div class="cursor d-flex justify-content-end">
+            Apagar
+            <fa-icon [icon]="faTrash" class="mx-1"></fa-icon>
+          </div>
+        </div>
+
+        <div class="new-avatar m-3">
+          <div>Preview de sua nova foto</div>
+          <label htmlFor="avatar">
+            <ng-container *ngIf="newAvatar?.url; else elseTemplate">
+              <img [src]="newAvatar.url" alt="" />
+            </ng-container>
+            <ng-template #elseTemplate>
+              <div class="icon">
+                <fa-icon [icon]="faCameraRetro" size="4x"></fa-icon>
+              </div>
+            </ng-template>
+
+            <input
+              accept="image/*"
+              type="file"
+              id="avatar"
+              (onchange)="handleChange($event)"
+              value=""
+            />
+          </label>
+          <div class="cursor d-flex justify-content-end">
+            Apagar
+            <fa-icon [icon]="faTrash" class="mx-1"></fa-icon>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex flex-column flex-center">
+        <label for="buttons">Deseja enviar alterações ?</label>
+
+        <div
+          class="in-container buttons-container my-4 d-flex justify-content-center align-items-center bg-profile"
+        >
+          <button class="bt bt-medium mr-2" id="buttons1" (click)="send()">
+            Enviar
+          </button>
+
+          <button class="bt bt-base ml-2" id="buttons2">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

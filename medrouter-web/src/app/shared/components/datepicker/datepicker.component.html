@@ -8,8 +8,8 @@
         ngbDatepicker
         #d="ngbDatepicker"
         [(ngModel)]="values"
-        (dateSelect)="onDateSelect($event)"
-        [placeholder]="default"
+        (dateSelect)="setValue($event)"
+        [placeholder]="defaut"
       />
       <div class="input-group-append">
         <button

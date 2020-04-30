@@ -1,1 +1,46 @@
-<p>security works!</p>
+<div class="wrapper-component d-flex justify-content-center align-items-center">
+  <div
+    class="row profile d-flex justify-content-center align-items-center bg-profile text-oposity"
+  >
+    <form [formGroup]="securityForm">
+      <div class="d-flex flex-wrap justify-content-between px-5 mx-3">
+        <div class="">
+          <label for="username">Nome</label>
+          <app-input-container class="in-container in-container-base my-4">
+            <input
+              formControlName="password"
+              type="password"
+              name="password"
+              placeholder="Senha atual"
+              autocomplete="current-password"
+              class="in in-medium"
+            />
+
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <!---->
+              <fa-icon [icon]="faUser" class="text-medium"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+
+        <div class="d-flex flex-column flex-center">
+          <label for="buttons">Deseja enviar alterações ?</label>
+
+          <div
+            class="in-container buttons-container my-4 d-flex justify-content-center align-items-center bg-profile"
+          >
+            <button class="bt bt-medium mr-2" id="buttons" (click)="send()">
+              Enviar
+            </button>
+
+            <button class="bt bt-base ml-2" id="buttons">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -5,12 +5,18 @@ import {
   faStar,
   faTrash,
   faEdit,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { UserLogged } from "../../models/logged-user";
 import { Profile } from "../../models/user-profile";
-import { AuthService } from "src/app/auth/auth.service";
 import { UsersService } from "../../users.service";
 import { NotificationService } from "src/app/messages/notification.service";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Types } from "src/app/messages/toast/enums/types";
+import { Colors } from "src/app/messages/toast/enums/colors";
+
+import { CustomDateParserFormatter } from "../../../shared/components/datepicker/datepicker.component";
 
 @Component({
   selector: "app-editprofile",
@@ -20,8 +26,7 @@ import { NotificationService } from "src/app/messages/notification.service";
 export class EditprofileComponent implements OnInit {
   faUserTie = faUserTie;
   faLocationArrow = faMapMarkerAlt;
-  faStar = faStar;
-
+  faUser = faUser;
   faTrash = faTrash;
   faEdit = faEdit;
 
@@ -29,18 +34,71 @@ export class EditprofileComponent implements OnInit {
   userProfile: Profile = null;
   loading: boolean = false;
 
+  profile: Profile;
+  userId: any;
+
+  profileForm: FormGroup;
+
+  birthdate: string;
+
+  parser: CustomDateParserFormatter = new CustomDateParserFormatter();
+
   constructor(
-    private authService: AuthService,
+    private fb: FormBuilder,
     private usersService: UsersService,
-    private notificationService: NotificationService
+    private activeRoute: ActivatedRoute,
+    private notificationService: NotificationService,
+    private router: Router
   ) {}
 
+  btColor: Colors = Colors.BASE;
+  tick: boolean = true;
+
   ngOnInit(): void {
-    this.userProfile = this.usersService.getUserProfile();
-    if (!this.userProfile) {
-      this.usersService
-        .getUserById(this.authService.getUser().user.userId)
-        .subscribe((profile: Profile) => (this.userProfile = profile));
-    }
+    this.profile = this.usersService.getUserProfile();
+    this.userId = this.activeRoute.parent.snapshot.params["id"];
+
+    this.profileForm = this.fb.group({
+      birthdate: this.fb.control(this.profile?.birthdate, [
+        Validators.required,
+      ]),
+      options: this.fb.control(this.profile?.options, [Validators.required]),
+      username: this.fb.control(this.profile?.username, [Validators.required]),
+      surname: this.fb.control(this.profile?.surname, [Validators.required]),
+      cpf: this.fb.control(this.profile?.cpf, [Validators.required]),
+      email: this.fb.control(this.profile?.email, [Validators.required]),
+      sex: this.fb.control(this.profile?.sex, [Validators.required]),
+      phoneNumber: this.fb.control(this.profile?.phoneNumber, [
+        Validators.required,
+      ]),
+    });
+
+    const date = new Date(this.profile.birthdate);
+
+    this.birthdate = this.parser.format({
+      year: date.getFullYear(),
+      month: date.getMonth(),
+      day: date.getDate(),
+    });
+  }
+  send() {
+    const updatedUserWithProfile = {
+      ...this.usersService.getUserProfile(),
+      ...this.profileForm.value,
+    };
+
+    this.usersService.update(updatedUserWithProfile, this.userId).subscribe(
+      () =>
+        this.notificationService.notify({
+          message: "Perfil atualizado com sucesso",
+          type: Types.BASE,
+        }),
+      () =>
+        this.notificationService.notify({
+          message: "Algo deu errado =(",
+          type: Types.ERROR,
+        }),
+      () => this.router.navigate(["profile", this.userId])
+    );
   }
 }

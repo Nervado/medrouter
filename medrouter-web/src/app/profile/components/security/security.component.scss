@@ -1,0 +1,32 @@
+.wrapper-component {
+  height: 80%;
+  margin: 80px;
+  padding-left: 80px;
+
+  .profile {
+    width: 800px;
+    height: 550px;
+    background-color: var(--oposity);
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 4px 4px 4px rgba(122, 122, 122, 0.2);
+  }
+}
+
+.bt {
+  height: 35px;
+  width: 100px;
+}
+
+.buttons-container {
+  border: 2px solid var(--profile);
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.options {
+  height: 100px;
+  background-color: var(--profile);
+}

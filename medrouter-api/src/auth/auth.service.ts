@@ -15,6 +15,9 @@ import { configService } from '../config/config.service';
 
 import { UserDto } from '../users/dto/user-dto';
 import * as Redis from 'ioredis';
+import { AuthPasswordChange } from './dto/auth-password-change.dto';
+import { User } from 'src/users/models/user.entity';
+import { LoginDto } from './dto/auth-login.dto';
 
 @Injectable()
 export class AuthService {
@@ -37,32 +40,19 @@ export class AuthService {
   async signIn(loginDto: any): Promise<CredentailsDto> {
     const user = await this.userService.validateUser(loginDto);
 
-    const {
-      username,
-      userId,
-      email,
-      client,
-      role,
-      admin,
-      recept,
-      doctor,
-      owner,
-    } = user;
+    const { username, userId, email, role } = user;
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
+
+    return this.generateAccessToken(user);
 
     const payload: JwtPayload = {
       username,
       userId,
       email,
       role,
-      client,
-      admin,
-      recept,
-      doctor,
-      owner,
     };
 
     const accessToken = await this.jwtService.sign(payload);
@@ -110,5 +100,56 @@ export class AuthService {
     } catch (error) {
       throw new InternalServerErrorException('Uknow user');
     }
+  }
+
+  async changePassword(
+    body: AuthPasswordChange,
+    user: User,
+  ): Promise<CredentailsDto> {
+    const login = new LoginDto();
+
+    login.password = body.password;
+    login.username = user.email;
+
+    const search = await this.userService.validateUser(login);
+
+    if (!search || user.userId !== search.userId) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    // now can change password
+    const altereduser = await this.userService.changePassword(body, user);
+
+    // set new token
+    return this.generateAccessToken(altereduser);
+  }
+
+  async generateAccessToken(user: User): Promise<CredentailsDto> {
+    const { username, userId, email, role } = user;
+
+    const payload: JwtPayload = {
+      username,
+      userId,
+      email,
+      role,
+    };
+
+    const accessToken = await this.jwtService.sign(payload);
+
+    this.logger.debug(
+      `Generated JWT Token with payload ${JSON.stringify(payload)}`,
+    );
+
+    const authCredentailsDto = new CredentailsDto();
+
+    authCredentailsDto.token = accessToken;
+    authCredentailsDto.user = {
+      username,
+      userId,
+      email,
+      role,
+    };
+
+    return authCredentailsDto;
   }
 }

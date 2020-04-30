@@ -1,0 +1,61 @@
+.wrapper-component {
+  height: 80%;
+  margin: 80px;
+  padding-left: 80px;
+
+  .profile {
+    width: 800px;
+    height: 550px;
+    background-color: var(--oposity);
+    border-radius: 4px;
+    padding: 5px;
+    box-shadow: 4px 4px 4px rgba(122, 122, 122, 0.2);
+  }
+}
+
+.bt {
+  height: 35px;
+  width: 100px;
+}
+
+.buttons-container {
+  border: 2px solid var(--profile);
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.avatar {
+  img {
+    height: 300px;
+    width: 250px;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 2px solid var(--oposity);
+  }
+}
+
+.new-avatar {
+  label {
+    height: 300px;
+    width: 250px;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 2px solid var(--oposity);
+    background-color: rgba(122, 122, 122, 0.7);
+
+    .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 300px;
+      width: 250px;
+      cursor: pointer;
+    }
+
+    input {
+      display: none;
+    }
+  }
+}

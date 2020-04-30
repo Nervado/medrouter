@@ -6,6 +6,8 @@ import { UsersService } from "../../users.service";
 import { Profile } from "../../models/user-profile";
 import { Types } from "src/app/messages/toast/enums/types";
 
+import { CustomDateParserFormatter } from "../../../shared/components/datepicker/datepicker.component";
+
 import {
   faUserTie,
   faStar,
@@ -18,6 +20,7 @@ import {
   styleUrls: ["./profile-view.component.scss"],
 })
 export class ProfileViewComponent implements OnInit {
+  parser = new CustomDateParserFormatter();
   constructor(
     private authService: AuthService,
     private usersService: UsersService,
@@ -34,10 +37,16 @@ export class ProfileViewComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.userLogged = this.authService.getUser().user;
+
     this.usersService.getUserById(this.userLogged.userId).subscribe(
       (profile: Profile) => {
         this.userProfile = profile;
-        console.log(profile);
+        const date = new Date(this.userProfile.birthdate);
+        this.userProfile.prettyDate = this.parser.format({
+          year: date.getFullYear(),
+          month: date.getMonth(),
+          day: date.getDate(),
+        });
       },
       (error) => {
         this.notificationService.notify({

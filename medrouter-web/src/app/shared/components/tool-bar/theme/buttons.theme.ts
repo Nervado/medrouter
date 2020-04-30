@@ -23,14 +23,14 @@ import {
   faFlask,
   faHeartbeat,
   faHouseUser,
-  faUserCircle,
+  faPortrait,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const Buttons = {
   profile: [
     { icon: faUserEdit, path: "edit-profile" },
     { icon: faHouseUser, path: "edit-address" },
-    { icon: faUserCircle, path: "edit-avatar" },
+    { icon: faPortrait, path: "edit-avatar" },
     { icon: faLock, path: "security" },
     { icon: faPowerOff, path: "unsubscribe" },
   ], //

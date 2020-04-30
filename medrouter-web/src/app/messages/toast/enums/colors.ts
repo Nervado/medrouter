@@ -18,4 +18,5 @@ export enum Colors {
   USER = "#5768c9",
   RECEPT = "#0eaf16",
   LAB = "#69d188",
+  PROFILE = "#5768c9",
 }

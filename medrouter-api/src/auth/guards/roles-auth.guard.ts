@@ -34,6 +34,5 @@ export class RolesGuard implements CanActivate {
       (p, el) => p && !!userRoles.find(le => le === el),
       true,
     );
-    //    some((p, c) => p && userRoles[c] === true, true);
   }
 }

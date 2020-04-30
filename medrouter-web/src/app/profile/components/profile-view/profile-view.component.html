@@ -34,7 +34,8 @@
           <span class="client">Cliente</span>
         </div>
         <div class="role">
-          Conosco desde 2012
+          Desde
+          <strong> {{ userProfile.createdAt.split("-")[0] }}</strong>
         </div>
 
         <div class="ranking d-flex flex-column">
@@ -81,8 +82,9 @@
               <div class="col-6">Address:</div>
               <div class="col-6 text-oposity1" *ngIf="userProfile.address">
                 {{ userProfile.address.streetName }},
-                {{ userProfile.address.houseNumber }}, <br />
-
+                {{ userProfile.address.houseNumber }},
+                {{ userProfile.address.complement }},
+                <br />
                 {{ userProfile.address.neighborhood }},
                 {{ userProfile.address.city }}, Cep:
                 {{ userProfile.address.cep }}
@@ -97,14 +99,14 @@
           </div>
           <div class="basic-info d-flex flex-column">
             <div class="row my-3">
-              <div class="col-6">Inscrito em:</div>
+              <div class="col-6">Aniversario:</div>
               <div class="col-6 text-oposity1">
-                25-05-1989
+                {{ userProfile.prettyDate }}
               </div>
             </div>
             <div class="row my-3">
               <div class="col-6">Genero</div>
-              <div class="col-6 text-oposity1">Masculino</div>
+              <div class="col-6 text-oposity1">{{ userProfile.sex }}</div>
             </div>
           </div>
         </div>

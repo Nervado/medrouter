@@ -10,6 +10,11 @@ import { UnsubscribeComponent } from "./components/unsubscribe/unsubscribe.compo
 
 const routes: Routes = [
   {
+    path: "",
+    redirectTo: "/",
+    pathMatch: "full",
+  },
+  {
     path: ":id",
     component: ProfilePageComponent,
     children: [

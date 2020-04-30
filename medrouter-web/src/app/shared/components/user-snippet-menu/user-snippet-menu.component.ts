@@ -43,8 +43,6 @@ export class UserSnippetMenuComponent implements OnInit {
     this.setHoverClass();
 
     this.roles = this.user.role;
-
-    console.log(this.user);
   }
 
   toogle() {

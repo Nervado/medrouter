@@ -11,4 +11,5 @@ export enum Types {
   MEDIUM1 = "medium1",
   COLORUP = "colorup",
   COLORDOWN = "colordown",
+  PROFILE = "profile",
 }

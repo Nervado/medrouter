@@ -7,12 +7,15 @@ export class Profile {
   surname: string;
   cpf: string;
   phoneNumber: string;
+  birthdate: Date;
   email: string;
   admin: boolean;
   recept: boolean;
   doctor: boolean;
   client: boolean;
   owner: boolean;
+  sex: string;
+  options: string;
   role: Array<Role>;
   avatar: {
     avatarId: number;
@@ -21,4 +24,8 @@ export class Profile {
   };
   address: Address;
   fullname: string;
+
+  prettyDate?: string;
+
+  createdAt: string;
 }

@@ -18,6 +18,7 @@ import { Role } from 'src/auth/enums/role.enum';
 import { configService } from 'src/config/config.service';
 import * as Redis from 'ioredis';
 import { v4 as uuidv4 } from 'uuid';
+import { AuthPasswordChange } from '../auth/dto/auth-password-change.dto';
 
 @Injectable()
 export class UsersService {
@@ -76,11 +77,6 @@ export class UsersService {
       );
     }
 
-    console.log(
-      confirmationToken,
-      userId,
-      this.setConfirmationLink(confirmationToken),
-    );
     const data = {
       username,
       phoneNumber,
@@ -147,5 +143,9 @@ export class UsersService {
 
   setConfirmationLink(token: string): string {
     return `${configService.getServerUrl()}/auth/confirmation/${token}`;
+  }
+
+  async changePassword(newPass: AuthPasswordChange, user: User): Promise<User> {
+    return this.userRepository.changePassword(newPass, user);
   }
 }

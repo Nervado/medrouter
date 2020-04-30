@@ -19,4 +19,5 @@ export const Style = {
   medium1: { color: Colors.OPOSITY, bg: Colors.MEDIUM1 },
   colorup: { color: Colors.OPOSITY, bg: Colors.COLORUP },
   colordown: { color: Colors.OPOSITY, bg: Colors.COLORDOWN },
+  profile: { color: Colors.OPOSITY, bg: Colors.PROFILE },
 };

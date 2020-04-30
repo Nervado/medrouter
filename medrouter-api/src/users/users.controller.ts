@@ -53,19 +53,17 @@ export class UsersController {
   }
 
   @Put('/:id')
-  //@Roles('client')
+  @Roles('client')
   @UseInterceptors(ClassSerializerInterceptor)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: UserUpdateDto,
     @GetUser() loggedUser: User,
   ): Promise<User> {
-    console.log(loggedUser);
     return this.usersService.update(id, body, loggedUser);
   }
 
   @Delete('/:id')
-  @Get()
   @Allow('recept', 'admin', 'owner')
   deleteUser(@Param('id') id: number, @GetUser() loggedUser: User) {
     return this.usersService.deleteOne(id, loggedUser);

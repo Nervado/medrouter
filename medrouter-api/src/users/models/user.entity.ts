@@ -18,6 +18,7 @@ import * as bcrypt from 'bcrypt';
 
 import { Address } from '../../address/models/address.entity';
 import { Role } from '../../auth/enums/role.enum';
+import { Sex } from '../enuns/sex.enum';
 
 @Entity('user')
 @Unique(['email'])
@@ -38,6 +39,12 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   phoneNumber: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  birthdate: Date;
+
+  @Column({ type: 'enum', enum: Sex, default: Sex.UNDEF })
+  sex: Sex;
 
   @Column()
   email: string;
@@ -76,7 +83,6 @@ export class User extends BaseEntity {
   @JoinColumn()
   address: Address;
 
-  @Exclude()
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 

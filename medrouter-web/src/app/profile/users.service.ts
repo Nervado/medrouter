@@ -14,7 +14,7 @@ import { faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 export class UsersService {
   profile: Profile = null;
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient) {
     const profile: Profile = JSON.parse(sessionStorage.getItem("profile"));
     if (profile) {
       this.profile = profile;

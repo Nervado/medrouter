@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { AuthService } from "../../../auth/auth.service";
 
 import {
   faLock,
@@ -11,11 +10,9 @@ import {
   faHome,
   faRoad,
 } from "@fortawesome/free-solid-svg-icons";
+
 import { NotificationService } from "src/app/messages/notification.service";
 import { Types } from "src/app/messages/toast/enums/types";
-import { User } from "src/app/auth/models/user.model";
-import { Role } from "src/app/auth/enums/roles-types";
-import { Profile } from "../../models/user-profile";
 import { Address } from "../../models/address";
 import { UsersService } from "../../users.service";
 
@@ -38,17 +35,20 @@ export class EditAddressComponent implements OnInit {
 
   address: Address = null;
 
+  userId: any;
+
   constructor(
     private fb: FormBuilder,
     private usersService: UsersService,
-
     private activeRoute: ActivatedRoute,
     private notificationService: NotificationService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.address = this.usersService.getUserProfile().address;
+    this.address = this.usersService.getUserProfile()?.address;
+    this.userId = this.activeRoute.parent.snapshot.params["id"];
+
     this.addressForm = this.fb.group({
       cep: this.fb.control(this.address?.cep, [Validators.required]),
       streetName: this.fb.control(this.address?.streetName, [
@@ -69,6 +69,20 @@ export class EditAddressComponent implements OnInit {
   }
 
   send() {
-    console.log(this.addressForm.value);
+    const updatedUserWithAddress = this.usersService.getUserProfile();
+    updatedUserWithAddress.address = this.addressForm.value;
+    this.usersService.update(updatedUserWithAddress, this.userId).subscribe(
+      () =>
+        this.notificationService.notify({
+          message: "Endereço Atualizado com sucesso",
+          type: Types.BASE,
+        }),
+      () =>
+        this.notificationService.notify({
+          message: "Algo deu Errado =(",
+          type: Types.ERROR,
+        }),
+      () => this.router.navigate(["profile", this.userId])
+    );
   }
 }
