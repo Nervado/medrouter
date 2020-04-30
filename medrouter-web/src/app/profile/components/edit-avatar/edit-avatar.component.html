@@ -20,14 +20,18 @@
                 /></div
             ></ng-template>
           </label>
-          <div class="cursor d-flex justify-content-end">
-            Apagar
-            <fa-icon [icon]="faTrash" class="mx-1"></fa-icon>
+          <div class="d-flex justify-content-end">
+            <fa-icon
+              (click)="delete(avatar?.avatarId)"
+              [icon]="faTrash"
+              size="2x"
+              class="mx-1 cursor"
+            ></fa-icon>
           </div>
         </div>
 
         <div class="new-avatar m-3">
-          <div>Preview de sua nova foto</div>
+          <div>Sua nova foto</div>
           <form
             [formGroup]="formFile"
             novalidate
@@ -54,8 +58,12 @@
             </label>
           </form>
           <div class="cursor d-flex justify-content-end">
-            Apagar
-            <fa-icon [icon]="faTrash" class="mx-1"></fa-icon>
+            <fa-icon
+              [icon]="faTrash"
+              (click)="delete(newAvatar?.avatarId)"
+              size="2x"
+              class="mx-1"
+            ></fa-icon>
           </div>
         </div>
       </div>
@@ -66,11 +74,11 @@
         <div
           class="in-container buttons-container my-4 d-flex justify-content-center align-items-center bg-profile"
         >
-          <button class="bt bt-medium mr-2" id="buttons1" (click)="send()">
+          <button class="bt bt-medium mr-2" id="buttons1" (click)="update()">
             Enviar
           </button>
-          <!-- <button type="submit" [disabled]="formGroup.invalid || formGroup.prestine">Submit</button-->
-          <button class="bt bt-base ml-2" id="buttons2">
+
+          <button class="bt bt-base ml-2" id="buttons2" (click)="cancel()">
             Cancelar
           </button>
         </div>

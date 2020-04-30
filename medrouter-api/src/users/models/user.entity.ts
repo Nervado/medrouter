@@ -75,7 +75,7 @@ export class User extends BaseEntity {
   @Column()
   salt: string;
 
-  @OneToOne(() => Avatar, { eager: true })
+  @OneToOne(() => Avatar, { eager: true, nullable: true })
   @JoinColumn()
   avatar: Avatar;
 

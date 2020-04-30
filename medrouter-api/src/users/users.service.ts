@@ -53,6 +53,7 @@ export class UsersService {
     if (user.userId !== id && !user.admin && !user.owner && !user.recept) {
       throw new UnauthorizedException('User has not correct privileges');
     }
+
     if (!userUpdateDto.address) {
       return await this.userRepository.updateOne(id, userUpdateDto);
     }

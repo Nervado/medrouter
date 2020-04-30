@@ -69,3 +69,16 @@
     }
   }
 }
+
+button,
+fa-icon {
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+fa-icon {
+  &:hover {
+    color: var(--base);
+  }
+}

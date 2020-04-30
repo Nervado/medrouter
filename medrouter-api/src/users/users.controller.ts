@@ -48,7 +48,6 @@ export class UsersController {
   @Roles('client')
   @UseInterceptors(ClassSerializerInterceptor)
   getUser(@Param('id', ParseIntPipe) id: number, @GetUser() user: User) {
-    // this.logger.verbose(`User ${user.userId} attempt to get profile data...`);
     return this.usersService.get(id, user);
   }
 

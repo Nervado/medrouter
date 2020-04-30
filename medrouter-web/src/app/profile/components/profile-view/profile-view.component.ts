@@ -41,12 +41,8 @@ export class ProfileViewComponent implements OnInit {
     this.usersService.getUserById(this.userLogged.userId).subscribe(
       (profile: Profile) => {
         this.userProfile = profile;
-        const date = new Date(this.userProfile.birthdate);
-        this.userProfile.prettyDate = this.parser.format({
-          year: date.getFullYear(),
-          month: date.getMonth(),
-          day: date.getDate(),
-        });
+        this.setStringDate();
+        console.log(this.userProfile);
       },
       (error) => {
         this.notificationService.notify({
@@ -58,5 +54,14 @@ export class ProfileViewComponent implements OnInit {
         this.loading = false;
       }
     );
+  }
+
+  setStringDate() {
+    const date = new Date(this.userProfile.birthdate);
+    this.userProfile.prettyDate = this.parser.format({
+      year: date.getFullYear(),
+      month: date.getMonth(),
+      day: date.getDate(),
+    });
   }
 }

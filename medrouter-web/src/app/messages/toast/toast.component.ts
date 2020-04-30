@@ -32,6 +32,9 @@ export class ToastComponent implements OnInit {
         }),
         switchMap(() => timer(this.toast.timer))
       )
-      .subscribe(() => this.toast.hide());
+      .subscribe(() => {
+        this.toast.hide();
+        this.toast.timer = 1000;
+      });
   }
 }

@@ -1,18 +1,18 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Profile } from "./models/user-profile";
 import { MEDROUTER_API } from "../api/app.api";
 import { tap } from "rxjs/operators";
-import { AuthService } from "../auth/auth.service";
-import { NotificationService } from "../messages/notification.service";
-import { faThumbsDown } from "@fortawesome/free-solid-svg-icons";
+
+import { Avatar } from "./models/avatar.dto";
 
 @Injectable({
   providedIn: "root",
 })
 export class UsersService {
   profile: Profile = null;
+  avatar: Avatar = null;
 
   constructor(private http: HttpClient) {
     const profile: Profile = JSON.parse(sessionStorage.getItem("profile"));
@@ -37,16 +37,23 @@ export class UsersService {
     return this.profile;
   }
 
+  uploadAvatar(any): Observable<Avatar> {
+    return this.http.post<any>(`${MEDROUTER_API}/avatars`, any);
+  }
+
+  deleteAvatar(avatarId: any): Observable<any> {
+    return this.http.delete<any>(`${MEDROUTER_API}/avatars/${avatarId}`);
+  }
+
   setProfile() {
     return tap(
-      (profile: Profile) => (this.profile = profile),
-
+      (profile: Profile) => {
+        this.profile = profile;
+      },
       () => {
         sessionStorage.setItem("profile", null);
       },
-      () => {
-        sessionStorage.setItem("profile", JSON.stringify(this.profile));
-      }
+      () => sessionStorage.setItem("profile", JSON.stringify(this.profile))
     );
   }
 }

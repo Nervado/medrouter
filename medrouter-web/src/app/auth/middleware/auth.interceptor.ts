@@ -30,8 +30,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
     if (!req.headers.has("Content-Type")) {
       req = req.clone({
-        headers: req.headers.set("Content-Type", "application/json"),
+        //headers: req.headers.set("Content-Type", "application/json"),
+        headers: req.headers.set("Accept", "application/json"),
       });
+      console.log("Header has been set");
     }
 
     req = this.addAuthenticationToken(req);

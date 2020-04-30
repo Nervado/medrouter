@@ -8,6 +8,7 @@ import {
   Res,
   ClassSerializerInterceptor,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 
 import { diskStorage } from 'multer';
@@ -17,6 +18,15 @@ import { configService } from '../config/config.service';
 import { cryptoService } from '../crypto/crypto.service';
 import { AvatarsService } from './avatars.service';
 import { AvatarDto } from './dto/avatar.dto';
+
+import { GetUser } from 'src/users/decorators/get-user.decorator';
+import { User } from 'src/users/models/user.entity';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
+import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/auth/enums/role.enum';
+import { Allow } from 'src/auth/decorators/alow.decorator';
 
 @Controller('avatars')
 export class AvatarsController {
@@ -52,10 +62,13 @@ export class AvatarsController {
     this.avatarService.check(image, res);
   }
 
-  @UseInterceptors(ClassSerializerInterceptor)
   @Delete('/:id')
-  delete(@Param('id') id) {
+  //@Allow(Role.CLIENT, Role.ADMIN, Role.CLIENT, Role.CLIENT)
+  //@Roles('client')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  delete(@Param('id') id, @GetUser() user: User) {
     console.log('Deleting... avatar id', id);
-    return this.avatarService.delete(id);
+    return this.avatarService.delete(id, user);
   }
 }
