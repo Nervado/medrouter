@@ -7,12 +7,12 @@
         <div class="avatar-old m-3">
           <div>Foto atual</div>
           <label htmlFor="avatar">
-            <ng-container *ngIf="avatar?.url; else preview">
+            <ng-container *ngIf="avatar?.url; else altview">
               <div class="avatar">
                 <img [src]="avatar.url" alt="avatar" />
               </div>
             </ng-container>
-            <ng-template #preview>
+            <ng-template #altview>
               <div class="avatar">
                 <img
                   [src]="'../../../../assets/avatarmale.png'"
@@ -28,24 +28,31 @@
 
         <div class="new-avatar m-3">
           <div>Preview de sua nova foto</div>
-          <label htmlFor="avatar">
-            <ng-container *ngIf="newAvatar?.url; else elseTemplate">
-              <img [src]="newAvatar.url" alt="" />
-            </ng-container>
-            <ng-template #elseTemplate>
-              <div class="icon">
-                <fa-icon [icon]="faCameraRetro" size="4x"></fa-icon>
-              </div>
-            </ng-template>
+          <form
+            [formGroup]="formFile"
+            novalidate
+            (ngSubmit)="handleChange($event)"
+          >
+            <label htmlFor="avatar">
+              <ng-container *ngIf="preview; else elseTemplate">
+                <div class="avatar-img"><img [src]="preview" alt="" /></div>
+              </ng-container>
+              <ng-template #elseTemplate>
+                <div class="icon">
+                  <fa-icon [icon]="faCameraRetro" size="4x"></fa-icon>
+                </div>
+              </ng-template>
 
-            <input
-              accept="image/*"
-              type="file"
-              id="avatar"
-              (onchange)="handleChange($event)"
-              value=""
-            />
-          </label>
+              <input
+                accept="image/*"
+                type="file"
+                name="avatar"
+                id="avatar"
+                (change)="handleChange($event)"
+                value=""
+              />
+            </label>
+          </form>
           <div class="cursor d-flex justify-content-end">
             Apagar
             <fa-icon [icon]="faTrash" class="mx-1"></fa-icon>
@@ -62,7 +69,7 @@
           <button class="bt bt-medium mr-2" id="buttons1" (click)="send()">
             Enviar
           </button>
-
+          <!-- <button type="submit" [disabled]="formGroup.invalid || formGroup.prestine">Submit</button-->
           <button class="bt bt-base ml-2" id="buttons2">
             Cancelar
           </button>

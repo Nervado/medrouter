@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import {
   faUser,
@@ -7,6 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { UsersService } from "../../users.service";
 import { Avatar } from "../../models/avatar.dto";
+import { PhotoFile } from "../../models/file.dto";
 
 @Component({
   selector: "app-edit-avatar",
@@ -23,23 +24,30 @@ export class EditAvatarComponent implements OnInit {
 
   newAvatar: Avatar = undefined;
 
-  file: any = { preview: "", raw: "" };
+  preview: string | ArrayBuffer;
 
-  constructor(private fb: FormBuilder, private usersService: UsersService) {}
+  formFile: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private usersService: UsersService,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.avatar = this.usersService.getUserProfile().avatar;
+
+    this.preview = null;
+
+    this.formFile = this.fb.group({
+      file: [null, Validators.required],
+    });
   }
 
   send() {}
 
   handleUpload(e) {
-    const data = new FormData();
-
-    data.append("avatar", e.target.files[0]);
-
     // action
-
     /**
      *  try {
       const response = await api.post("avatars", data);
@@ -54,13 +62,23 @@ export class EditAvatarComponent implements OnInit {
      */
   }
 
-  handleChange(e) {
-    //setImage({
-    // preview: URL.createObjectURL(e.target.files[0]),
-    //raw: e.target.files[0],
-    //});
+  handleChange(event) {
+    const reader = new FileReader();
 
-    this.handleUpload(e);
+    if (event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        this.formFile.patchValue({
+          avatar: reader.result,
+        });
+        this.preview = reader.result;
+      };
+
+      this.cd.markForCheck();
+    }
   }
 
   handleClick() {
