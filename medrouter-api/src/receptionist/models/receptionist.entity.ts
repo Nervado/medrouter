@@ -38,7 +38,7 @@ export class Receptionist extends BaseEntity {
   user: User;
 
   @ManyToOne(
-    type => Manager,
+    () => Manager,
     manager => manager.receptionist,
   )
   @JoinColumn()
