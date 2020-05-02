@@ -8,6 +8,7 @@ import {
   faFlask,
   faHeartbeat,
   faUserTie,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const MenuLinks = {

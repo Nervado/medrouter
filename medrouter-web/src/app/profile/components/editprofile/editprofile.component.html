@@ -55,7 +55,7 @@
               type="text"
               name="email"
               placeholder="Email"
-              class="in in-medium"
+              class="in in-medium email"
               autocomplete="email"
             />
             <div
@@ -74,7 +74,7 @@
               type="text"
               name=" cpf"
               placeholder="cpf"
-              class="in in-medium"
+              class="in in-medium cpf"
               autocomplete="off"
               id="cpf"
             />
@@ -158,7 +158,7 @@
               Enviar
             </button>
 
-            <button class="bt bt-base ml-2" id="buttons">
+            <button class="bt bt-base ml-2" id="buttons" (click)="cancel()">
               Cancelar
             </button>
           </div>

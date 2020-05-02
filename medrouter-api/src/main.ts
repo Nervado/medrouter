@@ -32,6 +32,7 @@ async function bootstrap() {
     logger.log(`Accepting requests from origin "${configService.getOrigin()}"`);
   }
 
+  logger.log('Runing in: ' + process.env.NODE_ENV + ' mode');
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(configService.getHttpPort());
   logger.log(`listening on port "${configService.getHttpPort()}"`);

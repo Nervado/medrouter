@@ -16,7 +16,6 @@ import { WrapperContentComponent } from "./components/wrapper-content/wrapper-co
 import { WrapperComponentComponent } from "./components/wrapper-component/wrapper-component.component";
 import { LoadingComponent } from "./components/loading/loading.component";
 import { RadioComponent } from "./components/radio/radio.component";
-//import { ContentHeaderComponent } from './components/content-header/content-header.component';
 
 @NgModule({
   declarations: [

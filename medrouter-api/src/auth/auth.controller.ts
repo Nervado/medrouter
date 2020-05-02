@@ -19,6 +19,7 @@ import { UserDto } from '../users/dto/user-dto';
 import { AuthPasswordChange } from './dto/auth-password-change.dto';
 import { GetUser } from 'src/users/decorators/get-user.decorator';
 import { User } from 'src/users/models/user.entity';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -31,11 +32,13 @@ export class AuthController {
   }
 
   @Patch('/signup')
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   patch(
     @Body() body: AuthPasswordChange,
     @GetUser() user: User,
   ): Promise<CredentailsDto> {
+    console.log('change password', body);
     return this.authService.changePassword(body, user);
   }
 
@@ -43,6 +46,8 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @UseInterceptors(ClassSerializerInterceptor)
   signIn(@Body() loginDto: LoginDto): Promise<CredentailsDto> {
+    console.log(loginDto);
+
     return this.authService.signIn(loginDto);
   }
 

@@ -18,16 +18,15 @@ export class UserRepository extends Repository<User> {
   async changePassword(newPass: AuthPasswordChange, user: User): Promise<User> {
     const { password, newPassword, passwordConfirmation } = newPass;
 
-    if (newPassword === passwordConfirmation && password !== newPassword) {
+    if (newPassword !== passwordConfirmation || password === newPassword) {
       throw new BadRequestException('Old password can not be used');
     }
 
-    // user can change password now
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(newPassword, user.salt);
 
-    // save update uses with new password
     try {
+      console.log(user.salt, user.password);
       return await user.save();
     } catch (error) {
       throw new InternalServerErrorException('Uknow error!');
@@ -53,14 +52,12 @@ export class UserRepository extends Repository<User> {
     user.email = email;
     user.phoneNumber = phoneNumber;
     user.surname = surname;
-
     user.client = true;
     user.admin = false;
     user.recept = false;
     user.doctor = false;
     user.owner = true;
     user.role = [Role.USER];
-
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
 

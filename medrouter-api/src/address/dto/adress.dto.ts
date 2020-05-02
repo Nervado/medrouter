@@ -1,6 +1,9 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
 export class AddressDto {
+  @IsNotEmpty()
+  id: any;
+
   @IsString()
   @IsNotEmpty()
   streetName: string;

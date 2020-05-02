@@ -14,9 +14,9 @@
       [ngClass]="hoverStyle"
       *ngFor="let role of roles"
     >
-      <a [routerLink]="[menuLinks[role].path]">
-        <fa-icon [icon]="menuLinks[role].icon" class="mr-2"></fa-icon>
-        <span>{{ menuLinks[role].label }}</span></a
+      <a [routerLink]="[menuLinks[role]?.path]">
+        <fa-icon [icon]="menuLinks[role]?.icon" class="mr-2"></fa-icon>
+        <span>{{ menuLinks[role]?.label }}</span></a
       >
     </div>
 

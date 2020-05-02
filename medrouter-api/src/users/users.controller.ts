@@ -63,7 +63,7 @@ export class UsersController {
   }
 
   @Delete('/:id')
-  @Allow('recept', 'admin', 'owner')
+  @Allow('recept', 'admin', 'owner', 'client')
   deleteUser(@Param('id') id: number, @GetUser() loggedUser: User) {
     return this.usersService.deleteOne(id, loggedUser);
   }

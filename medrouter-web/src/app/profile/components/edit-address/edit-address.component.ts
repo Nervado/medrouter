@@ -76,6 +76,7 @@ export class EditAddressComponent implements OnInit {
         this.notificationService.notify({
           message: "Endereço Atualizado com sucesso",
           type: Types.BASE,
+          timer: 10000,
         }),
       () =>
         this.notificationService.notify({

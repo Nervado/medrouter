@@ -5,11 +5,19 @@
     <form [formGroup]="securityForm">
       <div class="d-flex flex-wrap justify-content-between px-5 mx-3">
         <div class="">
-          <label for="username">Nome</label>
+          <label for="password">Senha atual</label>
+
+          <input
+            type="text"
+            placeholder="username"
+            hidden
+            autocomplete="username"
+          />
+
           <app-input-container class="in-container in-container-base my-4">
             <input
               formControlName="password"
-              type="password"
+              [type]="securityForm.value.show ? 'text' : 'password'"
               name="password"
               placeholder="Senha atual"
               autocomplete="current-password"
@@ -24,6 +32,58 @@
             </div>
           </app-input-container>
         </div>
+        <div class="">
+          <label for="newPassword">Nova senha</label>
+          <app-input-container class="in-container in-container-base my-4">
+            <input
+              formControlName="newPassword"
+              [type]="securityForm.value.show ? 'text' : 'password'"
+              name="newPpassword"
+              placeholder="Nova senha"
+              autocomplete="new-password"
+              class="in in-medium"
+            />
+
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <!---->
+              <fa-icon [icon]="faUser" class="text-medium"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+
+        <div class="">
+          <label for="passwordConfirmation">Confirme a nova senha</label>
+          <app-input-container class="in-container in-container-base my-4">
+            <input
+              formControlName="passwordConfirmation"
+              [type]="securityForm.value.show ? 'text' : 'password'"
+              name="passwordConfirmation"
+              placeholder="Senha atual"
+              autocomplete="new-password"
+              class="in in-medium"
+            />
+
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <!---->
+              <fa-icon [icon]="faUser" class="text-medium"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+
+        <div
+          class="d-flex align-items-center justify-content-center"
+          style="width: 260px;"
+        >
+          <label class="container-checkbox">
+            <input type="checkbox" formControlName="show" />
+            <span class="checkmark-checkbox"></span>
+            <span class="check">Exibir senha</span>
+          </label>
+        </div>
 
         <div class="d-flex flex-column flex-center">
           <label for="buttons">Deseja enviar alterações ?</label>
@@ -31,11 +91,21 @@
           <div
             class="in-container buttons-container my-4 d-flex justify-content-center align-items-center bg-profile"
           >
-            <button class="bt bt-medium mr-2" id="buttons" (click)="send()">
+            <button
+              class="bt bt-medium mr-2"
+              id="button1"
+              (click)="send()"
+              type="submit"
+            >
               Enviar
             </button>
 
-            <button class="bt bt-base ml-2" id="buttons">
+            <button
+              class="bt bt-base ml-2"
+              id="button2"
+              (click)="return()"
+              type="button"
+            >
               Cancelar
             </button>
           </div>

@@ -28,9 +28,9 @@ import {
         animate(
           "500ms ease-in-out",
           keyframes([
-            style({ transform: "translateX(200px)" }),
-            style({ transform: "translateX(100px)" }),
-            style({ transform: "translateX(0)" }),
+            style({ transform: "translateX(200px)", offset: 0 }),
+            style({ transform: "translateX(100px)", offset: 0.5 }),
+            style({ transform: "translateX(0)", offset: 1.0 }),
           ])
         )
       ),
@@ -41,9 +41,9 @@ import {
         animate(
           "400ms ease-in-out",
           keyframes([
-            style({ transform: "translateX(-200px)" }),
-            style({ transform: "translateX(-100px)" }),
-            style({ transform: "translateX(0)" }),
+            style({ transform: "translateX(-200px)", offset: 0 }),
+            style({ transform: "translateX(-100px)", offset: 0.5 }),
+            style({ transform: "translateX(0)", offset: 1.0 }),
           ])
         )
       ),

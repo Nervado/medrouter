@@ -88,8 +88,14 @@ export class EditAvatarComponent implements OnInit {
   }
 
   update() {
+    if (this.newAvatar === undefined) {
+      return;
+    }
+
     const userProfile: Profile = this.usersService.getUserProfile();
+
     userProfile.avatar = this.newAvatar;
+
     this.usersService.update(userProfile, this.userId).subscribe(
       () => {
         this.newAvatar = null;

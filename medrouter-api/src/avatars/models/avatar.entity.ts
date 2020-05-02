@@ -5,6 +5,7 @@ import {
   Column,
   AfterLoad,
   BeforeInsert,
+  DeleteDateColumn,
 } from 'typeorm';
 import { configService } from 'src/config/config.service';
 import { Exclude } from 'class-transformer';
@@ -28,4 +29,8 @@ export class Avatar extends BaseEntity {
   setComputed() {
     this.url = `${configService.getServerUrl()}/avatars/${this.filename}`;
   }
+
+  @Exclude()
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt: Date;
 }

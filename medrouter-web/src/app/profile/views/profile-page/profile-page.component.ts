@@ -5,6 +5,7 @@ import { Role } from "src/app/auth/enums/roles-types";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { UsersService } from "../../users.service";
 import { AuthService } from "src/app/auth/auth.service";
+import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 
 @Component({
   selector: "app-profile-page",
@@ -13,6 +14,8 @@ import { AuthService } from "src/app/auth/auth.service";
 })
 export class ProfilePageComponent implements OnInit {
   mainColor: Colors = Colors.USER;
+
+  faEnvelope = faEnvelope;
 
   role: Role = Role.PROFILE;
 

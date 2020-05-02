@@ -38,11 +38,11 @@ export class UserSnippetMenuComponent implements OnInit {
   ngOnInit(): void {
     if (this.roles[0] !== Role.USER) {
       this.isVerify = true;
+      this.setHoverClass();
+      this.roles = this.user.role;
+    } else {
+      this.roles = [];
     }
-
-    this.setHoverClass();
-
-    this.roles = this.user.role;
   }
 
   toogle() {

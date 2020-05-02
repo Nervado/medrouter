@@ -95,8 +95,8 @@ export const ToastVisibility = trigger("toast-visibility", [
 ]);
 
 export const Load = trigger("load", [
-  state("hidden", style({ opacity: 1, width: "100%", offset: 0 })),
-  state("visible", style({ opacity: 1, width: "0%", offset: 1 })),
+  state("hidden", style({ opacity: 1, width: "100%" })),
+  state("visible", style({ opacity: 1, width: "0%" })),
   transition("hidden => visible", [animate("{{load}}ms ease-out")], {
     params: { load: 1000 },
   }),

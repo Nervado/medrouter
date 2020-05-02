@@ -19,6 +19,7 @@ import { configService } from 'src/config/config.service';
 import * as Redis from 'ioredis';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthPasswordChange } from '../auth/dto/auth-password-change.dto';
+import { AvatarsService } from 'src/avatars/avatars.service';
 
 @Injectable()
 export class UsersService {
@@ -32,6 +33,7 @@ export class UsersService {
     @InjectRepository(UserRepository) private userRepository: UserRepository,
     private emailsService: EmailsService,
     private addressService: AddressService,
+    private avatarsService: AvatarsService,
   ) {}
 
   async index(pageFilterDto: PageFilterDto) {
@@ -54,13 +56,26 @@ export class UsersService {
       throw new UnauthorizedException('User has not correct privileges');
     }
 
-    if (!userUpdateDto.address) {
+    if (userUpdateDto.address === null && user.address === null) {
       return await this.userRepository.updateOne(id, userUpdateDto);
     }
-    const address = await this.addressService.createAddress(
-      userUpdateDto.address,
-    );
-    return await this.userRepository.updateOne(id, userUpdateDto, address);
+
+    if (userUpdateDto.address !== null && user.address === null) {
+      const address = await this.addressService.createAddress(
+        userUpdateDto.address,
+      );
+      return await this.userRepository.updateOne(id, userUpdateDto, address);
+    }
+
+    if (user.address.id === userUpdateDto.address.id) {
+      //update address
+      const updatedAddress = await this.addressService.update(
+        userUpdateDto.address,
+      );
+      userUpdateDto.address = updatedAddress;
+
+      return await this.userRepository.updateOne(id, userUpdateDto);
+    }
   }
 
   async signUp(authSingUpDto: AuthSingUpDto): Promise<User> {
@@ -119,7 +134,12 @@ export class UsersService {
     if (id !== user.userId && !user.admin && !user.owner) {
       throw new UnauthorizedException('User has not privillegs to exec');
     }
-    this.userRepository.softDelete({ userId: id });
+
+    await this.avatarsService.delete(user.avatar.avatarId, user);
+
+    await this.addressService.delete(user.address.id, user);
+
+    return this.userRepository.softDelete({ userId: id });
   }
 
   async resetRole(id: number): Promise<User> {

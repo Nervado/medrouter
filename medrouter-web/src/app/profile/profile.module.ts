@@ -5,10 +5,11 @@ import { SharedModule } from "../shared/shared.module";
 import { ProfileRoutingModule } from "./profile-routing.module";
 import { EditprofileComponent } from "./components/editprofile/editprofile.component";
 import { ProfileViewComponent } from "./components/profile-view/profile-view.component";
-import { EditAddressComponent } from './components/edit-address/edit-address.component';
-import { EditAvatarComponent } from './components/edit-avatar/edit-avatar.component';
-import { SecurityComponent } from './components/security/security.component';
-import { UnsubscribeComponent } from './components/unsubscribe/unsubscribe.component';
+import { EditAddressComponent } from "./components/edit-address/edit-address.component";
+import { EditAvatarComponent } from "./components/edit-avatar/edit-avatar.component";
+import { SecurityComponent } from "./components/security/security.component";
+import { UnsubscribeComponent } from "./components/unsubscribe/unsubscribe.component";
+import { UnsubscribeModalComponent } from "./components/unsubscribe-modal/unsubscribe-modal.component";
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { UnsubscribeComponent } from './components/unsubscribe/unsubscribe.compo
     EditAvatarComponent,
     SecurityComponent,
     UnsubscribeComponent,
+    UnsubscribeModalComponent,
   ],
   imports: [CommonModule, SharedModule, ProfileRoutingModule],
 })

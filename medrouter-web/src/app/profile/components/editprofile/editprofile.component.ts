@@ -6,6 +6,7 @@ import {
   faTrash,
   faEdit,
   faUser,
+  faThumbsDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { UserLogged } from "../../models/logged-user";
 import { Profile } from "../../models/user-profile";
@@ -65,21 +66,32 @@ export class EditprofileComponent implements OnInit {
       options: this.fb.control(this.profile?.options, [Validators.required]),
       username: this.fb.control(this.profile?.username, [Validators.required]),
       surname: this.fb.control(this.profile?.surname, [Validators.required]),
-      cpf: this.fb.control(this.profile?.cpf, [Validators.required]),
-      email: this.fb.control(this.profile?.email, [Validators.required]),
+      cpf: this.fb.control({ value: this.profile?.cpf, disabled: true }, [
+        Validators.required,
+      ]),
+      email: this.fb.control({ value: this.profile?.email, disabled: true }, [
+        Validators.required,
+      ]),
       sex: this.fb.control(this.profile?.sex, [Validators.required]),
       phoneNumber: this.fb.control(this.profile?.phoneNumber, [
         Validators.required,
       ]),
     });
 
-    const date = new Date(this.profile.birthdate);
-
-    this.birthdate = this.parser.format({
-      year: date.getFullYear(),
-      month: date.getMonth(),
-      day: date.getDate(),
-    });
+    console.log(this.profile.birthdate);
+    if (
+      this.profile.birthdate !== null &&
+      this.profile.birthdate !== undefined
+    ) {
+      const date = new Date(this.profile.birthdate);
+      this.birthdate = this.parser.format({
+        year: date.getFullYear(),
+        month: date.getMonth(),
+        day: date.getDate(),
+      });
+    } else {
+      this.birthdate = "Data";
+    }
   }
   send() {
     const updatedUserWithProfile = {
@@ -100,5 +112,9 @@ export class EditprofileComponent implements OnInit {
         }),
       () => this.router.navigate(["profile", this.userId])
     );
+  }
+
+  cancel() {
+    this.router.navigate(["profile", this.userId]);
   }
 }

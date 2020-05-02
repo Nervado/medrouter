@@ -40,7 +40,6 @@ export class SignInComponent implements OnInit {
       rememberme: this.fb.control(this.rememberme),
     });
 
-    // at load component save the activated route
     this.navigateTo = this.activeRoute.snapshot.params["to"] || "/";
   }
 
@@ -50,8 +49,7 @@ export class SignInComponent implements OnInit {
       (user) => {
         this.loading = false;
         this.loginMessage(user);
-        console.log("Aqui");
-      }, // ok
+      },
       (error) => {
         this.loading = false;
         this.notificationService.notify({
@@ -60,7 +58,6 @@ export class SignInComponent implements OnInit {
         });
       },
       () => {
-        console.log(this.AuthService.defaultRoute);
         this.router.navigate([this.AuthService.defaultRoute]);
       }
     );
@@ -75,6 +72,8 @@ export class SignInComponent implements OnInit {
 
       return null;
     }
+    console.log(user);
+
     this.notificationService.notify({
       message: `Bem vindo ${user.user.username} !`,
       type: Types.BASE,

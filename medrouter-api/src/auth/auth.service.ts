@@ -40,38 +40,11 @@ export class AuthService {
   async signIn(loginDto: any): Promise<CredentailsDto> {
     const user = await this.userService.validateUser(loginDto);
 
-    const { username, userId, email, role } = user;
-
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
     return this.generateAccessToken(user);
-
-    const payload: JwtPayload = {
-      username,
-      userId,
-      email,
-      role,
-    };
-
-    const accessToken = await this.jwtService.sign(payload);
-
-    this.logger.debug(
-      `Generated JWT Token with payload ${JSON.stringify(payload)}`,
-    );
-
-    const authCredentailsDto = new CredentailsDto();
-
-    authCredentailsDto.token = accessToken;
-    authCredentailsDto.user = {
-      username,
-      userId,
-      email,
-      role,
-    };
-
-    return authCredentailsDto;
   }
 
   async validateToken(token: string): Promise<any> {
@@ -108,6 +81,8 @@ export class AuthService {
   ): Promise<CredentailsDto> {
     const login = new LoginDto();
 
+    console.log(user);
+
     login.password = body.password;
     login.username = user.email;
 
@@ -121,7 +96,7 @@ export class AuthService {
     const altereduser = await this.userService.changePassword(body, user);
 
     // set new token
-    return this.generateAccessToken(altereduser);
+    return await this.generateAccessToken(altereduser);
   }
 
   async generateAccessToken(user: User): Promise<CredentailsDto> {

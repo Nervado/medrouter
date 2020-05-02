@@ -1,0 +1,32 @@
+.wrapper-component {
+  height: 80%;
+  margin: 80px;
+  padding-left: 80px;
+
+  .profile {
+    width: 800px;
+    height: 550px;
+    background-color: var(--oposity);
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 4px 4px 4px rgba(122, 122, 122, 0.2);
+  }
+}
+
+.text-area {
+  background-color: #fff;
+  color: var(--profile);
+  height: 75%;
+  width: 90%;
+  overflow: scroll;
+
+  border-radius: 2px;
+  padding: 20px;
+  scrollbar-color: var(--profile);
+}
+
+.fix-button {
+  &:hover {
+    transform: scale(1.1);
+  }
+}

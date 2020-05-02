@@ -13,6 +13,7 @@ import { Types } from "src/app/messages/toast/enums/types";
 import { User } from "src/app/auth/models/user.model";
 import { Gretting } from "./enums/gretting";
 import { Colors } from "src/app/messages/toast/enums/colors";
+import { Role } from "src/app/auth/enums/roles-types";
 
 @Component({
   selector: "app-user-snippet",
@@ -36,7 +37,12 @@ export class UserSnippetComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.user = this.authService.user;
+    if (
+      this.authService.isloggedIn() &&
+      this.authService.getUser().user.role[0] !== Role.USER
+    ) {
+      this.user = this.authService.user;
+    }
   }
 
   logout() {

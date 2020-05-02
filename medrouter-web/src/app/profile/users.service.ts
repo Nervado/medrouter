@@ -56,4 +56,12 @@ export class UsersService {
       () => sessionStorage.setItem("profile", JSON.stringify(this.profile))
     );
   }
+
+  delete(userId: any): Observable<void> {
+    return this.http.delete<void>(`${MEDROUTER_API}/users/${userId}`).pipe(
+      tap({
+        complete: () => sessionStorage.removeItem("profile"),
+      })
+    );
+  }
 }

@@ -1,4 +1,11 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  BaseEntity,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  DeleteDateColumn,
+} from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 @Entity('address')
 export class Address extends BaseEntity {
@@ -25,4 +32,8 @@ export class Address extends BaseEntity {
 
   @Column()
   fu: string;
+
+  @Exclude()
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt: Date;
 }

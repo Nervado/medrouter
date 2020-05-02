@@ -15,6 +15,8 @@ import { NotificationService } from "../messages/notification.service";
 import { DefaultRoutes } from "./enums/default-routes";
 import { Types } from "../messages/toast/enums/types";
 import { Role } from "./enums/roles-types";
+import { NewAuth } from "./interfaces/newauth.dto";
+import { SignOutDto } from "../profile/models/sign-out.dto";
 
 @Injectable({
   providedIn: "root",
@@ -22,6 +24,7 @@ import { Role } from "./enums/roles-types";
 export class AuthService {
   user: User;
   defaultRoute: string;
+  loginDto: Login;
 
   constructor(private http: HttpClient, private router: Router) {
     const usersaved: User = JSON.parse(localStorage.getItem("user"));
@@ -41,8 +44,12 @@ export class AuthService {
         tap(
           (User) => {
             this.user = User;
+            this.loginDto = login;
             //  super user for tests
-            User.user.role = [
+
+            /**
+             * 
+             *  User.user.role = [
               Role.ADMIN,
               Role.CLIENT,
               Role.OWNER,
@@ -50,9 +57,9 @@ export class AuthService {
               Role.LAB,
               Role.RECEPT,
             ];
+             */
 
             this.defaultRoute = DefaultRoutes[User.user.role[0]]; // setup default route
-            console.log(this.defaultRoute);
           },
           () => {
             localStorage.setItem("user", null); // on error clear user from local storage
@@ -101,8 +108,19 @@ export class AuthService {
     );
 
     const allow = allowableRoutes.find((route) => route === `${path}`);
-
-    console.log(allow);
     return allow;
+  }
+
+  patch(newAuth: NewAuth): Observable<User> {
+    return this.http
+      .patch<User>(`${MEDROUTER_API}/auth/signup`, {
+        ...newAuth,
+      })
+      .pipe(
+        tap((User) => {
+          this.user = User;
+          console.log("Update user", User);
+        })
+      );
   }
 }

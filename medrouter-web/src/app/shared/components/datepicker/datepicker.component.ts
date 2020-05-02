@@ -18,6 +18,7 @@ import {
   faCalendarAlt,
   faCheck,
   faTimes,
+  faThumbsDown,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Data } from "./models/datepicker.model";
@@ -148,7 +149,11 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
   constructor() {}
 
   ngOnInit(): void {
-    if (this.defaut !== "Data") {
+    if (
+      this.defaut !== "Data" &&
+      this.defaut !== undefined &&
+      this.defaut !== null
+    ) {
       const currentDate = new Date(this.defaut);
       this.values = {
         year: currentDate.getFullYear(),
@@ -164,12 +169,6 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
     }
 
     return false;
-    /** 
-    if ((this.values && this.values) || this.old) {
-      return true;
-    }
-    return false;
-    */
   }
 
   setValue(value: any) {

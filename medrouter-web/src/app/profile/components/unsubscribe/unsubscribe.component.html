@@ -1,1 +1,74 @@
-<p>unsubscribe works!</p>
+<app-unsubscribe-modal #modal [profile]="profile" (signOut)="confirm($event)">
+</app-unsubscribe-modal>
+
+<div class="wrapper-component d-flex justify-content-center align-items-center">
+  <div
+    class="row profile d-flex justify-content-center align-items-center bg-profile text-oposity p-5"
+  >
+    <div class="text-area">
+      <h5>Exclusão de dados</h5>
+      <p>
+        A MedRouter mantem os dados pessoais de seus clientes conforme a
+        regulamentação legal.
+      </p>
+      <p>
+        Após este pedido de exclusão ser executado você não poderá mais acessar
+        seu histórico de consultas e seus exames.
+      </p>
+      <p>
+        Se necessário realize o download de seus exames na sua área de arquivos.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Praesentium
+        aliquid neque commodi dolore illo, ab accusamus quam dignissimos labore,
+        impedit rem. Laborum ea id, debitis beatae reiciendis doloremque ratione
+        provident?
+      </p>
+
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, sit?
+        Cumque amet delectus ipsum autem incidunt quam, odit doloremque! Ab
+        aliquam nisi placeat iure labore est ullam voluptas sequi sit.
+      </p>
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero, vitae
+        qui rem soluta expedita cumque omnis et harum totam veniam id dolore
+        iure? Minima reiciendis fugit eius ipsa, dicta ipsam?
+      </p>
+      <p>
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente eum
+        repellat eveniet ipsam id ex nulla! Unde iure cumque nisi alias dolores
+        explicabo consequatur quae eius quisquam ducimus, nesciunt sunt.
+      </p>
+    </div>
+    <div
+      class="text-oposity check w-100 d-flex justify-content-center align-items-center mt-4"
+      style="height: 35px;"
+    >
+      <label class="container-checkbox">
+        <input type="checkbox" [(ngModel)]="check" />
+        <span class="checkmark-checkbox"></span>
+        <span class="check">Eu li e concordo com os termos</span>
+      </label>
+    </div>
+
+    <div
+      class="in-container buttons-container my-4 d-flex justify-content-center align-items-center bg-profile"
+    >
+      <button
+        class="bt bt-medium mr-3 fix-button"
+        id="buttons"
+        (click)="showModalConfirmation($event, modal)"
+        class="bt bt-base fix-button"
+      >
+        Enviar
+      </button>
+
+      <a [routerLink]="['/profile']">
+        <button class="bt bt-medium fix-button ml-3" id="buttons">
+          Cancelar
+        </button></a
+      >
+    </div>
+  </div>
+</div>

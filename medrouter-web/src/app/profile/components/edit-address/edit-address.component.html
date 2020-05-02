@@ -156,13 +156,13 @@
             <button class="bt bt-medium mr-2" id="buttons" (click)="send()">
               Enviar
             </button>
-            <!-- </a>-->
 
-            <button class="bt bt-base ml-2" id="buttons">
-              Cancelar
-            </button>
+            <a [routerLink]="['/profile', userId]">
+              <button class="bt bt-base ml-2" id="buttons">
+                Cancelar
+              </button>
+            </a>
           </div>
-          <!--<a routerLink="/"> -->
         </div>
       </div>
     </form>
