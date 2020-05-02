@@ -4,6 +4,7 @@
 
 # ignore images
 
+*.jpeg
 *.jpg
 *.pdf
 !.gitignore
