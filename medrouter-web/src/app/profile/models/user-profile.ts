@@ -3,7 +3,7 @@ import { Address } from "./address";
 
 export class Profile {
   userId: any;
-  username: number;
+  username: string;
   surname: string;
   cpf: string;
   phoneNumber: string;

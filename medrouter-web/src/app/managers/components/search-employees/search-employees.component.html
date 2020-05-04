@@ -1,0 +1,216 @@
+<app-managers-actions-modal
+  #modal
+  (signOut)="confirm($event)"
+  [profile]="profile"
+>
+</app-managers-actions-modal>
+
+<ng-container *ngIf="loading; else elseTemplate">
+  <div
+    class="wrapper-component d-flex justify-content-center align-items-center"
+  >
+    <div
+      class="row profile d-flex justify-content-center align-items-center bg-profile w-100 h-100 mt-4"
+    >
+      <app-loading> </app-loading>
+    </div>
+  </div>
+</ng-container>
+<ng-template #elseTemplate>
+  <div
+    class="wrapper-component d-flex flex-column justify-content-center align-items-center"
+  >
+    <div class="w-100 h-100">
+      <div
+        class="profile d-flex justify-content-center align-items-center bg-admin text-oposity mt-3"
+      >
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Digite o nome da pessoa"
+        />
+
+        <fa-icon
+          [icon]="faSearch"
+          size="1x"
+          class="mx-3"
+          (click)="search()"
+        ></fa-icon>
+        <fa-icon
+          [icon]="faFilter"
+          size="1x"
+          class="mx-3"
+          (click)="showFilters()"
+        ></fa-icon>
+      </div>
+
+      <form
+        [formGroup]="searchForm"
+        *ngIf="showFilter"
+        class="text-oposity mt-1 filters w-100"
+      >
+        <div class="search-filter-type p-2">
+          <label for="sex" class="mr-2">Gênero</label>
+          <app-input-container
+            class="in-container in-container-base"
+            [tick]="false"
+          >
+            <select
+              id="cars"
+              name="sex"
+              aria-placeholder="Gênero"
+              class="in in-admin cursor"
+              formControlName="sex"
+            >
+              <option value="Masculino">Masculino</option>
+              <option value="Feminino">Feminimo</option>
+              <option value="Indefinido">Indefinido</option>
+              <option value="Outros">Outros</option>
+            </select>
+
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+        <div class="search-filter-type p-2">
+          <label for="role" class="mr-2">Categoria</label>
+          <app-input-container
+            class="in-container in-container-base"
+            [tick]="false"
+          >
+            <select
+              id="role"
+              name="role"
+              aria-placeholder="Role"
+              class="in in-admin cursor"
+              formControlName="role"
+            >
+              <option value="doctor">Médico</option>
+              <option value="client">Paciente</option>
+              <option value="recept">Recepcionista</option>
+              <option value="lab">Laboratório</option>
+            </select>
+
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+        <div class="search-filter-type p-2">
+          <label for="hired" class="mr-2">Situação</label>
+          <app-input-container
+            class="in-container in-container-base"
+            [tick]="false"
+          >
+            <select
+              id="hired"
+              name="hired"
+              aria-placeholder="Situação"
+              class="in in-admin cursor"
+              formControlName="hired"
+            >
+              <option value="available">Disponível</option>
+              <option value="hired">Contratado</option>
+              <option value="dismis">Dispensado</option>
+              <option value="rehired">Readmitido</option>
+            </select>
+
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+      </form>
+      <div class="d-flex flex-column aling-items-center justify-content-center">
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="results-title">Resultados {{ users.length }}</div>
+          <div class="paginator">
+            <fa-icon
+              [icon]="faArrowLeft"
+              class="mr-2"
+              (click)="pageDown()"
+            ></fa-icon>
+            <span>Página {{ page }}</span>
+            <fa-icon
+              [icon]="faArrowRight"
+              class="ml-2"
+              (click)="pageUp()"
+            ></fa-icon>
+          </div>
+        </div>
+
+        <div class="results">
+          <div class="card-info" *ngFor="let user of users">
+            <div class="card-title w-100">
+              <div class="config">
+                <fa-icon
+                  [icon]="faCog"
+                  (click)="showModalActions(modal, user)"
+                ></fa-icon>
+              </div>
+              <ng-container *ngIf="user.avatar?.url; else template">
+                <img [src]="user.avatar.url" alt="avatar" />
+              </ng-container>
+              <ng-template #template>
+                <img src="../../../../assets/avatarmale.png" alt="avatar" />
+              </ng-template>
+            </div>
+
+            <div class="card-content">
+              <div class="card-body-info">
+                <div class="info name">
+                  {{ user.fullname }}
+                </div>
+
+                <div class="roles">
+                  <div class="m-1" *ngFor="let role of user.role">
+                    <fa-icon
+                      [icon]="details[role].icon"
+                      class=""
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      [title]="details[role].label"
+                      [style.color]="'var(--medium)'"
+                    ></fa-icon>
+                  </div>
+                </div>
+                <div
+                  class="location d-flex justify-content-center"
+                  *ngIf="user.address"
+                >
+                  <fa-icon [icon]="faLocationArrow" class="ml-2 mr-1"></fa-icon>
+                  {{ user.address && user.address.city }}
+                </div>
+              </div>
+
+              <div class="">
+                <div class="ratting">
+                  <fa-icon
+                    [icon]="faStar"
+                    class="mr-1"
+                    *ngFor="let star of stars"
+                  ></fa-icon>
+
+                  <div>5 (+457)</div>
+                </div>
+                <div class="card-info-footer">
+                  <a [routerLink]="['/profile', user.userId]">
+                    <button>Perfil</button></a
+                  >
+                  <button>Mensagem</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

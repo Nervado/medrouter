@@ -21,10 +21,10 @@ export class Address extends BaseEntity {
   @Column()
   houseNumber: string;
 
-  @Column()
+  @Column({ nullable: true })
   complement: string;
 
-  @Column()
+  @Column({ nullable: true })
   neighborhood: string;
 
   @Column()

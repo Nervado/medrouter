@@ -71,12 +71,13 @@ export class EditAddressComponent implements OnInit {
   send() {
     const updatedUserWithAddress = this.usersService.getUserProfile();
     updatedUserWithAddress.address = this.addressForm.value;
+    console.log(updatedUserWithAddress);
+
     this.usersService.update(updatedUserWithAddress, this.userId).subscribe(
       () =>
         this.notificationService.notify({
           message: "Endereço Atualizado com sucesso",
           type: Types.BASE,
-          timer: 10000,
         }),
       () =>
         this.notificationService.notify({

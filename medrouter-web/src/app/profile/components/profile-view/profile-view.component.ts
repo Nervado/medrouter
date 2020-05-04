@@ -13,6 +13,7 @@ import {
   faStar,
   faMapMarkerAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-profile-view",
@@ -22,9 +23,9 @@ import {
 export class ProfileViewComponent implements OnInit {
   parser = new CustomDateParserFormatter();
   constructor(
-    private authService: AuthService,
     private usersService: UsersService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private activeRoute: ActivatedRoute
   ) {}
   faUserTie = faUserTie;
   faLocationArrow = faMapMarkerAlt;
@@ -36,24 +37,24 @@ export class ProfileViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.userLogged = this.authService.getUser().user;
-
-    this.usersService.getUserById(this.userLogged.userId).subscribe(
-      (profile: Profile) => {
-        this.userProfile = profile;
-        this.setStringDate();
-        console.log(this.userProfile);
-      },
-      (error) => {
-        this.notificationService.notify({
-          message: "Algo deu errado =(",
-          type: Types.WARN,
-        });
-      },
-      () => {
-        this.loading = false;
-      }
-    );
+    this.activeRoute.parent.params.subscribe({
+      next: (params) =>
+        this.usersService.getUserById(params["id"]).subscribe(
+          (profile: Profile) => {
+            this.userProfile = profile;
+            this.setStringDate();
+          },
+          (error) => {
+            this.notificationService.notify({
+              message: "Algo deu errado =(",
+              type: Types.WARN,
+            });
+          },
+          () => {
+            this.loading = false;
+          }
+        ),
+    });
   }
 
   setStringDate() {

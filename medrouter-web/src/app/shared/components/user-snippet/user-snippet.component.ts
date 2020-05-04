@@ -37,12 +37,7 @@ export class UserSnippetComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (
-      this.authService.isloggedIn() &&
-      this.authService.getUser().user.role[0] !== Role.USER
-    ) {
-      this.user = this.authService.user;
-    }
+    this.user = this.authService.user;
   }
 
   logout() {

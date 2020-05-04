@@ -46,8 +46,6 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @UseInterceptors(ClassSerializerInterceptor)
   signIn(@Body() loginDto: LoginDto): Promise<CredentailsDto> {
-    console.log(loginDto);
-
     return this.authService.signIn(loginDto);
   }
 

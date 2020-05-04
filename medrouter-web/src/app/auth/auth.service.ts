@@ -10,8 +10,6 @@ import { User } from "./models/user.model";
 import { Login } from "./models/login.model";
 import { SignUp } from "./models/signup.model";
 
-import { NotificationService } from "../messages/notification.service";
-
 import { DefaultRoutes } from "./enums/default-routes";
 import { Types } from "../messages/toast/enums/types";
 import { Role } from "./enums/roles-types";
@@ -45,11 +43,8 @@ export class AuthService {
           (User) => {
             this.user = User;
             this.loginDto = login;
-            //  super user for tests
 
-            /**
-             * 
-             *  User.user.role = [
+            User.user.role = [
               Role.ADMIN,
               Role.CLIENT,
               Role.OWNER,
@@ -57,7 +52,6 @@ export class AuthService {
               Role.LAB,
               Role.RECEPT,
             ];
-             */
 
             this.defaultRoute = DefaultRoutes[User.user.role[0]]; // setup default route
           },

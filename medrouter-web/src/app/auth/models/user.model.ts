@@ -4,7 +4,7 @@ export class User {
   token: string;
   user: {
     username: string;
-    userId: number;
+    userId: any;
     email: string;
     client: boolean;
     admin: boolean;
@@ -12,5 +12,10 @@ export class User {
     doctor: boolean;
     owner: boolean;
     role: Array<Role>;
+    avatar: {
+      avatarId: any;
+      url: string;
+      filename: string;
+    };
   };
 }

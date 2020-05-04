@@ -24,6 +24,8 @@ import {
   faHeartbeat,
   faHouseUser,
   faPortrait,
+  faSearch,
+  faChartBar,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const Buttons = {
@@ -44,6 +46,11 @@ export const Buttons = {
     { icon: faUserEdit, path: "../doctors/schedule" },
     { icon: faHouseUser, path: "../doctors/doctor-schedule" },
   ],
-  admin: [],
+  admin: [
+    { icon: faChartBar, path: "../managers/dashboard" },
+    { icon: faFlask, path: "../managers/labs" },
+    { icon: faConciergeBell, path: "../managers/receptionists" },
+    { icon: faSearch, path: "../managers/search" },
+  ],
   lab: [],
 };

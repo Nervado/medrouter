@@ -1,0 +1,84 @@
+.wrapper-component {
+  height: 80%;
+  margin: 80px;
+  padding-left: 80px;
+
+  .profile {
+    width: 800px;
+    height: 550px;
+    background-color: var(--oposity);
+    border-radius: 4px;
+    padding: 5px;
+    box-shadow: 4px 4px 4px rgba(122, 122, 122, 0.2);
+  }
+}
+
+.bt {
+  height: 35px;
+  width: 100px;
+}
+
+.buttons-container {
+  border: 2px solid var(--profile);
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.avatar {
+  border: 2px solid var(--oposity);
+  img {
+    height: 300px;
+    width: 250px;
+    object-fit: cover;
+    border-radius: 2px;
+  }
+}
+
+.new-avatar {
+  //
+  label {
+    //border: 2px solid var(--oposity);
+
+    background-color: rgba(122, 122, 122, 0.7);
+
+    border: 2px solid var(--oposity);
+
+    .avatar-img {
+      img {
+        height: 300px;
+        width: 250px;
+        object-fit: cover;
+        border-radius: 2px;
+      }
+    }
+
+    .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 300px;
+      width: 250px;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+
+    input {
+      display: none;
+    }
+  }
+}
+
+button,
+fa-icon {
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+fa-icon {
+  &:hover {
+    color: var(--base);
+  }
+}

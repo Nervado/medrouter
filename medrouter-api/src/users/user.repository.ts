@@ -95,11 +95,12 @@ export class UserRepository extends Repository<User> {
   }
 
   async index(pageFilterDto: PageFilterDto): Promise<User[]> {
-    const pageNumber: number = pageFilterDto.page * 5 - 5;
+    const pageNumber: number = pageFilterDto.page * 10 - 10;
     const users = await this.createQueryBuilder('user')
       .leftJoinAndSelect('user.avatar', 'avatar')
+      .leftJoinAndSelect('user.address', 'address')
       .skip(pageNumber)
-      .take(5)
+      .take(10)
       .getMany();
 
     return users;

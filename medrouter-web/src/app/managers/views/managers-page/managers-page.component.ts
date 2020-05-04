@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { Role } from "src/app/auth/enums/roles-types";
+import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-managers-page",
@@ -11,6 +13,7 @@ export class ManagersPageComponent implements OnInit {
   mainColor: Colors = Colors.ADMIN;
 
   role: Role = Role.ADMIN;
+  faPlus = faPlus;
 
   constructor() {}
 

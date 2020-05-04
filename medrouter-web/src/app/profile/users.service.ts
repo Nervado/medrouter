@@ -6,6 +6,7 @@ import { MEDROUTER_API } from "../api/app.api";
 import { tap } from "rxjs/operators";
 
 import { Avatar } from "./models/avatar.dto";
+import { AuthService } from "../auth/auth.service";
 
 @Injectable({
   providedIn: "root",
@@ -14,7 +15,7 @@ export class UsersService {
   profile: Profile = null;
   avatar: Avatar = null;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     const profile: Profile = JSON.parse(sessionStorage.getItem("profile"));
     if (profile) {
       this.profile = profile;
@@ -53,7 +54,9 @@ export class UsersService {
       () => {
         sessionStorage.setItem("profile", null);
       },
-      () => sessionStorage.setItem("profile", JSON.stringify(this.profile))
+      () => {
+        sessionStorage.setItem("profile", JSON.stringify(this.profile));
+      }
     );
   }
 
@@ -63,5 +66,11 @@ export class UsersService {
         complete: () => sessionStorage.removeItem("profile"),
       })
     );
+  }
+
+  search(page: number): Observable<Array<Profile>> {
+    console.log(page);
+
+    return this.http.get<Array<Profile>>(`${MEDROUTER_API}/users?page=${page}`);
   }
 }

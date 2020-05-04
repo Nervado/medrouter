@@ -20,6 +20,7 @@ import * as Redis from 'ioredis';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthPasswordChange } from '../auth/dto/auth-password-change.dto';
 import { AvatarsService } from 'src/avatars/avatars.service';
+import { nXorNull } from 'src/utils/logic';
 
 @Injectable()
 export class UsersService {
@@ -41,40 +42,57 @@ export class UsersService {
   }
 
   async get(id, user: User): Promise<User> {
-    if (id !== user.userId && !user.admin && !user.recept) {
-      throw new UnauthorizedException('User has not correct privileges');
+    if (id !== user.userId && user.role.length === 1) {
+      //remove after testes
+      // throw new UnauthorizedException('User has not privileges here');
     }
+
+    if (id !== user.userId && user.role.length > 1) {
+      return this.userRepository.findOne(id);
+    }
+    //**testes */
     return this.userRepository.findOne(id);
+
+    return this.userRepository.findOne(user.userId);
   }
 
   async update(
     id: number,
     userUpdateDto: UserUpdateDto,
-    user?: User,
+    logged?: User,
   ): Promise<User> {
-    if (user.userId !== id && !user.admin && !user.owner && !user.recept) {
-      throw new UnauthorizedException('User has not correct privileges');
+    if (logged.userId !== id && logged.role.length === 1) {
+      //Uncommnent after tests
+      //throw new UnauthorizedException('Not authorized');
+    }
+    if (logged.userId === id) {
+      // logged user whant update self data
+      console.log('logged user whant update self data');
     }
 
-    if (userUpdateDto.address === null && user.address === null) {
+    if (logged.userId !== id) {
+      // admin user whats to perform user update data
+      console.log('admin user whats to perform user update data');
+    }
+
+    const user: User = await this.userRepository.findOne({ userId: id });
+
+    // no address or has address
+    if (nXorNull(user.address, userUpdateDto.address)) {
+      if (user.address !== null) {
+        const address = await this.addressService.update(userUpdateDto.address);
+        return await this.userRepository.updateOne(id, userUpdateDto, address);
+      }
+
       return await this.userRepository.updateOne(id, userUpdateDto);
     }
 
-    if (userUpdateDto.address !== null && user.address === null) {
+    // if not has address must create
+    if (user.address === null && userUpdateDto.address.streetName !== null) {
       const address = await this.addressService.createAddress(
         userUpdateDto.address,
       );
       return await this.userRepository.updateOne(id, userUpdateDto, address);
-    }
-
-    if (user.address.id === userUpdateDto.address.id) {
-      //update address
-      const updatedAddress = await this.addressService.update(
-        userUpdateDto.address,
-      );
-      userUpdateDto.address = updatedAddress;
-
-      return await this.userRepository.updateOne(id, userUpdateDto);
     }
   }
 

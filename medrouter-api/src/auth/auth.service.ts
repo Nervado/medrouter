@@ -100,7 +100,7 @@ export class AuthService {
   }
 
   async generateAccessToken(user: User): Promise<CredentailsDto> {
-    const { username, userId, email, role } = user;
+    const { username, userId, email, role, avatar } = user;
 
     const payload: JwtPayload = {
       username,
@@ -123,6 +123,7 @@ export class AuthService {
       userId,
       email,
       role,
+      avatar,
     };
 
     return authCredentailsDto;

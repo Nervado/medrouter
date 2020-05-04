@@ -18,11 +18,21 @@
     </div>
 
     <div class="avatar-area">
-      <img
-        src="../../../assets/avatarmale.png"
-        alt="avatar"
-        [style.border-color]="mainColor"
-      />
+      <ng-container *ngIf="user.user.avatar?.url; else avatarTemplate">
+        <img
+          [src]="user.user.avatar.url"
+          alt="avatar"
+          [style.border-color]="mainColor"
+        />
+      </ng-container>
+
+      <ng-template #avatarTemplate>
+        <img
+          src="../../../assets/avatarmale.png"
+          alt="avatar"
+          [style.border-color]="mainColor"
+        />
+      </ng-template>
     </div>
     <div class="grett mx-3" [style.color]="mainColor">
       <span>{{ gretting() }}</span> <br />
