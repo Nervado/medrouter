@@ -1,0 +1,54 @@
+.remove-users {
+  width: 260px;
+
+  .list {
+    margin: 10px 0;
+    width: 258px;
+    border: 1px solid var(--admin);
+    border-radius: 4px;
+
+    padding: 10px;
+
+    overflow: scroll;
+
+    .users,
+    .title {
+      padding: 5px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      color: var(--admin);
+    }
+
+    .title {
+      border-bottom: 1px solid var(--medium);
+    }
+  }
+
+  .exclude {
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid var(--medium);
+    border-radius: 4px;
+
+    padding: 5px;
+    display: flex;
+    flex-wrap: wrap;
+
+    .user {
+      border-radius: 5px;
+      background-color: rgba(125, 125, 125, 0.3);
+      margin: 2px 3px;
+      padding: 2px 5px;
+    }
+  }
+
+  fa-icon {
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}

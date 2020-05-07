@@ -1,1 +1,121 @@
-<p>add-lab-modal works!</p>
+<ng-template #content let-modal>
+  <div class="modal-header bg-admin">
+    <h4 class="modal-title text-oposity" id="modal-basic-title">
+      Adicionar Laboratório
+    </h4>
+    <button
+      type="button"
+      class="close text-base"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p class="text-admin">
+      Inclusão de
+      <strong>Novo Laboratório</strong>
+    </p>
+
+    <form
+      [formGroup]="actionsForm"
+      class="d-flex flex-column justify-content-center align-items-center"
+    >
+      <div class="form-group text-admin">
+        <div>
+          <label for="name">Nome do Laboratório</label>
+          <app-input-container class="in-container in-container-admin my-2">
+            <input
+              formControlName="name"
+              type="text"
+              placeholder="Nome do Laboratório"
+              autocomplete="off"
+              class="in in-admin"
+              style="border: 1px solid var(--admin); color: var(--admin);"
+            />
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faFlask" class="text-oposity"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+        <div>
+          <label for="cnpj">CNPJ</label>
+          <app-input-container class="in-container in-container-admin my-2">
+            <input
+              formControlName="cnpj"
+              type="text"
+              placeholder="CNPJ do Laboratório"
+              autocomplete="off"
+              class="in in-admin"
+              style="border: 1px solid var(--admin); color: var(--admin);"
+            />
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faUserTie" class="text-oposity"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+
+        <div>
+          <label for="category">Categorias</label>
+          <div class="">
+            <app-mult-selector-drop-drown
+              formControlName="category"
+              [states]="options"
+            ></app-mult-selector-drop-drown>
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faFlask" class="text-oposity"></fa-icon>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label for="exams">Exames que realiza</label>
+          <div class="">
+            <app-mult-selector-drop-drown
+              formControlName="exams"
+              [states]="exams"
+            ></app-mult-selector-drop-drown>
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faFlask" class="text-oposity"></fa-icon>
+            </div>
+          </div>
+        </div>
+
+        <label for="password">Sua senha de admin</label>
+        <app-input-container class="in-container in-container-admin my-2">
+          <input type="text" name="username" hidden autocomplete="username" />
+          <input
+            formControlName="password"
+            type="password"
+            placeholder="Senha"
+            autocomplete="off"
+            class="in in-admin"
+            style="border: 1px solid var(--admin); color: var(--admin);"
+          />
+          <div
+            class="d-flex mx-2 flex-column justify-content-center align-items-center"
+          >
+            <fa-icon [icon]="faLock" class="text-oposity"></fa-icon>
+          </div>
+        </app-input-container>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="bt bt-medium" (click)="modal.close('cancel')">
+      Cancelar
+    </button>
+    <button type="button" class="bt bt-base" (click)="modal.close('confirm')">
+      Confirmar
+    </button>
+  </div>
+</ng-template>

@@ -13,6 +13,7 @@ import {
   faCog,
   faLocationArrow,
   faMapMarkerAlt,
+  faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { UsersService } from "src/app/profile/users.service";

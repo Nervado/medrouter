@@ -1,7 +1,11 @@
-import { NgModule, ModuleWithProviders } from "@angular/core";
+import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  SelectMultipleControlValueAccessor,
+} from "@angular/forms";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { InputComponent } from "./components/input/input.component";
@@ -16,6 +20,7 @@ import { WrapperContentComponent } from "./components/wrapper-content/wrapper-co
 import { WrapperComponentComponent } from "./components/wrapper-component/wrapper-component.component";
 import { LoadingComponent } from "./components/loading/loading.component";
 import { RadioComponent } from "./components/radio/radio.component";
+import { MultSelectorDropDrownComponent } from "./components/mult-selector-drop-drown/mult-selector-drop-drown.component";
 
 @NgModule({
   declarations: [
@@ -31,6 +36,8 @@ import { RadioComponent } from "./components/radio/radio.component";
     WrapperComponentComponent,
     LoadingComponent,
     RadioComponent,
+    MultSelectorDropDrownComponent,
+    //SelectMultipleControlValueAccessor,
   ],
   imports: [
     CommonModule,
@@ -57,6 +64,7 @@ import { RadioComponent } from "./components/radio/radio.component";
     MenubarComponent,
     LoadingComponent,
     RadioComponent,
+    MultSelectorDropDrownComponent,
   ],
 })
 export class SharedModule {}

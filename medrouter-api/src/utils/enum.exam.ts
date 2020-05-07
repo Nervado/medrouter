@@ -24,7 +24,7 @@ DENOS = "Densitometria_Ossea",
 DERMA = "Dermatoscopia",
 DITEX = "Dieta_de_exclusao",
 DORMI = "Doenca_residual_minima,
-DOPTC ="Doppler_transcraniano"
+DOPTC ="Doppler_transcraniano",
 
 ECCVR = "Ecodoppler_carotideo_e_vertebral",
 ECVMI = "Ecodoppler venoso dos membros inferiores",
@@ -34,63 +34,70 @@ ELISA = "Elisa",
 ESEBG = "Escala_de_Equilibrio_de_Berg",
 ESCBI = "Escore_de_Bishop",
 ESFGR = "Esofagografia",
-Esofagograma
-Espéculo
-Espermograma
-Espirometria
-Estetoscópio
-Estudo da condução nervosa
-Exame pré-nupcial
-F
-Falso positivo
-G
-Gamagrafia óssea
-Gasometria arterial
-Glicorraquia
-Glicosímetro
-Glicosúria
-H
-Hemadsorção
-Hemograma
-Histerosalpingografia
-I
-Imagiologia médica
-Imuno-histoquímica
-Imunofenotipagem
-L
-Laringoscopia
-Lesão intraepitelial de alto grau
-M
-Magnetoencefalografia
-Manobra de Phalen
-Manometria esofágica
-Mielografia
-Mielograma
-MRI de difusão
-N
-Nasofaringoscopia
-Nasofibrolaringoscopia
-Nasofibroscopia
-Neurofeedback
-Neuroimagiologia
-P
-Perfil lipídico
-Ph-metria esofágica
-Potencial evocado
-Pressão venosa central
-Protocolo de Observação para o Diagnóstico de Autismo
-Prova cruzada
-Prova da tuberculina
-Prova de aglutinação em látex
-Punção aspirativa por agulha fina
-Punção lombar
-R
-Reação de Agostini
-Reação de Paul-Bunnell-Davidsohn
-Reação intradérmica
-Retossigmoidoscopia
-S
-Sigmoidoscopia
+ESFGA = "Esofagograma",
+ESPCL = "Especulo",
+EMGRM = "Espermograma",
+ESPRO = "Espirometria",
+ESTCP = "Estetoscópio",
+ECNEV = "Estudo_da_conducao_nervosa",
+EXNUP = "Exame"pre_nupcial",
+
+
+GAMOS = "Gamagrafia_ossea",
+GASAR = "Gasometria_arterial",
+GLICR = "Glicorraquia",
+GLICS = "Glicosimetro'
+GLICU = "Glicosuria",
+
+HMDSO = "Hemadsorcao",
+HMGRA = "Hemograma",
+HTLPI = "Histerosalpingografia",
+
+IMGM = "Imagiologia_medica",
+IMGH = "Imuno_histoquimica",
+IMFNO = "Imunofenotipagem",
+
+LRGCP = "Laringoscopia",
+MGTCF = "Magnetoencefalografia",
+MAPHA = "Manobra_de_Phalen",
+MSFGG = "Manometria_esofagica",
+MIELG = "Mielografia",
+MIEGR = "Mielograma",
+MRIDI = "MRI_de_difusao",
+
+NSFGC = "Nasofaringoscopia",
+
+NSFBG = "Nasofibrolaringoscopia",
+NFBCP = "Nasofibroscopia",
+
+NFBCK = "Neurofeedback",
+NRMGL = "Neuroimagiologia",
+
+PFLIP = "Perfil_lipidico",
+PHSOF = "Ph_metria_esofagica",
+
+PELVA = "Potencial_evocado",
+
+PEVCE = "Pressao_venosa_central",
+
+POBDA = "Protocolo_de_Observacao_para_o_Diagnostico_de_Autismo",
+
+PROVC = "Prova_cruzada",
+
+PRTUB = "Prova_da_tuberculina",
+
+PRALA = "Prova_de_aglutinação_em_latex",
+PUAAF = "Puncao_aspirativa_por_agulha_fina",
+PULOM = "Puncao_lombar",
+
+RAGOT=  "Reacao_de_Agostini",
+RAPBD =  "Reacao_de_Paul_Bunnell_Davidsohn",
+REINT =  "Reacao_intradermica",
+RETSG  = "Retossigmoidoscopia",
+
+
+
+SGMOI = "Sigmoidoscopia"
 
 TALLE ="Teste_de_Allen",
 TCOMB ="Teste_de_Coombs",
@@ -112,7 +119,6 @@ TORAC = "Toracocentese"
 URANL = "Uranalise",
 UROCL = "Urocultura",
 UROGR = "Urografia",
-
 VEMAM = "Vectoeletronistagmografia",
 VESAA = "Veia_safena_acessoria_anterior",
 VHEMO = "Velocidade de hemossedimentação",

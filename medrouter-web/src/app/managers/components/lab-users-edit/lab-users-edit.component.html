@@ -1,0 +1,137 @@
+<ng-template #content let-modal>
+  <div class="modal-header bg-admin">
+    <h4 class="modal-title text-oposity" id="modal-basic-title">
+      Modificar usuários responsáveis
+    </h4>
+    <button
+      type="button"
+      class="close text-base"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p class="text-admin">
+      Modificar usuários do Laboratório
+      <strong>{{ lab.name }}</strong> <br />
+      CNPJ: <strong>{{ lab.cnpj }}</strong>
+    </p>
+
+    <form
+      [formGroup]="actionsForm"
+      class="d-flex flex-column justify-content-center align-items-center"
+    >
+      <div>
+        <label for="Tipo" class="text-admin">Tipo de operação</label>
+        <app-input-container class="in-container in-container-admin my-4">
+          <select
+            id="cars"
+            name="type"
+            aria-placeholder="type"
+            class="in in-medium cursor"
+            formControlName="type"
+            style="border: 2px solid var(--admin); color: var(--admin);"
+          >
+            <option value="include">Inclusão</option>
+            <option value="exclude">Exclusão</option>
+          </select>
+
+          <div
+            class="d-flex mx-2 flex-column justify-content-center align-items-center"
+          >
+            <fa-icon [icon]="faUser" class="text-medium"></fa-icon>
+          </div>
+        </app-input-container>
+      </div>
+
+      <div
+        class="form-group text-admin"
+        *ngIf="actionsForm.value.type === 'include'"
+      >
+        <label for="cpf">Digite o CPF</label>
+        <app-input-container class="in-container in-container-profile my-2">
+          <input type="text" name="username" hidden autocomplete="username" />
+          <input
+            formControlName="cpf"
+            type="cpf"
+            placeholder="CPF do usuário"
+            autocomplete="off"
+            class="in in-admin"
+            style="border: 1px solid var(--admin); color: var(--admin);"
+          />
+          <div
+            class="d-flex mx-2 flex-column justify-content-center align-items-center"
+          >
+            <fa-icon [icon]="faUserTie" class="text-oposity"></fa-icon>
+          </div>
+        </app-input-container>
+      </div>
+      <div
+        class="remove-users mb-2"
+        *ngIf="actionsForm.value.type === 'exclude'"
+      >
+        <label for="excludes" class="text-admin">Usuários autorizados</label>
+        <div class="list">
+          <div class="title">
+            <div>Nome</div>
+            <div>Editar</div>
+          </div>
+          <div *ngFor="let user of lab.users" class="users">
+            <div>{{ user.username }}</div>
+            <div>
+              <fa-icon
+                [icon]="faTimes"
+                class="text-oposity1"
+                (click)="remove(user)"
+              ></fa-icon>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-admin" *ngIf="removes.length > 0">
+          <label for="excludes">Serão Excluídos</label>
+          <div class="exclude">
+            <div *ngFor="let user of removes" class="user">
+              {{ user.username }}
+
+              <fa-icon
+                [icon]="faTimes"
+                class="text-medium"
+                (click)="add(user)"
+              ></fa-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group text-admin">
+        <label for="password">Sua senha de admin</label>
+        <app-input-container class="in-container in-container-profile my-2">
+          <input type="text" name="username" hidden autocomplete="username" />
+          <input
+            formControlName="password"
+            type="password"
+            placeholder="Senha"
+            autocomplete="off"
+            class="in in-admin"
+            style="border: 1px solid var(--admin); color: var(--admin);"
+          />
+          <div
+            class="d-flex mx-2 flex-column justify-content-center align-items-center"
+          >
+            <fa-icon [icon]="faLock" class="text-oposity"></fa-icon>
+          </div>
+        </app-input-container>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="bt bt-medium" (click)="modal.close('cancel')">
+      Cancelar
+    </button>
+    <button type="button" class="bt bt-base" (click)="modal.close('confirm')">
+      Confirmar
+    </button>
+  </div>
+</ng-template>

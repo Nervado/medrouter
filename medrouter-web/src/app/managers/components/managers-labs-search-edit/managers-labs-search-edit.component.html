@@ -1,3 +1,17 @@
+<app-add-lab-modal #modal (signOut)="confirm($event)"> </app-add-lab-modal>
+
+<app-lab-remove-confirmation
+  #removeLabModal
+  (signout)="remove($event)"
+  [lab]="lab"
+></app-lab-remove-confirmation>
+
+<app-lab-users-edit #addUserLabModal (signout)="remove($event)" [lab]="lab">
+</app-lab-users-edit>
+
+<app-lab-edit-exams #editExamsModal (signout)="remove($event)" [lab]="lab">
+</app-lab-edit-exams>
+
 <div class="main-data aside text-admin">
   <form [formGroup]="searchForm" class="search-form">
     <label for="search" class="text-admin">Encontre um laboratório</label>
@@ -14,7 +28,7 @@
       </div>
 
       <div class="cursor text-admin">
-        <fa-icon [icon]="faPlus"></fa-icon>
+        <fa-icon [icon]="faPlus" (click)="openModal(modal)"></fa-icon>
       </div>
     </div>
   </form>
@@ -39,8 +53,21 @@
           <fa-icon [icon]="faCalendarPlus"> </fa-icon>
         </div>
         <div class="actions">
-          <fa-icon [icon]="faEdit" class="mr-2 cursor text-medium"></fa-icon>
-          <fa-icon [icon]="faTimes" class="cursor text-oposity1"></fa-icon>
+          <fa-icon
+            [icon]="faUserEdit"
+            class="mr-2 cursor text-profile"
+            (click)="addUserLab(addUserLabModal)"
+          ></fa-icon>
+          <fa-icon
+            [icon]="faEdit"
+            class="mr-2 cursor text-medium"
+            (click)="editExams(editExamsModal)"
+          ></fa-icon>
+          <fa-icon
+            [icon]="faTimes"
+            class="cursor text-oposity1"
+            (click)="removeLab(removeLabModal)"
+          ></fa-icon>
         </div>
       </div>
     </div>

@@ -1,41 +1,29 @@
 import {
   Component,
   OnInit,
+  Input,
   ViewChild,
   ElementRef,
   Output,
   EventEmitter,
 } from "@angular/core";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { faLock, faFlask } from "@fortawesome/free-solid-svg-icons";
+import { LabDto } from "./dtos/lab.dto";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import {
-  faLock,
-  faUser,
-  faFlask,
-  faUserTie,
-} from "@fortawesome/free-solid-svg-icons";
-import { Category } from "./dtos/option.dto";
-import { LabCategory } from "./enums/labs-types";
-import { getArrayFromEnum } from "src/app/utils/getArrayFromEnum";
-import { capitalizeAndRemoveUnderscores } from "src/app/utils/capitalizeAndRemoveUnderscore";
-import { ExamsEnum } from "./enums/exams-types";
 
 @Component({
-  selector: "app-add-lab-modal",
-  templateUrl: "./add-lab-modal.component.html",
-  styleUrls: ["./add-lab-modal.component.scss"],
+  selector: "app-lab-remove-confirmation",
+  templateUrl: "./lab-remove-confirmation.component.html",
+  styleUrls: ["./lab-remove-confirmation.component.scss"],
 })
-export class AddLabModalComponent implements OnInit {
+export class LabRemoveConfirmationComponent implements OnInit {
   closeResult = "";
   actionsForm: FormGroup;
   faLock = faLock;
-  faUser = faUser;
   faFlask = faFlask;
-  faUserTie = faUserTie;
 
-  options: Array<any> = getArrayFromEnum(LabCategory);
-
-  exams: Array<any> = getArrayFromEnum(ExamsEnum);
+  @Input() lab: LabDto;
 
   @ViewChild("content") elementRef: ElementRef;
   @Output() signOut: EventEmitter<any> = new EventEmitter();
@@ -49,9 +37,7 @@ export class AddLabModalComponent implements OnInit {
         Validators.minLength(6),
       ]),
       name: this.fb.control("", [Validators.required]),
-      cnpj: this.fb.control("", [Validators.required]),
-      category: this.fb.control([], [Validators.required]),
-      exams: this.fb.control([], [Validators.required]),
+      id: this.fb.control(this.lab.id, [Validators.required]),
     });
   }
 
@@ -87,9 +73,5 @@ export class AddLabModalComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
-  }
-
-  prettify(sentence: string): string {
-    return capitalizeAndRemoveUnderscores(sentence);
   }
 }

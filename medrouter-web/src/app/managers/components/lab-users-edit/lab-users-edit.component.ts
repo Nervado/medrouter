@@ -2,40 +2,40 @@ import {
   Component,
   OnInit,
   ViewChild,
-  ElementRef,
-  Output,
   EventEmitter,
+  ElementRef,
+  Input,
+  Output,
 } from "@angular/core";
+import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { LabDto } from "../lab-remove-confirmation/dtos/lab.dto";
 import {
-  faLock,
-  faUser,
   faFlask,
+  faLock,
   faUserTie,
+  faUser,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
-import { Category } from "./dtos/option.dto";
-import { LabCategory } from "./enums/labs-types";
-import { getArrayFromEnum } from "src/app/utils/getArrayFromEnum";
-import { capitalizeAndRemoveUnderscores } from "src/app/utils/capitalizeAndRemoveUnderscore";
-import { ExamsEnum } from "./enums/exams-types";
+import { UsersService } from "src/app/profile/users.service";
 
 @Component({
-  selector: "app-add-lab-modal",
-  templateUrl: "./add-lab-modal.component.html",
-  styleUrls: ["./add-lab-modal.component.scss"],
+  selector: "app-lab-users-edit",
+  templateUrl: "./lab-users-edit.component.html",
+  styleUrls: ["./lab-users-edit.component.scss"],
 })
-export class AddLabModalComponent implements OnInit {
+export class LabUsersEditComponent implements OnInit {
   closeResult = "";
   actionsForm: FormGroup;
   faLock = faLock;
-  faUser = faUser;
   faFlask = faFlask;
   faUserTie = faUserTie;
+  faUser = faUser;
+  faTimes = faTimes;
 
-  options: Array<any> = getArrayFromEnum(LabCategory);
+  removes = [];
 
-  exams: Array<any> = getArrayFromEnum(ExamsEnum);
+  @Input() lab: LabDto;
 
   @ViewChild("content") elementRef: ElementRef;
   @Output() signOut: EventEmitter<any> = new EventEmitter();
@@ -49,9 +49,9 @@ export class AddLabModalComponent implements OnInit {
         Validators.minLength(6),
       ]),
       name: this.fb.control("", [Validators.required]),
-      cnpj: this.fb.control("", [Validators.required]),
-      category: this.fb.control([], [Validators.required]),
-      exams: this.fb.control([], [Validators.required]),
+      id: this.fb.control(this.lab.id, [Validators.required]),
+      cpf: this.fb.control("", [Validators.required]),
+      type: this.fb.control("", [Validators.required]),
     });
   }
 
@@ -67,7 +67,10 @@ export class AddLabModalComponent implements OnInit {
             result === "confirm" &&
             this.actionsForm.value.password !== undefined
           ) {
-            this.signOut.emit(this.actionsForm.value);
+            this.signOut.emit({
+              form: this.actionsForm.value,
+              data: this.removes,
+            });
           }
 
           this.actionsForm.reset();
@@ -89,7 +92,13 @@ export class AddLabModalComponent implements OnInit {
     }
   }
 
-  prettify(sentence: string): string {
-    return capitalizeAndRemoveUnderscores(sentence);
+  remove(user: any) {
+    this.removes.push(user);
+    this.lab.users = this.lab.users.filter((u) => u.userId !== user.userId);
+  }
+
+  add(user: any) {
+    this.lab.users.push(user);
+    this.removes = this.removes.filter((u) => u.userId !== user.userId);
   }
 }

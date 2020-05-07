@@ -1,0 +1,31 @@
+<div class="multi-selector">
+  <div class="output" [style.border-color]="'var(--admin)'">
+    <div class="selected" [style.color]="'var(--admin'">
+      Selecionados {{ total }}
+    </div>
+    <div class="bt-admin cursor" (click)="toggle()">
+      <ng-container *ngIf="show; else search">
+        <fa-icon [icon]="faSearchMinus"></fa-icon>
+      </ng-container>
+      <ng-template #search>
+        <fa-icon [icon]="faSearchPlus"></fa-icon>
+      </ng-template>
+    </div>
+  </div>
+  <div class="options" *ngIf="show" (mouseleave)="hide()">
+    <div class="finder">
+      <input type="text" (keyup)="filter($event)" placeholder="busque aqui" />
+      <fa-icon [icon]="faSearch"></fa-icon>
+    </div>
+
+    <div *ngFor="let state of states" (click)="setValue(state)" class="hover">
+      <ng-container *ngIf="state.selected; else elseTemplate">
+        <fa-icon [icon]="faCheckSquare"></fa-icon>
+      </ng-container>
+      <ng-template #elseTemplate>
+        <fa-icon [icon]="faSquare"></fa-icon>
+      </ng-template>
+      {{ state.label }}
+    </div>
+  </div>
+</div>

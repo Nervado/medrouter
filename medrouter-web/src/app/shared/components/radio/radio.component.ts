@@ -19,7 +19,7 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
   @Input() options: RadioOption[];
 
   value: any;
-  onChange: any;
+  onChange: Function;
 
   @Input() bgColor: Colors = Colors.PROFILE;
   @Input() bgBase: Colors = Colors.BASE;
@@ -27,9 +27,7 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
 
   constructor() {}
 
-  ngOnInit(): void {
-    //this.value = this.options[0];
-  }
+  ngOnInit() {}
 
   setValue(value: any) {
     this.value = value;
@@ -40,9 +38,11 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
     this.value = obj;
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: Function): void {
     this.onChange = fn;
   }
 
-  registerOnTouched() {}
+  registerOnTouched(fn: any): void {}
+
+  setDisabledState?(isDisabled: boolean): void {}
 }
