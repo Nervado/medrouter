@@ -1,5 +1,5 @@
 <ng-template #content let-modal>
-  <div class="modal-header bg-admin">
+  <div class="modal-header" [style.background-color]="mainColor">
     <h4 class="modal-title text-oposity" id="modal-basic-title">
       Alteração de usuário
     </h4>
@@ -13,7 +13,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <p class="text-admin">
+    <p class="text-base">
       Alteração do cadastro da(o) usuário
       <strong> {{ profile.username }}</strong>
     </p>
@@ -25,7 +25,10 @@
       <div class="form-group text-admin">
         <div>
           <label for="Tipo">Tipo de operação</label>
-          <app-input-container class="in-container in-container-admin my-4">
+          <app-input-container
+            class="in-container my-4"
+            [mainColor]="mainColor"
+          >
             <select
               id="cars"
               name="type"
@@ -40,44 +43,53 @@
 
             <div
               class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              [style.background-color]="mainColor"
             >
-              <fa-icon [icon]="faUser" class="text-medium"></fa-icon>
+              <fa-icon [icon]="faUser" class="text-oposity"></fa-icon>
             </div>
           </app-input-container>
         </div>
 
         <div *ngIf="actionsForm.value.type === 'include'">
           <label for="Tipo">Tipo de Inclusão</label>
-          <app-input-container class="in-container in-container-admin my-4">
+          <app-input-container
+            class="in-container my-4"
+            [mainColor]="mainColor"
+          >
             <select
               id="include"
               name="include"
               aria-placeholder="include"
-              class="in in-medium cursor"
+              class="in cursor"
               formControlName="include"
               style="border: 2px solid var(--admin); color: var(--admin);"
             >
               <option value="doctor">Medico</option>
               <option value="recept">Recepcionista</option>
               <option value="admin">Gerente</option>
+              <option value="owner">Diretor</option>
             </select>
 
             <div
+              [style.background-color]="mainColor"
               class="d-flex mx-2 flex-column justify-content-center align-items-center"
             >
-              <fa-icon [icon]="faUser" class="text-medium"></fa-icon>
+              <fa-icon [icon]="faUser" class="text-oposity"></fa-icon>
             </div>
           </app-input-container>
         </div>
 
         <div *ngIf="actionsForm.value.type === 'include'">
           <label for="Tipo">Salário</label>
-          <app-input-container class="in-container in-container-admin my-4">
+          <app-input-container
+            class="in-container my-4"
+            [mainColor]="mainColor"
+          >
             <input
               id="salary"
               name="salary"
               aria-placeholder="salary"
-              class="in in-medium cursor"
+              class="in cursor"
               formControlName="salary"
               style="border: 2px solid var(--admin); color: var(--admin);"
             />
@@ -85,13 +97,13 @@
             <div
               class="d-flex mx-2 flex-column justify-content-center align-items-center"
             >
-              <fa-icon [icon]="faUser" class="text-medium"></fa-icon>
+              <fa-icon [icon]="faUser" class="text-oposity"></fa-icon>
             </div>
           </app-input-container>
         </div>
 
         <label for="password">Sua senha de admin</label>
-        <app-input-container class="in-container in-container-profile my-2">
+        <app-input-container class="in-container my-2" [mainColor]="mainColor">
           <input type="text" name="username" hidden autocomplete="username" />
           <input
             formControlName="password"
@@ -111,7 +123,12 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="bt bt-medium" (click)="modal.close('cancel')">
+    <button
+      type="button"
+      class="bt"
+      (click)="modal.close('cancel')"
+      [style.background-color]="mainColor"
+    >
       Cancelar
     </button>
     <button type="button" class="bt bt-base" (click)="modal.close('confirm')">

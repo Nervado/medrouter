@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import {
   faSearch,
   faFilter,
@@ -24,6 +24,8 @@ import { Types } from "src/app/messages/toast/enums/types";
 import { Role } from "src/app/auth/enums/roles-types";
 import { RolesIcons } from "./enums/roles-icons";
 import { ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { Colors } from "src/app/messages/toast/enums/colors";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-search-employees",
@@ -43,9 +45,11 @@ export class SearchEmployeesComponent implements OnInit {
 
   details = RolesIcons;
 
+  @Input() mainColor: Colors = Colors.BASE;
+
   page: number = 1;
 
-  showFilter: boolean = false;
+  showFilter: boolean = true;
   searchForm: FormGroup;
 
   users: Array<Profile> = [];
@@ -62,7 +66,8 @@ export class SearchEmployeesComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private usersService: UsersService,
-    private ns: NotificationService
+    private ns: NotificationService,
+    private ar: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -72,8 +77,10 @@ export class SearchEmployeesComponent implements OnInit {
       hired: this.fb.control(""),
     });
 
+    this.ar.data.subscribe((data) => (this.mainColor = data.mainColor));
+
     // test
-    this.page = 4;
+    this.page = 1;
     this.getUsers(this.page);
   }
 

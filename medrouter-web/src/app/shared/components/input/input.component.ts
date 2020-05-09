@@ -2,6 +2,7 @@ import { Component, OnInit, ContentChild, Input } from "@angular/core";
 
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { NgModel, FormControlName } from "@angular/forms";
+import { Colors } from "src/app/messages/toast/enums/colors";
 
 @Component({
   selector: "app-input-container",
@@ -17,6 +18,8 @@ export class InputComponent implements OnInit {
   @Input() label: string;
   @Input() errorMessage: string;
 
+  @Input() mainColor: Colors = Colors.BASE;
+
   faTimes = faTimes;
   faCheck = faCheck;
 
@@ -26,9 +29,6 @@ export class InputComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterContentChecked(): void {
-    //Called after every check of the component's or directive's content.
-    //Add 'implements AfterContentChecked' to the class.
-
     this.input = this.model || this.control;
     if (this.input === undefined) {
       throw new Error(

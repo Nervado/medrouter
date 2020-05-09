@@ -21,6 +21,8 @@ import { WrapperComponentComponent } from "./components/wrapper-component/wrappe
 import { LoadingComponent } from "./components/loading/loading.component";
 import { RadioComponent } from "./components/radio/radio.component";
 import { MultSelectorDropDrownComponent } from "./components/mult-selector-drop-drown/mult-selector-drop-drown.component";
+import { SearchEmployeesComponent } from "./components/search-employees/search-employees.component";
+import { ManagersActionsModalComponent } from "./components/managers-actions-modal/managers-actions-modal.component";
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { MultSelectorDropDrownComponent } from "./components/mult-selector-drop-
     LoadingComponent,
     RadioComponent,
     MultSelectorDropDrownComponent,
-    //SelectMultipleControlValueAccessor,
+    ManagersActionsModalComponent,
+    SearchEmployeesComponent,
   ],
   imports: [
     CommonModule,
@@ -65,6 +68,8 @@ import { MultSelectorDropDrownComponent } from "./components/mult-selector-drop-
     LoadingComponent,
     RadioComponent,
     MultSelectorDropDrownComponent,
+    SearchEmployeesComponent,
+    ManagersActionsModalComponent,
   ],
 })
 export class SharedModule {}

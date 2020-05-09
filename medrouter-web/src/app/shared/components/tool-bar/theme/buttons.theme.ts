@@ -1,4 +1,9 @@
-import { faUserEdit, faLock } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUserEdit,
+  faLock,
+  faCrown,
+  faCalendarPlus,
+} from "@fortawesome/free-solid-svg-icons";
 
 import {
   faPlus,
@@ -36,14 +41,25 @@ export const Buttons = {
     { icon: faLock, path: "security" },
     { icon: faPowerOff, path: "unsubscribe" },
   ], //
-  owner: [],
+  owner: [
+    { icon: faChartBar, path: "../owners/dashboard" },
+    { icon: faUserMd, path: "../owners/doctors" },
+    { icon: faUsersCog, path: "../owners/managers" },
+    { icon: faCrown, path: "../owners/owners" },
+    { icon: faSearch, path: "../owners/search" },
+  ],
   client: [
     { icon: faCalendarDay, path: "/schedules" },
     { icon: faLock, path: "../clients/new" },
   ],
-  recept: [],
+  recept: [
+    { icon: faHeartbeat, path: "../receptionists/clients" },
+    { icon: faCalendarDay, path: "../receptionists/schedules" },
+    { icon: faLock, path: "../clients/new" },
+  ],
   doctor: [
-    { icon: faUserEdit, path: "../doctors/schedule" },
+    { icon: faCalendarPlus, path: "../doctors/create-schedule" },
+    { icon: faCalendarCheck, path: "../doctors/schedule" },
     { icon: faHouseUser, path: "../doctors/doctor-schedule" },
   ],
   admin: [

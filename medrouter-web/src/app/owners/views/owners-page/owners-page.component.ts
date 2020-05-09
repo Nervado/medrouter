@@ -12,6 +12,8 @@ export class OwnersPageComponent implements OnInit {
 
   role: Role = Role.OWNER;
 
+  link = ["/owners"];
+
   constructor() {}
 
   ngOnInit(): void {}

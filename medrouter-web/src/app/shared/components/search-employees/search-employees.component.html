@@ -2,6 +2,7 @@
   #modal
   (signOut)="confirm($event)"
   [profile]="profile"
+  [mainColor]="mainColor"
 >
 </app-managers-actions-modal>
 
@@ -22,7 +23,8 @@
   >
     <div class="w-100 h-100">
       <div
-        class="profile d-flex justify-content-center align-items-center bg-admin text-oposity mt-3"
+        class="profile d-flex justify-content-center align-items-center text-oposity mt-3"
+        [style.background-color]="mainColor"
       >
         <input
           type="text"
@@ -48,12 +50,14 @@
         [formGroup]="searchForm"
         *ngIf="showFilter"
         class="text-oposity mt-1 filters w-100"
+        [style.background-color]="mainColor"
       >
         <div class="search-filter-type p-2">
           <label for="sex" class="mr-2">Gênero</label>
           <app-input-container
-            class="in-container in-container-base"
+            class="in-container"
             [tick]="false"
+            [mainColor]="mainColor"
           >
             <select
               id="cars"
@@ -78,8 +82,9 @@
         <div class="search-filter-type p-2">
           <label for="role" class="mr-2">Categoria</label>
           <app-input-container
-            class="in-container in-container-base"
+            class="in-container"
             [tick]="false"
+            [mainColor]="mainColor"
           >
             <select
               id="role"
@@ -101,10 +106,12 @@
             </div>
           </app-input-container>
         </div>
+
         <div class="search-filter-type p-2">
           <label for="hired" class="mr-2">Situação</label>
           <app-input-container
-            class="in-container in-container-base"
+            class="in-container"
+            [mainColor]="mainColor"
             [tick]="false"
           >
             <select
@@ -131,7 +138,7 @@
       <div class="d-flex flex-column aling-items-center justify-content-center">
         <div class="d-flex align-items-center justify-content-between">
           <div class="results-title">Resultados {{ users.length }}</div>
-          <div class="paginator">
+          <div class="paginator" [style.background-color]="mainColor">
             <fa-icon
               [icon]="faArrowLeft"
               class="mr-2"

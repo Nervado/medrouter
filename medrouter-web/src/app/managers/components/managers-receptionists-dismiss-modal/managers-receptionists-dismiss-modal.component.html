@@ -1,0 +1,55 @@
+<ng-template #content let-modal>
+  <div class="modal-header bg-admin">
+    <h4 class="modal-title text-oposity" id="modal-basic-title">
+      Dispensar membro de equipe
+    </h4>
+    <button
+      type="button"
+      class="close text-base"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p class="text-admin">
+      Dispensar membro
+      <strong>{{ receptionist.user.username }}</strong> <br />
+      CPF: <strong>{{ receptionist.user.cpf }}</strong>
+    </p>
+
+    <form
+      [formGroup]="actionsForm"
+      class="d-flex flex-column justify-content-center align-items-center"
+    >
+      <div class="form-group text-admin">
+        <label for="password">Sua senha de admin</label>
+        <app-input-container class="in-container in-container-profile my-2">
+          <input type="text" name="username" hidden autocomplete="username" />
+          <input
+            formControlName="password"
+            type="password"
+            placeholder="Senha"
+            autocomplete="off"
+            class="in in-admin"
+            style="border: 1px solid var(--admin); color: var(--admin);"
+          />
+          <div
+            class="d-flex mx-2 flex-column justify-content-center align-items-center"
+          >
+            <fa-icon [icon]="faLock" class="text-oposity"></fa-icon>
+          </div>
+        </app-input-container>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="bt bt-medium" (click)="modal.close('cancel')">
+      Cancelar
+    </button>
+    <button type="button" class="bt bt-base" (click)="modal.close('confirm')">
+      Confirmar
+    </button>
+  </div>
+</ng-template>

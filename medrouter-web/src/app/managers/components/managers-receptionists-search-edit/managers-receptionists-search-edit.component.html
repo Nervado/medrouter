@@ -1,0 +1,83 @@
+<app-managers-receptionists-dismiss-modal
+  #removeEmpolyeModal
+  (signout)="remove($event)"
+  [receptionist]="receptionist"
+>
+</app-managers-receptionists-dismiss-modal>
+
+<app-managers-receptionists-edit
+  #editEmployeModal
+  (signout)="remove($event)"
+  [receptionist]="receptionist"
+>
+</app-managers-receptionists-edit>
+<div class="main-data aside text-admin">
+  <form [formGroup]="searchForm" class="search-form">
+    <label for="search" class="text-admin">
+      <fa-icon [icon]="faUsers" class="text-admin"></fa-icon>
+      Equipe da clínica</label
+    >
+
+    <div class="d-flex">
+      <input
+        formControlName="search"
+        type="text"
+        placeholder="Nome do funcionário"
+        autocomplete="off"
+      />
+      <div class="cursor text-admin">
+        <fa-icon [icon]="faSearch" (click)="handleSearch()"></fa-icon>
+      </div>
+    </div>
+  </form>
+
+  <div class="data">
+    <div class="table-header">
+      <div>Funcionário</div>
+      <div>Contratado em:</div>
+      <div>
+        Salário
+        <fa-icon [icon]="faCoins"> </fa-icon>
+      </div>
+      <div>Editar</div>
+    </div>
+
+    <div class="results">
+      <div class="result">
+        <div
+          class="d-flex justify-content-center align-items-center text-base1"
+        >
+          <fa-icon [icon]="faUser" class="mr-2"></fa-icon>
+          <span>João da Silva</span>
+        </div>
+        <div class="text-base1">
+          23/02/2019
+          <fa-icon [icon]="faCalendarPlus"> </fa-icon>
+        </div>
+
+        <div class="text-base1">
+          R$ 2000,00
+        </div>
+        <div class="actions">
+          <a [routerLink]="['/profile', 1]">
+            <fa-icon
+              [icon]="faUserEdit"
+              class="mr-2 cursor text-profile"
+            ></fa-icon
+          ></a>
+
+          <fa-icon
+            [icon]="faEdit"
+            class="mr-2 cursor text-medium"
+            (click)="editExams(editEmployeModal)"
+          ></fa-icon>
+          <fa-icon
+            [icon]="faTimes"
+            class="cursor text-oposity1"
+            (click)="removeEmployer(removeEmpolyeModal)"
+          ></fa-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

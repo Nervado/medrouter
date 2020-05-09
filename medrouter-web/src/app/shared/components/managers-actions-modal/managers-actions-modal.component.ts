@@ -11,6 +11,7 @@ import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Profile } from "src/app/profile/models/user-profile";
+import { Colors } from "src/app/messages/toast/enums/colors";
 
 @Component({
   selector: "app-managers-actions-modal",
@@ -19,6 +20,7 @@ import { Profile } from "src/app/profile/models/user-profile";
 })
 export class ManagersActionsModalComponent implements OnInit {
   @Input() profile: Profile;
+  @Input() mainColor: Colors = Colors.BASE;
   closeResult = "";
   constructor(private modalService: NgbModal, private fb: FormBuilder) {}
   actionsForm: FormGroup;

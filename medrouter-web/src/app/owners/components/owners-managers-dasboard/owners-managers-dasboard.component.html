@@ -1,0 +1,88 @@
+<app-owners-employee-edit-modal
+  #editModal
+  (signout)="remove($event)"
+  [receptionist]="receptionist"
+>
+</app-owners-employee-edit-modal>
+
+<app-owners-employee-dismiss-modal
+  #removeModal
+  (signout)="remove($event)"
+  [receptionist]="receptionist"
+>
+</app-owners-employee-dismiss-modal>
+
+<div class="dashboard d-flex flex-wrap justify-content-between">
+  <div class="main-data aside text-admin">
+    <form [formGroup]="searchForm" class="search-form">
+      <label for="search" class="text-owner">
+        <fa-icon [icon]="faUsersCog" class="text-owner"></fa-icon>
+        Equipe administrativa</label
+      >
+
+      <div class="d-flex">
+        <input
+          formControlName="search"
+          type="text"
+          placeholder="Nome do funcionário"
+          autocomplete="off"
+          class="text-owner"
+        />
+        <div class="cursor text-owner">
+          <fa-icon [icon]="faSearch" (click)="handleSearch()"></fa-icon>
+        </div>
+      </div>
+    </form>
+
+    <div class="data">
+      <div class="table-header text-owner">
+        <div>Funcionário</div>
+        <div>Contratado em:</div>
+        <div>
+          Salário
+          <fa-icon [icon]="faCoins"> </fa-icon>
+        </div>
+        <div>Editar</div>
+      </div>
+
+      <div class="results">
+        <div class="result">
+          <div
+            class="d-flex justify-content-center align-items-center text-base1"
+          >
+            <img src="../../../../assets/avatarmale.png" alt="avatar" />
+
+            <span>João da Silva</span>
+          </div>
+          <div class="text-base1">
+            23/02/2019
+            <fa-icon [icon]="faCalendarPlus"> </fa-icon>
+          </div>
+
+          <div class="text-base1">
+            R$ 2000,00
+          </div>
+          <div class="actions">
+            <a [routerLink]="['/profile', 1]">
+              <fa-icon
+                [icon]="faUserEdit"
+                class="mr-2 cursor text-profile"
+              ></fa-icon
+            ></a>
+
+            <fa-icon
+              [icon]="faEdit"
+              class="mr-2 cursor text-medium"
+              (click)="edit(editModal)"
+            ></fa-icon>
+            <fa-icon
+              [icon]="faTimes"
+              class="cursor text-oposity1"
+              (click)="remove(removeModal)"
+            ></fa-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

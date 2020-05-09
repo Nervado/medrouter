@@ -9,6 +9,7 @@ import {
   faHeartbeat,
   faUserTie,
   faUser,
+  faCrown,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const MenuLinks = {
@@ -33,6 +34,6 @@ export const MenuLinks = {
     path: DefaultRoutes.recept,
     label: "Recepção",
   },
-  owner: { icon: faUserCog, path: DefaultRoutes.owner, label: "Diretoria" },
+  owner: { icon: faCrown, path: DefaultRoutes.owner, label: "Diretoria" },
   lab: { icon: faFlask, path: DefaultRoutes.lab, label: "Laboratório" },
 };
