@@ -1,0 +1,61 @@
+<div class="dashboard d-flex flex-wrap justify-content-between">
+  <div class="main-data aside text-doctor">
+    <div class="header">
+      <div class="mx-2">
+        Nova Receita
+      </div>
+
+      <div class="control">
+        <fa-icon [icon]="faEdit" (click)="isEditing = !isEditing"></fa-icon>
+        <fa-icon [icon]="faSave" (click)="save()"></fa-icon>
+        <fa-icon [icon]="faShare"></fa-icon>
+        <fa-icon [icon]="faSearch" (click)="toogle()"></fa-icon>
+      </div>
+    </div>
+
+    <div class="search" *ngIf="showSearch">
+      <div class="form">
+        <div class="input">
+          <input type="text" name="search" placeholder="Nome do paciente" />
+          <fa-icon [icon]="faSearch" (click)="search()"></fa-icon>
+        </div>
+        <div class="result">
+          <div>
+            João das Colves
+            <fa-icon
+              [icon]="faFileMedical"
+              class="text-success cursor ml-2"
+            ></fa-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prescription-body">
+      <div class="prescription-header">
+        <div class="field">
+          <div class="icon">
+            <fa-icon [icon]="faUserMd" class="mr-1"></fa-icon>
+          </div>
+          Doutor: <strong>Pedro Alvares Cabral II</strong>
+        </div>
+        <div class="field">
+          <div class="icon">
+            <fa-icon [icon]="faHeartbeat" class="mr-1"></fa-icon>
+          </div>
+
+          Paciente: <strong> Rosinha Garotinho</strong>
+        </div>
+      </div>
+
+      <textarea
+        name="recomendation"
+        id="recon"
+        cols="30"
+        rows="10"
+        placeholder="Recomendações"
+      >
+      </textarea>
+    </div>
+  </div>
+</div>
