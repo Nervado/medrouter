@@ -11,6 +11,9 @@ import {
   faHeartbeat,
   faSearch,
   faFileMedical,
+  faCapsules,
+  faVial,
+  faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
@@ -28,12 +31,17 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
   faSave = faSave;
   faSearch = faSearch;
   faFileMedical = faFileMedical;
-  isEditing: boolean = false;
-
-  showSearch: boolean = true;
-
+  faCapsules = faCapsules;
+  faVial = faVial;
+  faExclamationCircle = faExclamationCircle;
   faUserMd = faUserMd;
   faHeartbeat = faHeartbeat;
+
+  isEditing: boolean = false;
+
+  showSearch: boolean = false;
+
+  addR: boolean = true;
 
   constructor() {}
 

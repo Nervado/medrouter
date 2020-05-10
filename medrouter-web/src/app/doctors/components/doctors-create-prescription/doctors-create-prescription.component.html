@@ -19,13 +19,48 @@
           <input type="text" name="search" placeholder="Nome do paciente" />
           <fa-icon [icon]="faSearch" (click)="search()"></fa-icon>
         </div>
-        <div class="result">
-          <div>
-            João das Colves
-            <fa-icon
-              [icon]="faFileMedical"
-              class="text-success cursor ml-2"
-            ></fa-icon>
+
+        <div class="results">
+          <div class="label">
+            Resultados
+
+            <strong class="ml-1"> 4</strong>
+          </div>
+
+          <div class="wrapper">
+            <div class="result">
+              <div>João das Colves</div>
+              <fa-icon
+                [icon]="faFileMedical"
+                class="text-success cursor ml-2"
+              ></fa-icon>
+            </div>
+
+            <div class="result">
+              <div>Maria Sem graça</div>
+
+              <fa-icon
+                [icon]="faFileMedical"
+                class="text-success cursor ml-2"
+              ></fa-icon>
+            </div>
+
+            <div class="result">
+              <div>Pedro Antunes</div>
+
+              <fa-icon
+                [icon]="faFileMedical"
+                class="text-success cursor ml-2"
+              ></fa-icon>
+            </div>
+            <div class="result">
+              <div>Marcolino Frango</div>
+
+              <fa-icon
+                [icon]="faFileMedical"
+                class="text-success cursor ml-2"
+              ></fa-icon>
+            </div>
           </div>
         </div>
       </div>
@@ -48,14 +83,34 @@
         </div>
       </div>
 
-      <textarea
-        name="recomendation"
-        id="recon"
-        cols="30"
-        rows="10"
-        placeholder="Recomendações"
-      >
-      </textarea>
+      <div class="actions">
+        <div class="add medicine">
+          Adicionar Medicamento
+          <fa-icon [icon]="faCapsules"></fa-icon>
+        </div>
+        <div class="add exam">
+          Adicionar Exame
+          <fa-icon [icon]="faVial"></fa-icon>
+        </div>
+        <div class="add recocomendação">
+          Adicionar Recomendação
+          <fa-icon
+            [icon]="faExclamationCircle"
+            (click)="addR = !addR"
+          ></fa-icon>
+        </div>
+      </div>
+
+      <div *ngIf="addR" class="new-recom">
+        <textarea
+          name="recomendation"
+          id="recon"
+          cols="30"
+          rows="10"
+          placeholder="Recomendações"
+        >
+        </textarea>
+      </div>
     </div>
   </div>
 </div>

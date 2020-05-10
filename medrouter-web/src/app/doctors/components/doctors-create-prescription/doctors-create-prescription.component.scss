@@ -5,7 +5,6 @@
 
   .main-data {
     width: 100%;
-    //background-color: var(--oposity);
     border-radius: 8px;
     box-shadow: 4px 4px 5px rgba(247, 209, 209, 0.1);
     margin: 20px;
@@ -42,9 +41,45 @@
       justify-content: center;
       align-items: center;
       position: absolute;
-      z-index: 10;
+      z-index: 1;
 
       .form {
+        .results {
+          background-color: var(--oposity);
+          height: 100px;
+
+          border: 1px solid var(--doctor);
+          border-radius: 4px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+
+          .label {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 12px;
+
+            padding: 0px 10px 0px 10px;
+          }
+
+          .wrapper {
+            padding: 5px 10px 5px 10px;
+            overflow-y: scroll;
+            width: 100%;
+
+            .result {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              font-size: 14px;
+              margin: 2px 0px;
+            }
+          }
+        }
         .input {
           margin-top: 10px;
           height: 40px;
@@ -62,6 +97,7 @@
             background-color: var(--oposity);
             color: var(--doctor);
             padding: 2px;
+            font-size: 14px;
             &::placeholder {
               color: var(--doctor);
               opacity: 0.6;
@@ -99,6 +135,37 @@
             margin-left: 5px;
           }
         }
+      }
+
+      .actions {
+        margin: 10px 0px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+
+        .add {
+          border-radius: 4px;
+          font-size: 14px;
+          width: 210px;
+          background-color: var(--doctor);
+          color: var(--oposity);
+          margin: 5px 10px 0px 0px;
+          padding: 0 10px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          cursor: pointer;
+
+          &:hover {
+            color: var(--oposity);
+            opacity: 0.6;
+          }
+        }
+      }
+
+      .new-recom {
+        width: 100%;
       }
 
       textarea {
