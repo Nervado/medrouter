@@ -4,7 +4,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { DoctorPageComponent } from "./views/doctor-page/doctor-page.component";
 
 import { ScheduleComponent } from "./components/schedule/schedule.component";
-import { DoctorScheduleComponent } from "./components/doctor-schedule/doctor-schedule.component";
+
 import { DoctorsCreateScheduleComponent } from "./components/doctors-create-schedule/doctors-create-schedule.component";
 
 const routes: Routes = [
@@ -14,7 +14,7 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        redirectTo: "create-schedule",
+        redirectTo: "schedule",
         pathMatch: "full",
       },
       {
@@ -24,10 +24,6 @@ const routes: Routes = [
       {
         path: "schedule",
         component: ScheduleComponent,
-      },
-      {
-        path: "doctor-schedule",
-        component: DoctorScheduleComponent,
       },
     ],
   },

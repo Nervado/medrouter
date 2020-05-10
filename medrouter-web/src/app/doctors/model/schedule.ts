@@ -1,6 +1,6 @@
+import { HourSchedule } from "./schedule-hour";
+
 export class DaySchedule {
-  day: number;
-  month: number;
-  year: number;
-  hours: Array<string>;
+  date: Date;
+  hours: Array<HourSchedule>;
 }

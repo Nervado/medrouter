@@ -1,4 +1,5 @@
 export class HourSchedule {
-  available: boolean;
+  available?: boolean;
   hour: string;
+  busy?: boolean;
 }

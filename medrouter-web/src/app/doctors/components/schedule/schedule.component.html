@@ -1,1 +1,63 @@
-<h1 class="text-doctor">Agenda do Médico Boladão</h1>
+<div class="dashboard d-flex flex-wrap justify-content-between">
+  <div class="main-data aside text-doctor">
+    <div class="month">
+      <div class="control">
+        <fa-icon [icon]="faChevronLeft" (click)="prevWeek()"></fa-icon>
+      </div>
+
+      <div class="control">Agendamentos para&nbsp;</div>
+
+      <div class="">
+        {{ date.getDate() }}
+        {{ months[date.getMonth()] }} de {{ date.getFullYear() }}
+      </div>
+
+      <div class="control">
+        <fa-icon [icon]="faChevronRight" (click)="nextWeek()"></fa-icon>
+      </div>
+    </div>
+    <div class="appointments">
+      <div *ngFor="let appointment of appointments" class="appointment">
+        <div class="user-info">
+          <div class="avatar">
+            <ng-container *ngIf="appointment.client.user.avatar; else avatar">
+              <img [src]="appointment.client.user.avatar?.url" alt="avatar" />
+            </ng-container>
+
+            <ng-template #avatar>
+              <img src="../../../assets/avatarmale.png" alt="avatar" />
+            </ng-template>
+          </div>
+
+          <div class="username">
+            {{ appointment.client.user.username }}
+
+            <div class="hours">
+              <fa-icon [icon]="faClock" class="text-medium"></fa-icon>
+              <div class="hour ml-1 text-medium">{{ appointment.hour }}h</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="appointment-info">
+          <fa-icon
+            [icon]="faFileMedical"
+            class="text-success cursor ml-2"
+          ></fa-icon>
+          <fa-icon [icon]="faHistory" class="text-medium cursor ml-2"></fa-icon>
+          <fa-icon [icon]="faTimes" class="text-oposity1 cursor ml-2"></fa-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+
+
+   <div class="control">
+        <fa-icon [icon]="faEdit" (click)="isEditing = !isEditing"></fa-icon>
+        <fa-icon [icon]="faSave" (click)="save()"></fa-icon>
+        <fa-icon [icon]="faShare"></fa-icon>
+      </div>
+-->

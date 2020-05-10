@@ -2,42 +2,62 @@
   <div class="main-data aside text-doctor">
     <div class="month">
       <div class="control">
-        <fa-icon [icon]="faChevronLeft"></fa-icon>
+        <fa-icon [icon]="faChevronLeft" (click)="prevWeek()"></fa-icon>
       </div>
 
       <div class="mx-2">
-        Maio de 2020
-      </div>
-
-      <div class="control">
-        <fa-icon [icon]="faChevronRight"></fa-icon>
+        {{ months[date.getMonth()] }} de {{ date.getFullYear() }}
       </div>
 
       <div class="control">
         <fa-icon [icon]="faEdit" (click)="isEditing = !isEditing"></fa-icon>
+        <fa-icon [icon]="faSave" (click)="save()"></fa-icon>
         <fa-icon [icon]="faShare"></fa-icon>
+      </div>
+
+      <div class="control">
+        <fa-icon [icon]="faChevronRight" (click)="nextWeek()"></fa-icon>
       </div>
     </div>
     <div class="days">
       <div class="day-wrapper" *ngFor="let day of days">
         <div class="header-day">
-          <div>01</div>
-          <div>{{ day }}</div>
-        </div>
-        <div *ngFor="let hour of hours" class="day">
-          <div *ngIf="isEditing">
-            <ng-container *ngIf="hour.available; else elseTemplate">
-              <fa-icon
-                [icon]="faCheckSquare"
-                (click)="mark(hour, day.value)"
-              ></fa-icon>
-            </ng-container>
-            <ng-template #elseTemplate>
-              <fa-icon [icon]="faSquare"></fa-icon>
-            </ng-template>
-            {{ hour.hour }}
+          <div>{{ day.name }}</div>
+          <div class="number-day" [ngClass]="{ today: checkToday(day.date) }">
+            {{ day.day }}
           </div>
         </div>
+        <ng-container *ngIf="isEditing; else schedule">
+          <div *ngFor="let hour of day.hours" class="day">
+            <div>
+              <ng-container *ngIf="hour.available; else elseTemplate">
+                <fa-icon
+                  [icon]="faSquare"
+                  (click)="hour.available = setBusy(date, hour, hour.available)"
+                ></fa-icon>
+              </ng-container>
+              <ng-template #elseTemplate>
+                <fa-icon
+                  [icon]="faCheckSquare"
+                  [ngClass]="{ 'busy-hour': hour.busy }"
+                  (click)="hour.available = setBusy(date, hour, hour.available)"
+                ></fa-icon>
+              </ng-template>
+              {{ hour.hour }}
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #schedule>
+          <div *ngFor="let hour of day.hours">
+            <div
+              *ngIf="!hour.available"
+              class="scheduled"
+              [ngClass]="{ busy: hour.busy }"
+            >
+              {{ hour.hour }}
+            </div>
+          </div>
+        </ng-template>
       </div>
     </div>
   </div>
