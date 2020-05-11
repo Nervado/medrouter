@@ -9,6 +9,7 @@ import {
   faSearchMinus,
 } from "@fortawesome/free-solid-svg-icons";
 import { MultiSelectOption } from "./models/options";
+import { Colors } from "src/app/messages/toast/enums/colors";
 
 @Component({
   selector: "app-mult-selector-drop-drown",
@@ -38,6 +39,8 @@ export class MultSelectorDropDrownComponent
   searchValue: string;
 
   @Input() states: Array<MultiSelectOption> = [];
+
+  @Input() mainColor: Colors = Colors.ADMIN;
 
   oldStates: any;
 

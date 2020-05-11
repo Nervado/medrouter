@@ -81,6 +81,17 @@
 
           Paciente: <strong> Rosinha Garotinho</strong>
         </div>
+
+        <div class="field">
+          <div class="icon">
+            <fa-icon [icon]="faFileMedical" class="mr-1"></fa-icon>
+          </div>
+          Receita <strong>#456</strong>
+        </div>
+        <div class="field">
+          <div class="icon"><fa-icon [icon]="faCalendarPlus"></fa-icon></div>
+          Data: <strong> {{ prettyDate }}</strong>
+        </div>
       </div>
 
       <div class="actions">
@@ -88,7 +99,7 @@
           Adicionar Medicamento
           <fa-icon [icon]="faCapsules"></fa-icon>
         </div>
-        <div class="add exam">
+        <div class="add exam" (click)="showAddE()">
           Adicionar Exame
           <fa-icon [icon]="faVial"></fa-icon>
         </div>
@@ -130,9 +141,9 @@
           </div>
           <div class="buttons">
             <div class="bts">
-              <button class="bt-doctor">
+              <button class="bt-doctor" (click)="showSearchMed()">
                 Buscar
-                <fa-icon [icon]="faSearch" (click)="showSearchMed()"></fa-icon>
+                <fa-icon [icon]="faSearch"></fa-icon>
               </button>
               <button class="bt-oposity1">
                 Fórmula
@@ -140,34 +151,70 @@
               </button>
             </div>
           </div>
+        </div>
 
-          <div class="search" *ngIf="searchMed">
+        <div class="wrapper-search" *ngIf="searchMed">
+          <div class="search-med">
             <div class="form-med">
               <div class="input">
                 <input
                   type="text"
                   name="search"
                   placeholder="Nome do remédio"
+                  #search
                 />
                 <fa-icon
                   [icon]="faSearch"
-                  (click)="searchMedicine('viagra')"
+                  (click)="search.value && searchMedicine(search.value)"
+                  class="cursor"
                 ></fa-icon>
               </div>
 
               <div class="results">
                 <div class="label">
                   Resultados
-                  <strong class="ml-1"> 4</strong>
+                  <strong class="ml-1">{{ searchMedicines.length }}</strong>
                 </div>
 
-                <div class="wrapper">
-                  <div class="result">
-                    <div>João das Colves</div>
-                    <fa-icon
-                      [icon]="faFileMedical"
-                      class="text-success cursor ml-2"
-                    ></fa-icon>
+                <div class="wrapper-medicines">
+                  <div
+                    class="medicine"
+                    *ngFor="let medicine of searchMedicines"
+                  >
+                    <div class="info">
+                      <div class="name d-flex">
+                        {{ fmrt(medicine._source.product) }}
+                      </div>
+                      <div class="lab d-flex">
+                        <fa-icon [icon]="faFlask" class="mr-1"></fa-icon>
+                        {{ fmrt(medicine._source.laboratory) }}
+                      </div>
+                      <div class="lab d-flex">
+                        <fa-icon [icon]="faBox" class="mr-1"></fa-icon>
+                        {{ fmrt(medicine._source.presentantion) }}
+                      </div>
+                      <div class="lab d-flex">
+                        <fa-icon [icon]="faBox" class="mr-1"></fa-icon>
+                        {{ fmrt(medicine._source.product_type) }}
+                      </div>
+                      <div class="lab d-flex">
+                        <fa-icon [icon]="faBox" class="mr-1"></fa-icon>
+                        {{ fmrt(medicine._source.stripe) }}
+                      </div>
+                      <div class="lab d-flex">
+                        <fa-icon [icon]="faBox" class="mr-1"></fa-icon>
+                        {{ fmrt(medicine._source.substance) }}
+                      </div>
+                    </div>
+                    <div class="button">
+                      <button (click)="addMedicine(medicine._source)">
+                        <fa-icon
+                          [icon]="faPlusCircle"
+                          class="text-oposity"
+                        ></fa-icon>
+                        Selecionar
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -176,10 +223,33 @@
         </div>
       </div>
 
+      <div *ngIf="addE">
+        <div>
+          <label for="exams">Exames disponíveis</label>
+          <div class="">
+            <app-mult-selector-drop-drown
+              formControlName="exams"
+              [states]="availableExams"
+              [mainColor]="mainColor"
+              #exams
+            ></app-mult-selector-drop-drown>
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faFlask" class="text-oposity"></fa-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div *ngIf="addR" class="new-recom">
         <div class="tools">
           Recomendação
-          <fa-icon [icon]="faSave" class="mr-1 cursor"></fa-icon>
+          <fa-icon
+            [icon]="faSave"
+            class="mr-1 cursor"
+            (click)="saveR(reconm.value)"
+          ></fa-icon>
           <fa-icon
             [icon]="faTimes"
             class="mr-1 cursor"
@@ -188,7 +258,7 @@
         </div>
         <textarea
           name="recomendation"
-          id="recon"
+          #reconm
           cols="30"
           rows="10"
           placeholder="Escreva aqui recomendações ao paciente"
@@ -203,7 +273,35 @@
           recomendations.length > 0 || medicines.length > 0 || exams.length > 0
         "
       >
-        Exames Solicitados : Recomendações: Medicaões:
+        <strong> Resumo</strong>
+
+        <div *ngIf="recomendations.length > 0" class="my-1">
+          <div>
+            <fa-icon [icon]="faExclamationCircle"></fa-icon>
+            Recomendações
+          </div>
+          <div *ngFor="let r of recomendations">
+            <div>{{ r }}</div>
+          </div>
+        </div>
+        <div *ngIf="medicines.length > 0" class="my-1">
+          <div>
+            <fa-icon [icon]="faCapsules"></fa-icon>
+            Medicamentos
+          </div>
+          <div *ngFor="let medicine of medicines">
+            {{ fmrt(medicine.substance) }} &nbsp;
+            {{ fmrt(medicine.presentantion) }}
+          </div>
+        </div>
+
+        <div *ngIf="exams.length > 0" class="my-1">
+          <div>
+            <fa-icon [icon]="faVial"></fa-icon>
+            Medicamentos
+          </div>
+          <div *ngFor="let exam of exams">{{ exam }}</div>
+        </div>
       </div>
     </div>
   </div>
