@@ -1,6 +1,6 @@
 export enum MedicineCategory {
   CONTROLLED = 'controlado',
-  NONCONTROLED = 'naocontrolado',
+  NONCONTROLED = 'nao_controlado',
 }
 
 export enum MedicineSubcategory {

@@ -8,7 +8,12 @@ import {
 import { Observable } from "rxjs";
 import { AuthService } from "../auth.service";
 
-import { MEDROUTER_API } from "../../api/app.api";
+import {
+  MEDROUTER_API,
+  MEDICINES_API,
+  MEDICINES_API_USER,
+  MEDICINES_API_PASS,
+} from "../../api/app.api";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -29,11 +34,18 @@ export class AuthInterceptor implements HttpInterceptor {
     this.token = this.authService.user.token;
 
     if (!req.headers.has("Content-Type")) {
-      req = req.clone({
-        //headers: req.headers.set("Content-Type", "application/json"),
-        headers: req.headers.set("Accept", "application/json"),
-      });
-      console.log("Header has been set");
+      if (req.url.match(MEDICINES_API)) {
+        req = req.clone({
+          headers: req.headers.set(
+            this.AUTH_HEADER,
+            "Basic " + btoa(`${MEDICINES_API_USER}:${MEDICINES_API_PASS}`)
+          ),
+        });
+      } else {
+        req = req.clone({
+          headers: req.headers.set("Accept", "application/json"),
+        });
+      }
     }
 
     req = this.addAuthenticationToken(req);

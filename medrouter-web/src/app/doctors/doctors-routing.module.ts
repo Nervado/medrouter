@@ -6,6 +6,7 @@ import { DoctorPageComponent } from "./views/doctor-page/doctor-page.component";
 import { ScheduleComponent } from "./components/schedule/schedule.component";
 
 import { DoctorsCreateScheduleComponent } from "./components/doctors-create-schedule/doctors-create-schedule.component";
+import { DoctorsCreatePrescriptionComponent } from "./components/doctors-create-prescription/doctors-create-prescription.component";
 
 const routes: Routes = [
   {
@@ -14,8 +15,12 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        redirectTo: "schedule",
+        redirectTo: "create-prescription",
         pathMatch: "full",
+      },
+      {
+        path: "create-prescription",
+        component: DoctorsCreatePrescriptionComponent,
       },
       {
         path: "create-schedule",

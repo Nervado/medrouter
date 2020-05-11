@@ -5,12 +5,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  Unique,
   Entity,
 } from 'typeorm';
 import { MedicineSubcategory, MedicineCategory } from '../enums/category.enum';
 import { Exclude } from 'class-transformer';
-import { IsNotEmpty } from 'class-validator';
 
 @Entity('medicine')
 export class Medicine extends BaseEntity {

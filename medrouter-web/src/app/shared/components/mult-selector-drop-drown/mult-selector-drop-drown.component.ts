@@ -44,7 +44,6 @@ export class MultSelectorDropDrownComponent
   constructor() {}
 
   ngOnInit(): void {
-    //this.value = [];
     this.total = this.value.length;
     this.oldStates = this.states;
   }

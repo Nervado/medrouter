@@ -84,7 +84,7 @@
       </div>
 
       <div class="actions">
-        <div class="add medicine">
+        <div class="add medicine" (click)="showAddM()">
           Adicionar Medicamento
           <fa-icon [icon]="faCapsules"></fa-icon>
         </div>
@@ -92,24 +92,118 @@
           Adicionar Exame
           <fa-icon [icon]="faVial"></fa-icon>
         </div>
-        <div class="add recocomendação">
+        <div class="add recocomendação" (click)="showAddR()">
           Adicionar Recomendação
-          <fa-icon
-            [icon]="faExclamationCircle"
-            (click)="addR = !addR"
-          ></fa-icon>
+          <fa-icon [icon]="faExclamationCircle"></fa-icon>
+        </div>
+      </div>
+
+      <div *ngIf="addM" class="new-med">
+        <div class="wrapper">
+          <strong>Medicamento</strong>
+          <div class="select">
+            <label for="category">Categoria</label>
+            <select
+              id="type"
+              name="category"
+              class="in cursor"
+              style="border: 1px solid var(--doctor); color: var(--doctor);"
+            >
+              <option value="cat.value" *ngFor="let cat of category">{{
+                cat.label
+              }}</option>
+            </select>
+          </div>
+
+          <div class="select">
+            <label for="subcategory">Sub-categoria</label>
+            <select
+              id="include"
+              name="subcategory"
+              class="in cursor"
+              style="border: 1px solid var(--doctor); color: var(--doctor);"
+            >
+              <option value="sub.value" *ngFor="let sub of subcategory">{{
+                sub.label
+              }}</option>
+            </select>
+          </div>
+          <div class="buttons">
+            <div class="bts">
+              <button class="bt-doctor">
+                Buscar
+                <fa-icon [icon]="faSearch" (click)="showSearchMed()"></fa-icon>
+              </button>
+              <button class="bt-oposity1">
+                Fórmula
+                <fa-icon [icon]="faFlask"></fa-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="search" *ngIf="searchMed">
+            <div class="form-med">
+              <div class="input">
+                <input
+                  type="text"
+                  name="search"
+                  placeholder="Nome do remédio"
+                />
+                <fa-icon
+                  [icon]="faSearch"
+                  (click)="searchMedicine('viagra')"
+                ></fa-icon>
+              </div>
+
+              <div class="results">
+                <div class="label">
+                  Resultados
+                  <strong class="ml-1"> 4</strong>
+                </div>
+
+                <div class="wrapper">
+                  <div class="result">
+                    <div>João das Colves</div>
+                    <fa-icon
+                      [icon]="faFileMedical"
+                      class="text-success cursor ml-2"
+                    ></fa-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <div *ngIf="addR" class="new-recom">
+        <div class="tools">
+          Recomendação
+          <fa-icon [icon]="faSave" class="mr-1 cursor"></fa-icon>
+          <fa-icon
+            [icon]="faTimes"
+            class="mr-1 cursor"
+            (click)="showAddR()"
+          ></fa-icon>
+        </div>
         <textarea
           name="recomendation"
           id="recon"
           cols="30"
           rows="10"
-          placeholder="Recomendações"
+          placeholder="Escreva aqui recomendações ao paciente"
+          value="R{{ recomendations.length + 1 }}: "
         >
         </textarea>
+      </div>
+
+      <div
+        class="resume"
+        *ngIf="
+          recomendations.length > 0 || medicines.length > 0 || exams.length > 0
+        "
+      >
+        Exames Solicitados : Recomendações: Medicaões:
       </div>
     </div>
   </div>

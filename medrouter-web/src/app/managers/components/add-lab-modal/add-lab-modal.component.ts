@@ -34,7 +34,6 @@ export class AddLabModalComponent implements OnInit {
   faUserTie = faUserTie;
 
   options: Array<any> = getArrayFromEnum(LabCategory);
-
   exams: Array<any> = getArrayFromEnum(ExamsEnum);
 
   @ViewChild("content") elementRef: ElementRef;

@@ -58,7 +58,7 @@ export const Buttons = {
     { icon: faLock, path: "../clients/new" },
   ],
   doctor: [
-    { icon: faFileMedical, path: "../doctors/new-prescription" },
+    { icon: faFileMedical, path: "../doctors/create-prescription" },
     { icon: faClock, path: "../doctors/schedule" },
     { icon: faCalendarPlus, path: "../doctors/create-schedule" },
     { icon: faSearch, path: "../doctors/search" },
