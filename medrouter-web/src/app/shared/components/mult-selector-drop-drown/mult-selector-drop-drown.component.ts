@@ -44,6 +44,9 @@ export class MultSelectorDropDrownComponent
 
   oldStates: any;
 
+  @Input() width: string = "260px";
+  @Input() height: string = "50px";
+
   constructor() {}
 
   ngOnInit(): void {

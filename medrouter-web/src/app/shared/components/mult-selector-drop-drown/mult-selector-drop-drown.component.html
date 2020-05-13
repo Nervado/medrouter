@@ -1,9 +1,21 @@
-<div class="multi-selector">
-  <div class="output" [style.border-color]="mainColor">
-    <div class="selected" [style.color]="mainColor">
+<div class="multi-selector" [style.width]="width" [style.height]="height">
+  <div
+    class="output"
+    [style.border-color]="mainColor"
+    [style.background-color]="mainColor"
+  >
+    <div
+      class="selected"
+      [style.color]="mainColor"
+      [style.border-color]="mainColor"
+    >
       Selecionados {{ total }}
     </div>
-    <div class="bt-admin cursor" (click)="toggle()">
+    <div
+      class="bt-admin cursor"
+      (click)="toggle()"
+      [style.background-color]="mainColor"
+    >
       <ng-container *ngIf="show; else search">
         <fa-icon [icon]="faSearchMinus"></fa-icon>
       </ng-container>
@@ -12,13 +24,23 @@
       </ng-template>
     </div>
   </div>
-  <div class="options" *ngIf="show" (mouseleave)="hide()">
+  <div
+    class="options"
+    *ngIf="show"
+    (mouseleave)="hide()"
+    [style.border-color]="mainColor"
+  >
     <div class="finder">
       <input type="text" (keyup)="filter($event)" placeholder="busque aqui" />
-      <fa-icon [icon]="faSearch"></fa-icon>
+      <fa-icon [icon]="faSearch" [style.color]="mainColor"></fa-icon>
     </div>
 
-    <div *ngFor="let state of states" (click)="setValue(state)" class="hover">
+    <div
+      *ngFor="let state of states"
+      (click)="setValue(state)"
+      class="hover"
+      [style.color]="mainColor"
+    >
       <ng-container *ngIf="state.selected; else elseTemplate">
         <fa-icon [icon]="faCheckSquare"></fa-icon>
       </ng-container>

@@ -3,6 +3,7 @@ import {
   faLock,
   faCrown,
   faCalendarPlus,
+  faFileMedicalAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -59,9 +60,10 @@ export const Buttons = {
   ],
   doctor: [
     { icon: faFileMedical, path: "../doctors/create-prescription" },
+    { icon: faFileMedicalAlt, path: "../doctors/exams" },
+    { icon: faBookMedical, path: "../doctors/history" },
     { icon: faClock, path: "../doctors/schedule" },
     { icon: faCalendarPlus, path: "../doctors/create-schedule" },
-    { icon: faSearch, path: "../doctors/search" },
   ],
   admin: [
     { icon: faChartBar, path: "../managers/dashboard" },

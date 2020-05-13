@@ -7,6 +7,8 @@ import { SharedModule } from "../shared/shared.module";
 import { ScheduleComponent } from "./components/schedule/schedule.component";
 import { DoctorsCreateScheduleComponent } from "./components/doctors-create-schedule/doctors-create-schedule.component";
 import { DoctorsCreatePrescriptionComponent } from './components/doctors-create-prescription/doctors-create-prescription.component';
+import { DoctorsExamsDashboardComponent } from './components/doctors-exams-dashboard/doctors-exams-dashboard.component';
+import { DoctorsHistoryClientsDashboardComponent } from './components/doctors-history-clients-dashboard/doctors-history-clients-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +16,8 @@ import { DoctorsCreatePrescriptionComponent } from './components/doctors-create-
     ScheduleComponent,
     DoctorsCreateScheduleComponent,
     DoctorsCreatePrescriptionComponent,
+    DoctorsExamsDashboardComponent,
+    DoctorsHistoryClientsDashboardComponent,
   ],
   imports: [CommonModule, DoctorsRoutingModule, SharedModule],
 })
