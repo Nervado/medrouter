@@ -47,10 +47,6 @@
     <div class="wrapper-results" *ngIf="prescriptions.length > 0">
       <div *ngFor="let prescription of prescriptions" class="prescriptions">
         <header>
-          <div class="info">
-            <fa-icon [icon]="faFileMedical"></fa-icon>
-            Receita 456
-          </div>
           <div class="info user">
             <ng-container
               *ngIf="prescription.client.user.avatar?.url; else avatar"
@@ -61,6 +57,11 @@
               <img src="../../../../assets/avatarmale.png" alt="avatar"
             /></ng-template>
             Doutor: {{ prescription.doctor.user.fullname }}
+          </div>
+
+          <div class="info">
+            <fa-icon [icon]="faFileMedical"></fa-icon>
+            Receita 456
           </div>
 
           <div class="user info">
