@@ -145,7 +145,7 @@
                 Buscar
                 <fa-icon [icon]="faSearch"></fa-icon>
               </button>
-              <button class="bt-oposity1">
+              <button class="bt-oposity1" (click)="showAddNF()">
                 Fórmula
                 <fa-icon [icon]="faFlask"></fa-icon>
               </button>
@@ -167,6 +167,12 @@
                   [icon]="faSearch"
                   (click)="search.value && searchMedicine(search.value)"
                   class="cursor"
+                ></fa-icon>
+
+                <fa-icon
+                  [icon]="faTimes"
+                  (click)="showAddM()"
+                  class="cursor ml-1"
                 ></fa-icon>
               </div>
 
@@ -223,15 +229,37 @@
         </div>
       </div>
 
-      <div *ngIf="addE">
-        <div>
-          <label for="exams">Exames disponíveis</label>
+      <div *ngIf="addNF" class="new-formule">
+        <div class="tools">
+          Fórmula
+          <fa-icon [icon]="faSave" class="mr-1 cursor"></fa-icon>
+          <fa-icon
+            [icon]="faTimes"
+            class="mr-1 cursor"
+            (click)="showAddNF()"
+          ></fa-icon>
+        </div>
+        <textarea
+          name="formula"
+          #reconm
+          cols="30"
+          rows="10"
+          placeholder="Descreva a formula do medicamento"
+        >
+        </textarea>
+      </div>
+
+      <div *ngIf="addE" (mouseleave)="showAddE()">
+        <form [formGroup]="prescriptionForm" class="exams">
+          <div>Exames disponíveis</div>
           <div class="">
             <app-mult-selector-drop-drown
+              name="exams"
               formControlName="exams"
               [states]="availableExams"
               [mainColor]="mainColor"
-              #exams
+              [width]="'210px'"
+              [height]="'30px'"
             ></app-mult-selector-drop-drown>
             <div
               class="d-flex mx-2 flex-column justify-content-center align-items-center"
@@ -239,10 +267,10 @@
               <fa-icon [icon]="faFlask" class="text-oposity"></fa-icon>
             </div>
           </div>
-        </div>
+        </form>
       </div>
 
-      <div *ngIf="addR" class="new-recom">
+      <div *ngIf="addR" class="new-recom" (mouseleave)="showAddR()">
         <div class="tools">
           Recomendação
           <fa-icon
@@ -263,6 +291,7 @@
           rows="10"
           placeholder="Escreva aqui recomendações ao paciente"
           value="R{{ recomendations.length + 1 }}: "
+          (keyup.enter)="saveR(reconm.value)"
         >
         </textarea>
       </div>
@@ -270,7 +299,9 @@
       <div
         class="resume"
         *ngIf="
-          recomendations.length > 0 || medicines.length > 0 || exams.length > 0
+          recomendations.length > 0 ||
+          medicines.length > 0 ||
+          prescriptionForm.value.exams.length > 0
         "
       >
         <strong> Resumo</strong>
@@ -278,7 +309,7 @@
         <div *ngIf="recomendations.length > 0" class="my-1">
           <div>
             <fa-icon [icon]="faExclamationCircle"></fa-icon>
-            Recomendações
+            <strong> Recomendações</strong>
           </div>
           <div *ngFor="let r of recomendations">
             <div>{{ r }}</div>
@@ -287,7 +318,8 @@
         <div *ngIf="medicines.length > 0" class="my-1">
           <div>
             <fa-icon [icon]="faCapsules"></fa-icon>
-            Medicamentos
+
+            <strong> Medicamentos</strong>
           </div>
           <div *ngFor="let medicine of medicines">
             {{ fmrt(medicine.substance) }} &nbsp;
@@ -295,12 +327,15 @@
           </div>
         </div>
 
-        <div *ngIf="exams.length > 0" class="my-1">
+        <div *ngIf="prescriptionForm.value.exams.length > 0" class="my-1">
           <div>
             <fa-icon [icon]="faVial"></fa-icon>
-            Medicamentos
+
+            <strong> Exames</strong>
           </div>
-          <div *ngFor="let exam of exams">{{ exam }}</div>
+          <div *ngFor="let exam of prescriptionForm.value.exams">
+            {{ exam }}
+          </div>
         </div>
       </div>
     </div>

@@ -34,6 +34,7 @@ import { getArrayFromEnum } from "src/app/utils/getArrayFromEnum";
 import { capitalizeAndRemoveUnderscores } from "src/app/utils/capitalizeAndRemoveUnderscore";
 import { format } from "date-fns";
 import { Colors } from "src/app/messages/toast/enums/colors";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: "app-doctors-create-prescription",
@@ -63,10 +64,11 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
 
   isEditing: boolean = false;
   showSearch: boolean = false;
-  addR: boolean = true;
-  addM: boolean = true;
-  addE: boolean = true;
-  searchMed: boolean = true;
+  addR: boolean = false;
+  addM: boolean = false;
+  addE: boolean = false;
+  addNF: boolean = false;
+  searchMed: boolean = false;
 
   searchMedicines: Array<any> = [];
   recomendations: Array<string> = [];
@@ -81,7 +83,13 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
 
   mainColor: Colors = Colors.DOCTOR;
 
-  constructor(private ds: DoctorsService, private ns: NotificationService) {}
+  prescriptionForm: FormGroup;
+
+  constructor(
+    private ds: DoctorsService,
+    private ns: NotificationService,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.recomendations.length;
@@ -89,6 +97,9 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
     this.date = new Date();
     this.prettyDate = format(new Date(), "dd/MM/yyyy");
     this.searchMedicine("peni");
+    this.prescriptionForm = this.fb.group({
+      exams: this.fb.control([], [Validators.required]),
+    });
   }
 
   save() {}
@@ -139,5 +150,9 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
 
   saveR(r: string) {
     this.recomendations.push(r);
+  }
+
+  showAddNF() {
+    this.addNF = !this.addNF;
   }
 }

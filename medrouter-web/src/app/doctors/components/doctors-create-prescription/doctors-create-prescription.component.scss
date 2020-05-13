@@ -323,7 +323,6 @@
                     button {
                       cursor: pointer;
                       width: 100%;
-                      //border: 2px solid var(--medium);
                       background-color: var(--medium);
                       color: var(--oposity);
                       border-radius: 4px;
@@ -367,4 +366,26 @@
 
 .cursor {
   cursor: pointer;
+}
+
+.exams {
+  font-size: 14px;
+}
+
+.new-formule {
+  width: 100%;
+  textarea {
+    width: 100%;
+    background-color: rgba(247, 209, 209, 0.2);
+    color: var(--doctor);
+    border-radius: 4px;
+    border: 1px solid var(--doctor);
+    display: block;
+    padding: 0px;
+
+    &::placeholder {
+      color: var(--doctor);
+      opacity: 0.6;
+    }
+  }
 }
