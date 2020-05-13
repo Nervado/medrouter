@@ -100,7 +100,7 @@ export class DoctorsExamsDashboardComponent implements OnInit {
           user: {
             fullname: "Pedro da Silva",
             avatar: {
-              url: "",
+              url: "https://api.adorable.io/avatars/50/abott@adorable.png",
             },
           },
         },
