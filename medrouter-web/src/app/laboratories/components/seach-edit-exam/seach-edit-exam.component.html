@@ -1,3 +1,40 @@
+<app-lab-add-exam-modal #modal (signOut)="confirm($event)">
+</app-lab-add-exam-modal>
+
 <div class="main-data">
-  conteuduo
+  <div
+    class="d-flex flex-column justify-content-center align-itens-center w-100 h-100"
+  >
+    <header>Cadastrar novo exame</header>
+    <div class="content">
+      <div class="title">Introduza o código da solicitação</div>
+
+      <form class="form" [formGroup]="examForm">
+        <label for="name" class="text-lab">
+          <strong>Código do exame</strong>
+        </label>
+        <app-input-container
+          [mainColor]="mainColor"
+          class="in-container in-container-lab my-2"
+        >
+          <input
+            name="code"
+            formControlName="code"
+            type="text"
+            placeholder="Código de solicitação"
+            autocomplete="off"
+            class="in in-lab"
+            style="border: 1px solid var(--lab); color: var(--lab);"
+          />
+          <div
+            class="d-flex mx-2 flex-column justify-content-center align-items-center"
+          >
+            <fa-icon [icon]="faFileMedicalAlt" class="text-oposity"></fa-icon>
+          </div>
+        </app-input-container>
+
+        <button class="bt bt-lab" (click)="showModal(modal)">Enviar</button>
+      </form>
+    </div>
+  </div>
 </div>

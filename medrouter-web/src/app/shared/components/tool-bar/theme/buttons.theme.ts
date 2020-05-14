@@ -4,6 +4,10 @@ import {
   faCrown,
   faCalendarPlus,
   faFileMedicalAlt,
+  faHistory,
+  faClipboardCheck,
+  faUserPlus,
+  faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -54,9 +58,11 @@ export const Buttons = {
     { icon: faLock, path: "../clients/new" },
   ],
   recept: [
-    { icon: faHeartbeat, path: "../receptionists/clients" },
-    { icon: faCalendarDay, path: "../receptionists/schedules" },
-    { icon: faLock, path: "../clients/new" },
+    { icon: faUserPlus, path: "../receptionists/add-client" },
+    { icon: faClipboardCheck, path: "../receptionists/verify" },
+    { icon: faCalendarDay, path: "../receptionists/appointments" },
+    { icon: faCalendarPlus, path: "../receptionists/create-appointment" },
+    { icon: faCalendarAlt, path: "../receptionists/schedules" },
   ],
   doctor: [
     { icon: faFileMedical, path: "../doctors/create-prescription" },
@@ -71,5 +77,8 @@ export const Buttons = {
     { icon: faConciergeBell, path: "../managers/receptionists" },
     { icon: faSearch, path: "../managers/search" },
   ],
-  lab: [],
+  lab: [
+    { icon: faFileMedical, path: "../laboratories/dashboard" },
+    { icon: faClock, path: "../laboratories/exams" },
+  ],
 };

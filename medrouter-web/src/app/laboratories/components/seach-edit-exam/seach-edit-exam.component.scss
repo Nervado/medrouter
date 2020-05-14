@@ -1,8 +1,45 @@
 .main-data {
   width: 450px;
-  height: 300px;
+  height: 400px;
   background-color: var(--oposity);
   border-radius: 8px;
-  box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 4px 5px 4px rgba(0, 0, 0, 0.2);
   margin: 20px;
+
+  header {
+    background-color: var(--lab);
+    border-radius: 4px;
+    color: var(--oposity);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+    font-weight: bold;
+    box-shadow: 4px 4px 5px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .content {
+    margin-bottom: 50px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .title {
+      color: var(--lab);
+      margin-bottom: 20px;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      //font-size: 14px;
+
+      button {
+        margin-top: 20px;
+      }
+    }
+  }
 }

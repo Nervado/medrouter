@@ -1,0 +1,121 @@
+<ng-template #content let-modal>
+  <div class="modal-header bg-lab">
+    <h4 class="modal-title text-oposity" id="modal-basic-title">
+      Iniciar exame
+    </h4>
+    <button
+      type="button"
+      class="close text-base"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p class="text-lab">
+      Inclusão de
+      <strong>Novo exame</strong>
+    </p>
+
+    <form
+      [formGroup]="actionsForm"
+      class="d-flex flex-column justify-content-center align-items-center"
+    >
+      <div class="infos text-lab">
+        <div
+          class="d-flex flex-column align-itens-center justify-content-center my-2"
+        >
+          Paciente
+          <strong>{{ exam.client.user.fullname }}</strong>
+        </div>
+        <div
+          class="d-flex flex-column align-itens-center justify-content-center my-2"
+        >
+          Tipo de Exame
+          <strong>{{ exam.type }}</strong>
+        </div>
+
+        <div
+          class="d-flex flex-column align-itens-center justify-content-center my-2"
+        >
+          Solicitante
+          <strong>Doutor: {{ exam.doctor.user.fullname }}</strong>
+        </div>
+      </div>
+
+      <div class="form-group text-lab">
+        <label for="price">Prazo em dias úteis</label>
+        <app-input-container
+          class="in-container in-container-lab my-2"
+          [mainColor]="mainColor"
+        >
+          <input
+            formControlName="deadline"
+            type="deadline"
+            placeholder="Prazo"
+            autocomplete="off"
+            class="in in-lab"
+            style="border: 1px solid var(--lab); color: var(--lab);"
+          />
+          <div
+            class="d-flex mx-2 flex-column justify-content-center align-items-center"
+          >
+            <fa-icon [icon]="faLock" class="text-oposity"></fa-icon>
+          </div>
+        </app-input-container>
+      </div>
+      <div class="form-group text-lab">
+        <label for="price">Preço</label>
+        <app-input-container
+          [mainColor]="mainColor"
+          class="in-container in-container-lab my-2"
+        >
+          <input
+            formControlName="price"
+            type="price"
+            placeholder="Preço"
+            autocomplete="off"
+            class="in in-lab"
+            style="border: 1px solid var(--lab); color: var(--lab);"
+          />
+          <div
+            class="d-flex mx-2 flex-column justify-content-center align-items-center"
+          >
+            <fa-icon [icon]="faLock" class="text-oposity"></fa-icon>
+          </div>
+        </app-input-container>
+      </div>
+      <div class="form-group text-lab">
+        <label for="password">Sua senha</label>
+        <app-input-container
+          [mainColor]="mainColor"
+          class="in-container in-container-lab my-2"
+        >
+          <input type="text" name="username" hidden autocomplete="username" />
+          <input
+            formControlName="password"
+            type="password"
+            placeholder="Senha"
+            autocomplete="off"
+            class="in in-lab"
+            style="border: 1px solid var(--lab); color: var(--lab);"
+          />
+          <div
+            class="d-flex mx-2 flex-column justify-content-center align-items-center"
+          >
+            <fa-icon [icon]="faLock" class="text-oposity"></fa-icon>
+          </div>
+        </app-input-container>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="bt bt-lab" (click)="modal.close('cancel')">
+      Cancelar
+    </button>
+    <button type="button" class="bt bt-base" (click)="modal.close('confirm')">
+      Confirmar
+    </button>
+  </div>
+</ng-template>
