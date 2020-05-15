@@ -1,0 +1,151 @@
+<ng-template #content let-modal>
+  <div class="modal-header bg-recept">
+    <h4 class="modal-title text-oposity" id="modal-basic-title">
+      Novo agendamento
+    </h4>
+    <button
+      type="button"
+      class="close text-base"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p class="text-recept">
+      Inclusão de
+      <strong>Novo agendamento</strong>
+    </p>
+
+    <form
+      [formGroup]="actionsForm"
+      class="d-flex flex-column justify-content-center align-items-center"
+    >
+      <div class="infos text-recept">
+        <fa-icon [icon]="faUserMd"></fa-icon>
+        {{ appointment.doctor.user.fullname }}
+      </div>
+
+      <div class="infos text-recept">
+        <fa-icon [icon]="faUserTie"></fa-icon>
+        {{ username.value }}
+      </div>
+
+      <div class="infos text-recept">
+        <fa-icon [icon]="faCalendarDay"></fa-icon>
+        {{ prettyDate(appointment.date) }}
+      </div>
+
+      <div class="infos text-recept">
+        <fa-icon [icon]="faClock"></fa-icon>
+        {{ appointment.hour }}h
+      </div>
+
+      <div class="search">
+        <div class="form">
+          <div class="input">
+            <input
+              type="text"
+              name="search"
+              placeholder="Nome do paciente"
+              #username
+            />
+            <fa-icon [icon]="faSearch" (click)="search()"></fa-icon>
+          </div>
+
+          <div class="results">
+            <div class="label">
+              Resultados
+              <strong class="ml-1"> 4</strong>
+            </div>
+
+            <div class="wrapper">
+              <div class="result">
+                <div>João das Colves</div>
+                <fa-icon
+                  [icon]="faUserTie"
+                  class="text-success cursor ml-2"
+                  (click)="username.value = 'João das Colves'"
+                ></fa-icon>
+              </div>
+              <div class="result">
+                <div>João das Colves</div>
+                <fa-icon
+                  [icon]="faUserTie"
+                  class="text-success cursor ml-2"
+                ></fa-icon>
+              </div>
+              <div class="result">
+                <div>João das Colves</div>
+                <fa-icon
+                  [icon]="faUserTie"
+                  class="text-success cursor ml-2"
+                ></fa-icon>
+              </div>
+              <div class="result">
+                <div>João das Colves</div>
+                <fa-icon
+                  [icon]="faUserTie"
+                  class="text-success cursor ml-2"
+                ></fa-icon>
+              </div>
+              <div class="result">
+                <div>João das Colves</div>
+                <fa-icon
+                  [icon]="faUserTie"
+                  class="text-success cursor ml-2"
+                ></fa-icon>
+              </div>
+              <div class="result">
+                <div>João das Colves</div>
+                <fa-icon
+                  [icon]="faUserTie"
+                  class="text-success cursor ml-2"
+                ></fa-icon>
+              </div>
+              <div class="result">
+                <div>João das Colves</div>
+                <fa-icon
+                  [icon]="faUserTie"
+                  class="text-success cursor ml-2"
+                ></fa-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group text-recept">
+        <label for="password">Sua senha</label>
+        <app-input-container
+          [mainColor]="mainColor"
+          class="in-container in-container-lab my-2"
+        >
+          <input type="text" name="username" hidden autocomplete="username" />
+          <input
+            formControlName="password"
+            type="password"
+            placeholder="Senha"
+            autocomplete="off"
+            class="in in-lab"
+            style="border: 1px solid var(--lab); color: var(--lab);"
+          />
+          <div
+            class="d-flex mx-2 flex-column justify-content-center align-items-center"
+          >
+            <fa-icon [icon]="faLock" class="text-oposity"></fa-icon>
+          </div>
+        </app-input-container>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="bt bt-recept" (click)="modal.close('cancel')">
+      Cancelar
+    </button>
+    <button type="button" class="bt bt-base" (click)="modal.close('confirm')">
+      Confirmar
+    </button>
+  </div>
+</ng-template>

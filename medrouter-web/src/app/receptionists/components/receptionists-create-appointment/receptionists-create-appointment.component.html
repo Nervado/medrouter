@@ -1,1 +1,86 @@
-<p>receptionists-create-appointment works!</p>
+<app-receptionists-create-appointment-modal #modal (signOut)="confirm($event)">
+</app-receptionists-create-appointment-modal>
+
+<div class="dashboard d-flex flex-wrap justify-content-between">
+  <div class="main-data aside text-doctor">
+    <div class="month">
+      <div class="control filter">
+        <fa-icon [icon]="faUserMd"></fa-icon>
+        &nbsp;<strong>Fulano</strong>
+        <fa-icon [icon]="faTimes" class="cursor"></fa-icon>
+      </div>
+      <div class="control">
+        <fa-icon [icon]="faChevronLeft" (click)="prevWeek()"></fa-icon>
+      </div>
+
+      <div class="control">Agenda para&nbsp;</div>
+
+      <div class="">
+        {{ months[date.getMonth()] }} de {{ date.getFullYear() }}
+      </div>
+
+      <div class="control">
+        <fa-icon [icon]="faSearch" (click)="toogle()"></fa-icon>
+      </div>
+      <div class="control">
+        <fa-icon [icon]="faChevronRight" (click)="nextWeek()"></fa-icon>
+      </div>
+    </div>
+
+    <div class="search" *ngIf="showSearch" (mouseleave)="toogle()">
+      <div class="form">
+        <div class="input">
+          <input type="text" name="search" placeholder="Nome do médico" />
+          <fa-icon [icon]="faSearch" (click)="search()"></fa-icon>
+        </div>
+
+        <div class="results">
+          <div class="label">
+            Resultados
+            <strong class="ml-1"> 4</strong>
+          </div>
+
+          <div class="wrapper">
+            <div class="result">
+              <div>João das Colves</div>
+              <fa-icon
+                [icon]="faUserMd"
+                class="text-success cursor ml-2"
+              ></fa-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="days">
+      <div class="day-wrapper" *ngFor="let day of days">
+        <div class="header-day">
+          <div class="text-recept">{{ day.name }}</div>
+          <div class="number-day" [ngClass]="{ today: checkToday(day.date) }">
+            {{ day.day }}
+          </div>
+        </div>
+
+        <div *ngFor="let hour of day.hours" class="d-flex align-items-center">
+          <div
+            *ngIf="!hour.available"
+            class="scheduled"
+            [ngClass]="{ busy: hour.busy }"
+            (click)="!hour.available && !hour.busy && showModal(modal)"
+          >
+            {{ hour.hour }}
+          </div>
+          <fa-icon
+            [icon]="faCalendarPlus"
+            class="text-success"
+            *ngIf="!hour.available && !hour.busy"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Marcar Consulta"
+          ></fa-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

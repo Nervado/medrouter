@@ -16,7 +16,7 @@ export enum Colors {
   OWNER = "#1da15f",
   ADMIN = "#2624c9",
   USER = "#5768c9",
-  RECEPT = "#0eaf16",
+  RECEPT = "#0eaf94",
   LAB = "#69d188",
   PROFILE = "#5768c9",
 }

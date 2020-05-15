@@ -8,5 +8,5 @@ export class Appointment {
   hour: string;
   status: AppointmentStatus;
   client: Client;
-  docotor?: DoctorDto;
+  doctor?: DoctorDto;
 }

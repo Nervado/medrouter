@@ -4,7 +4,7 @@ export class Client {
     username: string;
     surname: string;
     avatar?: {
-      url: string;
+      url?: string;
     };
   };
   prescription?: Array<any>;

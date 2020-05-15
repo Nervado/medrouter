@@ -1,0 +1,85 @@
+.infos {
+  width: 260px;
+}
+
+.search {
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 10px;
+
+  .form {
+    width: 260px;
+    .results {
+      background-color: var(--oposity);
+      height: 100px;
+      border: 1px solid var(--recept);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+
+      .label {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 12px;
+        padding: 0px 10px 0px 10px;
+
+        color: var(--recept);
+      }
+
+      .wrapper {
+        padding: 5px 20px 5px 20px;
+        overflow-y: scroll;
+        width: 100%;
+
+        .result {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-size: 14px;
+          margin: 2px 0px;
+          color: var(--lab);
+        }
+      }
+    }
+    .input {
+      margin-top: 10px;
+      height: 40px;
+      width: 260px;
+      background-color: var(--recept);
+      color: var(--oposity);
+      border: 2px solid var(--recept);
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      input {
+        width: 150px;
+        border-radius: 4px;
+        background-color: var(--oposity);
+        color: var(--recept);
+        padding: 2px;
+        padding-left: 5px;
+        font-size: 14px;
+        &::placeholder {
+          color: var(--recept);
+          opacity: 0.6;
+        }
+      }
+    }
+
+    fa-icon {
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  }
+}

@@ -19,6 +19,10 @@ import {
   faBox,
   faPlusCircle,
   faCalendarPlus,
+  faHeart,
+  faWeight,
+  faTachometerAlt,
+  faRulerVertical,
 } from "@fortawesome/free-solid-svg-icons";
 import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
 import { Medicine } from "../../model/medicine";
@@ -42,6 +46,10 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
   styleUrls: ["./doctors-create-prescription.component.scss"],
 })
 export class DoctorsCreatePrescriptionComponent implements OnInit {
+  faRulerVertical = faRulerVertical;
+  faTachometerAlt = faTachometerAlt;
+  faWeight = faWeight;
+  faHeart = faHeart;
   faChevronLeft = faChevronLeft;
   faChevronRight = faChevronRight;
   faSquare = faSquare;

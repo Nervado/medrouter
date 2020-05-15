@@ -48,9 +48,7 @@ export class ToolBarComponent implements OnInit {
   faPlus = faPlus;
   faBell = faBell;
   faCommentAlt = faCommentAlt;
-
   faEllipsisH = faEllipsisH;
-
   faClock = faClock;
   faCalendarDay = faCalendarDay;
 

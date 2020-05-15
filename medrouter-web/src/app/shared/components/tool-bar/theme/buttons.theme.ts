@@ -62,7 +62,6 @@ export const Buttons = {
     { icon: faClipboardCheck, path: "../receptionists/verify" },
     { icon: faCalendarDay, path: "../receptionists/appointments" },
     { icon: faCalendarPlus, path: "../receptionists/create-appointment" },
-    { icon: faCalendarAlt, path: "../receptionists/schedules" },
   ],
   doctor: [
     { icon: faFileMedical, path: "../doctors/create-prescription" },

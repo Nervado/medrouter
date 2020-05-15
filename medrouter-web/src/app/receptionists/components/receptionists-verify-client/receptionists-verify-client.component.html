@@ -1,1 +1,119 @@
-<p>receptionists-verify-client works!</p>
+<div class="dashboard d-flex flex-wrap justify-content-between">
+  <div class="main-data aside text-doctor">
+    <div class="month">
+      <div class="control">
+        <fa-icon [icon]="faChevronLeft" (click)="prevWeek()"></fa-icon>
+      </div>
+
+      <div class="control">Novos pacientes</div>
+
+      <div class="control">
+        <fa-icon [icon]="faSearch" (click)="toogle()"></fa-icon>
+      </div>
+      <div class="control">
+        <fa-icon [icon]="faChevronRight" (click)="nextWeek()"></fa-icon>
+      </div>
+    </div>
+
+    <div class="search" *ngIf="showSearch" (mouseleave)="toogle()">
+      <div class="form">
+        <div class="input">
+          <input type="text" name="search" placeholder="Nome do paciente" />
+          <fa-icon [icon]="faSearch" (click)="search()"></fa-icon>
+        </div>
+
+        <div class="results">
+          <div class="label">
+            Resultados
+            <strong class="ml-1"> 4</strong>
+          </div>
+
+          <div class="wrapper">
+            <div class="result">
+              <div>João das Colves</div>
+              <fa-icon
+                [icon]="faUserTie"
+                class="text-success cursor ml-2"
+              ></fa-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="appointments">
+      <div *ngFor="let appointment of appointments" class="appointment">
+        <div class="user-info">
+          <div class="avatar">
+            <ng-container *ngIf="appointment.client.user.avatar; else avatar">
+              <img [src]="appointment.client.user.avatar?.url" alt="avatar" />
+            </ng-container>
+
+            <ng-template #avatar>
+              <img src="../../../assets/avatarmale.png" alt="avatar" />
+            </ng-template>
+          </div>
+
+          <div class="appointment-info d-flex flex-column text-recept">
+            <div class="username">
+              {{ appointment.client.user.username }}
+
+              <fa-icon [icon]="faCheck" class="text-success"></fa-icon>
+            </div>
+
+            <div class="add">
+              Gênero:
+              <strong>Masculino</strong>
+            </div>
+
+            <div class="add">Idade: <strong>56 anos</strong></div>
+          </div>
+        </div>
+
+        <div class="appointment-info email d-flex flex-column">
+          <div>
+            <fa-icon [icon]="faEnvelope"></fa-icon>
+            <strong class="ml-1">fulano@fulano.com</strong>
+          </div>
+          <div>
+            <fa-icon [icon]="faPhone"></fa-icon>
+            <strong class="ml-1">21 972857728</strong>
+          </div>
+        </div>
+
+        <div class="appointment-info">
+          <fa-icon
+            [icon]="faCheckCircle"
+            class="text-success cursor ml-2"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Validar usuário"
+          ></fa-icon>
+          <form
+            [formGroup]="docForm"
+            novalidate
+            (ngSubmit)="handleChange($event)"
+          >
+            <label htmlFor="result">
+              <fa-icon
+                [icon]="faIdCard"
+                class="text-medium cursor ml-2"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Addicionar documento"
+              ></fa-icon>
+              <input
+                accept="application/pdf"
+                type="file"
+                name="file"
+                id="result"
+                (change)="handleChange($event)"
+                value=""
+              />
+            </label>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

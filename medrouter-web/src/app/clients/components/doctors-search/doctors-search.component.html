@@ -1,39 +1,27 @@
-<div class="main-data aside text-oposity bg-client">
-  <div class="px-4 py-3 d-flex justify-content-between align-itens-center">
-    <span style="font-size: 14px;">Encontre seu médico</span>
+<div class="main-data aside text-oposity">
+  <div class="month">
+    <div class="control">
+      <fa-icon [icon]="faChevronLeft"></fa-icon>
+    </div>
 
-    <div class="d-flex align-items-center" style="height: 100px;">
-      <form [formGroup]="searchForm">
-        <div class="h-100">
-          <app-input-container
-            class="in in-container-client my-2 in-container-doctor"
-            [tick]="false"
-          >
-            <input
-              formControlName="search"
-              type="text"
-              placeholder="Digite o nome do médico"
-              class="in in-doctor"
-              style="font-size: medium;"
-              autocomplete="off"
-            />
-          </app-input-container>
-        </div>
-      </form>
+    <div class="control">Médicos</div>
 
-      <div>
-        <span class="cursor">
-          <fa-icon
-            [icon]="faSearch"
-            size="2x"
-            (click)="handleSearch()"
-          ></fa-icon>
-        </span>
-      </div>
+    <div class="control">
+      <fa-icon [icon]="faChevronRight"></fa-icon>
+    </div>
+    <div class="control">
+      <input
+        type="text"
+        placeholder="Encontre seu médico"
+        class="in in-client"
+      />
+      <fa-icon [icon]="faSearch" class="ml-2"></fa-icon>
+      <fa-icon [icon]="faFilter" class="ml-2"></fa-icon>
     </div>
   </div>
+
   <div
-    class="d-flex flex-column px-4 justify-content-between"
+    class="d-flex flex-column px-4 justify-content-between bg-oposity"
     *ngFor="let doctor of searchResult"
   >
     <div class="d-flex justify-content-between py-3">

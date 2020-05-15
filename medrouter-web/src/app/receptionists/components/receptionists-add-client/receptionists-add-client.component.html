@@ -1,1 +1,115 @@
-<p>receptionists-add-client works!</p>
+<div class="dashboard d-flex justify-content-center">
+  <div class="main-data">
+    <div class="d-flex flex-column justify-content-center align-itens-center">
+      <header>Cadastrar paciente</header>
+      <div class="content">
+        <form [formGroup]="signUpForm">
+          <div class="body d-flex flex-column align-items-center">
+            <app-input-container
+              [mainColor]="mainColor"
+              class="in-container in-container-base my-2"
+            >
+              <input
+                formControlName="username"
+                type="text"
+                name="username"
+                placeholder="Primeiro nome"
+                autocomplete="name"
+                autocapitalize="sentences"
+                class="in in-recept"
+              />
+              <div
+                class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              >
+                <fa-icon [icon]="faUser" class="text-oposity"></fa-icon>
+              </div>
+            </app-input-container>
+            <app-input-container
+              [mainColor]="mainColor"
+              class="in-container in-container-base my-2"
+            >
+              <input
+                formControlName="surname"
+                type="text"
+                name="surname"
+                placeholder="Sobrenome"
+                autocomplete="additional-name"
+                class="in in-recept"
+              />
+              <div
+                class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              >
+                <fa-icon [icon]="faUser" class="text-oposity"></fa-icon>
+              </div>
+            </app-input-container>
+
+            <app-input-container
+              [mainColor]="mainColor"
+              class="in-container in-container-base my-2"
+            >
+              <input
+                formControlName="email"
+                type="text"
+                name="email"
+                placeholder="Email"
+                class="in in-recept"
+                autocomplete="email"
+              />
+              <div
+                class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              >
+                <fa-icon [icon]="faAt" class="text-oposity"></fa-icon>
+              </div>
+            </app-input-container>
+
+            <app-input-container
+              [mainColor]="mainColor"
+              class="in-container in-container-base my-2"
+            >
+              <input
+                formControlName="cpf"
+                type="text"
+                name="cpf"
+                placeholder="CPF"
+                class="in in-recept"
+                autocomplete="cpf"
+              />
+              <div
+                class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              >
+                <fa-icon [icon]="faAddressCard" class="text-oposity"></fa-icon>
+              </div>
+            </app-input-container>
+
+            <app-input-container
+              [mainColor]="mainColor"
+              class="in-container in-container-base my-2"
+            >
+              <input
+                formControlName="phoneNumber"
+                type="text"
+                name="phoneNumber"
+                placeholder="Número de telefone"
+                class="in in-recept"
+                autocomplete="phoneNumber"
+              />
+              <div
+                class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              >
+                <fa-icon [icon]="faPhone" class="text-oposity"></fa-icon>
+              </div>
+            </app-input-container>
+
+            <div
+              class="d-flex flex-column align-itens-center justify-content-center"
+            >
+              <button class="my-1 w-100">
+                Enviar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

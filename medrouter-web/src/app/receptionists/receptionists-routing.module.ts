@@ -5,7 +5,6 @@ import { ReceptionistsAddClientComponent } from "./components/receptionists-add-
 import { ReceptionistsVerifyClientComponent } from "./components/receptionists-verify-client/receptionists-verify-client.component";
 import { ReceptionistsAppointmentsDashboardComponent } from "./components/receptionists-appointments-dashboard/receptionists-appointments-dashboard.component";
 import { ReceptionistsCreateAppointmentComponent } from "./components/receptionists-create-appointment/receptionists-create-appointment.component";
-import { ReceptionistsSchedulesDashboardComponent } from "./components/receptionists-schedules-dashboard/receptionists-schedules-dashboard.component";
 
 const routes: Routes = [
   {
@@ -15,7 +14,7 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        redirectTo: "appointments",
+        redirectTo: "create-appointment",
         pathMatch: "full",
       },
       {
@@ -33,10 +32,6 @@ const routes: Routes = [
       {
         path: "create-appointment",
         component: ReceptionistsCreateAppointmentComponent,
-      },
-      {
-        path: "schedules",
-        component: ReceptionistsSchedulesDashboardComponent,
       },
     ],
   },
