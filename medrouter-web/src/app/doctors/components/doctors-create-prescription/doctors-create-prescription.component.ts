@@ -77,6 +77,7 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
   addE: boolean = false;
   addNF: boolean = false;
   searchMed: boolean = false;
+  annaminese: boolean = false;
 
   searchMedicines: Array<any> = [];
   recomendations: Array<string> = [];
@@ -114,6 +115,10 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
 
   toogle() {
     this.showSearch = !this.showSearch;
+  }
+
+  toogleAna() {
+    this.annaminese = !this.annaminese;
   }
 
   search() {}

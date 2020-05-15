@@ -40,27 +40,47 @@
         <div>Contratado em:</div>
         <div>
           Salário
-          <fa-icon [icon]="faCoins"> </fa-icon>
+        </div>
+        <div>
+          Especialidades
         </div>
         <div>Editar</div>
       </div>
 
       <div class="results">
         <div class="result">
-          <div
-            class="d-flex justify-content-center align-items-center text-base1"
-          >
+          <div class="d-flex flex-start align-items-center text-base1">
             <img src="../../../../assets/avatarmale.png" alt="avatar" />
 
             <span>João da Silva</span>
           </div>
           <div class="text-base1">
-            23/02/2019
             <fa-icon [icon]="faCalendarPlus"> </fa-icon>
+            23/02/2019
           </div>
 
           <div class="text-base1">
-            R$ 2000,00
+            <fa-icon [icon]="faCoins"> </fa-icon> R$ 2000,00
+          </div>
+
+          <div class="text-base1">
+            <fa-icon
+              [icon]="faEdit"
+              class="cursor text-medium"
+              (click)="toogle()"
+            ></fa-icon>
+            <fa-icon [icon]="faSave" class="ml-1 cursor text-success"></fa-icon>
+            <ng-container *ngIf="edit; else editSM">
+              <app-mult-selector-drop-drown
+                [width]="'180px'"
+                [height]="'30px'"
+                [states]="medicalSp"
+                [mainColor]="mainColor"
+              ></app-mult-selector-drop-drown>
+            </ng-container>
+            <ng-template #editSM>
+              Cardiologista, Obstetricia, Homeopatia
+            </ng-template>
           </div>
           <div class="actions">
             <a [routerLink]="['/profile', 1]">

@@ -1,7 +1,7 @@
 export const pros: Array<any> = [
   {
     id: 1,
-    name: "João da Silva Comedor",
+    name: "João Rangel",
     title: "Obstetra",
     local: "Caxias",
     specialty: ["Reprodução Humana"],
@@ -11,17 +11,17 @@ export const pros: Array<any> = [
   },
   {
     id: 2,
-    name: "Pedro Rangel",
+    name: "Marcos Paulo",
     title: "Ginecologista",
     local: "Ipanema",
-    specialty: ["Reabilatação Vaginal", "Traumas Anais"],
+    specialty: ["Reabililatação Hormonal"],
     stars: [true, true, true, true, true],
     workscale: "Agendamento",
     url: "../../../assets/doctor.png",
   },
   {
     id: 3,
-    name: "Marcos Paulo",
+    name: "Carlos André",
     title: "Neurocirurgião",
     local: "Barra da Tijuca e região",
     specialty: [
@@ -36,10 +36,10 @@ export const pros: Array<any> = [
 
   {
     id: 4,
-    name: "Ana Cuoco",
+    name: "Ana Furtado",
     title: "Urologista",
     local: "Copacabana",
-    specialty: ["Aumento Peniano", "Reprodução Humana", "Lesões Excrotais"],
+    specialty: ["Nefrologia", "Reprodução Humana"],
     stars: [true, true, true, true, false],
     workscale: "Agendamento",
     url: "../../../assets/medigata.jpg",

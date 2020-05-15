@@ -20,12 +20,17 @@ import {
   faUserEdit,
   faUsers,
   faUserMd,
+  faSave,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { Doctor } from "src/app/clients/models/doctor";
 import { LabDto } from "src/app/managers/components/lab-remove-confirmation/dtos/lab.dto";
 import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
 import { ClientsService } from "src/app/clients/clients.service";
+import { Specialty } from "../../enums/specialtys";
+import { getArrayFromEnum } from "src/app/utils/getArrayFromEnum";
+import { MultiSelectOption } from "src/app/shared/components/mult-selector-drop-drown/models/options";
+import { Colors } from "src/app/messages/toast/enums/colors";
 
 @Component({
   selector: "app-owners-doctors-dashboard",
@@ -33,9 +38,19 @@ import { ClientsService } from "src/app/clients/clients.service";
   styleUrls: ["./owners-doctors-dashboard.component.scss"],
 })
 export class OwnersDoctorsDashboardComponent implements OnInit {
+  medicalSp: Array<any> = getArrayFromEnum(Specialty);
   faEllipsisH = faEllipsisH;
   faSearch = faSearch;
   faUser = faUser;
+  faSave = faSave;
+
+  edit: boolean = false;
+
+  toogle() {
+    this.edit = !this.edit;
+  }
+
+  mainColor: Colors = Colors.OWNER;
 
   searchForm: FormGroup;
 
@@ -91,6 +106,8 @@ export class OwnersDoctorsDashboardComponent implements OnInit {
     this.searchForm = this.fb.group({
       search: this.fb.control(""),
     });
+
+    console.log(this.medicalSp);
   }
 
   handleSearch() {

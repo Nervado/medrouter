@@ -93,20 +93,43 @@
           Data: <strong> {{ prettyDate }}</strong>
         </div>
       </div>
-      <div>Anamnese</div>
+      <div>
+        Anamnese
+        <fa-icon [icon]="faEdit" (click)="toogleAna()" class="ml-1"></fa-icon>
+      </div>
       <div class="anamnese prescription-header">
         <div class="field">
           <div class="icon">
             <fa-icon [icon]="faTachometerAlt" class="mr-1"></fa-icon>
           </div>
-          Pressão arterial: <strong>12.8/9.9 mmHg</strong>
+          Pressão arterial:
+          <strong>
+            <ng-container *ngIf="annaminese; else pressure">
+              12.8/9.9
+            </ng-container>
+            <ng-template #pressure>
+              <input type="text" placeholder="Pressão" class="ana" />
+            </ng-template>
+
+            mmHg</strong
+          >
         </div>
         <div class="field">
           <div class="icon">
             <fa-icon [icon]="faWeight" class="mr-1"></fa-icon>
           </div>
 
-          Peso: <strong> 60 kg</strong>
+          Peso:
+          <strong>
+            <ng-container *ngIf="annaminese; else w">
+              60
+            </ng-container>
+            <ng-template #w>
+              <input type="text" placeholder="Peso" class="ana" />
+            </ng-template>
+
+            kg</strong
+          >
         </div>
 
         <div class="field">
@@ -114,11 +137,29 @@
             <fa-icon [icon]="faHeart" class="mr-1"></fa-icon>
           </div>
           Batimentos:
-          <strong>78 bpm</strong>
+          <strong>
+            <ng-container *ngIf="annaminese; else b">
+              78
+            </ng-container>
+            <ng-template #b>
+              <input type="text" placeholder="Batimentos" class="ana" />
+            </ng-template>
+
+            bpm</strong
+          >
         </div>
         <div class="field">
           <div class="icon"><fa-icon [icon]="faRulerVertical"></fa-icon></div>
-          Altura:<strong> 1,65 m</strong>
+          Altura:<strong>
+            <ng-container *ngIf="annaminese; else h">
+              1,64
+            </ng-container>
+            <ng-template #h>
+              <input type="text" placeholder="Altura" class="ana" />
+            </ng-template>
+
+            m</strong
+          >
         </div>
       </div>
       <div class="actions">
