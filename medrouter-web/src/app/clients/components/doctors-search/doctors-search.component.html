@@ -1,3 +1,5 @@
+<app-clients-add-appointment #modal></app-clients-add-appointment>
+
 <div class="main-data text-oposity">
   <div class="month">
     <div class="control">
@@ -55,7 +57,7 @@
         ></fa-icon>
       </div>
 
-      <div class="app">
+      <div class="app" (click)="addAppointment(modal)">
         <button>Agendar</button>
       </div>
     </div>

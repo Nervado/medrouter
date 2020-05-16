@@ -1,0 +1,62 @@
+<div class="wrapper-component d-flex justify-content-center align-items-center">
+  <div
+    class="row profile d-flex justify-content-center align-items-center bg-profile text-oposity"
+  >
+    <div class="d-flex flex-column w-75">
+      <div class="d-flex flex-wrap align-itens-center justify-content-center">
+        <div class="new-avatar m-3">
+          <div>Adicione um documento com foto</div>
+          <form
+            [formGroup]="formFile"
+            novalidate
+            (ngSubmit)="handleChange($event)"
+          >
+            <label htmlFor="avatar">
+              <ng-container *ngIf="preview; else elseTemplate">
+                <div class="avatar-img"><img [src]="preview" alt="" /></div>
+              </ng-container>
+              <ng-template #elseTemplate>
+                <div class="icon">
+                  <fa-icon [icon]="faIdCard" size="4x"></fa-icon>
+                </div>
+              </ng-template>
+
+              <input
+                accept="image/*"
+                type="file"
+                name="avatar"
+                id="avatar"
+                (change)="handleChange($event)"
+                value=""
+              />
+            </label>
+          </form>
+          <div class="cursor d-flex justify-content-end">
+            <fa-icon
+              [icon]="faTrash"
+              (click)="delete(newAvatar?.avatarId)"
+              size="2x"
+              class="mx-1"
+            ></fa-icon>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex flex-column flex-center">
+        <label for="buttons">Deseja enviar alterações ?</label>
+
+        <div
+          class="in-container buttons-container my-4 d-flex justify-content-center align-items-center bg-profile"
+        >
+          <button class="bt bt-medium mr-2" id="buttons1" (click)="update()">
+            Enviar
+          </button>
+
+          <button class="bt bt-base ml-2" id="buttons2" (click)="cancel()">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

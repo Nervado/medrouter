@@ -8,6 +8,7 @@ import {
   faClipboardCheck,
   faUserPlus,
   faCalendarAlt,
+  faIdCard,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -41,6 +42,7 @@ import {
 export const Buttons = {
   profile: [
     { icon: faUserEdit, path: "edit-profile" },
+    { icon: faIdCard, path: "identification" },
     { icon: faHouseUser, path: "edit-address" },
     { icon: faPortrait, path: "edit-avatar" },
     { icon: faLock, path: "security" },
@@ -53,7 +55,11 @@ export const Buttons = {
     { icon: faCrown, path: "../owners/owners" },
     { icon: faSearch, path: "../owners/search" },
   ],
-  client: [{ icon: faChartBar, path: "../clients/dashboard" }],
+  client: [
+    { icon: faChartBar, path: "../clients/dashboard" },
+    { icon: faFileMedicalAlt, path: "../clients/exams" },
+    { icon: faBookMedical, path: "../clients/history" },
+  ],
   recept: [
     { icon: faUserPlus, path: "../receptionists/add-client" },
     { icon: faClipboardCheck, path: "../receptionists/verify" },

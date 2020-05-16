@@ -12,6 +12,8 @@ import { ClientDashboardComponent } from "./components/client-dashboard/client-d
 import { ReportsComponent } from "./components/reports/reports.component";
 import { ClientsAddAppointmentComponent } from "./components/clients-add-appointment/clients-add-appointment.component";
 import { ClientBarChartComponent } from "./components/client-bar-chart/client-bar-chart.component";
+import { ClientExamsDashboardComponent } from './components/client-exams-dashboard/client-exams-dashboard.component';
+import { ClientHistoryDashboardComponent } from './components/client-history-dashboard/client-history-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { ClientBarChartComponent } from "./components/client-bar-chart/client-ba
     ReportsComponent,
     ClientsAddAppointmentComponent,
     ClientBarChartComponent,
+    ClientExamsDashboardComponent,
+    ClientHistoryDashboardComponent,
   ],
   imports: [CommonModule, ClientsRoutingModule, SharedModule],
 })

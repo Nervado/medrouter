@@ -46,9 +46,9 @@ export class ClientsAddAppointmentComponent implements OnInit {
 
   tick: boolean = false;
 
-  btColor: Colors = Colors.RECEPT;
+  btColor: Colors = Colors.CLIENT;
 
-  mainColor: Colors = Colors.RECEPT;
+  mainColor: Colors = Colors.CLIENT;
   exam: any;
 
   hours: Array<string> = Hour.map((hour) => `${hour}h`);
@@ -90,6 +90,7 @@ export class ClientsAddAppointmentComponent implements OnInit {
         Validators.required,
         Validators.minLength(6),
       ]),
+      hour: this.fb.control("", [Validators.required]),
     });
   }
 

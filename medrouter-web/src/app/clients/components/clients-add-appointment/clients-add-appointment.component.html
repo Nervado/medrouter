@@ -1,7 +1,7 @@
 <ng-template #content let-modal>
-  <div class="modal-header bg-recept">
+  <div class="modal-header bg-client">
     <h4 class="modal-title text-oposity" id="modal-basic-title">
-      Reagendamento
+      Agendamento
     </h4>
     <button
       type="button"
@@ -13,8 +13,8 @@
     </button>
   </div>
   <div class="modal-body">
-    <p class="text-recept">
-      Alteração de
+    <p class="text-client">
+      Novo
       <strong>agendamento</strong>
     </p>
 
@@ -22,27 +22,27 @@
       [formGroup]="actionsForm"
       class="d-flex flex-column justify-content-center align-items-center"
     >
-      <div class="infos text-recept">
+      <div class="infos text-client">
         <fa-icon [icon]="faUserMd"></fa-icon>
         {{ appointment.doctor.user.fullname }}
       </div>
 
-      <div class="infos text-recept">
+      <div class="infos text-client">
         <fa-icon [icon]="faUserTie"></fa-icon>
         {{ appointment.client.user.username }}
         {{ appointment.client.user.surname }}
       </div>
 
       <div>
-        <label for="date" class="text-recept">
+        <label for="date" class="text-client">
           <fa-icon [icon]="faCalendarDay" class="mr-1"></fa-icon>Nova
           data</label
         >
         <div
-          class="text-recept in-container in-container-recept d-flex justify-content-start align-items-center"
+          class="text-client in-container in-container-client d-flex justify-content-start align-items-center"
         >
           <app-datepicker
-            class="datepicker text-recept"
+            class="datepicker text-client"
             name="date"
             [btColor]="btColor"
             [tick]="tick"
@@ -52,21 +52,21 @@
         </div>
       </div>
 
-      <div class="form-group text-recept mt-2">
+      <div class="form-group text-client mt-2">
         <label for="hours">
           <fa-icon [icon]="faClock"></fa-icon> Novo horário</label
         >
 
         <app-input-container
           [mainColor]="mainColor"
-          class="in-container in-container-recept"
+          class="in-container in-container-client"
         >
           <select
             formControlName="hour"
             id="include"
             name="hours"
-            class="in in-recept"
-            style="border: 1px solid var(--recept); color: var(--recept);"
+            class="in in-client"
+            style="border: 1px solid var(--client); color: var(--client);"
           >
             <option value="hour" *ngFor="let hour of hours">{{ hour }}</option>
           </select>
@@ -79,11 +79,11 @@
         </app-input-container>
       </div>
 
-      <div class="form-group text-recept">
+      <div class="form-group text-client">
         <label for="password">Sua senha</label>
         <app-input-container
           [mainColor]="mainColor"
-          class="in-container in-container-recept"
+          class="in-container in-container-client"
         >
           <input type="text" name="username" hidden autocomplete="username" />
           <input
@@ -91,8 +91,8 @@
             type="password"
             placeholder="Senha"
             autocomplete="off"
-            class="in in-recept"
-            style="border: 1px solid var(--recept); color: var(--recept);"
+            class="in in-client"
+            style="border: 1px solid var(--client); color: var(--client);"
           />
           <div
             class="d-flex mx-2 flex-column justify-content-center align-items-center"
@@ -106,10 +106,10 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="bt bt-recept" (click)="modal.close('cancel')">
+    <button type="button" class="bt bt-client" (click)="modal.close('cancel')">
       Cancelar
     </button>
-    <button type="button" class="bt bt-base" (click)="modal.close('confirm')">
+    <button type="button" class="bt bt-medium" (click)="modal.close('confirm')">
       Confirmar
     </button>
   </div>

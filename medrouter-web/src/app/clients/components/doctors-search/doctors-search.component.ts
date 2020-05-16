@@ -61,4 +61,8 @@ export class DoctorsSearchComponent implements OnInit {
       .search(this.searchForm.value)
       .subscribe((doctors) => (this.searchResult = doctors));
   }
+
+  addAppointment(modal) {
+    modal.open();
+  }
 }

@@ -10,6 +10,7 @@ import { EditAvatarComponent } from "./components/edit-avatar/edit-avatar.compon
 import { SecurityComponent } from "./components/security/security.component";
 import { UnsubscribeComponent } from "./components/unsubscribe/unsubscribe.component";
 import { UnsubscribeModalComponent } from "./components/unsubscribe-modal/unsubscribe-modal.component";
+import { ProfileUploadIdComponent } from './profile-upload-id/profile-upload-id.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { UnsubscribeModalComponent } from "./components/unsubscribe-modal/unsubs
     SecurityComponent,
     UnsubscribeComponent,
     UnsubscribeModalComponent,
+    ProfileUploadIdComponent,
   ],
   imports: [CommonModule, SharedModule, ProfileRoutingModule],
 })

@@ -7,6 +7,7 @@ import { EditAddressComponent } from "./components/edit-address/edit-address.com
 import { EditAvatarComponent } from "./components/edit-avatar/edit-avatar.component";
 import { SecurityComponent } from "./components/security/security.component";
 import { UnsubscribeComponent } from "./components/unsubscribe/unsubscribe.component";
+import { ProfileUploadIdComponent } from "./profile-upload-id/profile-upload-id.component";
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: "unsubscribe",
         component: UnsubscribeComponent,
+      },
+      {
+        path: "identification",
+        component: ProfileUploadIdComponent,
       },
     ],
   },
