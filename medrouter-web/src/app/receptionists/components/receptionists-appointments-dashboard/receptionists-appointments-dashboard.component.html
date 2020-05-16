@@ -1,3 +1,6 @@
+<app-receptionists-reschedule-modal #modal (signOut)="confirm($event)">
+</app-receptionists-reschedule-modal>
+
 <div class="dashboard d-flex flex-wrap justify-content-between">
   <div class="main-data aside text-doctor">
     <div class="month">
@@ -117,6 +120,7 @@
             data-toggle="tooltip"
             data-placement="top"
             title="Remarcar"
+            (click)="openModal(modal)"
           ></fa-icon>
           <fa-icon
             [icon]="faTimes"

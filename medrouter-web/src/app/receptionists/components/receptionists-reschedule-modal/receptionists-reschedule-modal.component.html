@@ -1,0 +1,116 @@
+<ng-template #content let-modal>
+  <div class="modal-header bg-recept">
+    <h4 class="modal-title text-oposity" id="modal-basic-title">
+      Reagendamento
+    </h4>
+    <button
+      type="button"
+      class="close text-base"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p class="text-recept">
+      Alteração de
+      <strong>agendamento</strong>
+    </p>
+
+    <form
+      [formGroup]="actionsForm"
+      class="d-flex flex-column justify-content-center align-items-center"
+    >
+      <div class="infos text-recept">
+        <fa-icon [icon]="faUserMd"></fa-icon>
+        {{ appointment.doctor.user.fullname }}
+      </div>
+
+      <div class="infos text-recept">
+        <fa-icon [icon]="faUserTie"></fa-icon>
+        {{ appointment.client.user.username }}
+        {{ appointment.client.user.surname }}
+      </div>
+
+      <div>
+        <label for="date" class="text-recept">
+          <fa-icon [icon]="faCalendarDay" class="mr-1"></fa-icon>Nova
+          data</label
+        >
+        <div
+          class="text-recept in-container in-container-recept d-flex justify-content-start align-items-center"
+        >
+          <app-datepicker
+            class="datepicker text-recept"
+            name="date"
+            [btColor]="btColor"
+            [tick]="tick"
+            [defaut]="date"
+          ></app-datepicker>
+          <!--[old]="date  formControlName="birthdate""-->
+        </div>
+      </div>
+
+      <div class="form-group text-recept mt-2">
+        <label for="hours">
+          <fa-icon [icon]="faClock"></fa-icon> Novo horário</label
+        >
+
+        <app-input-container
+          [mainColor]="mainColor"
+          class="in-container in-container-recept"
+        >
+          <select
+            formControlName="hour"
+            id="include"
+            name="hours"
+            class="in in-recept"
+            style="border: 1px solid var(--recept); color: var(--recept);"
+          >
+            <option value="hour" *ngFor="let hour of hours">{{ hour }}</option>
+          </select>
+
+          <div
+            class="d-flex ml-2 flex-column justify-content-center align-items-center"
+          >
+            <fa-icon [icon]="faClock" class="text-oposity"></fa-icon>
+          </div>
+        </app-input-container>
+      </div>
+
+      <div class="form-group text-recept">
+        <label for="password">Sua senha</label>
+        <app-input-container
+          [mainColor]="mainColor"
+          class="in-container in-container-recept"
+        >
+          <input type="text" name="username" hidden autocomplete="username" />
+          <input
+            formControlName="password"
+            type="password"
+            placeholder="Senha"
+            autocomplete="off"
+            class="in in-recept"
+            style="border: 1px solid var(--recept); color: var(--recept);"
+          />
+          <div
+            class="d-flex mx-2 flex-column justify-content-center align-items-center"
+          >
+            <fa-icon [icon]="faLock" class="text-oposity"></fa-icon>
+          </div>
+        </app-input-container>
+      </div>
+
+      <!--end password component-->
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="bt bt-recept" (click)="modal.close('cancel')">
+      Cancelar
+    </button>
+    <button type="button" class="bt bt-base" (click)="modal.close('confirm')">
+      Confirmar
+    </button>
+  </div>
+</ng-template>

@@ -68,6 +68,7 @@ export class ToolBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.menuIcons = Buttons[this.role];
+    this.menuLinks = MenuLinks;
   }
 
   _atob(url: string): any {

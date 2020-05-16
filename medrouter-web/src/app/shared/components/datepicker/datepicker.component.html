@@ -3,13 +3,14 @@
     <div class="input-group">
       <!--  [(ngModel)]="values"-->
       <input
-        class="form-control text-base1"
+        class="form-control"
         name="dp"
         ngbDatepicker
         #d="ngbDatepicker"
         [(ngModel)]="values"
         (dateSelect)="setValue($event)"
         [placeholder]="defaut"
+        [ngStyle]="{ color: btColor }"
       />
       <div class="input-group-append">
         <button

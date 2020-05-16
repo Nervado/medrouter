@@ -53,10 +53,7 @@ export const Buttons = {
     { icon: faCrown, path: "../owners/owners" },
     { icon: faSearch, path: "../owners/search" },
   ],
-  client: [
-    { icon: faCalendarDay, path: "/schedules" },
-    { icon: faLock, path: "../clients/new" },
-  ],
+  client: [{ icon: faChartBar, path: "../clients/dashboard" }],
   recept: [
     { icon: faUserPlus, path: "../receptionists/add-client" },
     { icon: faClipboardCheck, path: "../receptionists/verify" },

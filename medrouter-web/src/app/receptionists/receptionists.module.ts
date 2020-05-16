@@ -8,6 +8,7 @@ import { ReceptionistsVerifyClientComponent } from "./components/receptionists-v
 import { ReceptionistsAppointmentsDashboardComponent } from "./components/receptionists-appointments-dashboard/receptionists-appointments-dashboard.component";
 import { ReceptionistsCreateAppointmentComponent } from "./components/receptionists-create-appointment/receptionists-create-appointment.component";
 import { ReceptionistsCreateAppointmentModalComponent } from './components/receptionists-create-appointment-modal/receptionists-create-appointment-modal.component';
+import { ReceptionistsRescheduleModalComponent } from './components/receptionists-reschedule-modal/receptionists-reschedule-modal.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ReceptionistsCreateAppointmentModalComponent } from './components/recep
     ReceptionistsAppointmentsDashboardComponent,
     ReceptionistsCreateAppointmentComponent,
     ReceptionistsCreateAppointmentModalComponent,
+    ReceptionistsRescheduleModalComponent,
   ],
   imports: [CommonModule, ReceptionistsRoutingModule, SharedModule],
 })

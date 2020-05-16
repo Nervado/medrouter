@@ -15,6 +15,8 @@ import {
   faEllipsisH,
   faClock,
   faCalendarDay,
+  faChevronLeft,
+  faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -32,6 +34,8 @@ export class AppointmentsSummaryComponent implements OnInit {
   faTimesCircle = faTimesCircle;
   faClock = faClock;
   faCalendarDay = faCalendarDay;
+  faChevronLeft = faChevronLeft;
+  faChevronRight = faChevronRight;
   constructor() {}
 
   ngOnInit(): void {}

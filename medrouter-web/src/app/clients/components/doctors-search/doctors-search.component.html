@@ -1,4 +1,4 @@
-<div class="main-data aside text-oposity">
+<div class="main-data text-oposity">
   <div class="month">
     <div class="control">
       <fa-icon [icon]="faChevronLeft"></fa-icon>
@@ -15,21 +15,49 @@
         placeholder="Encontre seu médico"
         class="in in-client"
       />
-      <fa-icon [icon]="faSearch" class="ml-2"></fa-icon>
-      <fa-icon [icon]="faFilter" class="ml-2"></fa-icon>
+      <fa-icon
+        [icon]="faSearch"
+        class="ml-2"
+        (click)="handleSearch()"
+      ></fa-icon>
+
+      <!--  <fa-icon [icon]="faFilter" class="ml-2"></fa-icon>-->
     </div>
   </div>
 
-  <div
-    class="d-flex flex-column px-4 justify-content-between bg-oposity"
-    *ngFor="let doctor of searchResult"
-  >
-    <div class="d-flex justify-content-between py-3">
-      <div class="d-flex justify-content-center align-items-center">
-        <div class="marker bg-oposity mr-2"></div>
-        <span>{{ doctor.user.username }}</span>
+  <div class="text-base ml-1">Resultados {{ searchResult.length }}</div>
+
+  <div class="results">
+    <div class="doc" *ngFor="let start of stars">
+      <div class="avatar">
+        <ng-container *ngIf="true; else elseTemplate">
+          <img src="../../../../assets/avatarmale.png" alt=""
+        /></ng-container>
+        <ng-template #elseTemplate>
+          <img src="../../../../assets/avatarmale.png" alt="" />
+        </ng-template>
       </div>
-      <span>1h atrás</span>
+
+      <div class="name">
+        <strong>Marcos Andrade</strong>
+      </div>
+
+      <div class="spcly">
+        <fa-icon [icon]="faUserMd"></fa-icon>
+        Urologista, Clinico Geral
+      </div>
+
+      <div class="ratting">
+        <fa-icon
+          [icon]="faStar"
+          class="mr-1"
+          *ngFor="let star of stars"
+        ></fa-icon>
+      </div>
+
+      <div class="app">
+        <button>Agendar</button>
+      </div>
     </div>
   </div>
 </div>

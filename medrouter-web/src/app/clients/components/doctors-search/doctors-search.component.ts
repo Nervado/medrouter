@@ -5,6 +5,8 @@ import {
   faChevronRight,
   faChevronLeft,
   faFilter,
+  faUserMd,
+  faStar,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -29,10 +31,15 @@ export class DoctorsSearchComponent implements OnInit {
   faChevronLeft = faChevronLeft;
   faChevronRight = faChevronRight;
   faFilter = faFilter;
+  faUserMd = faUserMd;
+  faStar = faStar;
 
+  stars = [1, 2, 3, 4, 5, 6];
   searchForm: FormGroup;
 
   searchResult: Array<Doctor> = [];
+
+  filter: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -43,6 +50,10 @@ export class DoctorsSearchComponent implements OnInit {
     this.searchForm = this.fb.group({
       search: this.fb.control(""),
     });
+  }
+
+  showFilter() {
+    this.filter = !this.filter;
   }
 
   handleSearch() {

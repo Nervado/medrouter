@@ -1,3 +1,8 @@
-<div class="reports">
-  <div>reports</div>
+<div class="reports d-flex flex-column justify-content-between">
+  <app-client-bar-chart [data]="s" class="w-100 h-100"></app-client-bar-chart>
+  <app-client-bar-chart
+    [data]="d"
+    class="w-100 h-100"
+    [title]="'Pressão Distólica'"
+  ></app-client-bar-chart>
 </div>

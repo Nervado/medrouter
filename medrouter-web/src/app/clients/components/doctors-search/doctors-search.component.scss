@@ -6,33 +6,111 @@
   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
   margin: 20px;
   background-color: var(--oposity);
-}
 
-.month {
-  width: 100%;
-  height: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  border-radius: 4px;
-  color: var(--oposity);
-  background-color: var(--client);
-
-  .control {
+  .month {
+    width: 100%;
+    height: 35px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: space-around;
+    border-radius: 4px;
+    color: var(--oposity);
+    background-color: var(--client);
 
-    input {
-      height: 25px;
+    .control {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      input {
+        height: 25px;
+      }
+      fa-icon {
+        font-size: 1.2em;
+        cursor: pointer;
+        margin: 0px 5px 0px 5px;
+      }
     }
-    fa-icon {
-      font-size: 1.2em;
+  }
+
+  .results {
+    height: 220px;
+    display: flex;
+    align-items: flex-start;
+    overflow-x: scroll;
+
+    padding: 20px;
+    margin: 0 20px;
+
+    &::-webkit-scrollbar {
+      height: 4px;
+      width: 4px;
+      background: rgba(0, 0, 0, 0.1);
       cursor: pointer;
-      margin: 0px 5px 0px 5px;
+    }
+
+    &::-webkit-scrollbar-thumb:horizontal {
+      background: var(--client);
+
+      border-radius: 10px;
+    }
+
+    .doc {
+      margin: 0 20px;
+      min-width: 150px;
+      height: 170px;
+
+      padding: 5px;
+
+      border-radius: 2px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+
+      border: 1px solid rgba(0, 0, 0, 0.2);
+
+      font-size: 14px;
+      color: var(--client);
+      .avatar {
+        img {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          border: 1px solid var(--client);
+        }
+      }
+
+      .name {
+        color: var(--medium);
+      }
+
+      .spcly {
+        font-size: 10px;
+      }
+
+      .ratting {
+        font-size: 12px;
+      }
+
+      .app {
+        border: 1px solid var(--client);
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 2px;
+        cursor: pointer;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
     }
   }
 }
+
 .cursor {
   cursor: pointer;
 

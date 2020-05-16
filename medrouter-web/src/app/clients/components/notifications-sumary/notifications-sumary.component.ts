@@ -1,5 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEllipsisH,
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-notifications-sumary",
@@ -8,6 +12,9 @@ import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 })
 export class NotificationsSumaryComponent implements OnInit {
   faEllipsisH = faEllipsisH;
+
+  faChevronLeft = faChevronLeft;
+  faChevronRight = faChevronRight;
   constructor() {}
 
   ngOnInit(): void {}

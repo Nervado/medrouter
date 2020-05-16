@@ -1,0 +1,19 @@
+<div
+  class="d-flex flex-column align-items-center justify-content-between wrapper-bar"
+>
+  <div class="title">{{ title }}</div>
+  <div class="bar-area">
+    <div class="y">
+      <div>{{ max }}</div>
+      <div class="min">{{ min }}</div>
+    </div>
+    <div *ngFor="let column of d" class="col">
+      <div class="value">
+        <div class="column" [ngStyle]="{ height: column.h }">
+          {{ column.value }}
+        </div>
+      </div>
+      <div class="x">{{ column.month }}</div>
+    </div>
+  </div>
+</div>

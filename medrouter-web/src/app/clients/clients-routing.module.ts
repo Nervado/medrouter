@@ -3,8 +3,6 @@ import { Routes, RouterModule } from "@angular/router";
 import { ClientPageComponent } from "./views/client-page/client-page.component";
 import { ClientDashboardComponent } from "./components/client-dashboard/client-dashboard.component";
 
-import { NewscheduleComponent } from "./components/newschedule/newschedule.component";
-
 const routes: Routes = [
   {
     path: "",
@@ -12,11 +10,12 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        component: ClientDashboardComponent,
+        redirectTo: "dashboard",
+        pathMatch: "full",
       },
       {
-        path: "new",
-        component: NewscheduleComponent,
+        path: "dashboard",
+        component: ClientDashboardComponent,
       },
     ],
   },

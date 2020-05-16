@@ -66,6 +66,12 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
     this.showSearch = !this.showSearch;
   }
 
+  confirm(e) {
+    console.log(e);
+  }
+  openModal(modal) {
+    modal.open();
+  }
   search() {
     console.log("procurando nemo");
   }

@@ -1,9 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { MEDROUTER_API } from "../../app.api";
 import { Observable } from "rxjs";
 import "rxjs/operator/map";
-import { ErrorHandler } from "../../app-error.handler";
 import { Data } from "./models/chart.model";
 
 @Injectable({
