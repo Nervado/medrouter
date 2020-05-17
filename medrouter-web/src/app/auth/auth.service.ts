@@ -26,8 +26,12 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {
     const usersaved: User = JSON.parse(localStorage.getItem("user"));
+    const loginsaved: User = JSON.parse(localStorage.getItem("login"));
     if (usersaved) {
       this.user = usersaved;
+    }
+    if (loginsaved) {
+      this.loginDto = JSON.parse(localStorage.getItem("login"));
     }
   }
 
@@ -61,6 +65,7 @@ export class AuthService {
           () => {
             if (login.rememberme) {
               localStorage.setItem("user", JSON.stringify(this.user));
+              localStorage.setItem("login", JSON.stringify(this.loginDto));
             }
           }
         )
@@ -84,6 +89,7 @@ export class AuthService {
   logout() {
     this.user = undefined;
     localStorage.removeItem("user");
+    localStorage.removeItem("login");
     this.router.navigate(["/"]);
   }
 

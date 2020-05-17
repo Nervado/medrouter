@@ -20,6 +20,8 @@ import { LabUsersEditComponent } from "./components/lab-users-edit/lab-users-edi
 import { ManagersReceptionistsSearchEditComponent } from "./components/managers-receptionists-search-edit/managers-receptionists-search-edit.component";
 import { ManagersReceptionistsDismissModalComponent } from "./components/managers-receptionists-dismiss-modal/managers-receptionists-dismiss-modal.component";
 import { ManagersReceptionistsEditComponent } from "./components/managers-receptionists-edit/managers-receptionists-edit.component";
+import { SearchEmployeesComponent } from "./components/search-employees/search-employees.component";
+import { ManagersActionsModalComponent } from "./components/managers-actions-modal/managers-actions-modal.component";
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { ManagersReceptionistsEditComponent } from "./components/managers-recept
     ManagersReceptionistsSearchEditComponent,
     ManagersReceptionistsDismissModalComponent,
     ManagersReceptionistsEditComponent,
+    SearchEmployeesComponent,
+    ManagersActionsModalComponent,
   ],
   imports: [CommonModule, ManagersRoutingModule, SharedModule],
 })

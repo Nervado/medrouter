@@ -30,10 +30,10 @@
   <div class="text-base ml-1">Resultados {{ searchResult.length }}</div>
 
   <div class="results">
-    <div class="doc" *ngFor="let start of stars">
+    <div class="doc" *ngFor="let doctor of searchResult">
       <div class="avatar">
-        <ng-container *ngIf="true; else elseTemplate">
-          <img src="../../../../assets/avatarmale.png" alt=""
+        <ng-container *ngIf="doctor.user.avatar?.url; else elseTemplate">
+          <img [src]="doctor.user.avatar.url" alt="avatar"
         /></ng-container>
         <ng-template #elseTemplate>
           <img src="../../../../assets/avatarmale.png" alt="" />
@@ -41,12 +41,12 @@
       </div>
 
       <div class="name">
-        <strong>Marcos Andrade</strong>
+        <strong>{{ doctor.user.fullname }}</strong>
       </div>
 
-      <div class="spcly">
-        <fa-icon [icon]="faUserMd"></fa-icon>
-        Urologista, Clinico Geral
+      <div class="spcly d-flex flex-wrap">
+        <fa-icon [icon]="faUserMd" class="mr-1"></fa-icon>
+        <div *ngFor="let item of doctor.specialty">{{ item }}</div>
       </div>
 
       <div class="ratting">

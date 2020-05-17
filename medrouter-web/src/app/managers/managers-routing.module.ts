@@ -5,7 +5,7 @@ import { ManagersPageComponent } from "./views/managers-page/managers-page.compo
 import { ManagersDashboardComponent } from "./components/managers-dashboard/managers-dashboard.component";
 import { ManagersLabsDashboardComponent } from "./components/managers-labs-dashboard/managers-labs-dashboard.component";
 import { ManagersReceptionistsDashboardComponent } from "./components/managers-receptionists-dashboard/managers-receptionists-dashboard.component";
-import { SearchEmployeesComponent } from "../shared/components/search-employees/search-employees.component";
+import { SearchEmployeesComponent } from "./components/search-employees/search-employees.component";
 import { Colors } from "../messages/toast/enums/colors";
 
 const routes: Routes = [

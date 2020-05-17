@@ -4,7 +4,7 @@ import { OwnersPageComponent } from "./views/owners-page/owners-page.component";
 import { OwnersDasboardComponent } from "./components/owners-dasboard/owners-dasboard.component";
 import { OwnersDoctorsDashboardComponent } from "./components/owners-doctors-dashboard/owners-doctors-dashboard.component";
 import { OwnersManagersDasboardComponent } from "./components/owners-managers-dasboard/owners-managers-dasboard.component";
-import { SearchEmployeesComponent } from "../shared/components/search-employees/search-employees.component";
+import { SearchEmployeesComponent } from "./components/search-employees/search-employees.component";
 import { Colors } from "../messages/toast/enums/colors";
 import { OwnersDasboardSearchEditComponent } from "./components/owners-dasboard-search-edit/owners-dasboard-search-edit.component";
 

@@ -32,7 +32,7 @@ export class DoctorsService extends Service<
       throw new BadRequestException('Doctor already exists!');
     }
     user.doctor = true;
-    user.role = [Role.DOCTOR, Role.CLIENT];
+    user.role = [...user.role, Role.DOCTOR];
     return await this.createOne(body, user);
   }
 

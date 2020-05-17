@@ -1,0 +1,140 @@
+<ng-template #content let-modal>
+  <div class="modal-header" [style.background-color]="mainColor">
+    <h4 class="modal-title text-oposity" id="modal-basic-title">
+      Alteração de usuário
+    </h4>
+    <button
+      type="button"
+      class="close text-base"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p class="text-base">
+      Alteração do cadastro da(o) usuário
+      <strong> {{ profile.username }}</strong>
+    </p>
+
+    <form
+      [formGroup]="actionsForm"
+      class="d-flex flex-column justify-content-center align-items-center"
+    >
+      <div class="form-group text-admin">
+        <div>
+          <label for="Tipo">Tipo de operação</label>
+          <app-input-container
+            class="in-container my-4"
+            [mainColor]="mainColor"
+          >
+            <select
+              id="cars"
+              name="type"
+              aria-placeholder="type"
+              class="in in-medium cursor"
+              formControlName="type"
+              style="border: 2px solid var(--admin); color: var(--admin);"
+            >
+              <option value="include">Inclusão</option>
+              <option value="exclude">Exclusão</option>
+            </select>
+
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              [style.background-color]="mainColor"
+            >
+              <fa-icon [icon]="faUser" class="text-oposity"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+
+        <div *ngIf="actionsForm.value.type === 'include'">
+          <label for="Tipo">Tipo de Inclusão</label>
+          <app-input-container
+            class="in-container my-4"
+            [mainColor]="mainColor"
+          >
+            <select
+              id="include"
+              name="include"
+              aria-placeholder="include"
+              class="in cursor"
+              formControlName="include"
+              style="border: 2px solid var(--admin); color: var(--admin);"
+            >
+              <option value="doctors">Medico</option>
+              <option value="receptionists">Recepcionista</option>
+              <option value="managers">Gerente</option>
+              <option value="owners">Diretor</option>
+            </select>
+
+            <div
+              [style.background-color]="mainColor"
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faUser" class="text-oposity"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+
+        <div *ngIf="actionsForm.value.type === 'include'">
+          <label for="Tipo">Salário</label>
+          <app-input-container
+            class="in-container my-4"
+            [mainColor]="mainColor"
+          >
+            <input
+              id="salary"
+              name="salary"
+              aria-placeholder="salary"
+              class="in cursor"
+              formControlName="salary"
+              style="border: 2px solid var(--admin); color: var(--admin);"
+            />
+
+            <div
+              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+            >
+              <fa-icon [icon]="faUser" class="text-oposity"></fa-icon>
+            </div>
+          </app-input-container>
+        </div>
+
+        <label for="password">Sua senha de admin</label>
+        <app-input-container class="in-container my-2" [mainColor]="mainColor">
+          <input type="text" name="username" hidden autocomplete="username" />
+          <input
+            formControlName="password"
+            type="password"
+            placeholder="Senha"
+            autocomplete="off"
+            class="in in-admin"
+            ng-model="money"
+            ui-money-mask
+            style="border: 2px solid var(--admin); color: var(--admin);"
+          />
+          <div
+            class="d-flex mx-2 flex-column justify-content-center align-items-center"
+          >
+            <fa-icon [icon]="faLock" class="text-oposity"></fa-icon>
+          </div>
+        </app-input-container>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="bt"
+      (click)="modal.close('cancel')"
+      [style.background-color]="mainColor"
+    >
+      Cancelar
+    </button>
+    <button type="button" class="bt bt-base" (click)="modal.close('confirm')">
+      Confirmar
+    </button>
+  </div>
+</ng-template>

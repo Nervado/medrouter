@@ -122,6 +122,14 @@ export class SearchEmployeesComponent implements OnInit {
 
   confirm(event) {
     console.log(event);
+
+    switch (event.type) {
+      case null:
+        break;
+
+      default:
+        break;
+    }
   }
 
   showModalActions(modal: any, profile: Profile) {

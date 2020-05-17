@@ -11,6 +11,8 @@ import { OwnersEmployeeDismissModalComponent } from "./components/owners-employe
 import { OwnersEmployeeEditModalComponent } from "./components/owners-employee-edit-modal/owners-employee-edit-modal.component";
 import { DonutChartComponent } from "./components/donut-chart/donut-chart.component";
 import { ClientBarChartComponent } from "./components/client-bar-chart/client-bar-chart.component";
+import { SearchEmployeesComponent } from "./components/search-employees/search-employees.component";
+import { ManagersActionsModalComponent } from "./components/managers-actions-modal/managers-actions-modal.component";
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { ClientBarChartComponent } from "./components/client-bar-chart/client-ba
     OwnersEmployeeEditModalComponent,
     DonutChartComponent,
     ClientBarChartComponent,
+    SearchEmployeesComponent,
+    ManagersActionsModalComponent,
   ],
   imports: [CommonModule, SharedModule, OwnersRoutingModule],
 })

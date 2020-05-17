@@ -24,7 +24,7 @@ export class ProfileUploadIdComponent implements OnInit {
   faCameraRetro = faCameraRetro;
   faTrash = faTrash;
 
-  avatar: Avatar;
+  //avatar: Avatar;
   newAvatar: Avatar = undefined;
   preview: string | ArrayBuffer;
   formFile: FormGroup;
@@ -43,7 +43,6 @@ export class ProfileUploadIdComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.avatar = this.usersService.getUserProfile().avatar;
     this.userId = this.activatedRoute.parent.snapshot.params["id"];
     this.preview = null;
     this.formFile = this.fb.group({
@@ -114,7 +113,7 @@ export class ProfileUploadIdComponent implements OnInit {
           message: "Foto atualizada com sucesso!",
           type: Types.BASE,
         });
-        this.avatar = this.usersService.getUserProfile().avatar;
+        //this.avatar = this.usersService.getUserProfile().avatar;
         this.preview = "";
         this.router.navigate(["profile", this.userId]);
       }
@@ -127,9 +126,7 @@ export class ProfileUploadIdComponent implements OnInit {
     }
     this.usersService.deleteAvatar(id).subscribe(
       () => {
-        if (this.avatar !== null && id === this.avatar.avatarId) {
-          this.avatar = null;
-        } else if (this.newAvatar !== null && id === this.newAvatar.avatarId) {
+        if (this.newAvatar !== null && id === this.newAvatar.avatarId) {
           this.newAvatar = null;
           this.preview = null;
         }

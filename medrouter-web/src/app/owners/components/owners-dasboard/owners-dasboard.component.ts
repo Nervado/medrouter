@@ -8,6 +8,12 @@ import {
   Returned,
   Finished,
 } from "../../models/graph-data";
+import {
+  faUserTie,
+  faUsersCog,
+  faUserMd,
+  faCoins,
+} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-owners-dasboard",
@@ -36,6 +42,13 @@ export class OwnersDasboardComponent implements OnInit {
   returned = Returned;
 
   total = Total;
+
+  misc = Misc;
+
+  faUserTie = faUserTie;
+  faUserMd = faUserMd;
+  faUsersCog = faUsersCog;
+  faCoins = faCoins;
 
   constructor() {}
 

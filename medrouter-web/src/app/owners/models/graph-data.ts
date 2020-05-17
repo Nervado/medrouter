@@ -68,6 +68,6 @@ export const Misc = {
 export const Total = {
   clients: 2400,
   doctors: 34,
-  managers: 2,
+  staff: 20,
   budget: 345000,
 };

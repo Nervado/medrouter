@@ -16,7 +16,7 @@ import { IntFilterDto } from '../utils/int-filter.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 
 import { ReceptionistService } from './receptionist.service';
-@Controller('receptionist')
+@Controller('receptionists')
 export class ReceptionistController {
   constructor(private receptionistService: ReceptionistService) {}
 

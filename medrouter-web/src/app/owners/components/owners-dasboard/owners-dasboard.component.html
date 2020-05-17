@@ -1,11 +1,44 @@
 <div
   class="dashboard d-flex flex-wrap justify-content-around align-itens-center"
 >
+  <div class="d-flex justify-content-around w-100 mt-3">
+    <div class="info">
+      <div><strong>Clientes</strong></div>
+      <div class="value" [style.color]="color">
+        <fa-icon [icon]="faUserTie"></fa-icon>
+
+        {{ total.clients }}
+      </div>
+    </div>
+    <div class="info">
+      <div><strong>Médicos</strong></div>
+
+      <div class="value" [style.color]="color2">
+        <fa-icon [icon]="faUserMd"></fa-icon>
+        {{ total.doctors }}
+      </div>
+    </div>
+    <div class="info">
+      <div><strong>Suporte</strong></div>
+      <div class="value" [style.color]="color3">
+        <fa-icon [icon]="faUsersCog"></fa-icon>
+
+        {{ total.staff }}
+      </div>
+    </div>
+    <div class="info">
+      <div><strong>Faturamento</strong></div>
+      <div class="value" [style.color]="color4">
+        <fa-icon [icon]="faCoins"></fa-icon>
+        R$ {{ total.budget }},00
+      </div>
+    </div>
+  </div>
   <div class="content">
     <app-donut-chart
       [radius]="100"
       [stroke]="20"
-      [progress]="40"
+      [progress]="misc.attend"
       [color]="color"
       [title]="title"
     ></app-donut-chart>
@@ -19,7 +52,7 @@
     <app-donut-chart
       [radius]="100"
       [stroke]="20"
-      [progress]="88"
+      [progress]="misc.canceled"
       [color]="color2"
       [title]="title2"
     ></app-donut-chart>
@@ -33,7 +66,7 @@
     <app-donut-chart
       [radius]="100"
       [stroke]="20"
-      [progress]="40"
+      [progress]="misc.return"
       [color]="color3"
       [title]="title3"
     ></app-donut-chart>
@@ -48,7 +81,7 @@
     <app-donut-chart
       [radius]="100"
       [stroke]="20"
-      [progress]="90"
+      [progress]="misc.reschedule"
       [color]="color4"
       [title]="title4"
     ></app-donut-chart>
