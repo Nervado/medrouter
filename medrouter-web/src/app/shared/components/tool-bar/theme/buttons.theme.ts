@@ -74,7 +74,7 @@ export const Buttons = {
     { icon: faCalendarPlus, path: "../doctors/create-schedule" },
   ],
   admin: [
-    { icon: faChartBar, path: "../managers/dashboard" },
+    // { icon: faChartBar, path: "../managers/dashboard" },
     { icon: faFlask, path: "../managers/labs" },
     { icon: faConciergeBell, path: "../managers/receptionists" },
     { icon: faSearch, path: "../managers/search" },

@@ -1,0 +1,26 @@
+<div class="wrapper-chart">
+  <h1 [style.color]="color">{{ title }}</h1>
+  <div
+    class="cont"
+    [style.width]="cont"
+    [style.height]="cont"
+    [style.color]="color"
+  >
+    <svg class="progress-ring" [attr.height]="ring" [attr.width]="ring">
+      <circle
+        class="progress-ring-circle"
+        [attr.stroke]="color"
+        fill="rgba(112,112,112,0.03)"
+        [attr.cx]="radius"
+        [attr.cy]="radius"
+        [attr.r]="normalizedRadius"
+        [attr.stroke-width]="stroke"
+        [attr.stroke-dasharray]="dashArray"
+        [attr.stroke-dashoffset]="strokeDashoffset"
+      />
+      />
+    </svg>
+
+    <div class="progress">{{ progress.toFixed(1) }} %</div>
+  </div>
+</div>

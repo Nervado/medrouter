@@ -1,1 +1,61 @@
+<div
+  class="dashboard d-flex flex-wrap justify-content-around align-itens-center"
+>
+  <div class="content">
+    <app-donut-chart
+      [radius]="100"
+      [stroke]="20"
+      [progress]="40"
+      [color]="color"
+      [title]="title"
+    ></app-donut-chart>
+    <app-client-bar-chart
+      [title]="title5"
+      [data]="finished"
+      [color]="color"
+    ></app-client-bar-chart>
+  </div>
+  <div class="content">
+    <app-donut-chart
+      [radius]="100"
+      [stroke]="20"
+      [progress]="88"
+      [color]="color2"
+      [title]="title2"
+    ></app-donut-chart>
+    <app-client-bar-chart
+      [title]="title6"
+      [data]="canceled"
+      [color]="color2"
+    ></app-client-bar-chart>
+  </div>
+  <div class="content">
+    <app-donut-chart
+      [radius]="100"
+      [stroke]="20"
+      [progress]="40"
+      [color]="color3"
+      [title]="title3"
+    ></app-donut-chart>
+    <app-client-bar-chart
+      [title]="title7"
+      [data]="returned"
+      [color]="color3"
+    ></app-client-bar-chart>
+  </div>
 
+  <div class="content">
+    <app-donut-chart
+      [radius]="100"
+      [stroke]="20"
+      [progress]="90"
+      [color]="color4"
+      [title]="title4"
+    ></app-donut-chart>
+    <app-client-bar-chart
+      [title]="title8"
+      [data]="reschedule"
+      [color]="color4"
+    ></app-client-bar-chart>
+  </div>
+</div>

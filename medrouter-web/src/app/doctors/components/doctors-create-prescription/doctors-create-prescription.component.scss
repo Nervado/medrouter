@@ -307,7 +307,7 @@
               .wrapper-medicines {
                 width: 100%;
                 height: 250px;
-                overflow-x: scroll;
+                overflow-x: auto;
                 font-size: 12px;
                 border-radius: 4px;
                 display: flex;
@@ -329,6 +329,8 @@
                   display: flex;
                   flex-direction: column;
                   justify-content: space-between;
+                  //overflow-y: auto;
+                  overflow: hidden;
 
                   box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
 
@@ -343,7 +345,8 @@
                   .info {
                     margin-bottom: 5px;
                     font-size: 10px;
-                    overflow-y: scroll;
+                    //overflow-y: scroll;
+                    overflow: hidden;
                     .name {
                       overflow: hidden;
                     }

@@ -15,7 +15,7 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        redirectTo: "receptionists",
+        redirectTo: "search",
         pathMatch: "full",
       },
       {
@@ -23,10 +23,13 @@ const routes: Routes = [
         component: SearchEmployeesComponent,
         data: { mainColor: Colors.ADMIN },
       },
-      {
+      /**
+       * {
         path: "dashboard",
         component: ManagersDashboardComponent,
       },
+       */
+
       {
         path: "labs",
         component: ManagersLabsDashboardComponent,

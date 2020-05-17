@@ -1,0 +1,25 @@
+<div
+  class="d-flex flex-column align-items-center justify-content-between wrapper-bar"
+>
+  <div class="title" [style.color]="color">
+    <!--{{ title }}-->
+  </div>
+  <div class="bar-area">
+    <div class="y" [style.color]="color">
+      <div>{{ max }}</div>
+      <div class="min">{{ min }}</div>
+    </div>
+    <div *ngFor="let column of data" class="col">
+      <div class="value">
+        <div
+          class="column"
+          [ngStyle]="{ height: column.h }"
+          [style.background-color]="color"
+        >
+          {{ column.value }}
+        </div>
+      </div>
+      <div class="x" [style.color]="color">{{ column.label }}</div>
+    </div>
+  </div>
+</div>
