@@ -30,13 +30,16 @@ export class AddressService {
     return await Address.findOne(id);
   }
 
-  async update(addressDto: AddressDto): Promise<Address> {
-    const current = await Address.findOne(addressDto.id);
+  async update(addressDto: AddressDto, id: any): Promise<Address> {
+    const current = await Address.findOne(id);
+
+    console.log('updating address', addressDto, id);
 
     if (!current) {
       throw new NotFoundException('Address not found');
     }
 
+    console.log(current, addressDto);
     Address.merge(current, addressDto);
 
     try {

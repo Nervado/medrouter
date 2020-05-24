@@ -79,7 +79,7 @@ export class User extends BaseEntity {
   @JoinColumn()
   avatar: Avatar;
 
-  @OneToOne(() => Address, { eager: true, onUpdate: 'CASCADE' })
+  @OneToOne(() => Address, { eager: true, onUpdate: 'CASCADE', nullable: true })
   @JoinColumn()
   address: Address;
 

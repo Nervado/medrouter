@@ -1,11 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
-import {
-  FormsModule,
-  ReactiveFormsModule,
-  SelectMultipleControlValueAccessor,
-} from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { InputComponent } from "./components/input/input.component";
@@ -21,8 +17,10 @@ import { WrapperComponentComponent } from "./components/wrapper-component/wrappe
 import { LoadingComponent } from "./components/loading/loading.component";
 import { RadioComponent } from "./components/radio/radio.component";
 import { MultSelectorDropDrownComponent } from "./components/mult-selector-drop-drown/mult-selector-drop-drown.component";
-//import { SearchEmployeesComponent } from "./components/search-employees/search-employees.component";
-//import { ManagersActionsModalComponent } from "./components/managers-actions-modal/managers-actions-modal.component";
+import { CelMaskDirective } from "./directives/cel-mask.directive";
+import { CurrencyMaskModule } from "ng2-currency-mask";
+import { CpfMaskDirective } from "./directives/cpf-mask.directive";
+import { CepMaskDirective } from "./directives/cep-mask.directive";
 
 @NgModule({
   declarations: [
@@ -39,8 +37,9 @@ import { MultSelectorDropDrownComponent } from "./components/mult-selector-drop-
     LoadingComponent,
     RadioComponent,
     MultSelectorDropDrownComponent,
-    // ManagersActionsModalComponent,
-    // SearchEmployeesComponent,
+    CelMaskDirective,
+    CpfMaskDirective,
+    CepMaskDirective,
   ],
   imports: [
     CommonModule,
@@ -49,6 +48,7 @@ import { MultSelectorDropDrownComponent } from "./components/mult-selector-drop-
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    CurrencyMaskModule,
   ],
   exports: [
     InputComponent,
@@ -68,8 +68,10 @@ import { MultSelectorDropDrownComponent } from "./components/mult-selector-drop-
     LoadingComponent,
     RadioComponent,
     MultSelectorDropDrownComponent,
-    //SearchEmployeesComponent,
-    //ManagersActionsModalComponent,
+    CelMaskDirective,
+    CurrencyMaskModule,
+    CpfMaskDirective,
+    CepMaskDirective,
   ],
 })
 export class SharedModule {}

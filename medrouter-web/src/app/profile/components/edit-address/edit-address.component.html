@@ -138,6 +138,9 @@
               autocomplete="off"
               class="in in-medium"
               id="cep"
+              appCepMask
+              maxlength="9"
+              (change)="getCep(addressForm.value.cep)"
             />
             <div
               class="d-flex mx-2 flex-column justify-content-center align-items-center"

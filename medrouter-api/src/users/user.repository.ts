@@ -112,15 +112,17 @@ export class UserRepository extends Repository<User> {
     address?: Address,
   ): Promise<User> {
     const user = await this.findOne(id);
-
-    user.address = address;
-
+    if (user.address === null) {
+      user.address = address;
+    }
+    //user.address = address;
     this.merge(user, updateUserDto);
 
     try {
       return await user.save();
     } catch (error) {
       if (error.code === '23505') {
+        console.log(error);
         throw new ConflictException('User already exists');
       } else {
         throw new InternalServerErrorException('Uknow error here!');

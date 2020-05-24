@@ -61,6 +61,8 @@ export class UsersService {
     userUpdateDto: UserUpdateDto,
     logged?: User,
   ): Promise<User> {
+    console.log(id);
+
     if (logged.userId !== id && logged.role.length === 1) {
       //Uncommnent after tests
       //throw new UnauthorizedException('Not authorized');
@@ -80,7 +82,10 @@ export class UsersService {
     // no address or has address
     if (nXorNull(user.address, userUpdateDto.address)) {
       if (user.address !== null) {
-        const address = await this.addressService.update(userUpdateDto.address);
+        const address = await this.addressService.update(
+          userUpdateDto.address,
+          user.address.id,
+        );
         return await this.userRepository.updateOne(id, userUpdateDto, address);
       }
 
@@ -172,7 +177,16 @@ export class UsersService {
 
   async setRole(id: number, role: string): Promise<User> {
     const user = await this.userRepository.findOne({ userId: id });
-    user.role = [Role[role.toUpperCase()]];
+
+    if (role === Role.CLIENT) {
+      user.role = user.role.filter(role => role !== Role.USER);
+      user.role = [...user.role, Role.CLIENT];
+    }
+
+    if (role !== Role.CLIENT) {
+      user.role = [...user.role, Role.CLIENT];
+    }
+
     try {
       return await this.userRepository.save(user);
     } catch (error) {

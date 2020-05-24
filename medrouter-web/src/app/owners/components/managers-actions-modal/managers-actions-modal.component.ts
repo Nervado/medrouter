@@ -46,14 +46,16 @@ export class ManagersActionsModalComponent implements OnInit {
         Validators.minLength(6),
       ]),
       type: this.fb.control("", [Validators.required]),
-      salary: this.fb.control("", [
+      salary: this.fb.control("2455787", [
         Validators.required,
-        Validators.pattern(/^[a-zA-Z0-9]+$/),
+        //Validators.pattern(/^[a-zA-Z0-9]+$/),
       ]),
       include: this.fb.control("", [Validators.required]),
     });
   }
-
+  teste(e) {
+    console.log(e);
+  }
   open(_content?) {
     const content = _content ? _content : this.elementRef;
 

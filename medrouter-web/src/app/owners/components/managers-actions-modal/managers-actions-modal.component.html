@@ -92,6 +92,13 @@
               class="in cursor"
               formControlName="salary"
               style="border: 2px solid var(--admin); color: var(--admin);"
+              currencyMask
+              [options]="{
+                prefix: 'R$ ',
+                thousands: '.',
+                decimal: ',',
+                align: 'left'
+              }"
             />
 
             <div
@@ -111,8 +118,6 @@
             placeholder="Senha"
             autocomplete="off"
             class="in in-admin"
-            ng-model="money"
-            ui-money-mask
             style="border: 2px solid var(--admin); color: var(--admin);"
           />
           <div

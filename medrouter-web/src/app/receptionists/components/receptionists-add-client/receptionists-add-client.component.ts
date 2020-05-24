@@ -27,7 +27,6 @@ export class ReceptionistsAddClientComponent implements OnInit {
   faPhone = faPhone;
   faAddressCard = faAddressCard;
   mainColor: Colors = Colors.RECEPT;
-
   examForm: FormGroup;
 
   constructor(private fb: FormBuilder) {}
@@ -40,8 +39,19 @@ export class ReceptionistsAddClientComponent implements OnInit {
       username: this.fb.control("", [Validators.required]),
       surname: this.fb.control("", [Validators.required]),
       email: this.fb.control("", [Validators.required, Validators.email]),
-      cpf: this.fb.control("", [Validators.required]),
-      phoneNumber: this.fb.control("", [Validators.required]),
+      cpf: this.fb.control("", [
+        Validators.required,
+        Validators.maxLength(14),
+        Validators.pattern(/(\d{3})\.(\d{3})\.(\d{3})-(\d{2})/g),
+      ]),
+      phoneNumber: this.fb.control("", [
+        Validators.required,
+        Validators.maxLength(15),
+        Validators.pattern(/(\(\d{2}\)\s)9(\d{4})-\d{4}/g),
+      ]),
     });
+  }
+  send() {
+    console.log(this.signUpForm.value);
   }
 }
