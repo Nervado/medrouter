@@ -1,4 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Input,
+  Type,
+} from "@angular/core";
 import {
   faSearch,
   faFilter,
@@ -28,6 +35,8 @@ import { Colors } from "src/app/messages/toast/enums/colors";
 import { ActivatedRoute } from "@angular/router";
 import { TypeActions } from "./enums/actions-type";
 import { OwnersService } from "../../owners.service";
+import { ActionForm } from "./dtos/form-dto";
+import { type } from "os";
 
 @Component({
   selector: "app-search-employees",
@@ -123,18 +132,36 @@ export class SearchEmployeesComponent implements OnInit {
     });
   }
 
-  confirm(event) {
+  confirm(event: ActionForm) {
     console.log(event);
+
+    if (event.type === TypeActions.EXCLUDE) {
+      this.usersService.delete(this.profile.userId).subscribe({
+        next: () =>
+          this.ns.notify({
+            message: "Usuário excluído",
+            type: Types.WARN,
+          }),
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao tentar excluir usuário",
+            type: Types.ERROR,
+          }),
+      });
+    }
 
     if (event.type === TypeActions.INCLUDE) {
       this.os
-        .create({
-          salary: parseFloat(event.salary),
-          user: {
-            email: this.profile.email,
+        .create(
+          {
+            salary: event.salary,
+            user: {
+              email: this.profile.email,
+            },
+            specialty: ["Clinica_medica"],
           },
-          specialty: ["Clinica_medica"],
-        })
+          event.include
+        )
         .subscribe({
           next: () =>
             this.ns.notify({

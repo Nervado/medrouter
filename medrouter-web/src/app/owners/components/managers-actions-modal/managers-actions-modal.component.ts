@@ -50,7 +50,7 @@ export class ManagersActionsModalComponent implements OnInit {
         Validators.required,
         //Validators.pattern(/^[a-zA-Z0-9]+$/),
       ]),
-      include: this.fb.control("", [Validators.required]),
+      include: this.fb.control(""),
     });
   }
   teste(e) {

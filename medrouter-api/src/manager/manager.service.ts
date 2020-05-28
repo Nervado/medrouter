@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  BadRequestException,
+} from '@nestjs/common';
 import { ServiceInterface } from '../utils/service.interface';
 import { Manager } from './models/manager.entity';
 import { ManagerDto } from './dto/manager.dto';
@@ -26,9 +30,13 @@ export class ManagerService
 
   async createOne(body: ManagerDto): Promise<Manager> {
     const user = await this.usersService.findOne(body.user.email);
-    user.admin = true;
-    user.role = [Role.ADMIN, Role.CLIENT];
-    return this.managerRepository.createOne(body, user);
+
+    if (user.role.find(rol => rol === Role.ADMIN)) {
+      throw new BadRequestException('Manager already exists!');
+    }
+
+    user.role = [...user.role, Role.ADMIN];
+    return await this.managerRepository.createOne(body, user);
   }
 
   async updateOne(id: number, body: ManagerDto): Promise<Manager> {

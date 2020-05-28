@@ -42,3 +42,184 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 - [ ] Notification
 - [ ] Exam
 - [ ] Appointment
+
+# Define all actions
+
+# Owners
+
+- Incluir
+
+[X] Médico
+[X] Owner
+[X] Adm
+
+- Excluir
+
+[ ] Soft Delete Usuário
+
+- List Users
+
+[X] By Page
+[ ] By Name
+[ ] By Filters
+
+- Owners dashboard
+
+[ ] List
+[ ] Search By Name
+[ ] Change Salary  
+[ ] Dismiss
+
+- Adm Dashboard
+
+[ ] List
+[ ] Search By Name
+[ ] Change Salary  
+[ ] Dismiss
+
+- Doctors Dashboard
+
+[ ] List
+[ ] Search by name
+[ ] Change Salary
+[ ] Dismiss
+[ ] Change Specialty
+
+- Dashboard info
+
+  [ ] General Info graph
+
+# ADMINS
+
+- Search
+
+[ ] Search Users
+
+[ ] Search by name
+
+[ ] Search by filters
+
+[ ] Search Lab User
+
+- Incluir
+
+[X] Recept
+
+- Excluir
+
+[ ] Recept
+
+- Recept
+
+[ ] List Recept
+[ ] Search by name
+[ ] View Profile
+[ ] Change Salary
+[ ] Dismis
+
+- Lab
+
+[ ] List
+[ ] Search by Name
+[ ] Add User
+[ ] Remove User
+[ ] List Users
+[ ] Remove Lab
+[ ] Add Lab
+
+# LAB
+
+[ ] Add Exam
+[ ] Add Result
+[ ] Remove Result
+[ ] Cancel Exam
+[ ] Release Exam
+
+[ ] List Exams
+[ ] Search Exams by UserName
+
+# Doctor
+
+## New Prescriptions
+
+[ ] Search Medicine
+[ ] Create Prescription
+[ ] Add Exam
+[ ] Remove Exam
+[ ] Add Medicine
+[ ] Remove Medicine
+
+## Exams
+
+[ ] Download results
+[ ] Release Exams
+[ ] Cancel Exams
+
+## Prescriptions
+
+[ ] List
+[ ] Search by Name
+
+## Appointments
+
+[ ] List by Date
+[ ] Add new Prescription
+[ ] Cancel
+
+## Schedule
+
+[ ] Create Schedule
+[ ] List Schedule by Week
+[ ] List Schedule by Date
+[ ] Remove Schedule
+
+# Recept
+
+## Clients
+
+[ ] Add Client
+
+## Verify
+
+[ ] List Clients
+[ ] Add ID document
+[ ] Confirm Client
+
+## Appointments
+
+[ ] List by Week
+[ ] List by Date
+[ ] Search by Doctor Name
+[ ] Confirm Appointment
+[ ] Reeschedule
+[ ] Cancel
+
+## Eschedules
+
+[ ] List Schedules by Week
+[ ] List Schedules by Date
+[ ] Search Schedules by Name
+[ ] Create Appoinment
+
+# Client
+
+## Dashboard
+
+[ ] Data graph
+[ ] List appoinments
+[ ] List Notifications
+[ ] List Doctors
+[ ] Search Doctor by Name
+[ ] Create Appointment
+
+## Exams
+
+[ ] List Exams
+[ ] Search Exam by doctor name
+[ ] Download Exame Result
+
+## History
+
+[ ] List Prescreptions
+[ ] Donwload Prescriptions
+[ ] Search prescription by doctor name

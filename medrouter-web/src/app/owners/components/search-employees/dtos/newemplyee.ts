@@ -1,7 +1,7 @@
-export class NewDoctorDto {
+export class NewEmployee {
   salary: number;
   user: {
     email: string;
   };
-  specialty: string[];
+  specialty?: string[];
 }

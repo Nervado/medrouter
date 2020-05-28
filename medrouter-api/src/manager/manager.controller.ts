@@ -21,7 +21,7 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { PageFilterDto } from 'src/users/dto/page-filter.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Controller('manager')
+@Controller('managers')
 export class ManagerController {
   constructor(private managerService: ManagerService) {}
 

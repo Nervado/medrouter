@@ -66,9 +66,7 @@ export class EditprofileComponent implements OnInit {
       options: this.fb.control(this.profile?.options, [Validators.required]),
       username: this.fb.control(this.profile?.username, [Validators.required]),
       surname: this.fb.control(this.profile?.surname, [Validators.required]),
-      cpf: this.fb.control({ value: this.profile?.cpf, disabled: true }, [
-        Validators.required,
-      ]),
+      cpf: this.fb.control(this.profile?.cpf, [Validators.required]),
       email: this.fb.control({ value: this.profile?.email, disabled: true }, [
         Validators.required,
       ]),

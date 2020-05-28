@@ -28,10 +28,11 @@ export class DoctorsService extends Service<
   }
   public async create(body: DoctorDto): Promise<Doctor> {
     const user = await this.usersService.findOne(body.user.email);
-    if (user.doctor) {
+
+    if (user.role.find(rol => rol === Role.DOCTOR)) {
       throw new BadRequestException('Doctor already exists!');
     }
-    user.doctor = true;
+
     user.role = [...user.role, Role.DOCTOR];
     return await this.createOne(body, user);
   }

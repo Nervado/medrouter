@@ -2,7 +2,8 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { MEDROUTER_API } from "../api/app.api";
-import { NewDoctorDto } from "./components/search-employees/dtos/newdoctor";
+import { NewEmployee } from "./components/search-employees/dtos/newemplyee";
+import { IncludeRule } from "./components/search-employees/enums/actions-type";
 
 @Injectable({
   providedIn: "root",
@@ -10,11 +11,9 @@ import { NewDoctorDto } from "./components/search-employees/dtos/newdoctor";
 export class OwnersService {
   constructor(private h: HttpClient) {}
 
-  create(doctor: NewDoctorDto): Observable<any> {
-    console.log(doctor);
-
-    return this.h.post<any>(`${MEDROUTER_API}/doctors`, {
-      ...doctor,
+  create(employee: NewEmployee, include: IncludeRule): Observable<any> {
+    return this.h.post<any>(`${MEDROUTER_API}/${include}`, {
+      ...employee,
     });
   }
 }
