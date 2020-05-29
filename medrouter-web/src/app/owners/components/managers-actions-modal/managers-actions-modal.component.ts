@@ -40,14 +40,15 @@ export class ManagersActionsModalComponent implements OnInit {
   @Output() signOut: EventEmitter<any> = new EventEmitter();
 
   ngOnInit(): void {
+    console.log(this.profile);
+
     this.actionsForm = this.fb.group({
       password: this.fb.control("", [
         Validators.required,
         Validators.minLength(6),
       ]),
       type: this.fb.control("", [Validators.required]),
-      salary: this.fb.control("2455787", [
-        Validators.required,
+      salary: this.fb.control("", [
         //Validators.pattern(/^[a-zA-Z0-9]+$/),
       ]),
       include: this.fb.control(""),
@@ -72,6 +73,8 @@ export class ManagersActionsModalComponent implements OnInit {
             });
           }
           if (!this.actionsForm.valid) {
+            console.log(this.actionsForm.invalid);
+
             this.ns.notify({
               message: "O formulário contém erros",
               type: Types.WARN,

@@ -31,11 +31,13 @@ export class AddressService {
   }
 
   async update(addressDto: AddressDto, id: any): Promise<Address> {
-    const current = await Address.findOne(id);
+    const current = await this.addressRepo.findOne({ where: { id } });
 
     console.log('updating address', addressDto, id);
 
     if (!current) {
+      console.log(current);
+
       throw new NotFoundException('Address not found');
     }
 

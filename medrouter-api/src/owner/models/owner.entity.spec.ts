@@ -1,7 +1,7 @@
-import { OwnerEntity } from './owner.entity';
+import { Owner } from './owner.entity';
 
-describe('OwnerEntity', () => {
+describe('Owner', () => {
   it('should be defined', () => {
-    expect(new OwnerEntity()).toBeDefined();
+    expect(new Owner()).toBeDefined();
   });
 });

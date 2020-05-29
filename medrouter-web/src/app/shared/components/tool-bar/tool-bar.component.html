@@ -12,7 +12,7 @@
 
     <div class="tool-bar-menu d-flex flex-column align-items-center">
       <div class="my-3" *ngFor="let icon of menuIcons">
-        <a [routerLink]="icon.path">
+        <a [routerLink]="icon['path']">
           <fa-icon [icon]="icon.icon" class="fa-lg"></fa-icon>
         </a>
       </div>

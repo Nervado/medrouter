@@ -153,14 +153,27 @@ export class UsersService {
   }
 
   async deleteOne(id: number, user: User): Promise<any> {
+    const usertoBeDeleted = await this.userRepository.findOne({
+      where: { userId: id },
+    });
     console.log(user);
     if (id !== user.userId && !user.admin && !user.owner) {
       throw new UnauthorizedException('User has not privillegs to exec');
     }
 
-    await this.avatarsService.delete(user.avatar.avatarId, user);
+    if (usertoBeDeleted.address !== null) {
+      await this.avatarsService.delete(
+        usertoBeDeleted.avatar.avatarId,
+        usertoBeDeleted,
+      );
+    }
 
-    await this.addressService.delete(user.address.id, user);
+    if (usertoBeDeleted.avatar !== null) {
+      await this.addressService.delete(
+        usertoBeDeleted.address.id,
+        usertoBeDeleted,
+      );
+    }
 
     return this.userRepository.softDelete({ userId: id });
   }

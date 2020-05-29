@@ -15,12 +15,10 @@ import {
   faArrowRight,
   faChevronLeft,
   faChevronRight,
-  faThumbsDown,
   faStar,
   faCog,
   faLocationArrow,
   faMapMarkerAlt,
-  faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { UsersService } from "src/app/profile/users.service";
@@ -30,13 +28,11 @@ import { NotificationService } from "src/app/messages/notification.service";
 import { Types } from "src/app/messages/toast/enums/types";
 import { Role } from "src/app/auth/enums/roles-types";
 import { RolesIcons } from "./enums/roles-icons";
-import { ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { ActivatedRoute } from "@angular/router";
 import { TypeActions } from "./enums/actions-type";
 import { OwnersService } from "../../owners.service";
 import { ActionForm } from "./dtos/form-dto";
-import { type } from "os";
 
 @Component({
   selector: "app-search-employees",
