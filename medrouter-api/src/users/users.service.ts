@@ -21,6 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AuthPasswordChange } from '../auth/dto/auth-password-change.dto';
 import { AvatarsService } from 'src/avatars/avatars.service';
 import { nXorNull } from 'src/utils/logic';
+import { NameFilterDto } from './dto/name-filter.dto';
 
 @Injectable()
 export class UsersService {
@@ -36,6 +37,10 @@ export class UsersService {
     private addressService: AddressService,
     private avatarsService: AvatarsService,
   ) {}
+
+  async find(nameFilterDto: NameFilterDto): Promise<User[]> {
+    return this.userRepository.searchByName(nameFilterDto);
+  }
 
   async index(pageFilterDto: PageFilterDto) {
     return this.userRepository.index(pageFilterDto);
@@ -161,14 +166,14 @@ export class UsersService {
       throw new UnauthorizedException('User has not privillegs to exec');
     }
 
-    if (usertoBeDeleted.address !== null) {
+    if (usertoBeDeleted.avatar !== null) {
       await this.avatarsService.delete(
         usertoBeDeleted.avatar.avatarId,
         usertoBeDeleted,
       );
     }
 
-    if (usertoBeDeleted.avatar !== null) {
+    if (usertoBeDeleted.address !== null) {
       await this.addressService.delete(
         usertoBeDeleted.address.id,
         usertoBeDeleted,

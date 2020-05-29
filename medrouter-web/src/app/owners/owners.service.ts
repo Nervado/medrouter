@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { MEDROUTER_API } from "../api/app.api";
 import { NewEmployee } from "./components/search-employees/dtos/newemplyee";
 import { IncludeRule } from "./components/search-employees/enums/actions-type";
+import { User } from "../auth/models/user.model";
 
 @Injectable({
   providedIn: "root",

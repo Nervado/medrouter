@@ -110,8 +110,21 @@ export class SearchEmployeesComponent implements OnInit {
     }
   }
 
-  search() {
-    this.getUsers(1);
+  search(name: string) {
+    console.log(name);
+
+    this.usersService.searchByName(name).subscribe({
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao buscar usuários",
+          type: Types.ERROR,
+        }),
+      next: (users: Profile[]) => {
+        this.users = users;
+      },
+    });
+
+    //this.getUsers(1);
   }
 
   getUsers(page: number) {

@@ -25,6 +25,7 @@ import { Allow } from '../auth/decorators/alow.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles-auth.guard';
 import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
+import { NameFilterDto } from './dto/name-filter.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('users')
@@ -42,6 +43,16 @@ export class UsersController {
   ): Promise<User[]> {
     console.log('logged User', user);
     return this.usersService.index(pageFilterDto);
+  }
+
+  @Get('/search')
+  @Roles('client')
+  @UseInterceptors(ClassSerializerInterceptor)
+  getUserByName(
+    @Query(ValidationPipe) nameFilterDto: NameFilterDto,
+    @GetUser() user: User,
+  ): Promise<User[]> {
+    return this.usersService.find(nameFilterDto);
   }
 
   @Get('/:id')

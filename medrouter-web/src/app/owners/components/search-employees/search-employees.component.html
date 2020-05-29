@@ -27,6 +27,7 @@
         [style.background-color]="mainColor"
       >
         <input
+          #sch
           type="text"
           class="search-input"
           placeholder="Digite o nome da pessoa"
@@ -36,7 +37,7 @@
           [icon]="faSearch"
           size="1x"
           class="mx-3"
-          (click)="search()"
+          (click)="search(sch.value)"
         ></fa-icon>
         <fa-icon
           [icon]="faFilter"

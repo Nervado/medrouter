@@ -69,8 +69,12 @@ export class UsersService {
   }
 
   search(page: number): Observable<Array<Profile>> {
-    console.log(page);
-
     return this.http.get<Array<Profile>>(`${MEDROUTER_API}/users?page=${page}`);
+  }
+
+  searchByName(username: string): Observable<Array<Profile>> {
+    return this.http.get<Array<Profile>>(
+      `${MEDROUTER_API}/users/search?username=${username}`
+    );
   }
 }
