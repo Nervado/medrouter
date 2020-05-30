@@ -22,118 +22,116 @@
     class="wrapper-component d-flex flex-column justify-content-center align-items-center"
   >
     <div class="w-100 h-100">
-      <div
-        class="profile d-flex justify-content-center align-items-center text-oposity mt-3"
-        [style.background-color]="mainColor"
-      >
-        <input
-          #sch
-          type="text"
-          class="search-input"
-          placeholder="Digite o nome da pessoa"
-        />
+      <form [formGroup]="searchForm">
+        <div
+          class="profile d-flex justify-content-center align-items-center text-oposity mt-3"
+          [style.background-color]="mainColor"
+        >
+          <input
+            #sch
+            type="text"
+            class="search-input"
+            placeholder="Digite o nome da pessoa"
+            formControlName="username"
+          />
 
-        <fa-icon
-          [icon]="faSearch"
-          size="1x"
-          class="mx-3"
-          (click)="search(sch.value)"
-        ></fa-icon>
-        <fa-icon
-          [icon]="faFilter"
-          size="1x"
-          class="mx-3"
-          (click)="showFilters()"
-        ></fa-icon>
-      </div>
-
-      <form
-        [formGroup]="searchForm"
-        *ngIf="showFilter"
-        class="text-oposity mt-1 filters w-100"
-        [style.background-color]="mainColor"
-      >
-        <div class="search-filter-type p-2">
-          <label for="sex" class="mr-2">Gênero</label>
-          <app-input-container
-            class="in-container"
-            [tick]="false"
-            [mainColor]="mainColor"
-          >
-            <select
-              id="cars"
-              name="sex"
-              aria-placeholder="Gênero"
-              class="in in-admin cursor"
-              formControlName="sex"
-            >
-              <option value="Masculino">Masculino</option>
-              <option value="Feminino">Feminimo</option>
-              <option value="Indefinido">Indefinido</option>
-              <option value="Outros">Outros</option>
-            </select>
-
-            <div
-              class="d-flex mx-2 flex-column justify-content-center align-items-center"
-            >
-              <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
-            </div>
-          </app-input-container>
+          <fa-icon
+            [icon]="faSearch"
+            size="1x"
+            class="mx-3"
+            (click)="search()"
+          ></fa-icon>
+          <fa-icon
+            [icon]="faFilter"
+            size="1x"
+            class="mx-3"
+            (click)="showFilters()"
+          ></fa-icon>
         </div>
-        <div class="search-filter-type p-2">
-          <label for="role" class="mr-2">Categoria</label>
-          <app-input-container
-            class="in-container"
-            [tick]="false"
-            [mainColor]="mainColor"
-          >
-            <select
-              id="role"
-              name="role"
-              aria-placeholder="Role"
-              class="in in-admin cursor"
-              formControlName="role"
+        <div
+          class="text-oposity mt-1 filters w-100"
+          [style.background-color]="mainColor"
+        >
+          <div class="search-filter-type p-2" *ngIf="showFilter">
+            <label for="sex" class="mr-2">Gênero</label>
+            <app-input-container
+              class="in-container"
+              [tick]="false"
+              [mainColor]="mainColor"
             >
-              <option value="doctor">Médico</option>
-              <option value="client">Paciente</option>
-              <option value="recept">Recepcionista</option>
-              <option value="lab">Laboratório</option>
-            </select>
+              <select
+                id="cars"
+                name="sex"
+                aria-placeholder="Gênero"
+                class="in in-admin cursor"
+                formControlName="sex"
+              >
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminimo</option>
+                <option value="Indefinido">Indefinido</option>
+                <option value="Outros">Outros</option>
+              </select>
 
-            <div
-              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              <div
+                class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              >
+                <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
+              </div>
+            </app-input-container>
+          </div>
+          <div class="search-filter-type p-2" *ngIf="showFilter">
+            <label for="role" class="mr-2">Categoria</label>
+            <app-input-container
+              class="in-container"
+              [tick]="false"
+              [mainColor]="mainColor"
             >
-              <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
-            </div>
-          </app-input-container>
-        </div>
+              <select
+                id="role"
+                name="role"
+                aria-placeholder="Role"
+                class="in in-admin cursor"
+                formControlName="role"
+              >
+                <option value="doctor">Médico</option>
+                <option value="client">Paciente</option>
+                <option value="recept">Recepcionista</option>
+                <option value="lab">Laboratório</option>
+              </select>
 
-        <div class="search-filter-type p-2">
-          <label for="hired" class="mr-2">Situação</label>
-          <app-input-container
-            class="in-container"
-            [mainColor]="mainColor"
-            [tick]="false"
-          >
-            <select
-              id="hired"
-              name="hired"
-              aria-placeholder="Situação"
-              class="in in-admin cursor"
-              formControlName="hired"
-            >
-              <option value="available">Disponível</option>
-              <option value="hired">Contratado</option>
-              <option value="dismis">Dispensado</option>
-              <option value="rehired">Readmitido</option>
-            </select>
+              <div
+                class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              >
+                <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
+              </div>
+            </app-input-container>
+          </div>
 
-            <div
-              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+          <div class="search-filter-type p-2" *ngIf="showFilter">
+            <label for="hired" class="mr-2">Situação</label>
+            <app-input-container
+              class="in-container"
+              [mainColor]="mainColor"
+              [tick]="false"
             >
-              <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
-            </div>
-          </app-input-container>
+              <select
+                id="hired"
+                name="hired"
+                aria-placeholder="Situação"
+                class="in in-admin cursor"
+                formControlName="ishired"
+              >
+                <option value="true">Contratado</option>
+                <option value="false">Dispensado</option>
+              </select>
+
+              <div
+                class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              >
+                <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
+              </div>
+            </app-input-container>
+          </div>
         </div>
       </form>
       <div class="d-flex flex-column aling-items-center justify-content-center">
@@ -143,13 +141,13 @@
             <fa-icon
               [icon]="faArrowLeft"
               class="mr-2"
-              (click)="pageDown(sch.value)"
+              (click)="pageDown()"
             ></fa-icon>
             <span>Página {{ page }}</span>
             <fa-icon
               [icon]="faArrowRight"
               class="ml-2"
-              (click)="pageUp(sch.value)"
+              (click)="pageUp()"
             ></fa-icon>
           </div>
         </div>

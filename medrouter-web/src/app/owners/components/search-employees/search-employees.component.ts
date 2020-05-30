@@ -82,7 +82,8 @@ export class SearchEmployeesComponent implements OnInit {
     this.searchForm = this.fb.group({
       sex: this.fb.control(""),
       role: this.fb.control(""),
-      hired: this.fb.control(""),
+      ishired: this.fb.control(""),
+      username: this.fb.control(""),
     });
 
     this.ar.data.subscribe((data) => (this.mainColor = data.mainColor));
@@ -99,19 +100,19 @@ export class SearchEmployeesComponent implements OnInit {
       this.searchForm.patchValue({
         sex: "",
         role: "",
-        hired: "",
+        ishired: "",
       });
     }
   }
 
-  pageUp(value: string) {
-    if (value === "") {
+  pageUp() {
+    if (this.searchForm.value.username === "") {
       this.page += 1;
       this.getUsers(this.page);
     }
   }
-  pageDown(value: string) {
-    if (value === "") {
+  pageDown() {
+    if (this.searchForm.value.username === "") {
       if (this.page === 1) {
         this.page = 1;
       } else {
@@ -121,11 +122,13 @@ export class SearchEmployeesComponent implements OnInit {
     }
   }
 
-  search(name: string) {
-    console.log(name);
+  search() {
+    this.page = 1;
+    console.log({ ...this.searchForm.value, page: this.page });
 
-    if (name !== "") {
-      this.usersService.searchByName(name).subscribe({
+    this.usersService
+      .searchByName({ ...this.searchForm.value, page: this.page })
+      .subscribe({
         error: () =>
           this.ns.notify({
             message: "Falha ao buscar usuários",
@@ -135,9 +138,6 @@ export class SearchEmployeesComponent implements OnInit {
           this.users = users;
         },
       });
-    } else {
-      this.getUsers(1);
-    }
   }
 
   getUsers(page: number) {

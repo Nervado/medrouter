@@ -39,7 +39,7 @@ export class UsersService {
     private avatarsService: AvatarsService,
   ) {}
 
-  async find(searchFilterDto: SearchFilterDto): Promise<User[]> {
+  async find(searchFilterDto: any): Promise<User[]> {
     return this.userRepository.searchByName(searchFilterDto);
   }
 

@@ -1,18 +1,24 @@
 import { Sex } from '../enuns/sex.enum';
-import { IsEnum, IsOptional, IsString, IsNumberString } from 'class-validator';
+import {
+  IsEnum,
+  IsOptional,
+  IsString,
+  IsNumber,
+  IsNumberString,
+} from 'class-validator';
 import { Role } from 'src/auth/enums/role.enum';
 
 export class SearchFilterDto {
   @IsOptional()
-  @IsEnum(Sex)
+  @IsEnum(Sex, { each: true })
   sex: Sex;
 
-  @IsString()
   @IsOptional()
+  @IsString()
   username: string;
 
   @IsOptional()
-  @IsEnum(Role)
+  @IsEnum(Role, { each: true })
   role: Role;
 
   @IsOptional()
@@ -20,5 +26,5 @@ export class SearchFilterDto {
   page: number;
 
   @IsOptional()
-  ishired: boolean;
+  ishired?: boolean;
 }

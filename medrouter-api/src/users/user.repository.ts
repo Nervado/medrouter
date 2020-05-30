@@ -95,13 +95,40 @@ export class UserRepository extends Repository<User> {
     return bcrypt.hash(password, salt);
   }
 
-  async searchByName(searchFilterDto: SearchFilterDto): Promise<User[]> {
-    console.log('procurando por', searchFilterDto.username);
-    const name = searchFilterDto.username;
-    const users = await this.find({
-      where: `username ILIKE '%${name}%'`,
-      take: 10,
-    });
+  async searchByName(searchFilterDto: any): Promise<User[]> {
+    const { page, username, sex, role, ishired } = searchFilterDto;
+
+    const pageNumber: number = page ? page * 10 - 10 : 0;
+
+    console.log(searchFilterDto);
+
+    const query = this.createQueryBuilder('user');
+
+    if (username) {
+      query.andWhere(`username ILIKE '%${username}%'`);
+    }
+
+    if (sex) {
+      query.andWhere('sex = :sex', { sex });
+    }
+
+    if (role) {
+      // query.andWhere('role @> ARRAY[:role]', { role });
+    }
+
+    const users = await query
+      .leftJoinAndSelect('user.avatar', 'avatar')
+      .leftJoinAndSelect('user.address', 'address')
+      .skip(pageNumber)
+      .take(10)
+      .getMany();
+
+    //const name = searchFilterDto.username;
+
+    //const users = await this.find({
+    // where: `username ILIKE '%${name}%'`,
+    //take: 10,
+    //});
     return users;
   }
 

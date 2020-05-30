@@ -7,6 +7,7 @@ import { tap } from "rxjs/operators";
 
 import { Avatar } from "./models/avatar.dto";
 import { AuthService } from "../auth/auth.service";
+import { SearchFilterDto } from "../owners/components/search-employees/dtos/search-filter.dto";
 
 @Injectable({
   providedIn: "root",
@@ -72,9 +73,14 @@ export class UsersService {
     return this.http.get<Array<Profile>>(`${MEDROUTER_API}/users?page=${page}`);
   }
 
-  searchByName(username: string): Observable<Array<Profile>> {
+  searchByName(search: SearchFilterDto): Observable<Array<Profile>> {
+    let query = search.username ? `&username=${search.username}` : "";
+    query = search.sex ? `${query}&sex=${search.sex}` : query;
+    query = search.role ? `${query}&role=${search.role}` : query;
+    query = search.ishired ? `${query}&ishired=${search.ishired}` : query;
+
     return this.http.get<Array<Profile>>(
-      `${MEDROUTER_API}/users/search?username=${username}`
+      `${MEDROUTER_API}/users/search?page=${search.page}${query}`
     );
   }
 }

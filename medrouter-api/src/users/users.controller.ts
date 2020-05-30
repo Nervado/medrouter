@@ -51,9 +51,9 @@ export class UsersController {
   @UseInterceptors(ClassSerializerInterceptor)
   getUserByName(
     @Query(ValidationPipe) searchFilterDto: SearchFilterDto,
-
-    @GetUser() user: User,
   ): Promise<User[]> {
+    console.log(searchFilterDto);
+
     return this.usersService.find(searchFilterDto);
   }
 
