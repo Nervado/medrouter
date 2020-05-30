@@ -56,7 +56,7 @@ export class SearchEmployeesComponent implements OnInit {
 
   page: number = 1;
 
-  showFilter: boolean = true;
+  showFilter: boolean = false;
   searchForm: FormGroup;
 
   users: Array<Profile> = [];
@@ -94,37 +94,50 @@ export class SearchEmployeesComponent implements OnInit {
 
   showFilters() {
     this.showFilter = !this.showFilter;
+
+    if (this.showFilter === false) {
+      this.searchForm.patchValue({
+        sex: "",
+        role: "",
+        hired: "",
+      });
+    }
   }
 
-  pageUp() {
-    this.page += 1;
-    this.getUsers(this.page);
-    console.log(this.page);
-  }
-  pageDown() {
-    if (this.page === 1) {
-      this.page = 1;
-    } else {
-      this.page -= 1;
+  pageUp(value: string) {
+    if (value === "") {
+      this.page += 1;
       this.getUsers(this.page);
+    }
+  }
+  pageDown(value: string) {
+    if (value === "") {
+      if (this.page === 1) {
+        this.page = 1;
+      } else {
+        this.page -= 1;
+        this.getUsers(this.page);
+      }
     }
   }
 
   search(name: string) {
     console.log(name);
 
-    this.usersService.searchByName(name).subscribe({
-      error: () =>
-        this.ns.notify({
-          message: "Falha ao buscar usuários",
-          type: Types.ERROR,
-        }),
-      next: (users: Profile[]) => {
-        this.users = users;
-      },
-    });
-
-    //this.getUsers(1);
+    if (name !== "") {
+      this.usersService.searchByName(name).subscribe({
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao buscar usuários",
+            type: Types.ERROR,
+          }),
+        next: (users: Profile[]) => {
+          this.users = users;
+        },
+      });
+    } else {
+      this.getUsers(1);
+    }
   }
 
   getUsers(page: number) {

@@ -21,7 +21,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { AuthPasswordChange } from '../auth/dto/auth-password-change.dto';
 import { AvatarsService } from 'src/avatars/avatars.service';
 import { nXorNull } from 'src/utils/logic';
-import { NameFilterDto } from './dto/name-filter.dto';
+
+import { SearchFilterDto } from './dto/search-filter.dto';
 
 @Injectable()
 export class UsersService {
@@ -38,8 +39,8 @@ export class UsersService {
     private avatarsService: AvatarsService,
   ) {}
 
-  async find(nameFilterDto: NameFilterDto): Promise<User[]> {
-    return this.userRepository.searchByName(nameFilterDto);
+  async find(searchFilterDto: SearchFilterDto): Promise<User[]> {
+    return this.userRepository.searchByName(searchFilterDto);
   }
 
   async index(pageFilterDto: PageFilterDto) {

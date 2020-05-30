@@ -12,7 +12,7 @@ import { UserUpdateDto } from './dto/user-update.dto';
 import { Address } from 'src/address/models/address.entity';
 import { Role } from 'src/auth/enums/role.enum';
 import { AuthPasswordChange } from 'src/auth/dto/auth-password-change.dto';
-import { NameFilterDto } from './dto/name-filter.dto';
+import { SearchFilterDto } from './dto/search-filter.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -95,16 +95,13 @@ export class UserRepository extends Repository<User> {
     return bcrypt.hash(password, salt);
   }
 
-  async searchByName(nameFilterDto: NameFilterDto): Promise<User[]> {
-    console.log('procurando por', nameFilterDto.username);
-
-    const users = await this.createQueryBuilder('user')
-      .where('user.username like :name', {
-        name: '%' + nameFilterDto.username + '%',
-      })
-      .leftJoinAndSelect('user.avatar', 'avatar')
-      .leftJoinAndSelect('user.address', 'address')
-      .getMany();
+  async searchByName(searchFilterDto: SearchFilterDto): Promise<User[]> {
+    console.log('procurando por', searchFilterDto.username);
+    const name = searchFilterDto.username;
+    const users = await this.find({
+      where: `username ILIKE '%${name}%'`,
+      take: 10,
+    });
     return users;
   }
 

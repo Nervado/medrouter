@@ -25,7 +25,8 @@ import { Allow } from '../auth/decorators/alow.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles-auth.guard';
 import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
-import { NameFilterDto } from './dto/name-filter.dto';
+
+import { SearchFilterDto } from './dto/search-filter.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('users')
@@ -49,10 +50,11 @@ export class UsersController {
   @Roles('client')
   @UseInterceptors(ClassSerializerInterceptor)
   getUserByName(
-    @Query(ValidationPipe) nameFilterDto: NameFilterDto,
+    @Query(ValidationPipe) searchFilterDto: SearchFilterDto,
+
     @GetUser() user: User,
   ): Promise<User[]> {
-    return this.usersService.find(nameFilterDto);
+    return this.usersService.find(searchFilterDto);
   }
 
   @Get('/:id')

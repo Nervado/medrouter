@@ -143,13 +143,13 @@
             <fa-icon
               [icon]="faArrowLeft"
               class="mr-2"
-              (click)="pageDown()"
+              (click)="pageDown(sch.value)"
             ></fa-icon>
             <span>Página {{ page }}</span>
             <fa-icon
               [icon]="faArrowRight"
               class="ml-2"
-              (click)="pageUp()"
+              (click)="pageUp(sch.value)"
             ></fa-icon>
           </div>
         </div>
