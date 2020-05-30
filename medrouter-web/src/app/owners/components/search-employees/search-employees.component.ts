@@ -87,10 +87,22 @@ export class SearchEmployeesComponent implements OnInit {
     });
 
     this.ar.data.subscribe((data) => (this.mainColor = data.mainColor));
+    this.find(1);
+  }
 
-    // test
-    this.page = 1;
-    this.getUsers(this.page);
+  find(page: number) {
+    this.usersService
+      .searchByName({ ...this.searchForm.value, page })
+      .subscribe({
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao buscar usuários",
+            type: Types.ERROR,
+          }),
+        next: (users: Profile[]) => {
+          this.users = users;
+        },
+      });
   }
 
   showFilters() {
@@ -106,52 +118,20 @@ export class SearchEmployeesComponent implements OnInit {
   }
 
   pageUp() {
-    if (this.searchForm.value.username === "") {
-      this.page += 1;
-      this.getUsers(this.page);
-    }
+    this.page += 1;
+    this.find(this.page);
   }
   pageDown() {
-    if (this.searchForm.value.username === "") {
-      if (this.page === 1) {
-        this.page = 1;
-      } else {
-        this.page -= 1;
-        this.getUsers(this.page);
-      }
+    if (this.page === 1) {
+      this.page = 1;
+    } else {
+      this.page -= 1;
+      this.find(this.page);
     }
   }
 
   search() {
-    this.page = 1;
-    console.log({ ...this.searchForm.value, page: this.page });
-
-    this.usersService
-      .searchByName({ ...this.searchForm.value, page: this.page })
-      .subscribe({
-        error: () =>
-          this.ns.notify({
-            message: "Falha ao buscar usuários",
-            type: Types.ERROR,
-          }),
-        next: (users: Profile[]) => {
-          this.users = users;
-        },
-      });
-  }
-
-  getUsers(page: number) {
-    this.usersService.search(page).subscribe({
-      next: (Users) => {
-        this.users = Users;
-        console.log(this.users);
-      },
-      error: () =>
-        this.ns.notify({
-          message: "Falha ao obter usários",
-          type: Types.ERROR,
-        }),
-    });
+    this.find(1);
   }
 
   confirm(event: ActionForm) {

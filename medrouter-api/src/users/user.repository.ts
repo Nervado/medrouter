@@ -100,8 +100,6 @@ export class UserRepository extends Repository<User> {
 
     const pageNumber: number = page ? page * 10 - 10 : 0;
 
-    console.log(searchFilterDto);
-
     const query = this.createQueryBuilder('user');
 
     if (username) {
@@ -113,7 +111,7 @@ export class UserRepository extends Repository<User> {
     }
 
     if (role) {
-      // query.andWhere('role @> ARRAY[:role]', { role });
+      query.andWhere('role @> (:role)', { role: [role] });
     }
 
     const users = await query
@@ -123,12 +121,6 @@ export class UserRepository extends Repository<User> {
       .take(10)
       .getMany();
 
-    //const name = searchFilterDto.username;
-
-    //const users = await this.find({
-    // where: `username ILIKE '%${name}%'`,
-    //take: 10,
-    //});
     return users;
   }
 
