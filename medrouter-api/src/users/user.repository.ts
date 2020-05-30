@@ -96,24 +96,20 @@ export class UserRepository extends Repository<User> {
   }
 
   async searchByName(searchFilterDto: any): Promise<User[]> {
-    const { page, username, sex, role, ishired } = searchFilterDto;
+    const { page, username, sex, role } = searchFilterDto;
 
     const pageNumber: number = page ? page * 10 - 10 : 0;
 
     const query = this.createQueryBuilder('user');
-
     if (username) {
       query.andWhere(`username ILIKE '%${username}%'`);
     }
-
     if (sex) {
       query.andWhere('sex = :sex', { sex });
     }
-
     if (role) {
       query.andWhere('role @> (:role)', { role: [role] });
     }
-
     const users = await query
       .leftJoinAndSelect('user.avatar', 'avatar')
       .leftJoinAndSelect('user.address', 'address')

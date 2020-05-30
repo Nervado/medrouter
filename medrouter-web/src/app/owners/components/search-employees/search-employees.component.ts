@@ -135,8 +135,6 @@ export class SearchEmployeesComponent implements OnInit {
   }
 
   confirm(event: ActionForm) {
-    console.log(event);
-
     if (event.type === TypeActions.EXCLUDE) {
       this.usersService.delete(this.profile.userId).subscribe({
         next: () =>
@@ -185,6 +183,5 @@ export class SearchEmployeesComponent implements OnInit {
   showModalActions(modal: any, profile: Profile) {
     this.profile = profile;
     modal.open();
-    console.log(profile);
   }
 }
