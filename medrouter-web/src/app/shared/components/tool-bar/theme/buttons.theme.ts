@@ -51,7 +51,7 @@ export const Buttons = {
   owner: [
     { icon: faChartBar, path: "../owners/dashboard" },
     { icon: faUserMd, path: "../owners/doctors" },
-    { icon: faUsersCog, path: "../owners/managers" },
+    { icon: faUserCog, path: "../owners/managers" },
     { icon: faCrown, path: "../owners/owners" },
     { icon: faSearch, path: "../owners/search" },
   ],
@@ -73,7 +73,7 @@ export const Buttons = {
     { icon: faClock, path: "../doctors/schedule" },
     { icon: faCalendarPlus, path: "../doctors/create-schedule" },
   ],
-  admin: [
+  manager: [
     // { icon: faChartBar, path: "../managers/dashboard" },
     { icon: faFlask, path: "../managers/labs" },
     { icon: faConciergeBell, path: "../managers/receptionists" },

@@ -28,7 +28,7 @@ export class UserSnippetMenuComponent implements OnInit {
   timer: any;
   roles: Role[] = [];
 
-  @Input() mainColor: Colors = Colors.BASE;
+  @Input() mainColor: Colors = Colors.MANAGER;
   @Input() user: UserLogged = null;
 
   hoverStyle: string = "hover-base : true";

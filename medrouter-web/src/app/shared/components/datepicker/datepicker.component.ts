@@ -3,8 +3,6 @@ import {
   OnInit,
   Injectable,
   Input,
-  Output,
-  EventEmitter,
   forwardRef,
 } from "@angular/core";
 
@@ -18,16 +16,11 @@ import {
   faCalendarAlt,
   faCheck,
   faTimes,
-  faThumbsDown,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Data } from "./models/datepicker.model";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-
-import { setDateModel } from "../../../utils/setDateModel";
-import { adjustDate } from "../../../utils/setdate";
-import { compileNgModule } from "@angular/compiler";
 
 const I18N_VALUES = {
   br: {
@@ -132,8 +125,6 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
 
   @Input() btColor: Colors = Colors.OPOSITY1;
   @Input() tick: boolean = false;
-  //@Output() date: EventEmitter<Data> = new EventEmitter();
-  //@Input() old: Date;
 
   value: any;
 
@@ -174,7 +165,7 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
   setValue(value: any) {
     const newdate = new Date(value.year, value.month, value.day, 0, 0, 0);
     this.value = newdate;
-    console.log(this.value);
+
     this.onChange(this.value);
   }
 

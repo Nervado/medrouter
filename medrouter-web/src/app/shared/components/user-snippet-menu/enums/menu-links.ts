@@ -18,9 +18,10 @@ export const MenuLinks = {
     path: ["profile", "user.userId"],
     label: "Meu perfil",
   },
-  admin: {
+
+  manager: {
     icon: faUsersCog,
-    path: DefaultRoutes.admin,
+    path: DefaultRoutes.manager,
     label: "Administração",
   },
   client: {
