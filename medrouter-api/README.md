@@ -41,10 +41,10 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 - Doctors Dashboard
 
 [X] List
-[ ] Search by name
+[X] Search by name
 [X] Change Salary
-[ ] Dismiss
-[ ] Change Specialty
+[X] Dismiss
+[X] Change Specialty
 
 - Dashboard info
 

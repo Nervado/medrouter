@@ -21,6 +21,7 @@ import { CelMaskDirective } from "./directives/cel-mask.directive";
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { CpfMaskDirective } from "./directives/cpf-mask.directive";
 import { CepMaskDirective } from "./directives/cep-mask.directive";
+import { MultiListViewComponent } from "./components/multi-list-view/multi-list-view.component";
 @NgModule({
   declarations: [
     InputComponent,
@@ -39,6 +40,7 @@ import { CepMaskDirective } from "./directives/cep-mask.directive";
     CelMaskDirective,
     CpfMaskDirective,
     CepMaskDirective,
+    MultiListViewComponent,
   ],
   imports: [
     CommonModule,
@@ -71,6 +73,7 @@ import { CepMaskDirective } from "./directives/cep-mask.directive";
     CurrencyMaskModule,
     CpfMaskDirective,
     CepMaskDirective,
+    MultiListViewComponent,
   ],
 })
 export class SharedModule {}

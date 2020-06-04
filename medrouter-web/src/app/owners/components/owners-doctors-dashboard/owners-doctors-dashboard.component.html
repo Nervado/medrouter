@@ -80,7 +80,7 @@
             <ng-container *ngIf="doctor.edit && doctor.ishired; else editSM">
               <form [formGroup]="specialtyForm">
                 <app-mult-selector-drop-drown
-                  [width]="'220px'"
+                  [width]="'150px'"
                   [height]="'30px'"
                   [states]="medicalSp"
                   [mainColor]="mainColor"
@@ -89,9 +89,13 @@
               </form>
             </ng-container>
             <ng-template #editSM>
-              <div *ngFor="let sp of doctor.specialty">
-                {{ sp.replace("_", " ") }}
-              </div>
+              <app-multi-list-view
+                [tags]="doctor.specialty"
+                [mainColor]="mainColor"
+                [w]="'150px'"
+                [h]="'30px'"
+              >
+              </app-multi-list-view>
             </ng-template>
 
             <fa-icon

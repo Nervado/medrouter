@@ -11,6 +11,7 @@ import { Doctor } from './models/doctor.entity';
 import { User } from 'src/users/models/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { Role } from 'src/auth/enums/role.enum';
+import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
 @Injectable()
 export class DoctorsService extends Service<
   DoctorDto,
@@ -53,5 +54,9 @@ export class DoctorsService extends Service<
     } catch (error) {
       throw new InternalServerErrorException('Fail operation:delete');
     }
+  }
+
+  getAll(search: SearchFilterDto): Promise<Doctor[]> {
+    return this.repo.getAll(search);
   }
 }

@@ -22,6 +22,7 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
 import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
+import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('doctors')
@@ -35,10 +36,10 @@ export class DoctorsController {
   }
 
   @Get()
-  //@Roles('owner')
+  @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
-  getAll(@Query(ValidationPipe) page: IntFilterDto): Promise<Doctor[]> {
-    return this.doctorService.getMany(page.page);
+  getAll(@Query(ValidationPipe) search: SearchFilterDto): Promise<Doctor[]> {
+    return this.doctorService.getAll(search);
   }
 
   @Get('/:id')

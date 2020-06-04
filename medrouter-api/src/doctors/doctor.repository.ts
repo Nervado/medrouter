@@ -10,6 +10,7 @@ import { User } from 'src/users/models/user.entity';
 import { DoctorDto } from './dto/doctor.dto';
 import { RepositoryInterface } from '../utils/base-repository.interface';
 import { Role } from 'src/auth/enums/role.enum';
+import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
 
 @EntityRepository(Doctor)
 export class DoctorRepository extends Repository<Doctor>
@@ -46,6 +47,24 @@ export class DoctorRepository extends Repository<Doctor>
     }
   }
 
+  async getAll(search: SearchFilterDto): Promise<Doctor[]> {
+    const { page, username } = search;
+    const pageNumber = page * 10 - 10;
+    const query = this.createQueryBuilder('doctor');
+
+    if (username) {
+      query.andWhere(`username ILIKE '%${username}%'`);
+    }
+
+    const doctors = await query
+      .leftJoinAndSelect('doctor.user', 'user')
+      .leftJoinAndSelect('user.avatar', 'avatar')
+      .skip(pageNumber)
+      .take(10)
+      .getMany();
+
+    return doctors;
+  }
   async index(page: number): Promise<Doctor[]> {
     const pageNumber: number = page * 5 - 5;
     const doctors = await this.createQueryBuilder('doctor')
