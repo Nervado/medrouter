@@ -4,8 +4,9 @@
   class="list"
   [style.border-color]="mainColor"
 >
-  {{ tags[point] }}
-  <div>
+  <div class="sp">{{ tags[point] }}</div>
+
+  <div class="bts">
     <fa-icon
       (click)="up()"
       [icon]="faAngleUp"

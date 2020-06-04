@@ -1,21 +1,30 @@
 .list {
   border: 1px solid;
   border-radius: 4px;
-  margin-left: 5px;
-  padding: 4px;
-  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  div {
+  overflow: hidden;
+
+  .sp {
+    padding: 2px 4px;
     height: 100%;
+    display: flex;
+
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 10px;
+  }
+
+  .bts {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 4px;
     fa-icon {
-      font-size: 14px;
+      font-size: 12px;
     }
   }
 }

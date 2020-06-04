@@ -24,12 +24,14 @@ export class MultiListViewComponent implements OnInit {
   ngOnInit(): void {
     this.length = this.tags?.length;
     this.tags = this.tags?.map((value) =>
-      capitalizeAndRemoveUnderscores(value)
+      capitalizeAndRemoveUnderscores(value).replace('"', "").replace('"', "")
     );
+
+    console.log(this.tags);
   }
 
   up() {
-    if (this.point < this.length) this.point += 1;
+    if (this.point < this.length - 1) this.point += 1;
   }
 
   down() {
