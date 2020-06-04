@@ -1,0 +1,20 @@
+<div
+  [style.width]="w"
+  [style.height]="h"
+  class="list"
+  [style.border-color]="mainColor"
+>
+  {{ tags[point] }}
+  <div>
+    <fa-icon
+      (click)="up()"
+      [icon]="faAngleUp"
+      style="cursor: pointer;"
+    ></fa-icon>
+    <fa-icon
+      (click)="down()"
+      [icon]="faAngleDown"
+      style="cursor: pointer;"
+    ></fa-icon>
+  </div>
+</div>
