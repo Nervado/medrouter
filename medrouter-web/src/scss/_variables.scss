@@ -36,6 +36,7 @@ $lab: #69d188;
   --client: $client;
   --owner: $owner;
   --admin: $admin;
+  --manager: $admin;
   --user: $base;
   --profile: $profile;
   --recept: $recept;
@@ -64,6 +65,7 @@ $theme-colors: map-merge(
     "client": $client,
     "owner": $owner,
     "admin": $admin,
+    "manager": $admin,
     "user": $user,
     "recept": $recept,
     "lab": $lab,

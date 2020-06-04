@@ -53,11 +53,7 @@ export class UserRepository extends Repository<User> {
     user.email = email;
     user.phoneNumber = phoneNumber;
     user.surname = surname;
-    user.client = true;
-    user.admin = false;
-    user.recept = false;
-    user.doctor = false;
-    user.owner = true;
+
     user.role = [Role.USER];
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
@@ -96,7 +92,7 @@ export class UserRepository extends Repository<User> {
   }
 
   async searchByName(searchFilterDto: any): Promise<User[]> {
-    const { page, username, sex, role } = searchFilterDto;
+    const { page, username, sex, role, checked } = searchFilterDto;
 
     const pageNumber: number = page ? page * 10 - 10 : 0;
 
@@ -104,11 +100,17 @@ export class UserRepository extends Repository<User> {
     if (username) {
       query.andWhere(`username ILIKE '%${username}%'`);
     }
+
     if (sex) {
       query.andWhere('sex = :sex', { sex });
     }
+
     if (role) {
       query.andWhere('role @> (:role)', { role: [role] });
+    }
+
+    if (checked) {
+      query.andWhere('checked = :checked', { checked });
     }
     const users = await query
       .leftJoinAndSelect('user.avatar', 'avatar')

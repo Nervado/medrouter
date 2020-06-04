@@ -21,16 +21,20 @@ import {
   faUsers,
   faUserMd,
   faSave,
+  faChevronLeft,
+  faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { Doctor } from "src/app/clients/models/doctor";
-import { LabDto } from "src/app/managers/components/lab-remove-confirmation/dtos/lab.dto";
-import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
-import { ClientsService } from "src/app/clients/clients.service";
+
 import { Specialty } from "../../enums/specialtys";
 import { getArrayFromEnum } from "src/app/utils/getArrayFromEnum";
 import { MultiSelectOption } from "src/app/shared/components/mult-selector-drop-drown/models/options";
 import { Colors } from "src/app/messages/toast/enums/colors";
+import { EmployeeDto } from "../../dtos/employee-dto";
+import { OwnersService } from "../../owners.service";
+import { NotificationService } from "src/app/messages/notification.service";
+import { Role } from "src/app/auth/enums/roles-types";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
   selector: "app-owners-doctors-dashboard",
@@ -38,27 +42,10 @@ import { Colors } from "src/app/messages/toast/enums/colors";
   styleUrls: ["./owners-doctors-dashboard.component.scss"],
 })
 export class OwnersDoctorsDashboardComponent implements OnInit {
-  medicalSp: Array<any> = getArrayFromEnum(Specialty);
   faEllipsisH = faEllipsisH;
   faSearch = faSearch;
   faUser = faUser;
   faSave = faSave;
-
-  edit: boolean = false;
-
-  toogle() {
-    this.edit = !this.edit;
-  }
-
-  mainColor: Colors = Colors.OWNER;
-
-  searchForm: FormGroup;
-
-  searchResult: Array<Doctor> = [];
-
-  @ViewChild("content") elementRef: ElementRef;
-  @Output() signOut: EventEmitter<any> = new EventEmitter();
-
   faPlus = faPlus;
   faFlask = faFlask;
   faEdit = faEdit;
@@ -68,38 +55,28 @@ export class OwnersDoctorsDashboardComponent implements OnInit {
   faUserEdit = faUserEdit;
   faUsers = faUsers;
   faUserMd = faUserMd;
+  faChevronLeft = faChevronLeft;
+  faChevronRight = faChevronRight;
 
-  receptionist: ReceptionistDto = {
-    id: 1,
-    salary: 2000,
-    manager: null,
-    ishired: true,
-    hireddate: new Date(),
-    dissmisdate: null,
-    user: {
-      userId: 2,
-      username: "Maria",
-      cpf: "066591174-23",
-    },
-  };
+  medicalSp: Array<any> = getArrayFromEnum(Specialty);
+  isedit: boolean = false;
 
-  lab: LabDto = {
-    name: "labA+",
-    id: "757hg92ogw",
-    cnpj: "46588590606/47845",
-    exams: [ExamsEnum.ABDMO, ExamsEnum.HMGRA, ExamsEnum.ANTBI],
-    users: [
-      { userId: 1, username: "Jorge", addin: new Date() },
-      { userId: 2, username: "Lucas", addin: new Date() },
-      { userId: 3, username: "Pedro", addin: new Date() },
-      { userId: 4, username: "Agnelo", addin: new Date() },
-      { userId: 5, username: "Jose", addin: new Date() },
-    ],
-  };
+  page: number = 1;
+
+  mainColor: Colors = Colors.OWNER;
+
+  searchForm: FormGroup;
+
+  doctors: EmployeeDto[] = [];
+  employee: EmployeeDto;
+
+  @ViewChild("content") elementRef: ElementRef;
+  @Output() signOut: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private fb: FormBuilder,
-    private clientsService: ClientsService
+    private ownerService: OwnersService,
+    private ns: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -107,40 +84,87 @@ export class OwnersDoctorsDashboardComponent implements OnInit {
       search: this.fb.control(""),
     });
 
-    console.log(this.medicalSp);
+    this.find(this.page);
+  }
+
+  toogle() {
+    this.isedit = !this.isedit;
   }
 
   handleSearch() {
-    this.clientsService
-      .search(this.searchForm.value)
-      .subscribe((doctors) => (this.searchResult = doctors));
+    this.find(1);
   }
 
-  confirm(e) {
-    console.log(e);
-  }
-
-  openModal(modal?: any) {
+  remove(modal, employee: EmployeeDto) {
+    this.employee = employee;
     modal.open();
   }
 
-  removeEmployer(modal?: any, data?: any) {
-    //this.lab ;
+  edit(modal, employee: EmployeeDto) {
+    this.employee = employee;
     modal.open();
   }
 
-  remove(e) {
-    console.log(e);
+  pageUp() {
+    this.page += 1;
+    this.find(this.page);
   }
 
-  addUserLab(addUserLabModal?) {
-    addUserLabModal.open();
-  }
-  addUser(e) {
-    console.log(e);
+  pageDown() {
+    if (this.page === 1) {
+      this.page = 1;
+    } else {
+      this.page -= 1;
+      this.find(this.page);
+    }
   }
 
-  editDoctors(modal) {
-    modal.open();
+  find(page: number) {
+    this.ownerService
+      .get(page, Role.DOCTOR, this.searchForm.value.search)
+      .subscribe({
+        next: (doctors: EmployeeDto[]) => (this.doctors = doctors),
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao buscar usuários",
+            type: Types.ERROR,
+          }),
+      });
+  }
+
+  dismiss(event: any) {
+    this.ownerService.patchStatus(Role.DOCTOR, event.id, "dismiss").subscribe({
+      next: () => {
+        this.find(1);
+        this.ns.notify({
+          message: "Funcionário dispensado",
+          type: Types.WARN,
+        });
+      },
+    });
+  }
+
+  rehire(id: string) {
+    this.ownerService.patchStatus(Role.DOCTOR, id, "re-hired").subscribe({
+      next: () => {
+        this.find(1);
+        this.ns.notify({
+          message: "Funcionário recontratado",
+          type: Types.SUCCESS,
+        });
+      },
+    });
+  }
+
+  diff(event: any) {
+    this.ownerService.diff(Role.DOCTOR, event.id, event.diff).subscribe({
+      next: () => {
+        this.find(1);
+        this.ns.notify({
+          message: "Remenuração atualizada",
+          type: Types.SUCCESS,
+        });
+      },
+    });
   }
 }

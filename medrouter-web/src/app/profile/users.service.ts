@@ -77,7 +77,7 @@ export class UsersService {
     let query = search.username ? `&username=${search.username}` : "";
     query = search.sex ? `${query}&sex=${search.sex}` : query;
     query = search.role ? `${query}&role=${search.role}` : query;
-    query = search.ishired ? `${query}&ishired=${search.ishired}` : query;
+    query = search.checked ? `${query}&checked=${search.checked}` : query;
 
     return this.http.get<Array<Profile>>(
       `${MEDROUTER_API}/users/search?page=${search.page}${query}`

@@ -4,45 +4,6 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 
 # Todo List
 
-## Define all models
-
-- [x] Receptionist
-- [x] Lab
-- [x] Client
-- [x] Doctor
-- [x] Owner
-- [x] Manager
-- [x] Medicine
-- [x] Notification
-- [x] Exam
-- [x] Appointment
-
-## Define all services
-
-- [x] Receptionist
-- [ ] Lab
-- [ ] Client
-- [x] Doctor
-- [x] Owner
-- [x] Manager
-- [ ] Medicine
-- [ ] Notification
-- [ ] Exam
-- [ ] Appointment
-
-## Define all routes
-
-- [x] Receptionist
-- [ ] Lab
-- [ ] Client
-- [x] Doctor
-- [x] Owner
-- [x] Manager
-- [ ] Medicine
-- [ ] Notification
-- [ ] Exam
-- [ ] Appointment
-
 # Define all actions
 
 # Owners
@@ -55,33 +16,33 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 
 - Excluir
 
-[ ] Soft Delete Usuário
+[X] Soft Delete Usuário
 
 - List Users
 
 [X] By Page
-[ ] By Name
-[ ] By Filters
+[X] By Name
+[X] By Filters
 
 - Owners dashboard
 
-[ ] List
-[ ] Search By Name
-[ ] Change Salary  
-[ ] Dismiss
+[X] List
+[X] Search By Name
+[X] Change Salary  
+[X] Dismiss
 
 - Adm Dashboard
 
-[ ] List
-[ ] Search By Name
-[ ] Change Salary  
-[ ] Dismiss
+[X] List
+[X] Search By Name
+[X] Change Salary  
+[X] Dismiss
 
 - Doctors Dashboard
 
-[ ] List
+[X] List
 [ ] Search by name
-[ ] Change Salary
+[X] Change Salary
 [ ] Dismiss
 [ ] Change Specialty
 

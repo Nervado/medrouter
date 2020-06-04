@@ -49,7 +49,7 @@ export class AuthService {
             this.loginDto = login;
 
             User.user.role = [
-              Role.ADMIN,
+              Role.MANAGER,
               Role.CLIENT,
               Role.OWNER,
               Role.DOCTOR,

@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  EventEmitter,
-  ViewChild,
-  ElementRef,
-  Output,
-} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   faEllipsisH,
   faSearch,
@@ -19,14 +12,16 @@ import {
   faUserEdit,
   faUsers,
   faUserMd,
-  faUsersCog,
+  faChevronLeft,
+  faChevronRight,
+  faUserCog,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { Doctor } from "src/app/clients/models/doctor";
-import { ReceptionistDto } from "src/app/managers/components/managers-receptionists-dismiss-modal/dtos/receptionist-dto";
-import { LabDto } from "src/app/managers/components/lab-remove-confirmation/dtos/lab.dto";
-import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
-import { ClientsService } from "src/app/clients/clients.service";
+import { EmployeeDto } from "../../dtos/employee-dto";
+import { OwnersService } from "../../owners.service";
+import { Role } from "src/app/auth/enums/roles-types";
+import { NotificationService } from "src/app/messages/notification.service";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
   selector: "app-owners-managers-dasboard",
@@ -37,16 +32,6 @@ export class OwnersManagersDasboardComponent implements OnInit {
   faEllipsisH = faEllipsisH;
   faSearch = faSearch;
   faUser = faUser;
-
-  searchForm: FormGroup;
-
-  searchResult: Array<Doctor> = [];
-
-  @ViewChild("content") elementRef: ElementRef;
-  @Output() signOut: EventEmitter<any> = new EventEmitter();
-
-  faUsersCog = faUsersCog;
-
   faPlus = faPlus;
   faFlask = faFlask;
   faEdit = faEdit;
@@ -56,78 +41,105 @@ export class OwnersManagersDasboardComponent implements OnInit {
   faUserEdit = faUserEdit;
   faUsers = faUsers;
   faUserMd = faUserMd;
+  faUserCog = faUserCog;
+  faChevronLeft = faChevronLeft;
+  faChevronRight = faChevronRight;
 
-  receptionist: ReceptionistDto = {
-    id: 1,
-    salary: 2000,
-    manager: null,
-    ishired: true,
-    hireddate: new Date(),
-    dissmisdate: null,
-    user: {
-      userId: 2,
-      username: "Maria",
-      cpf: "066591174-23",
-    },
-  };
-
-  lab: LabDto = {
-    name: "labA+",
-    id: "757hg92ogw",
-    cnpj: "46588590606/47845",
-    exams: [ExamsEnum.ABDMO, ExamsEnum.HMGRA, ExamsEnum.ANTBI],
-    users: [
-      { userId: 1, username: "Jorge", addin: new Date() },
-      { userId: 2, username: "Lucas", addin: new Date() },
-      { userId: 3, username: "Pedro", addin: new Date() },
-      { userId: 4, username: "Agnelo", addin: new Date() },
-      { userId: 5, username: "Jose", addin: new Date() },
-    ],
-  };
+  searchForm: FormGroup;
+  managers: Array<EmployeeDto> = [];
+  employee: EmployeeDto;
+  page: number = 1;
 
   constructor(
     private fb: FormBuilder,
-    private clientsService: ClientsService
+    private ownerService: OwnersService,
+    private ns: NotificationService
   ) {}
 
   ngOnInit(): void {
     this.searchForm = this.fb.group({
       search: this.fb.control(""),
     });
+
+    this.find(this.page);
   }
 
   handleSearch() {
-    this.clientsService
-      .search(this.searchForm.value)
-      .subscribe((doctors) => (this.searchResult = doctors));
+    this.ownerService
+      .get(1, Role.MANAGER, this.searchForm.value.search)
+      .subscribe((managers) => (this.managers = managers));
   }
 
-  confirm(e) {
-    console.log(e);
-  }
-
-  openModal(modal?: any) {
+  remove(modal, employee: EmployeeDto) {
+    this.employee = employee;
     modal.open();
   }
 
-  removeEmployer(modal?: any, data?: any) {
-    //this.lab ;
+  edit(modal, employee: EmployeeDto) {
+    this.employee = employee;
     modal.open();
   }
 
-  remove(modal) {
-    modal.open();
+  pageUp() {
+    this.page += 1;
+    this.find(this.page);
   }
 
-  addUserLab(addUserLabModal?) {
-    addUserLabModal.open();
+  pageDown() {
+    if (this.page === 1) {
+      this.page = 1;
+    } else {
+      this.page -= 1;
+      this.find(this.page);
+    }
   }
 
-  addUser(e) {
-    console.log(e);
+  find(page: number) {
+    this.ownerService
+      .get(page, Role.MANAGER, this.searchForm.value.search)
+      .subscribe({
+        next: (managers: EmployeeDto[]) => (this.managers = managers),
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao buscar usuários",
+            type: Types.ERROR,
+          }),
+      });
   }
 
-  edit(modal) {
-    modal.open();
+  dismiss(event: any) {
+    this.ownerService.patchStatus(Role.MANAGER, event.id, "dismiss").subscribe({
+      next: () => {
+        this.find(1);
+        this.ns.notify({
+          message: "Funcionário dispensado",
+          type: Types.WARN,
+        });
+      },
+    });
+  }
+
+  rehire(id: string) {
+    this.ownerService.patchStatus(Role.MANAGER, id, "re-hired").subscribe({
+      next: () => {
+        this.find(1);
+        this.ns.notify({
+          message: "Funcionário recontratado",
+          type: Types.SUCCESS,
+        });
+      },
+    });
+  }
+
+  diff(event: any) {
+    this.ownerService.diff(Role.MANAGER, event.id, event.diff).subscribe({
+      next: () => {
+        this.find(1);
+        this.ns.notify({
+          message: "Remenuração atualizada",
+          type: Types.SUCCESS,
+        });
+      },
+    });
   }
 }

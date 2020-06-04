@@ -47,12 +47,20 @@
       border-bottom: 1px solid var(--owner);
       margin-bottom: 10px;
       padding: 0 5px;
+
+      div {
+        width: 200px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
     }
     .results {
       padding: 0 5px;
       border-radius: 4px;
       height: 500px;
-      overflow: scroll;
+      overflow-y: auto;
+      overflow-x: hidden;
       background-color: rgba(120, 120, 120, 0.05);
 
       .result {
@@ -60,6 +68,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        padding: 4px 4px;
+        border-radius: 4px;
+        background-color: var(--oposity);
 
         img {
           width: 40px;
@@ -69,6 +81,16 @@
           border: 1px solid var(--owner);
 
           margin-right: 10px;
+          object-fit: cover;
+        }
+
+        div {
+          width: 200px;
+          //background-color: yellowgreen;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          overflow: hidden;
         }
       }
     }
@@ -76,4 +98,12 @@
   .cursor {
     cursor: pointer;
   }
+}
+
+.active {
+  color: var(--base1);
+}
+
+.dismiss {
+  color: rgba(120, 120, 120, 0.2);
 }

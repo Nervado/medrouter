@@ -108,21 +108,21 @@
           </div>
 
           <div class="search-filter-type p-2" *ngIf="showFilter">
-            <label for="hired" class="mr-2">Situação</label>
+            <label for="checked" class="mr-2">Situação</label>
             <app-input-container
               class="in-container"
               [mainColor]="mainColor"
               [tick]="false"
             >
               <select
-                id="hired"
-                name="hired"
+                id="checked"
+                name="checked"
                 aria-placeholder="Situação"
                 class="in in-admin cursor"
-                formControlName="ishired"
+                formControlName="checked"
               >
-                <option value="true">Contratado</option>
-                <option value="false">Dispensado</option>
+                <option value="true">Verificado</option>
+                <option value="false">Não verificado</option>
               </select>
 
               <div
@@ -183,7 +183,7 @@
                       data-toggle="tooltip"
                       data-placement="top"
                       [title]="details[role].label"
-                      [style.color]="'var(--medium)'"
+                      [style.color]="details[role].color"
                     ></fa-icon>
                   </div>
                 </div>

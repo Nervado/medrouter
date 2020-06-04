@@ -19,6 +19,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { PageFilterDto } from 'src/users/dto/page-filter.dto';
+import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('managers')
@@ -36,9 +37,9 @@ export class ManagerController {
   @Roles('client')
   @UseInterceptors(ClassSerializerInterceptor)
   getAllManager(
-    @Query(ValidationPipe) page: PageFilterDto,
+    @Query(ValidationPipe) search: SearchFilterDto,
   ): Promise<Manager[]> {
-    return this.managerService.getMany(page.page);
+    return this.managerService.getAll(search);
   }
 
   @Get('/:id')

@@ -7,6 +7,7 @@ import {
   faUserCog,
   faFlask,
   faUser,
+  faCrown,
 } from "@fortawesome/free-solid-svg-icons";
 import { DefaultRoutes } from "src/app/auth/enums/default-routes";
 
@@ -29,13 +30,13 @@ export const RolesIcons = {
     icon: faHeartbeat,
     path: ["profile", "user.userId"],
     label: "Paciente",
-    color: Colors.CLIENT,
+    color: Colors.OPOSITY1,
   },
-  admin: {
-    icon: faUsersCog,
-    path: DefaultRoutes.admin,
+  manager: {
+    icon: faUserCog,
+    path: DefaultRoutes.manager,
     label: "Administração",
-    color: Colors.ADMIN,
+    color: "#1da15f",
   },
 
   doctor: {
@@ -51,7 +52,7 @@ export const RolesIcons = {
     color: Colors.RECEPT,
   },
   owner: {
-    icon: faUserCog,
+    icon: faCrown,
     path: DefaultRoutes.owner,
     label: "Diretoria",
     color: Colors.OWNER,

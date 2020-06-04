@@ -15,9 +15,9 @@
       border-radius: 4px;
       margin-right: 10px;
       padding: 10px;
-      color: var(--admin);
+      color: var(--owner);
       &::placeholder {
-        color: var(--admin);
+        color: var(--owner);
         opacity: 0.5;
       }
     }
@@ -43,7 +43,7 @@
 }
 
 .results-title {
-  color: var(--admin);
+  color: var(--owner);
   font-weight: bold;
   margin: 20px 0px 5px 0px;
   opacity: 0.4;
@@ -115,7 +115,7 @@
         display: flex;
         justify-content: flex-end;
         padding-right: 5px;
-        color: var(--admin);
+        color: var(--owner);
       }
       img {
         margin-top: 20px;
@@ -133,7 +133,7 @@
       justify-content: center;
 
       width: 100%;
-      color: var(--admin);
+      color: var(--owner);
       .info {
         padding: 5px 0;
       }
@@ -149,12 +149,12 @@
         text-align: center;
         font-size: 14px;
         color: var(--medium);
-        border-bottom: 1px solid var(--admin);
+        border-bottom: 1px solid var(--owner);
       }
     }
     .ratting {
       margin: 5px 0px;
-      color: var(--admin);
+      color: var(--owner);
       padding: 0 10px;
       display: flex;
     }
@@ -179,11 +179,11 @@
           background-color: var(--profile);
         }
 
-        border: 1px solid var(--admin);
-        color: var(--admin);
+        border: 1px solid var(--owner);
+        color: var(--owner);
 
         &:hover {
-          background-color: var(--admin);
+          background-color: var(--owner);
           border: 1px solid rgba(0, 0, 0, 0);
           color: var(--oposity);
         }
@@ -194,7 +194,7 @@
         border: 1px solid var(--medium);
 
         &:hover {
-          background-color: var(--admin);
+          background-color: var(--medium);
           border: 1px solid rgba(0, 0, 0, 0);
           color: var(--oposity);
         }

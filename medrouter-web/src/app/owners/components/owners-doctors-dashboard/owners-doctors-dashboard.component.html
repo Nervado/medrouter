@@ -1,14 +1,14 @@
 <app-owners-employee-edit-modal
-  #editDoctorModal
-  (signout)="remove($event)"
-  [receptionist]="receptionist"
+  #editModal
+  (signOut)="diff($event)"
+  [employee]="employee"
 >
 </app-owners-employee-edit-modal>
 
 <app-owners-employee-dismiss-modal
-  #removeEmpolyeModal
-  (signout)="remove($event)"
-  [receptionist]="receptionist"
+  #removeModal
+  (signOut)="dismiss($event)"
+  [employee]="employee"
 >
 </app-owners-employee-dismiss-modal>
 
@@ -20,7 +20,7 @@
         Equipe médica da clínica</label
       >
 
-      <div class="d-flex">
+      <div class="d-flex align-items-center">
         <input
           formControlName="search"
           type="text"
@@ -28,49 +28,63 @@
           autocomplete="off"
           class="text-owner"
         />
-        <div class="cursor text-owner">
+        <div
+          class="cursor text-owner d-flex align-items-center justify-content-between"
+        >
           <fa-icon [icon]="faSearch" (click)="handleSearch()"></fa-icon>
+          <fa-icon [icon]="faChevronLeft" (click)="pageDown()"></fa-icon>
+          <div class="ml-2">{{ page }}</div>
+          <fa-icon [icon]="faChevronRight" (click)="pageUp()"></fa-icon>
         </div>
       </div>
     </form>
 
     <div class="data">
       <div class="table-header text-owner">
-        <div>Funcionário</div>
+        <div class="d-flex justify-content-start">Funcionário</div>
         <div>Contratado em:</div>
         <div>
           Salário
+          <fa-icon [icon]="faCoins"> </fa-icon>
         </div>
-        <div>
-          Especialidades
-        </div>
+        <div>Especialidade</div>
         <div>Editar</div>
       </div>
 
       <div class="results">
-        <div class="result">
-          <div class="d-flex flex-start align-items-center text-base1">
-            <img src="../../../../assets/avatarmale.png" alt="avatar" />
-
-            <span>João da Silva</span>
+        <div
+          class="result active"
+          *ngFor="let doctor of doctors"
+          [ngClass]="{ dismiss: !doctor.ishired }"
+        >
+          <div class="d-flex justify-content-start align-items-center item">
+            <ng-container *ngIf="doctor.user.avatar?.url; else avatarTemplate">
+              <img [src]="doctor.user.avatar?.url" alt="avatar" />
+            </ng-container>
+            <ng-template #avatarTemplate>
+              <img src="../../../../assets/avatarmale.png" alt="avatar" />
+            </ng-template>
+            <span>{{ doctor.user.username }}</span>
           </div>
-          <div class="text-base1">
-            <fa-icon [icon]="faCalendarPlus"> </fa-icon>
-            23/02/2019
+
+          <div class="item">
+            <fa-icon [icon]="faCalendarPlus" class="mr-1"> </fa-icon>
+            {{ doctor.hireddate | date: "shortDate" }}
           </div>
 
-          <div class="text-base1">
-            <fa-icon [icon]="faCoins"> </fa-icon> R$ 2000,00
+          <div class="item">
+            {{ doctor.salary | currency: "BRL" }}
           </div>
 
-          <div class="text-base1">
+          <div class="d-flex align-items-center item">
             <fa-icon
               [icon]="faEdit"
               class="cursor text-medium"
               (click)="toogle()"
             ></fa-icon>
-            <fa-icon [icon]="faSave" class="ml-1 cursor text-success"></fa-icon>
-            <ng-container *ngIf="edit; else editSM">
+            <fa-icon [icon]="faSave" class="mx-1 cursor text-success"></fa-icon>
+
+            <ng-container *ngIf="isedit; else editSM">
               <app-mult-selector-drop-drown
                 [width]="'180px'"
                 [height]="'30px'"
@@ -79,26 +93,27 @@
               ></app-mult-selector-drop-drown>
             </ng-container>
             <ng-template #editSM>
-              Cardiologista, Obstetricia, Homeopatia
+              <div *ngFor="let sp of doctor.specialty">
+                {{ sp.replace("_", " ") }}
+              </div>
             </ng-template>
           </div>
-          <div class="actions">
-            <a [routerLink]="['/profile', 1]">
-              <fa-icon
-                [icon]="faUserEdit"
-                class="mr-2 cursor text-profile"
-              ></fa-icon
-            ></a>
-
+          <div class="actions item">
             <fa-icon
               [icon]="faEdit"
               class="mr-2 cursor text-medium"
-              (click)="editDoctors(editDoctorModal)"
+              (click)="edit(editModal, doctor)"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="Editar Salário"
             ></fa-icon>
             <fa-icon
               [icon]="faTimes"
               class="cursor text-oposity1"
-              (click)="removeEmployer(removeEmpolyeModal)"
+              (click)="remove(removeModal, doctor)"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="Dispensar"
             ></fa-icon>
           </div>
         </div>

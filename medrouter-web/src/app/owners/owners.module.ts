@@ -13,6 +13,7 @@ import { DonutChartComponent } from "./components/donut-chart/donut-chart.compon
 import { ClientBarChartComponent } from "./components/client-bar-chart/client-bar-chart.component";
 import { SearchEmployeesComponent } from "./components/search-employees/search-employees.component";
 import { ManagersActionsModalComponent } from "./components/managers-actions-modal/managers-actions-modal.component";
+//import { LOCALE_ID } from "@angular/core";
 
 @NgModule({
   declarations: [
@@ -29,5 +30,6 @@ import { ManagersActionsModalComponent } from "./components/managers-actions-mod
     ManagersActionsModalComponent,
   ],
   imports: [CommonModule, SharedModule, OwnersRoutingModule],
+  //providers: [{ provide: LOCALE_ID, useValue: "pt" }],
 })
 export class OwnersModule {}

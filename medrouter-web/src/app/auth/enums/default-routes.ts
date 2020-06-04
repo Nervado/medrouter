@@ -1,6 +1,6 @@
 export const DefaultRoutes = {
   user: "/",
-  admin: "/managers",
+  manager: "/managers",
   recept: "/receptionists",
   owner: "/owners",
   lab: "/laboratories",

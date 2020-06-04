@@ -48,24 +48,12 @@ export class User extends BaseEntity {
 
   @Column()
   email: string;
-
-  @Column()
-  admin: boolean; // manager
-
-  @Column()
-  recept: boolean; // receptionist
-
-  @Column()
-  doctor: boolean; // doctors
-
-  @Column()
-  client: boolean; //pacients
-
-  @Column()
-  owner: boolean; // owner
-
   @Column({ type: 'enum', enum: Role, default: [Role.CLIENT], array: true })
   role: Role[];
+
+  @Exclude()
+  @Column({ nullable: false, default: false })
+  checked: boolean;
 
   @Exclude()
   @Column()

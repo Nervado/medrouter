@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ManagerRepository } from './manager.repository';
 import { UsersService } from '../users/users.service';
 import { Role } from 'src/auth/enums/role.enum';
+import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
 
 @Injectable()
 export class ManagerService
@@ -24,6 +25,9 @@ export class ManagerService
     return this.managerRepository.index(page);
   }
 
+  async getAll(search: SearchFilterDto): Promise<Manager[]> {
+    return this.managerRepository.getAll(search);
+  }
   async getOne(id: number): Promise<Manager> {
     return this.managerRepository.findOne({ where: { id } });
   }
@@ -31,11 +35,11 @@ export class ManagerService
   async createOne(body: ManagerDto): Promise<Manager> {
     const user = await this.usersService.findOne(body.user.email);
 
-    if (user.role.find(rol => rol === Role.ADMIN)) {
+    if (user.role.find(rol => rol === Role.MANAGER)) {
       throw new BadRequestException('Manager already exists!');
     }
 
-    user.role = [...user.role, Role.ADMIN];
+    user.role = [...user.role, Role.MANAGER];
     return await this.managerRepository.createOne(body, user);
   }
 

@@ -82,7 +82,7 @@ export class SearchEmployeesComponent implements OnInit {
     this.searchForm = this.fb.group({
       sex: this.fb.control(""),
       role: this.fb.control(""),
-      ishired: this.fb.control(""),
+      checked: this.fb.control(""),
       username: this.fb.control(""),
     });
 

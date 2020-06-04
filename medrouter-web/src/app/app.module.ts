@@ -7,6 +7,13 @@ import { AppComponent } from "./app.component";
 import { MessagesModule } from "./messages/messages.module";
 import { AuthModule } from "./auth/auth.module";
 import { HomeModule } from "./home/home.module";
+
+import localeBr from "@angular/common/locales/pt";
+import localeBrExtra from "@angular/common/locales/extra/pt";
+import { registerLocaleData } from "@angular/common";
+
+registerLocaleData(localeBr, "pt", localeBrExtra);
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -18,7 +25,7 @@ import { HomeModule } from "./home/home.module";
     AuthModule.forRoot(), // import with providers
     MessagesModule.forRoot(), // import with providers
   ],
-  providers: [{ provide: LOCALE_ID, useValue: "pt-BR" }],
+  providers: [{ provide: LOCALE_ID, useValue: "pt" }],
 
   bootstrap: [AppComponent],
 })

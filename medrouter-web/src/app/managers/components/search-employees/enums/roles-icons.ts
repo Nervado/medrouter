@@ -31,11 +31,11 @@ export const RolesIcons = {
     label: "Paciente",
     color: Colors.CLIENT,
   },
-  admin: {
+  manager: {
     icon: faUsersCog,
-    path: DefaultRoutes.admin,
+    path: DefaultRoutes.manager,
     label: "Administração",
-    color: Colors.ADMIN,
+    color: "#1da15f", //Colors.ADMIN,
   },
 
   doctor: {

@@ -15,8 +15,8 @@
   <div class="modal-body">
     <p class="text-owner">
       Modificar salário do funcionário(a)
-      <strong>{{ receptionist.user.username }}</strong> <br />
-      CPF: <strong>{{ receptionist.user.cpf }}</strong>
+      <strong>{{ employee.user.username }}</strong> <br />
+      CPF: <strong>{{ employee.user.cpf }}</strong>
     </p>
 
     <form
@@ -24,18 +24,44 @@
       class="d-flex flex-column justify-content-center align-items-center"
     >
       <div>
-        <label for="Tipo" class="text-owner">Salário atual</label>
+        <label class="text-owner"
+          >Salário atual {{ employee.salary | currency: "BRL" }}</label
+        >
+
+        <input type="text" hidden formControlName="id" />
+        <input
+          type="text"
+          hidden
+          formControlName="diff"
+          currencyMask
+          [value]="sal - employee.salary"
+          [options]="{
+            prefix: 'R$ ',
+            thousands: '.',
+            decimal: ',',
+            align: 'left'
+          }"
+        />
+
         <app-input-container
           class="in-container my-4"
           [mainColor]="'var(--owner)'"
         >
           <input
-            id="salary"
+            #sal
             name="salary"
             aria-placeholder="salary"
             class="in in-medium cursor"
             formControlName="salary"
+            placeholder="Novo salário"
             style="border: 2px solid var(--owner); color: var(--owner);"
+            currencyMask
+            [options]="{
+              prefix: 'R$ ',
+              thousands: '.',
+              decimal: ',',
+              align: 'left'
+            }"
           />
 
           <div
@@ -46,7 +72,7 @@
         </app-input-container>
       </div>
       <div class="form-group text-owner">
-        <label for="password">Sua senha de owner</label>
+        <label for="password">Sua senha de admin</label>
         <app-input-container
           class="in-container my-2"
           [mainColor]="'var(--owner)'"

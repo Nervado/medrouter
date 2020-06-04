@@ -26,5 +26,5 @@ export class SearchFilterDto {
   page: number;
 
   @IsOptional()
-  ishired?: boolean;
+  checked?: boolean;
 }

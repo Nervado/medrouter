@@ -10,9 +10,8 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
   styleUrls: ["./managers-page.component.scss"],
 })
 export class ManagersPageComponent implements OnInit {
-  mainColor: Colors = Colors.ADMIN;
-
-  role: Role = Role.ADMIN;
+  mainColor: Colors = Colors.MANAGER;
+  role: Role = Role.MANAGER;
   faPlus = faPlus;
 
   constructor() {}

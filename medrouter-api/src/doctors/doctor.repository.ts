@@ -72,7 +72,7 @@ export class DoctorRepository extends Repository<Doctor>
 
     if (operation === 'status' && body === 're-hired' && !doctor.ishired) {
       doctor.ishired = true;
-      doctor.user.doctor = true; // update all privilleges
+      //doctor.user.doctor = true; // update all privilleges
       doctor.dismissdate = null;
       doctor.hireddate = new Date();
       doctor.user.role = [Role.DOCTOR, Role.CLIENT];
@@ -87,7 +87,7 @@ export class DoctorRepository extends Repository<Doctor>
     if (operation === 'status' && body === 'dismiss' && doctor.ishired) {
       doctor.ishired = false;
       doctor.salary = 0;
-      doctor.user.doctor = false; // remove all privilleges
+      //doctor.user.doctor = false; // remove all privilleges
       doctor.dismissdate = new Date();
       doctor.user.role = [Role.CLIENT];
 

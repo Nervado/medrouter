@@ -8,6 +8,7 @@ import { ManagerDto } from 'src/manager/dto/manager.dto';
 import { User } from 'src/users/models/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { Role } from 'src/auth/enums/role.enum';
+import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
 
 @Injectable()
 export class OwnerService extends Service<
@@ -34,5 +35,9 @@ export class OwnerService extends Service<
 
     user.role = [...user.role, Role.OWNER];
     return await this.createOne(body, user);
+  }
+
+  public async getAll(search: SearchFilterDto): Promise<Owner[]> {
+    return await this.repo.getAll(search);
   }
 }

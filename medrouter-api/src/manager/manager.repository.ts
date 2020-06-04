@@ -6,6 +6,8 @@ import {
 } from '@nestjs/common';
 
 import { Manager } from './models/manager.entity';
+import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
+import { Role } from 'src/auth/enums/role.enum';
 
 @EntityRepository(Manager)
 export class ManagerRepository extends Repository<Manager> {
@@ -36,6 +38,27 @@ export class ManagerRepository extends Repository<Manager> {
     }
   }
 
+  async getAll(search: SearchFilterDto): Promise<Manager[]> {
+    const { page, username } = search;
+
+    const pageNumber: number = page ? page * 10 - 10 : 0;
+
+    const query = this.createQueryBuilder('manager');
+
+    if (username) {
+      query.andWhere(`username ILIKE '%${username}%'`);
+    }
+
+    const owners = await query
+      .leftJoinAndSelect('manager.user', 'user')
+      .leftJoinAndSelect('user.avatar', 'avatar')
+      .skip(pageNumber)
+      .take(10)
+      .getMany();
+
+    return owners;
+  }
+
   async index(page: number): Promise<Manager[]> {
     const pageNumber: number = page * 5 - 5;
     const managers = await this.createQueryBuilder('manager')
@@ -53,12 +76,15 @@ export class ManagerRepository extends Repository<Manager> {
     const manager = await this.findOne({ id });
 
     if (operation === 'status' && body === 're-hired' && !manager.ishired) {
-      try {
-        manager.ishired = true;
-        manager.user.admin = true; // update all privilleges
-        manager.dismissdate = null;
-        manager.hireddate = new Date();
+      manager.ishired = true;
+      manager.dismissdate = null;
+      manager.hireddate = new Date();
 
+      if (!manager.user.role.find(role => role === Role.MANAGER)) {
+        manager.user.role = [...manager.user.role, Role.MANAGER];
+      }
+
+      try {
         return await this.save(manager);
       } catch (error) {
         throw new BadRequestException('Operation fail', operation);
@@ -66,11 +92,17 @@ export class ManagerRepository extends Repository<Manager> {
     }
 
     if (operation === 'status' && body === 'dismiss' && manager.ishired) {
+      manager.ishired = false;
+      manager.salary = 0;
+      manager.dismissdate = new Date();
+
+      if (manager.user.role.find(role => (role = Role.MANAGER))) {
+        manager.user.role = [
+          ...manager.user.role.filter(role => role !== Role.MANAGER),
+        ];
+      }
+
       try {
-        manager.ishired = false;
-        manager.salary = 0;
-        manager.user.admin = false;
-        manager.dismissdate = new Date();
         return await this.save(manager);
       } catch (error) {
         throw new BadRequestException('Operation fail', operation);
@@ -88,6 +120,14 @@ export class ManagerRepository extends Repository<Manager> {
         return await this.findOne(id);
       } catch (error) {
         throw new BadRequestException('Operation fail', operation);
+      }
+    }
+
+    if (operation !== 'diff' && operation !== 'status' && manager.ishired) {
+      try {
+        return await this.save(manager);
+      } catch (error) {
+        throw new BadRequestException('Operation fail', error);
       }
     }
   }

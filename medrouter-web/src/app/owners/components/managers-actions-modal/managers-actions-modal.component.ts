@@ -40,8 +40,6 @@ export class ManagersActionsModalComponent implements OnInit {
   @Output() signOut: EventEmitter<any> = new EventEmitter();
 
   ngOnInit(): void {
-    console.log(this.profile);
-
     this.actionsForm = this.fb.group({
       password: this.fb.control("", [
         Validators.required,
@@ -65,30 +63,33 @@ export class ManagersActionsModalComponent implements OnInit {
       .result.then(
         (result) => {
           this.closeResult = `Closed with: ${result}`;
-          if (this.as.loginDto === undefined) {
-            this.ns.notify({
-              message: "Realize um novo login para validar esta operação",
-              type: Types.WARN,
-              timer: 2000,
-            });
-          }
-          if (!this.actionsForm.valid) {
-            console.log(this.actionsForm.invalid);
 
-            this.ns.notify({
-              message: "O formulário contém erros",
-              type: Types.WARN,
-              timer: 2000,
-            });
-          }
-          console.log(this.actionsForm.value, result);
-          if (
-            result === "confirm" &&
-            this.actionsForm.value.password === this.as.loginDto.password &&
-            this.actionsForm.valid
-          ) {
-            this.signOut.emit(this.actionsForm.value);
-            this.modalService.dismissAll();
+          if (result === "confirm") {
+            if (this.as.loginDto === undefined) {
+              this.ns.notify({
+                message: "Realize um novo login para validar esta operação",
+                type: Types.WARN,
+                timer: 2000,
+              });
+            }
+            if (!this.actionsForm.valid) {
+              console.log(this.actionsForm.invalid);
+
+              this.ns.notify({
+                message: "O formulário contém erros",
+                type: Types.WARN,
+                timer: 2000,
+              });
+            }
+            console.log(this.actionsForm.value, result);
+            if (
+              this.actionsForm.value.password === this.as.loginDto.password &&
+              this.actionsForm.valid
+            ) {
+              this.signOut.emit(this.actionsForm.value);
+              this.modalService.dismissAll();
+            }
+            ``;
           }
         },
         (reason) => {

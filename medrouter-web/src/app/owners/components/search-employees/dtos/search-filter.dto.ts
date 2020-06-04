@@ -5,5 +5,5 @@ export class SearchFilterDto {
   username: string;
   role: Role;
   page: number;
-  ishired: boolean;
+  checked: boolean;
 }

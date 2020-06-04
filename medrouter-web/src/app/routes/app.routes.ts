@@ -27,7 +27,7 @@ export const ROUTES: Routes = [
       import("../doctors/doctors.module").then((m) => m.DoctorsModule),
     canLoad: [RoleGuard],
     canActivate: [RoleGuard],
-    data: { roles: [Role.DOCTOR] },
+    data: { roles: [Role.MANAGER] },
   },
 
   {
@@ -36,7 +36,7 @@ export const ROUTES: Routes = [
       import("../managers/managers.module").then((m) => m.ManagersModule),
     canLoad: [RoleGuard],
     canActivate: [RoleGuard],
-    data: { roles: [Role.ADMIN] },
+    data: { roles: [Role.MANAGER] },
   },
 
   {

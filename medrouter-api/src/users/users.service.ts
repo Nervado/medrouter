@@ -163,9 +163,10 @@ export class UsersService {
       where: { userId: id },
     });
     console.log(user);
-    if (id !== user.userId && !user.admin && !user.owner) {
-      throw new UnauthorizedException('User has not privillegs to exec');
-    }
+    //if (id !== user.userId && !user.admin && !user.owner) {
+    //throw new UnauthorizedException('User has not privillegs to exec');
+
+    //}
 
     if (usertoBeDeleted.avatar !== null) {
       await this.avatarsService.delete(

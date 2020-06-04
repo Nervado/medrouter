@@ -9,18 +9,39 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { Role } from 'src/auth/enums/role.enum';
+import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
 
 @EntityRepository(Owner)
 export class OwnerRepository extends Repository<Owner>
   implements RepositoryInterface<Owner, number, OwnerDto, User, string> {
   async index(page: number): Promise<Owner[]> {
-    const pageNumber: number = page * 5 - 5;
+    const pageNumber: number = page * 10 - 10;
     const owners = await this.createQueryBuilder('owner')
       .leftJoinAndSelect('owner.user', 'user')
-      .leftJoinAndSelect('user.address', 'address')
       .leftJoinAndSelect('user.avatar', 'avatar')
       .skip(pageNumber)
-      .take(5)
+      .take(10)
+      .getMany();
+
+    return owners;
+  }
+
+  async getAll(search: SearchFilterDto): Promise<Owner[]> {
+    const { page, username } = search;
+
+    const pageNumber: number = page ? page * 10 - 10 : 0;
+
+    const query = this.createQueryBuilder('owner');
+
+    if (username) {
+      query.andWhere(`username ILIKE '%${username}%'`);
+    }
+
+    const owners = await query
+      .leftJoinAndSelect('owner.user', 'user')
+      .leftJoinAndSelect('user.avatar', 'avatar')
+      .skip(pageNumber)
+      .take(10)
       .getMany();
 
     return owners;
@@ -61,10 +82,12 @@ export class OwnerRepository extends Repository<Owner>
 
     if (operation === 'status' && body === 're-hired' && !owner.ishired) {
       owner.ishired = true;
-      owner.user.owner = true; // update all privilleges
       owner.dismissdate = null;
       owner.hireddate = new Date();
-      owner.user.role = [Role.DOCTOR, Role.CLIENT];
+
+      if (!owner.user.role.find(role => role === Role.OWNER)) {
+        owner.user.role = [...owner.user.role, Role.OWNER];
+      }
 
       try {
         return await this.save(owner);
@@ -76,9 +99,13 @@ export class OwnerRepository extends Repository<Owner>
     if (operation === 'status' && body === 'dismiss' && owner.ishired) {
       owner.ishired = false;
       owner.salary = 0;
-      owner.user.owner = false; // remove all privilleges
       owner.dismissdate = new Date();
-      owner.user.role = [Role.CLIENT];
+
+      if (owner.user.role.find(role => (role = Role.OWNER))) {
+        owner.user.role = [
+          ...owner.user.role.filter(role => role !== Role.OWNER),
+        ];
+      }
 
       try {
         return await this.save(owner);

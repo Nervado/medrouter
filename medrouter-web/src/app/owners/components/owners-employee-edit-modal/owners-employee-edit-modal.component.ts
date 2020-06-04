@@ -14,13 +14,16 @@ import {
   faUserTie,
   faCoins,
 } from "@fortawesome/free-solid-svg-icons";
-import { ReceptionistDto } from "src/app/managers/components/managers-receptionists-dismiss-modal/dtos/receptionist-dto";
+
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { EmployeeDto } from "../../dtos/employee-dto";
+import { AuthService } from "src/app/auth/auth.service";
+import { NotificationService } from "src/app/messages/notification.service";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
   selector: "app-owners-employee-edit-modal",
   templateUrl: "./owners-employee-edit-modal.component.html",
-  styleUrls: ["./owners-employee-edit-modal.component.scss"],
 })
 export class OwnersEmployeeEditModalComponent implements OnInit {
   closeResult = "";
@@ -30,12 +33,17 @@ export class OwnersEmployeeEditModalComponent implements OnInit {
   faUserTie = faUserTie;
   faCoins = faCoins;
 
-  @Input() receptionist: ReceptionistDto;
+  @Input() employee: EmployeeDto;
 
   @ViewChild("content") elementRef: ElementRef;
   @Output() signOut: EventEmitter<any> = new EventEmitter();
 
-  constructor(private modalService: NgbModal, private fb: FormBuilder) {}
+  constructor(
+    private modalService: NgbModal,
+    private fb: FormBuilder,
+    private as: AuthService,
+    private ns: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.actionsForm = this.fb.group({
@@ -43,8 +51,9 @@ export class OwnersEmployeeEditModalComponent implements OnInit {
         Validators.required,
         Validators.minLength(6),
       ]),
-      id: this.fb.control(this.receptionist.id, [Validators.required]),
-      salary: this.fb.control(this.receptionist.salary, [Validators.required]),
+      id: this.fb.control(this.employee?.id, [Validators.required]),
+      salary: this.fb.control(this.employee?.salary, [Validators.required]),
+      diff: this.fb.control(this.employee?.salary, [Validators.required]),
     });
   }
 
@@ -56,13 +65,37 @@ export class OwnersEmployeeEditModalComponent implements OnInit {
       .result.then(
         (result) => {
           this.closeResult = `Closed with: ${result}`;
-          if (
-            result === "confirm" &&
-            this.actionsForm.value.password !== undefined
-          ) {
-            this.signOut.emit(this.actionsForm.value);
-          }
 
+          this.actionsForm.patchValue({
+            diff: this.actionsForm.value.salary - this.employee.salary,
+            id: this.employee.id,
+          });
+
+          if (result === "confirm") {
+            if (this.as.loginDto === undefined) {
+              this.ns.notify({
+                message: "Realize um novo login para validar esta operação",
+                type: Types.WARN,
+                timer: 2000,
+              });
+            }
+            if (!this.actionsForm.valid) {
+              this.ns.notify({
+                message: "O formulário contém campos vazios",
+                type: Types.WARN,
+                timer: 2000,
+              });
+            }
+
+            if (
+              this.actionsForm.value.password === this.as.loginDto.password &&
+              this.actionsForm.valid
+            ) {
+              this.signOut.emit(this.actionsForm.value);
+
+              this.modalService.dismissAll();
+            }
+          }
           this.actionsForm.reset();
         },
         (reason) => {

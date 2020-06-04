@@ -21,7 +21,6 @@ import { CelMaskDirective } from "./directives/cel-mask.directive";
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { CpfMaskDirective } from "./directives/cpf-mask.directive";
 import { CepMaskDirective } from "./directives/cep-mask.directive";
-
 @NgModule({
   declarations: [
     InputComponent,
