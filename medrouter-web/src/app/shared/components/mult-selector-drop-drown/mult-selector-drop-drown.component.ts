@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, Input } from "@angular/core";
+import { Component, OnInit, forwardRef, Input, OnDestroy } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import {
   faCheckSquare,
@@ -24,8 +24,8 @@ import { Colors } from "src/app/messages/toast/enums/colors";
   ],
 })
 export class MultSelectorDropDrownComponent
-  implements OnInit, ControlValueAccessor {
-  value: Array<any> = [];
+  implements OnInit, ControlValueAccessor, OnDestroy {
+  @Input() value: Array<any> = [];
   show: boolean = false;
   faCheckSquare = faCheckSquare;
   faSquare = faSquare;
@@ -126,5 +126,11 @@ export class MultSelectorDropDrownComponent
         return el;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.states = [];
   }
 }

@@ -45,7 +45,7 @@
         <div>Contratado em:</div>
         <div>
           Salário
-          <fa-icon [icon]="faCoins"> </fa-icon>
+          <fa-icon [icon]="faCoins" class="ml-1"> </fa-icon>
         </div>
         <div>Especialidade</div>
         <div>Editar</div>
@@ -76,45 +76,64 @@
             {{ doctor.salary | currency: "BRL" }}
           </div>
 
-          <div class="d-flex align-items-center item">
-            <fa-icon
-              [icon]="faEdit"
-              class="cursor text-medium"
-              (click)="toogle()"
-            ></fa-icon>
-            <fa-icon [icon]="faSave" class="mx-1 cursor text-success"></fa-icon>
-
-            <ng-container *ngIf="isedit; else editSM">
-              <app-mult-selector-drop-drown
-                [width]="'180px'"
-                [height]="'30px'"
-                [states]="medicalSp"
-                [mainColor]="mainColor"
-              ></app-mult-selector-drop-drown>
+          <div class="d-flex align-items-center sp">
+            <ng-container *ngIf="doctor.edit && doctor.ishired; else editSM">
+              <form [formGroup]="specialtyForm">
+                <app-mult-selector-drop-drown
+                  [width]="'220px'"
+                  [height]="'30px'"
+                  [states]="medicalSp"
+                  [mainColor]="mainColor"
+                  formControlName="specialty"
+                ></app-mult-selector-drop-drown>
+              </form>
             </ng-container>
             <ng-template #editSM>
               <div *ngFor="let sp of doctor.specialty">
                 {{ sp.replace("_", " ") }}
               </div>
             </ng-template>
-          </div>
-          <div class="actions item">
+
             <fa-icon
               [icon]="faEdit"
-              class="mr-2 cursor text-medium"
-              (click)="edit(editModal, doctor)"
-              data-toggle="tooltip"
-              data-placement="bottom"
-              title="Editar Salário"
+              class="cursor text-medium mx-2"
+              (click)="editMode(doctor)"
             ></fa-icon>
             <fa-icon
-              [icon]="faTimes"
-              class="cursor text-oposity1"
-              (click)="remove(removeModal, doctor)"
-              data-toggle="tooltip"
-              data-placement="bottom"
-              title="Dispensar"
+              [icon]="faSave"
+              class="cursor text-success"
+              (click)="putSpecialty(doctor)"
             ></fa-icon>
+          </div>
+          <div class="actions item">
+            <ng-container *ngIf="doctor.ishired; else editMenu">
+              <fa-icon
+                [icon]="faEdit"
+                class="mr-2 cursor text-medium"
+                (click)="edit(editModal, doctor)"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Editar Salário"
+              ></fa-icon>
+              <fa-icon
+                [icon]="faTimes"
+                class="cursor text-oposity1"
+                (click)="remove(removeModal, doctor)"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Dispensar"
+              ></fa-icon>
+            </ng-container>
+            <ng-template #editMenu>
+              <fa-icon
+                [icon]="faPlus"
+                class="cursor text-success"
+                (click)="rehire(doctor.id)"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Recontratar"
+              ></fa-icon>
+            </ng-template>
           </div>
         </div>
       </div>

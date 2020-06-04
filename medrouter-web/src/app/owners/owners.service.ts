@@ -4,9 +4,9 @@ import { HttpClient } from "@angular/common/http";
 import { MEDROUTER_API } from "../api/app.api";
 import { NewEmployee } from "./components/search-employees/dtos/newemplyee";
 import { IncludeRule } from "./components/search-employees/enums/actions-type";
-import { User } from "../auth/models/user.model";
 import { Role } from "../auth/enums/roles-types";
 import { EmployeeDto } from "./dtos/employee-dto";
+import { Specialty } from "./enums/specialtys";
 
 @Injectable({
   providedIn: "root",
@@ -34,6 +34,12 @@ export class OwnersService {
   diff(role: Role, id: string, diff: number): Observable<EmployeeDto> {
     return this.h.patch<EmployeeDto>(`${MEDROUTER_API}/${role}s/${id}/diff`, {
       diff,
+    });
+  }
+
+  put(id: string, specialty: Specialty[]): Observable<EmployeeDto> {
+    return this.h.put<EmployeeDto>(`${MEDROUTER_API}/doctors/${id}`, {
+      specialty,
     });
   }
 }

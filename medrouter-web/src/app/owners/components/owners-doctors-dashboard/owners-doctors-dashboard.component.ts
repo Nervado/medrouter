@@ -66,12 +66,17 @@ export class OwnersDoctorsDashboardComponent implements OnInit {
   mainColor: Colors = Colors.OWNER;
 
   searchForm: FormGroup;
+  specialtyForm: FormGroup;
+
+  //specialty
 
   doctors: EmployeeDto[] = [];
   employee: EmployeeDto;
 
   @ViewChild("content") elementRef: ElementRef;
   @Output() signOut: EventEmitter<any> = new EventEmitter();
+
+  id: string;
 
   constructor(
     private fb: FormBuilder,
@@ -82,6 +87,10 @@ export class OwnersDoctorsDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.searchForm = this.fb.group({
       search: this.fb.control(""),
+    });
+
+    this.specialtyForm = this.fb.group({
+      specialty: this.fb.control([]),
     });
 
     this.find(this.page);
@@ -166,5 +175,53 @@ export class OwnersDoctorsDashboardComponent implements OnInit {
         });
       },
     });
+  }
+
+  putSpecialty(doctor: EmployeeDto) {
+    const specialty = this.specialtyForm.value.specialty;
+    if (specialty.length > 0 && doctor.id === this.id && doctor.edit === true) {
+      doctor.edit = false;
+      this.clear();
+      this.id = undefined;
+      this.ownerService.put(doctor.id, specialty).subscribe({
+        next: () => {
+          this.find(1);
+          this.ns.notify({
+            message: "Especialidade atualizada",
+            type: Types.SUCCESS,
+          });
+        },
+        error: () => {
+          this.ns.notify({
+            message: "Falha ao tentar atualizar",
+            type: Types.ERROR,
+          });
+        },
+      });
+    }
+  }
+
+  clear() {
+    this.specialtyForm.patchValue({
+      specialty: [],
+    });
+    console.log("limpou...", this.specialtyForm.value);
+  }
+
+  editMode(doctor: EmployeeDto) {
+    this.clear();
+    doctor.edit = !doctor.edit;
+    if (doctor.edit === true) {
+      this.id = doctor.id;
+      this.doctors.forEach((doctor) => {
+        if (doctor.id !== this.id) {
+          doctor.edit = false;
+        }
+      });
+      console.log("Id salvo para edicao ", this.id);
+    } else {
+      this.id = undefined;
+      console.log(this.id);
+    }
   }
 }

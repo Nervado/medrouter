@@ -19,4 +19,5 @@ export class EmployeeDto {
     };
   };
   specialty?: Specialty[];
+  edit?: boolean = false;
 }

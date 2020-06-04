@@ -1,5 +1,5 @@
 // @media query here
-// @media query here
+
 .dashboard {
   margin: 80px;
   padding-left: 80px;
@@ -69,7 +69,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-
         padding: 4px 4px;
         border-radius: 4px;
         background-color: var(--oposity);
@@ -78,18 +77,19 @@
           width: 40px;
           height: 40px;
           border-radius: 50%;
-
           border: 1px solid var(--owner);
-
           margin-right: 10px;
           object-fit: cover;
         }
 
-        .item {
+        .item,
+        .sp {
           width: 220px;
           display: flex;
           align-items: center;
           justify-content: flex-end;
+        }
+        .item {
           overflow: hidden;
         }
       }
