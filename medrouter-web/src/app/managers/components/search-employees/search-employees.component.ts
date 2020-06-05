@@ -4,18 +4,13 @@ import {
   faFilter,
   faUserMd,
   faUser,
-  faArrowLeft,
-  faArrowRight,
   faChevronLeft,
   faChevronRight,
-  faThumbsDown,
   faStar,
   faCog,
-  faLocationArrow,
   faMapMarkerAlt,
-  faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { UsersService } from "src/app/profile/users.service";
 import { Profile } from "src/app/profile/models/user-profile";
 
@@ -23,9 +18,11 @@ import { NotificationService } from "src/app/messages/notification.service";
 import { Types } from "src/app/messages/toast/enums/types";
 import { Role } from "src/app/auth/enums/roles-types";
 import { RolesIcons } from "./enums/roles-icons";
-import { ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { ActivatedRoute } from "@angular/router";
+import { TypeActions } from "./enums/actions-type";
+import { ActionForm } from "./dtos/form-dto";
+import { ManagersService } from "../../managers.service";
 
 @Component({
   selector: "app-search-employees",
@@ -49,7 +46,7 @@ export class SearchEmployeesComponent implements OnInit {
 
   page: number = 1;
 
-  showFilter: boolean = true;
+  showFilter: boolean = false;
   searchForm: FormGroup;
 
   users: Array<Profile> = [];
@@ -61,80 +58,118 @@ export class SearchEmployeesComponent implements OnInit {
   faCog = faCog;
   faLocationArrow = faMapMarkerAlt;
 
-  roles: Role[] = [Role.CLIENT, Role.DOCTOR, Role.OWNER];
-
   constructor(
     private fb: FormBuilder,
     private usersService: UsersService,
     private ns: NotificationService,
-    private ar: ActivatedRoute
+    private ar: ActivatedRoute,
+    private ms: ManagersService
   ) {}
 
   ngOnInit(): void {
     this.searchForm = this.fb.group({
       sex: this.fb.control(""),
       role: this.fb.control(""),
-      hired: this.fb.control(""),
+      checked: this.fb.control(""),
+      username: this.fb.control(""),
     });
 
     this.ar.data.subscribe((data) => (this.mainColor = data.mainColor));
+    this.find(1);
+  }
 
-    // test
-    this.page = 1;
-    this.getUsers(this.page);
+  find(page: number) {
+    this.usersService
+      .searchByName({ ...this.searchForm.value, page })
+      .subscribe({
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao buscar usuários",
+            type: Types.ERROR,
+          }),
+        next: (users: Profile[]) => {
+          this.users = users;
+        },
+      });
   }
 
   showFilters() {
     this.showFilter = !this.showFilter;
+
+    if (this.showFilter === false) {
+      this.searchForm.patchValue({
+        sex: "",
+        role: "",
+        ishired: "",
+      });
+    }
   }
 
   pageUp() {
     this.page += 1;
-    this.getUsers(this.page);
-    console.log(this.page);
+    this.find(this.page);
   }
   pageDown() {
     if (this.page === 1) {
       this.page = 1;
     } else {
       this.page -= 1;
-      this.getUsers(this.page);
+      this.find(this.page);
     }
   }
 
   search() {
-    this.getUsers(1);
+    this.find(1);
   }
 
-  getUsers(page: number) {
-    this.usersService.search(page).subscribe({
-      next: (Users) => {
-        this.users = Users;
-        console.log(this.users);
-      },
-      error: () =>
-        this.ns.notify({
-          message: "Falha ao obter usários",
-          type: Types.ERROR,
-        }),
-    });
-  }
+  confirm(event: ActionForm) {
+    if (event.type === TypeActions.EXCLUDE) {
+      this.usersService.delete(this.profile.userId).subscribe({
+        next: () =>
+          this.ns.notify({
+            message: "Usuário excluído",
+            type: Types.WARN,
+          }),
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao tentar excluir usuário",
+            type: Types.ERROR,
+          }),
+      });
+    }
 
-  confirm(event) {
-    console.log(event);
+    if (event.type === TypeActions.INCLUDE) {
+      this.ms
+        .create(
+          {
+            salary: event.salary,
+            user: {
+              email: this.profile.email,
+            },
+            specialty: ["Clinica_medica"],
+          },
+          event.include
+        )
+        .subscribe({
+          next: () =>
+            this.ns.notify({
+              message: "Usuário alterado com successo",
+              type: Types.SUCCESS,
+            }),
+          error: () =>
+            this.ns.notify({
+              message: "Falha ao tentar alterar usuário",
+              type: Types.WARN,
+            }),
+        });
+    }
 
-    switch (event.type) {
-      case null:
-        break;
-
-      default:
-        break;
+    if (event.type === TypeActions.EXCLUDE) {
     }
   }
 
   showModalActions(modal: any, profile: Profile) {
     this.profile = profile;
     modal.open();
-    console.log(profile);
   }
 }

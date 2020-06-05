@@ -1,26 +1,16 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  Input,
-  Type,
-} from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import {
   faSearch,
   faFilter,
   faUserMd,
   faUser,
-  faArrowLeft,
-  faArrowRight,
   faChevronLeft,
   faChevronRight,
   faStar,
   faCog,
-  faLocationArrow,
   faMapMarkerAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { UsersService } from "src/app/profile/users.service";
 import { Profile } from "src/app/profile/models/user-profile";
 
@@ -67,8 +57,6 @@ export class SearchEmployeesComponent implements OnInit {
   stars = [1, 2, 3, 4, 5];
   faCog = faCog;
   faLocationArrow = faMapMarkerAlt;
-
-  roles: Role[] = [Role.CLIENT, Role.DOCTOR, Role.OWNER];
 
   constructor(
     private fb: FormBuilder,

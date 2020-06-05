@@ -22,117 +22,117 @@
     class="wrapper-component d-flex flex-column justify-content-center align-items-center"
   >
     <div class="w-100 h-100">
-      <div
-        class="profile d-flex justify-content-center align-items-center text-oposity mt-3"
-        [style.background-color]="mainColor"
-      >
-        <input
-          type="text"
-          class="search-input"
-          placeholder="Digite o nome da pessoa"
-        />
+      <form [formGroup]="searchForm">
+        <div
+          class="profile d-flex justify-content-center align-items-center text-oposity mt-3"
+          [style.background-color]="mainColor"
+        >
+          <input
+            #sch
+            type="text"
+            class="search-input"
+            placeholder="Digite o nome da pessoa"
+            formControlName="username"
+          />
 
-        <fa-icon
-          [icon]="faSearch"
-          size="1x"
-          class="mx-3"
-          (click)="search()"
-        ></fa-icon>
-        <fa-icon
-          [icon]="faFilter"
-          size="1x"
-          class="mx-3"
-          (click)="showFilters()"
-        ></fa-icon>
-      </div>
-
-      <form
-        [formGroup]="searchForm"
-        *ngIf="showFilter"
-        class="text-oposity mt-1 filters w-100"
-        [style.background-color]="mainColor"
-      >
-        <div class="search-filter-type p-2">
-          <label for="sex" class="mr-2">Gênero</label>
-          <app-input-container
-            class="in-container"
-            [tick]="false"
-            [mainColor]="mainColor"
-          >
-            <select
-              id="cars"
-              name="sex"
-              aria-placeholder="Gênero"
-              class="in in-admin cursor"
-              formControlName="sex"
-            >
-              <option value="Masculino">Masculino</option>
-              <option value="Feminino">Feminimo</option>
-              <option value="Indefinido">Indefinido</option>
-              <option value="Outros">Outros</option>
-            </select>
-
-            <div
-              class="d-flex mx-2 flex-column justify-content-center align-items-center"
-            >
-              <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
-            </div>
-          </app-input-container>
-        </div>
-        <div class="search-filter-type p-2">
-          <label for="role" class="mr-2">Categoria</label>
-          <app-input-container
-            class="in-container"
-            [tick]="false"
-            [mainColor]="mainColor"
-          >
-            <select
-              id="role"
-              name="role"
-              aria-placeholder="Role"
-              class="in in-admin cursor"
-              formControlName="role"
-            >
-              <option value="doctor">Médico</option>
-              <option value="client">Paciente</option>
-              <option value="recept">Recepcionista</option>
-              <option value="lab">Laboratório</option>
-            </select>
-
-            <div
-              class="d-flex mx-2 flex-column justify-content-center align-items-center"
-            >
-              <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
-            </div>
-          </app-input-container>
+          <fa-icon
+            [icon]="faSearch"
+            size="1x"
+            class="mx-3"
+            (click)="search()"
+          ></fa-icon>
+          <fa-icon
+            [icon]="faFilter"
+            size="1x"
+            class="mx-3"
+            (click)="showFilters()"
+          ></fa-icon>
         </div>
 
-        <div class="search-filter-type p-2">
-          <label for="hired" class="mr-2">Situação</label>
-          <app-input-container
-            class="in-container"
-            [mainColor]="mainColor"
-            [tick]="false"
-          >
-            <select
-              id="hired"
-              name="hired"
-              aria-placeholder="Situação"
-              class="in in-admin cursor"
-              formControlName="hired"
+        <div
+          class="text-oposity mt-1 filters w-100"
+          [style.background-color]="mainColor"
+        >
+          <div class="search-filter-type p-2" *ngIf="showFilter">
+            <label for="sex" class="mr-2">Gênero</label>
+            <app-input-container
+              class="in-container"
+              [tick]="false"
+              [mainColor]="mainColor"
             >
-              <option value="available">Disponível</option>
-              <option value="hired">Contratado</option>
-              <option value="dismis">Dispensado</option>
-              <option value="rehired">Readmitido</option>
-            </select>
+              <select
+                id="cars"
+                name="sex"
+                aria-placeholder="Gênero"
+                class="in in-admin cursor"
+                formControlName="sex"
+              >
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminimo</option>
+                <option value="Indefinido">Indefinido</option>
+                <option value="Outros">Outros</option>
+              </select>
 
-            <div
-              class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              <div
+                class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              >
+                <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
+              </div>
+            </app-input-container>
+          </div>
+          <div class="search-filter-type p-2" *ngIf="showFilter">
+            <label for="role" class="mr-2">Categoria</label>
+            <app-input-container
+              class="in-container"
+              [tick]="false"
+              [mainColor]="mainColor"
             >
-              <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
-            </div>
-          </app-input-container>
+              <select
+                id="role"
+                name="role"
+                aria-placeholder="Role"
+                class="in in-admin cursor"
+                formControlName="role"
+              >
+                <option value="doctor">Médico</option>
+                <option value="client">Paciente</option>
+                <option value="recept">Recepcionista</option>
+                <option value="lab">Laboratório</option>
+              </select>
+
+              <div
+                class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              >
+                <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
+              </div>
+            </app-input-container>
+          </div>
+
+          <div class="search-filter-type p-2" *ngIf="showFilter">
+            <label for="checked" class="mr-2">Situação</label>
+            <app-input-container
+              class="in-container"
+              [mainColor]="mainColor"
+              [tick]="false"
+            >
+              <select
+                id="checked"
+                name="checked"
+                aria-placeholder="Situação"
+                class="in in-admin cursor"
+                formControlName="checked"
+              >
+                <option value="true">Verificado</option>
+                <option value="false">Não verificado</option>
+              </select>
+
+              <div
+                class="d-flex mx-2 flex-column justify-content-center align-items-center"
+              >
+                <fa-icon [icon]="faFilter" class="text-oposity"></fa-icon>
+              </div>
+            </app-input-container>
+          </div>
         </div>
       </form>
       <div class="d-flex flex-column aling-items-center justify-content-center">
@@ -180,11 +180,10 @@
                   <div class="m-1" *ngFor="let role of user.role">
                     <fa-icon
                       [icon]="details[role].icon"
-                      class=""
                       data-toggle="tooltip"
                       data-placement="top"
                       [title]="details[role].label"
-                      [style.color]="'var(--medium)'"
+                      [style.color]="details[role].color"
                     ></fa-icon>
                   </div>
                 </div>
