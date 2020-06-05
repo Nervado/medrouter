@@ -12,6 +12,9 @@ import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Profile } from "src/app/profile/models/user-profile";
 import { Colors } from "src/app/messages/toast/enums/colors";
+import { AuthService } from "src/app/auth/auth.service";
+import { NotificationService } from "src/app/messages/notification.service";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
   selector: "app-managers-actions-modal",
@@ -22,7 +25,12 @@ export class ManagersActionsModalComponent implements OnInit {
   @Input() profile: Profile;
   @Input() mainColor: Colors = Colors.BASE;
   closeResult = "";
-  constructor(private modalService: NgbModal, private fb: FormBuilder) {}
+  constructor(
+    private modalService: NgbModal,
+    private fb: FormBuilder,
+    private as: AuthService,
+    private ns: NotificationService
+  ) {}
   actionsForm: FormGroup;
   faLock = faLock;
   faUser = faUser;
@@ -38,8 +46,10 @@ export class ManagersActionsModalComponent implements OnInit {
         Validators.minLength(6),
       ]),
       type: this.fb.control("", [Validators.required]),
-      salary: this.fb.control("", [Validators.required]),
-      include: this.fb.control("", [Validators.required]),
+      salary: this.fb.control("", [
+        //Validators.pattern(/^[a-zA-Z0-9]+$/),
+      ]),
+      include: this.fb.control(""),
     });
   }
 
@@ -51,12 +61,33 @@ export class ManagersActionsModalComponent implements OnInit {
       .result.then(
         (result) => {
           this.closeResult = `Closed with: ${result}`;
-          if (
-            result === "confirm" &&
-            this.actionsForm.value.password !== undefined
-          ) {
-            this.signOut.emit(this.actionsForm.value);
-            this.modalService.dismissAll();
+
+          if (result === "confirm") {
+            if (this.as.loginDto === undefined) {
+              this.ns.notify({
+                message: "Realize um novo login para validar esta operação",
+                type: Types.WARN,
+                timer: 2000,
+              });
+            }
+            if (!this.actionsForm.valid) {
+              console.log(this.actionsForm.invalid);
+
+              this.ns.notify({
+                message: "O formulário contém erros",
+                type: Types.WARN,
+                timer: 2000,
+              });
+            }
+            console.log(this.actionsForm.value, result);
+            if (
+              this.actionsForm.value.password === this.as.loginDto.password &&
+              this.actionsForm.valid
+            ) {
+              this.signOut.emit(this.actionsForm.value);
+              this.modalService.dismissAll();
+            }
+            ``;
           }
         },
         (reason) => {

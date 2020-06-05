@@ -131,11 +131,18 @@
             <ng-template #editMenu>
               <fa-icon
                 [icon]="faPlus"
-                class="cursor text-success"
+                class="cursor text-success mr-2"
                 (click)="rehire(doctor.id)"
                 data-toggle="tooltip"
                 data-placement="bottom"
                 title="Recontratar"
+              ></fa-icon>
+              <fa-icon
+                [icon]="faTrash"
+                class="cursor text-gray"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Remover"
               ></fa-icon>
             </ng-template>
           </div>

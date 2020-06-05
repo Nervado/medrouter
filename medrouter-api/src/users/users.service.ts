@@ -3,6 +3,8 @@ import {
   NotFoundException,
   UnauthorizedException,
   InternalServerErrorException,
+  BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -163,10 +165,27 @@ export class UsersService {
       where: { userId: id },
     });
     console.log(user);
-    //if (id !== user.userId && !user.admin && !user.owner) {
-    //throw new UnauthorizedException('User has not privillegs to exec');
 
-    //}
+    if (usertoBeDeleted.role.length > 1) {
+      throw new ForbiddenException('Fail to exec');
+    }
+
+    if (
+      id !== user.userId &&
+      !user.role.find(role => role === Role.OWNER || role === Role.MANAGER)
+    ) {
+      throw new UnauthorizedException('User has not privillegs to exec');
+    }
+
+    if (
+      usertoBeDeleted.role.find(
+        role =>
+          role === Role.DOCTOR || role === Role.OWNER || role === Role.MANAGER,
+      ) &&
+      !user.role.find(role => role === Role.OWNER)
+    ) {
+      throw new UnauthorizedException('User has not privillegs to exec');
+    }
 
     if (usertoBeDeleted.avatar !== null) {
       await this.avatarsService.delete(

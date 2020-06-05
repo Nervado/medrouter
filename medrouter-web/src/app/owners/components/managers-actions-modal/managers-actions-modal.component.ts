@@ -52,9 +52,7 @@ export class ManagersActionsModalComponent implements OnInit {
       include: this.fb.control(""),
     });
   }
-  teste(e) {
-    console.log(e);
-  }
+
   open(_content?) {
     const content = _content ? _content : this.elementRef;
 

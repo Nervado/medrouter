@@ -23,6 +23,7 @@ import {
   faSave,
   faChevronLeft,
   faChevronRight,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup, FormBuilder } from "@angular/forms";
 
@@ -57,6 +58,7 @@ export class OwnersDoctorsDashboardComponent implements OnInit {
   faUserMd = faUserMd;
   faChevronLeft = faChevronLeft;
   faChevronRight = faChevronRight;
+  faTrash = faTrash;
 
   medicalSp: Array<any> = getArrayFromEnum(Specialty);
   isedit: boolean = false;

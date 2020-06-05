@@ -54,17 +54,17 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 
 - Search
 
-[ ] Search Users
+[X] Search Users
 
-[ ] Search by name
+[X] Search by name
 
-[ ] Search by filters
+[X] Search by filters
 
-[ ] Search Lab User
+[X] Search Lab User
 
 - Incluir
 
-[X] Recept
+[ ] Recept
 
 - Excluir
 

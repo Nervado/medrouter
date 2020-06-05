@@ -64,10 +64,7 @@
               formControlName="include"
               style="border: 2px solid var(--admin); color: var(--admin);"
             >
-              <option value="doctor">Medico</option>
-              <option value="recept">Recepcionista</option>
-              <option value="admin">Gerente</option>
-              <option value="owner">Diretor</option>
+              <option value="receptionists">Recepcionista</option>
             </select>
 
             <div
@@ -92,6 +89,13 @@
               class="in cursor"
               formControlName="salary"
               style="border: 2px solid var(--admin); color: var(--admin);"
+              currencyMask
+              [options]="{
+                prefix: 'R$ ',
+                thousands: '.',
+                decimal: ',',
+                align: 'left'
+              }"
             />
 
             <div
