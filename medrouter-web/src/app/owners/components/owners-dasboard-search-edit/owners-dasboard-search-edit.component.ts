@@ -15,6 +15,7 @@ import {
   faCrown,
   faChevronLeft,
   faChevronRight,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { Doctor } from "src/app/clients/models/doctor";
@@ -49,6 +50,7 @@ export class OwnersDasboardSearchEditComponent implements OnInit {
   faCrown = faCrown;
   faChevronLeft = faChevronLeft;
   faChevronRight = faChevronRight;
+  faTrash = faTrash;
 
   searchForm: FormGroup;
   owners: Array<EmployeeDto> = [];

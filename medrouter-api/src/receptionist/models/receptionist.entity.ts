@@ -18,8 +18,8 @@ import { Manager } from '../../manager/models/manager.entity';
 
 @Entity({ name: 'Receptionist' })
 export class Receptionist extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ nullable: true })
   ishired: boolean;
@@ -28,12 +28,12 @@ export class Receptionist extends BaseEntity {
   hireddate: Date;
 
   @Column({ nullable: true })
-  dissmisdate: Date;
+  dismissdate: Date;
 
-  @Column({ nullable: true })
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   salary: number;
 
-  @OneToOne(() => User)
+  @OneToOne(type => User, { eager: true, cascade: true })
   @JoinColumn()
   user: User;
 

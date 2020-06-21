@@ -2,7 +2,6 @@ import {
   Controller,
   Body,
   Post,
-  Put,
   UseInterceptors,
   ClassSerializerInterceptor,
   Get,
@@ -11,65 +10,73 @@ import {
   Query,
   Delete,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
-import { IntFilterDto } from '../utils/int-filter.dto';
-import { Roles } from 'src/auth/decorators/roles.decorator';
 
+import { Roles } from 'src/auth/decorators/roles.decorator';
 import { ReceptionistService } from './receptionist.service';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
+import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
+import { Allow } from 'src/auth/decorators/alow.decorator';
+import { ReceptionistDto } from './dto/receptionist.dto';
+import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
+import { Receptionist } from './models/receptionist.entity';
+
+@UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('receptionists')
 export class ReceptionistController {
   constructor(private receptionistService: ReceptionistService) {}
 
   @Post()
+  @Allow('admin', 'owner')
   @UseInterceptors(ClassSerializerInterceptor)
-  createDoctor(@Body(ValidationPipe) body: any) {
-    // return this.doctorService.create(body);
+  createDoctor(
+    @Body(ValidationPipe) body: ReceptionistDto,
+  ): Promise<Receptionist> {
+    return this.receptionistService.create(body);
   }
 
   @Get()
+  @Allow('admin', 'owner')
   @UseInterceptors(ClassSerializerInterceptor)
-  getAll(@Query(ValidationPipe) page: IntFilterDto) {
-    // return this.doctorService.getMany(page.page);
+  getAll(
+    @Query(ValidationPipe) search: SearchFilterDto,
+  ): Promise<Receptionist[]> {
+    return this.receptionistService.getAll(search);
   }
 
   @Get('/:id')
+  @Allow('admin', 'owner')
   @UseInterceptors(ClassSerializerInterceptor)
-  get(@Param('id') id: number): void {
-    //return this.doctorService.getOne(id);
-  }
-
-  @Delete('/:id')
-  @UseInterceptors(ClassSerializerInterceptor)
-  deleteDoctor(@Param('id') id: number) {
-    //return this.doctorService.delete(id);
-  }
-
-  @Put('/:id')
-  @UseInterceptors(ClassSerializerInterceptor)
-  update(
-    @Param('id') id: number,
-    @Body('specialty', ValidationPipe) body: any,
-  ) {
-    // return this.doctorService.updateOne(id, body);
+  get(@Param('id') id: string): Promise<Receptionist> {
+    return this.receptionistService.getOne(id);
   }
 
   @Patch('/:id/status')
   @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
   changeStatus(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body('status', ValidationPipe) body: any,
   ) {
-    //return this.doctorService.modifyOne(id, body, 'status');
+    return this.receptionistService.modifyOne(id, body, 'status');
   }
 
-  @Patch('/:id/status')
+  @Patch('/:id/diff')
   @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
-  modifyPath(
-    @Param('id') id: number,
-    @Body('status', ValidationPipe) body: any,
-  ) {
-    //return this.doctorService.modifyOne(id, body, 'status');
+  changeSalary(
+    @Param('id') id: string,
+    @Body('diff', ValidationPipe) body: ReceptionistDto,
+  ): Promise<Receptionist> {
+    return this.receptionistService.modifyOne(id, body, 'diff');
+  }
+
+  @Delete('/:id')
+  @Roles('owner')
+  @UseInterceptors(ClassSerializerInterceptor)
+  dismiss(@Param('id') id: string) {
+    return this.receptionistService.delete(id);
   }
 }

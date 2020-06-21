@@ -4,18 +4,20 @@
   class="list"
   [style.border-color]="mainColor"
 >
-  <div class="sp">{{ tags[point] }}</div>
+  <div class="sp" [style.color]="mainColor">{{ tags[point] }}</div>
 
   <div class="bts">
     <fa-icon
       (click)="up()"
       [icon]="faAngleUp"
       style="cursor: pointer;"
+      [style.color]="mainColor"
     ></fa-icon>
     <fa-icon
       (click)="down()"
       [icon]="faAngleDown"
       style="cursor: pointer;"
+      [style.color]="mainColor"
     ></fa-icon>
   </div>
 </div>

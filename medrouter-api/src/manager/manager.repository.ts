@@ -72,7 +72,7 @@ export class ManagerRepository extends Repository<Manager> {
     return managers;
   }
 
-  async updateOne(id: number, body: any, operation?: string): Promise<Manager> {
+  async updateOne(id: string, body: any, operation?: string): Promise<Manager> {
     const manager = await this.findOne({ id });
 
     if (operation === 'status' && body === 're-hired' && !manager.ishired) {

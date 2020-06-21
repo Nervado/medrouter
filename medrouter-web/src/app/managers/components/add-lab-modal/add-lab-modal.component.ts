@@ -19,6 +19,7 @@ import { LabCategory } from "./enums/labs-types";
 import { getArrayFromEnum } from "src/app/utils/getArrayFromEnum";
 import { capitalizeAndRemoveUnderscores } from "src/app/utils/capitalizeAndRemoveUnderscore";
 import { ExamsEnum } from "./enums/exams-types";
+import { Colors } from "src/app/messages/toast/enums/colors";
 
 @Component({
   selector: "app-add-lab-modal",
@@ -32,6 +33,8 @@ export class AddLabModalComponent implements OnInit {
   faUser = faUser;
   faFlask = faFlask;
   faUserTie = faUserTie;
+
+  mainColor: Colors = Colors.ADMIN;
 
   options: Array<any> = getArrayFromEnum(LabCategory);
   exams: Array<any> = getArrayFromEnum(ExamsEnum);
@@ -48,8 +51,11 @@ export class AddLabModalComponent implements OnInit {
         Validators.minLength(6),
       ]),
       name: this.fb.control("", [Validators.required]),
-      cnpj: this.fb.control("", [Validators.required]),
-      category: this.fb.control([], [Validators.required]),
+      cnpj: this.fb.control("", [
+        Validators.required,
+        Validators.pattern(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/),
+      ]),
+      labcategory: this.fb.control([], [Validators.required]),
       exams: this.fb.control([], [Validators.required]),
     });
   }

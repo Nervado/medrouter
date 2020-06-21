@@ -1,10 +1,13 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Owner } from './models/owner.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OwnerRepository } from './owner.repository';
 import { OwnerDto } from './dtos/owner-dto';
 import { Service } from 'src/utils/generics.service';
-import { ManagerDto } from 'src/manager/dto/manager.dto';
 import { User } from 'src/users/models/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { Role } from 'src/auth/enums/role.enum';
@@ -15,7 +18,7 @@ export class OwnerService extends Service<
   OwnerDto,
   Owner,
   OwnerRepository,
-  number,
+  any,
   User,
   string
 > {
@@ -39,5 +42,15 @@ export class OwnerService extends Service<
 
   public async getAll(search: SearchFilterDto): Promise<Owner[]> {
     return await this.repo.getAll(search);
+  }
+
+  async delete(id: string) {
+    const owner = await this.getOne(id);
+    try {
+      await this.usersService.resetRole(owner.user.userId);
+      return this.repo.softDelete({ id });
+    } catch (error) {
+      throw new InternalServerErrorException('Fail operation:delete');
+    }
   }
 }

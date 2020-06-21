@@ -18,7 +18,6 @@ import { ManagerDto } from './dto/manager.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { PageFilterDto } from 'src/users/dto/page-filter.dto';
 import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -27,14 +26,14 @@ export class ManagerController {
   constructor(private managerService: ManagerService) {}
 
   @Post()
-  @Roles('client')
+  @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
   createManager(@Body() body: ManagerDto): Promise<Manager> {
     return this.managerService.createOne(body);
   }
 
   @Get()
-  @Roles('client')
+  @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
   getAllManager(
     @Query(ValidationPipe) search: SearchFilterDto,
@@ -43,15 +42,16 @@ export class ManagerController {
   }
 
   @Get('/:id')
+  @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
-  @Roles('client')
-  getManager(@Param('id') id: number): Promise<Manager> {
+  getManager(@Param('id') id: string): Promise<Manager> {
     return this.managerService.getOne(id);
   }
 
   @Delete('/:id')
+  @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
-  dismissManager(@Param('id') id: number): void {
+  dismissManager(@Param('id') id: string): void {
     this.managerService.delete(id);
   }
 
@@ -59,7 +59,7 @@ export class ManagerController {
   @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
   changeStatusManager(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body('status', ValidationPipe) body: ManagerDto,
   ): Promise<Manager> {
     return this.managerService.modifyOne(id, body, 'status');
@@ -69,7 +69,7 @@ export class ManagerController {
   @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
   changeSalaryManager(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body('diff', ValidationPipe) body: ManagerDto,
   ): Promise<Manager> {
     return this.managerService.modifyOne(id, body, 'diff');

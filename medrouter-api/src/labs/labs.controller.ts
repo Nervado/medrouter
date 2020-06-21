@@ -16,6 +16,9 @@ import { IntFilterDto } from '../utils/int-filter.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 
 import { LabsService } from './labs.service';
+import { LabDto } from './dto/lab.dto';
+import { SearchLab } from './dto/searchlab.dto';
+import { LabChangesDto } from './dto/labStatus-dto';
 
 @Controller('labs')
 export class LabsController {
@@ -23,14 +26,14 @@ export class LabsController {
 
   @Post()
   @UseInterceptors(ClassSerializerInterceptor)
-  createDoctor(@Body(ValidationPipe) body: any) {
-    // return this.doctorService.create(body);
+  createDoctor(@Body(ValidationPipe) body: LabDto) {
+    return this.labsService.create(body);
   }
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
-  getAll(@Query(ValidationPipe) page: IntFilterDto) {
-    // return this.doctorService.getMany(page.page);
+  getAll(@Query(ValidationPipe) search: SearchLab) {
+    return this.labsService.get(search);
   }
 
   @Get('/:id')
@@ -45,32 +48,13 @@ export class LabsController {
     //return this.doctorService.delete(id);
   }
 
-  @Put('/:id')
-  @UseInterceptors(ClassSerializerInterceptor)
-  update(
-    @Param('id') id: number,
-    @Body('specialty', ValidationPipe) body: any,
-  ) {
-    // return this.doctorService.updateOne(id, body);
-  }
-
-  @Patch('/:id/status')
+  @Patch('/:id')
   @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
   changeStatus(
-    @Param('id') id: number,
-    @Body('status', ValidationPipe) body: any,
+    @Param('id') id: string,
+    @Body(ValidationPipe) body: LabChangesDto,
   ) {
-    //return this.doctorService.modifyOne(id, body, 'status');
-  }
-
-  @Patch('/:id/status')
-  @Roles('owner')
-  @UseInterceptors(ClassSerializerInterceptor)
-  modifyPath(
-    @Param('id') id: number,
-    @Body('status', ValidationPipe) body: any,
-  ) {
-    //return this.doctorService.modifyOne(id, body, 'status');
+    return this.labsService.change(id, body);
   }
 }

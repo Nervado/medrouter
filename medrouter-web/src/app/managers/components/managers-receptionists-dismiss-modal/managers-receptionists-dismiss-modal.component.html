@@ -15,8 +15,8 @@
   <div class="modal-body">
     <p class="text-admin">
       Dispensar membro
-      <strong>{{ receptionist.user.username }}</strong> <br />
-      CPF: <strong>{{ receptionist.user.cpf }}</strong>
+      <strong>{{ employee.user.username }}</strong> <br />
+      CPF: <strong>{{ employee.user.cpf }}</strong>
     </p>
 
     <form
@@ -26,7 +26,6 @@
       <div class="form-group text-admin">
         <label for="password">Sua senha de admin</label>
         <app-input-container class="in-container in-container-profile my-2">
-          <input type="text" name="username" hidden autocomplete="username" />
           <input
             formControlName="password"
             type="password"

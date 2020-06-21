@@ -21,17 +21,45 @@
 
     <form
       [formGroup]="actionsForm"
-      class="d-flex flex-column justify-content-center align-items-center"
+      class="d-flex flex-column justify-content-start align-items-center"
     >
       <div class="form-group text-admin">
-        <label for="availableExams">Exames disponíveis atualmente</label>
-        <div *ngFor="let exam of lab.exams">{{ exam }}</div>
+        <label for="availableExams">
+          <strong> Categorias de exames do Laboratório</strong>
+        </label>
+        <div *ngFor="let category of lab.labcategory">
+          {{ pretty(category) }}
+        </div>
+      </div>
+      <div class="form-group text-admin">
+        <label for="availableExams">
+          <strong> Exames disponíveis atualmente</strong>
+        </label>
+        <div *ngFor="let exam of lab.exams">{{ pretty(exam) }}</div>
       </div>
 
       <div>
-        <label for="exams">Selecione exames adicionais</label>
+        <label for="exams" class="text-admin"
+          >Selecione a(s) categoria(s)</label
+        >
         <div class="">
           <app-mult-selector-drop-drown
+            [height]="'40px'"
+            formControlName="labcategory"
+            [states]="labcategory"
+          ></app-mult-selector-drop-drown>
+          <div
+            class="d-flex mx-2 flex-column justify-content-center align-items-center"
+          >
+            <fa-icon [icon]="faFlask" class="text-oposity"></fa-icon>
+          </div>
+        </div>
+      </div>
+      <div>
+        <label for="exams" class="text-admin">Selecione os exames</label>
+        <div class="">
+          <app-mult-selector-drop-drown
+            [height]="'40px'"
             formControlName="exams"
             [states]="exams"
           ></app-mult-selector-drop-drown>
@@ -44,7 +72,10 @@
       </div>
       <div class="form-group text-admin">
         <label for="password">Sua senha de admin</label>
-        <app-input-container class="in-container in-container-profile my-2">
+        <app-input-container
+          [mainColor]="'var(--admin)'"
+          class="in-container in-container-admin my-2"
+        >
           <input type="text" name="username" hidden autocomplete="username" />
           <input
             formControlName="password"

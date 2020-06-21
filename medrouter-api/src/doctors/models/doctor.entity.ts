@@ -23,8 +23,8 @@ import { Schedule } from './schedule.entity';
 
 @Entity('doctor')
 export class Doctor extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   salary: number;

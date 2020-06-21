@@ -15,8 +15,8 @@
   <div class="modal-body">
     <p class="text-admin">
       Modificar salário do funcionário(a)
-      <strong>{{ receptionist.user.username }}</strong> <br />
-      CPF: <strong>{{ receptionist.user.cpf }}</strong>
+      <strong>{{ employee.user.username }}</strong> <br />
+      CPF: <strong>{{ employee.user.cpf }}</strong>
     </p>
 
     <form
@@ -24,15 +24,28 @@
       class="d-flex flex-column justify-content-center align-items-center"
     >
       <div>
-        <label for="Tipo" class="text-admin">Salário atual</label>
-        <app-input-container class="in-container in-container-admin my-4">
+        <label for="Tipo" class="text-admin"
+          >Salário atual {{ employee.salary | currency: "BRL" }}</label
+        >
+        <app-input-container
+          class="in-container in-container-admin my-4"
+          [mainColor]="'var(--admin)'"
+        >
           <input
             id="salary"
             name="salary"
             aria-placeholder="salary"
             class="in in-medium cursor"
             formControlName="salary"
+            placeholder="Novo salário"
             style="border: 2px solid var(--admin); color: var(--admin);"
+            currencyMask
+            [options]="{
+              prefix: 'R$ ',
+              thousands: '.',
+              decimal: ',',
+              align: 'left'
+            }"
           />
 
           <div
@@ -44,7 +57,10 @@
       </div>
       <div class="form-group text-admin">
         <label for="password">Sua senha de admin</label>
-        <app-input-container class="in-container in-container-admin my-2">
+        <app-input-container
+          class="in-container in-container-admin my-2"
+          [mainColor]="'var(--admin)'"
+        >
           <input type="text" name="username" hidden autocomplete="username" />
           <input
             formControlName="password"

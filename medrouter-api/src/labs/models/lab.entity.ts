@@ -3,12 +3,11 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
-  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
   Unique,
+  OneToMany,
 } from 'typeorm';
 import { User } from 'src/users/models/user.entity';
 import { Exclude } from 'class-transformer';
@@ -28,9 +27,15 @@ export class Lab extends BaseEntity {
   @Column()
   name: string;
 
-  @OneToOne(() => User, { eager: true, cascade: true })
-  @JoinColumn()
-  user: User;
+  @Column({ default: true })
+  available: boolean;
+
+  @OneToMany(
+    type => User,
+    user => user.lab,
+    { eager: true, cascade: true, nullable: true },
+  )
+  users: User[];
 
   @Column({
     type: 'enum',
@@ -48,7 +53,6 @@ export class Lab extends BaseEntity {
   })
   exams: ExamsEnum[];
 
-  @Exclude()
   @CreateDateColumn({ type: 'timestamp', nullable: true })
   createdAt: Date;
 

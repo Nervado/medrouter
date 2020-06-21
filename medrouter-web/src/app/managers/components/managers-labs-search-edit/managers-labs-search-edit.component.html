@@ -1,15 +1,15 @@
-<app-add-lab-modal #modal (signOut)="confirm($event)"> </app-add-lab-modal>
+<app-add-lab-modal #modal (signOut)="add($event)"> </app-add-lab-modal>
 
 <app-lab-remove-confirmation
   #removeLabModal
-  (signout)="remove($event)"
+  (signOut)="remove($event)"
   [lab]="lab"
 ></app-lab-remove-confirmation>
 
-<app-lab-users-edit #addUserLabModal (signout)="remove($event)" [lab]="lab">
+<app-lab-users-edit #addUserLabModal (signOut)="users($event)" [lab]="lab">
 </app-lab-users-edit>
 
-<app-lab-edit-exams #editExamsModal (signout)="remove($event)" [lab]="lab">
+<app-lab-edit-exams #editExamsModal (signOut)="exams($event)" [lab]="lab">
 </app-lab-edit-exams>
 
 <div class="main-data aside text-admin">
@@ -21,7 +21,7 @@
 
     <div class="d-flex">
       <input
-        formControlName="search"
+        formControlName="name"
         type="text"
         placeholder="Nome do laboratório"
         autocomplete="off"
@@ -38,39 +38,99 @@
 
   <div class="data">
     <div class="table-header">
-      <div>Nome do Laboratório</div>
-      <div>Adicionado em:</div>
+      <div class="lab-name">Nome do Laboratório</div>
+      <div>Adicionado em</div>
+      <div>Autorizados</div>
+      <div>Categorias</div>
+      <div>Exames oferecidos</div>
       <div>Editar</div>
     </div>
 
     <div class="results">
-      <div class="result">
-        <div
-          class="d-flex justify-content-center align-items-center text-base1"
-        >
-          <fa-icon [icon]="faFlask" class="mr-2"></fa-icon>
-          <span>Radiologia Clinica S/A</span>
+      <div
+        class="result"
+        *ngFor="let lab of labs"
+        [ngClass]="{ unavailable: !lab.available }"
+      >
+        <div>
+          <div
+            class="labs name"
+            [ngClass]="{ available: lab.available }"
+            [ngClass]="{ unavailable: !lab.available }"
+          >
+            <fa-icon [icon]="faFlask" class="mr-1"></fa-icon>{{ lab.name }}
+          </div>
         </div>
-        <div class="text-base1">
-          23/02/2019
-          <fa-icon [icon]="faCalendarPlus"> </fa-icon>
+
+        <div
+          [ngClass]="{ available: lab.available }"
+          [ngClass]="{ unavailable: !lab.available }"
+        >
+          {{ lab.createdAt | date: "shortDate" }}
+          <fa-icon [icon]="faCalendarPlus" class="ml-1"> </fa-icon>
+        </div>
+
+        <div>
+          <app-multi-list-view
+            [tags]="usernames(lab.users)"
+            [w]="'150px'"
+            [h]="'30px'"
+            [mainColor]="lab.available ? mainColor : 'rgba(120, 120, 120, 0.2)'"
+          >
+          </app-multi-list-view>
+        </div>
+
+        <div>
+          <app-multi-list-view
+            [tags]="lab.labcategory"
+            [w]="'150px'"
+            [h]="'30px'"
+            [mainColor]="lab.available ? mainColor : 'rgba(120, 120, 120, 0.2)'"
+          >
+          </app-multi-list-view>
+        </div>
+        <div>
+          <app-multi-list-view
+            [tags]="lab.exams"
+            [w]="'150px'"
+            [h]="'30px'"
+            [mainColor]="lab.available ? mainColor : 'rgba(120, 120, 120, 0.2)'"
+          >
+          </app-multi-list-view>
         </div>
         <div class="actions">
-          <fa-icon
-            [icon]="faUserEdit"
-            class="mr-2 cursor text-profile"
-            (click)="addUserLab(addUserLabModal)"
-          ></fa-icon>
-          <fa-icon
-            [icon]="faEdit"
-            class="mr-2 cursor text-medium"
-            (click)="editExams(editExamsModal)"
-          ></fa-icon>
-          <fa-icon
-            [icon]="faTimes"
-            class="cursor text-oposity1"
-            (click)="removeLab(removeLabModal)"
-          ></fa-icon>
+          <ng-container *ngIf="lab.available; else unavailableTemplate">
+            <fa-icon
+              [icon]="faUserEdit"
+              class="mr-2 cursor text-profile"
+              (click)="addUserLab(addUserLabModal, lab)"
+            ></fa-icon>
+            <fa-icon
+              [icon]="faEdit"
+              class="mr-2 cursor text-medium"
+              (click)="editExams(editExamsModal, lab)"
+            ></fa-icon>
+            <fa-icon
+              [icon]="faTimes"
+              class="cursor text-oposity1"
+              (click)="removeLab(removeLabModal, lab)"
+            ></fa-icon>
+          </ng-container>
+          <ng-template #unavailableTemplate>
+            <fa-icon
+              class="cursor text-success mr-2"
+              [icon]="faPlus"
+              (click)="makeAvailable(lab)"
+            >
+            </fa-icon>
+            <fa-icon
+              [icon]="faTrash"
+              class="cursor"
+              [style.color]="'#78787833'"
+              [style.opacity]="'0.6'"
+            >
+            </fa-icon>
+          </ng-template>
         </div>
       </div>
     </div>

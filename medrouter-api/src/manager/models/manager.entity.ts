@@ -18,8 +18,8 @@ import { Exclude } from 'class-transformer';
 
 @Entity('manager')
 export class Manager extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   salary: number;

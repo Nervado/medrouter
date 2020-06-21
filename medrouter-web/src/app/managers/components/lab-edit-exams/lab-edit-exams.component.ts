@@ -32,6 +32,7 @@ export class LabEditExamsComponent implements OnInit {
   options: Array<any> = getArrayFromEnum(LabCategory);
 
   exams: Array<any> = getArrayFromEnum(ExamsEnum);
+  labcategory: Array<any> = getArrayFromEnum(LabCategory);
 
   @ViewChild("content") elementRef: ElementRef;
   @Output() signOut: EventEmitter<any> = new EventEmitter();
@@ -45,8 +46,11 @@ export class LabEditExamsComponent implements OnInit {
         Validators.minLength(6),
       ]),
 
-      id: this.fb.control(this.lab.id, [Validators.required]),
-      exams: this.fb.control(this.lab.exams, [Validators.required]),
+      id: this.fb.control(this.lab?.id, [Validators.required]),
+      exams: this.fb.control(this.lab?.exams, [Validators.required]),
+      labcategory: this.fb.control(this.lab?.labcategory, [
+        Validators.required,
+      ]),
     });
   }
 
@@ -62,6 +66,9 @@ export class LabEditExamsComponent implements OnInit {
             result === "confirm" &&
             this.actionsForm.value.password !== undefined
           ) {
+            this.actionsForm.patchValue({
+              id: this.lab.id,
+            });
             this.signOut.emit(this.actionsForm.value);
           }
 
@@ -82,5 +89,10 @@ export class LabEditExamsComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  pretty(name: string) {
+    const s = name.replace(/"/g, "").replace(/_/g, " ");
+    return s.charAt(0).toUpperCase() + s.slice(1);
   }
 }

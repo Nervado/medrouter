@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { ReceptionistController } from './receptionist.controller';
 import { ReceptionistService } from './receptionist.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Receptionist } from './models/receptionist.entity';
+import { ReceptionistRepository } from './receptionist.repository';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Receptionist])],
+  imports: [TypeOrmModule.forFeature([ReceptionistRepository]), UsersModule],
   controllers: [ReceptionistController],
   providers: [ReceptionistService],
 })

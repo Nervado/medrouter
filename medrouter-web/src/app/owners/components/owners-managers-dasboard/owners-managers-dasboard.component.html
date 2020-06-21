@@ -45,7 +45,7 @@
         <div>Contratado em:</div>
         <div>
           Salário
-          <fa-icon [icon]="faCoins"> </fa-icon>
+          <fa-icon [icon]="faCoins" class="ml-1"> </fa-icon>
         </div>
         <div>Editar</div>
       </div>
@@ -102,6 +102,13 @@
                 data-placement="bottom"
                 title="Recontratar"
                 (click)="rehire(manager.id)"
+              ></fa-icon>
+              <fa-icon
+                [icon]="faTrash"
+                class="cursor text-gray"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Remover"
               ></fa-icon>
             </ng-template>
           </div>

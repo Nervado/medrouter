@@ -22,6 +22,7 @@ import { CurrencyMaskModule } from "ng2-currency-mask";
 import { CpfMaskDirective } from "./directives/cpf-mask.directive";
 import { CepMaskDirective } from "./directives/cep-mask.directive";
 import { MultiListViewComponent } from "./components/multi-list-view/multi-list-view.component";
+import { CnpjMaskDirective } from "./directives/cnpj-mask.directive";
 @NgModule({
   declarations: [
     InputComponent,
@@ -41,6 +42,7 @@ import { MultiListViewComponent } from "./components/multi-list-view/multi-list-
     CpfMaskDirective,
     CepMaskDirective,
     MultiListViewComponent,
+    CnpjMaskDirective,
   ],
   imports: [
     CommonModule,
@@ -73,6 +75,7 @@ import { MultiListViewComponent } from "./components/multi-list-view/multi-list-
     CurrencyMaskModule,
     CpfMaskDirective,
     CepMaskDirective,
+    CnpjMaskDirective,
     MultiListViewComponent,
   ],
 })

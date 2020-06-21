@@ -17,7 +17,6 @@ import {
   faUser,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
-import { UsersService } from "src/app/profile/users.service";
 
 @Component({
   selector: "app-lab-users-edit",
@@ -48,9 +47,11 @@ export class LabUsersEditComponent implements OnInit {
         Validators.required,
         Validators.minLength(6),
       ]),
-      name: this.fb.control("", [Validators.required]),
-      id: this.fb.control(this.lab.id, [Validators.required]),
-      cpf: this.fb.control("", [Validators.required]),
+      name: this.fb.control(""),
+      id: this.fb.control(this.lab?.id, [Validators.required]),
+      cpf: this.fb.control("", [
+        Validators.pattern(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/),
+      ]),
       type: this.fb.control("", [Validators.required]),
     });
   }
@@ -67,17 +68,20 @@ export class LabUsersEditComponent implements OnInit {
             result === "confirm" &&
             this.actionsForm.value.password !== undefined
           ) {
+            this.actionsForm.patchValue({
+              id: this.lab.id,
+            });
             this.signOut.emit({
-              form: this.actionsForm.value,
+              ...this.actionsForm.value,
               data: this.removes,
             });
           }
-
-          this.actionsForm.reset();
+          this.resetRemovals();
         },
+
         (reason) => {
           this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-          this.actionsForm.reset();
+          this.resetRemovals();
         }
       );
   }
@@ -100,5 +104,11 @@ export class LabUsersEditComponent implements OnInit {
   add(user: any) {
     this.lab.users.push(user);
     this.removes = this.removes.filter((u) => u.userId !== user.userId);
+  }
+
+  resetRemovals() {
+    this.lab.users = [...this.lab.users, ...this.removes];
+    this.removes = [];
+    this.actionsForm.reset();
   }
 }

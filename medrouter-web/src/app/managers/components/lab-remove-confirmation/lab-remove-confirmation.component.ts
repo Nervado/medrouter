@@ -36,8 +36,8 @@ export class LabRemoveConfirmationComponent implements OnInit {
         Validators.required,
         Validators.minLength(6),
       ]),
-      name: this.fb.control("", [Validators.required]),
-      id: this.fb.control(this.lab.id, [Validators.required]),
+      name: this.fb.control(this.lab?.name, [Validators.required]),
+      id: this.fb.control(this.lab?.id, [Validators.required]),
     });
   }
 
@@ -53,6 +53,10 @@ export class LabRemoveConfirmationComponent implements OnInit {
             result === "confirm" &&
             this.actionsForm.value.password !== undefined
           ) {
+            this.actionsForm.patchValue({
+              id: this.lab.id,
+              name: this.lab.name,
+            });
             this.signOut.emit(this.actionsForm.value);
           }
 

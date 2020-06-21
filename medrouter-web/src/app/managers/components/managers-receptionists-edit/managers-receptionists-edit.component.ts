@@ -20,6 +20,7 @@ import { LabCategory } from "../add-lab-modal/enums/labs-types";
 import { ExamsEnum } from "../add-lab-modal/enums/exams-types";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { ReceptionistDto } from "../managers-receptionists-dismiss-modal/dtos/receptionist-dto";
+import { EmployeeDto } from "../../dtos/employee-dto";
 
 @Component({
   selector: "app-managers-receptionists-edit",
@@ -34,7 +35,7 @@ export class ManagersReceptionistsEditComponent implements OnInit {
   faUserTie = faUserTie;
   faCoins = faCoins;
 
-  @Input() receptionist: ReceptionistDto;
+  @Input() employee: EmployeeDto;
 
   @ViewChild("content") elementRef: ElementRef;
   @Output() signOut: EventEmitter<any> = new EventEmitter();
@@ -47,8 +48,9 @@ export class ManagersReceptionistsEditComponent implements OnInit {
         Validators.required,
         Validators.minLength(6),
       ]),
-      id: this.fb.control(this.receptionist.id, [Validators.required]),
-      salary: this.fb.control(this.receptionist.salary, [Validators.required]),
+      id: this.fb.control(this.employee?.id, [Validators.required]),
+      salary: this.fb.control(this.employee?.salary, [Validators.required]),
+      diff: this.fb.control(this.employee?.salary, [Validators.required]),
     });
   }
 
@@ -60,6 +62,12 @@ export class ManagersReceptionistsEditComponent implements OnInit {
       .result.then(
         (result) => {
           this.closeResult = `Closed with: ${result}`;
+
+          this.actionsForm.patchValue({
+            diff: this.actionsForm.value.salary - this.employee.salary,
+            id: this.employee.id,
+          });
+
           if (
             result === "confirm" &&
             this.actionsForm.value.password !== undefined

@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  EventEmitter,
-  ViewChild,
-  ElementRef,
-  Output,
-} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   faEllipsisH,
   faSearch,
@@ -18,14 +11,20 @@ import {
   faUser,
   faCoins,
   faUsers,
+  faUserMd,
+  faCrown,
+  faChevronLeft,
+  faChevronRight,
+  faConciergeBell,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { Doctor } from "src/app/clients/models/doctor";
-import { LabDto } from "../lab-remove-confirmation/dtos/lab.dto";
-import { ExamsEnum } from "../add-lab-modal/enums/exams-types";
-import { ClientsService } from "src/app/clients/clients.service";
-import { ReceptionistDto } from "../managers-receptionists-dismiss-modal/dtos/receptionist-dto";
-import { materialize } from "rxjs/operators";
+import { ManagersService } from "../../managers.service";
+import { NotificationService } from "src/app/messages/notification.service";
+import { EmployeeDto } from "../../dtos/employee-dto";
+import { Role } from "src/app/auth/enums/roles-types";
+import { Types } from "src/app/messages/toast/enums/types";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: "app-managers-receptionists-search-edit",
@@ -36,14 +35,6 @@ export class ManagersReceptionistsSearchEditComponent implements OnInit {
   faEllipsisH = faEllipsisH;
   faSearch = faSearch;
   faUser = faUser;
-
-  searchForm: FormGroup;
-
-  searchResult: Array<Doctor> = [];
-
-  @ViewChild("content") elementRef: ElementRef;
-  @Output() signOut: EventEmitter<any> = new EventEmitter();
-
   faPlus = faPlus;
   faFlask = faFlask;
   faEdit = faEdit;
@@ -52,77 +43,131 @@ export class ManagersReceptionistsSearchEditComponent implements OnInit {
   faCoins = faCoins;
   faUserEdit = faUserEdit;
   faUsers = faUsers;
+  faUserMd = faUserMd;
+  faCrown = faCrown;
+  faChevronLeft = faChevronLeft;
+  faChevronRight = faChevronRight;
+  faConciergeBell = faConciergeBell;
+  faTrash = faTrash;
 
-  receptionist: ReceptionistDto = {
-    id: 1,
-    salary: 2000,
-    manager: null,
-    ishired: true,
-    hireddate: new Date(),
-    dissmisdate: null,
-    user: {
-      userId: 2,
-      username: "Maria",
-      cpf: "066591174-23",
-    },
-  };
-
-  lab: LabDto = {
-    name: "labA+",
-    id: "757hg92ogw",
-    cnpj: "46588590606/47845",
-    exams: [ExamsEnum.ABDMO, ExamsEnum.HMGRA, ExamsEnum.ANTBI],
-    users: [
-      { userId: 1, username: "Jorge", addin: new Date() },
-      { userId: 2, username: "Lucas", addin: new Date() },
-      { userId: 3, username: "Pedro", addin: new Date() },
-      { userId: 4, username: "Agnelo", addin: new Date() },
-      { userId: 5, username: "Jose", addin: new Date() },
-    ],
-  };
+  searchForm: FormGroup;
+  receptionists: EmployeeDto[] = [];
+  employee: EmployeeDto;
+  page: number = 1;
 
   constructor(
     private fb: FormBuilder,
-    private clientsService: ClientsService
+    private managersService: ManagersService,
+    private ns: NotificationService,
+    private as: AuthService
   ) {}
 
   ngOnInit(): void {
     this.searchForm = this.fb.group({
       search: this.fb.control(""),
     });
+
+    this.managersService.get(1, Role.RECEPT).subscribe({
+      next: (receptionists) => (this.receptionists = receptionists),
+    });
   }
 
   handleSearch() {
-    this.clientsService
-      .search(this.searchForm.value)
-      .subscribe((doctors) => (this.searchResult = doctors));
+    this.managersService
+      .get(1, Role.RECEPT, this.searchForm.value.search)
+      .subscribe((receptionists) => (this.receptionists = receptionists));
   }
 
-  confirm(e) {
-    console.log(e);
-  }
-
-  openModal(modal: any) {
+  remove(modal, employee: EmployeeDto) {
+    this.employee = employee;
     modal.open();
   }
 
-  removeEmployer(modal: any, data?: any) {
-    //this.lab ;
+  edit(modal, employee: EmployeeDto) {
+    this.employee = employee;
     modal.open();
   }
 
-  remove(e) {
-    console.log(e);
+  pageUp() {
+    this.page += 1;
+    this.find(this.page);
   }
 
-  addUserLab(addUserLabModal) {
-    addUserLabModal.open();
-  }
-  addUser(e) {
-    console.log(e);
+  pageDown() {
+    if (this.page === 1) {
+      this.page = 1;
+    } else {
+      this.page -= 1;
+      this.find(this.page);
+    }
   }
 
-  editExams(editExamsModal) {
-    editExamsModal.open();
+  find(page: number) {
+    this.managersService
+      .get(page, Role.RECEPT, this.searchForm.value.search)
+      .subscribe({
+        next: (receptionists: EmployeeDto[]) =>
+          (this.receptionists = receptionists),
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao buscar usuários",
+            type: Types.ERROR,
+          }),
+      });
+  }
+
+  dismiss(event: any) {
+    if (this.checkPassword(event.password, this.as)) {
+      this.managersService
+        .patchStatus(Role.RECEPT, event.id, "dismiss")
+        .subscribe({
+          next: () => {
+            this.find(1);
+            this.ns.notify({
+              message: "Funcionário dispensado",
+              type: Types.WARN,
+            });
+          },
+        });
+    }
+  }
+
+  rehire(id: string) {
+    this.managersService.patchStatus(Role.RECEPT, id, "re-hired").subscribe({
+      next: () => {
+        this.find(1);
+        this.ns.notify({
+          message: "Funcionário recontratado",
+          type: Types.SUCCESS,
+        });
+      },
+    });
+  }
+
+  diff(event: any) {
+    if (this.checkPassword(event.password, this.as)) {
+      this.managersService.diff(Role.RECEPT, event.id, event.diff).subscribe({
+        next: () => {
+          this.find(1);
+          this.ns.notify({
+            message: "Remuneração atualizada",
+            type: Types.SUCCESS,
+          });
+        },
+      });
+    }
+  }
+
+  checkPassword(password: string, authService: AuthService) {
+    const pass = authService.loginDto.password;
+    if (pass !== undefined && pass !== null && password === pass) {
+      return true;
+    } else {
+      this.ns.notify({
+        message: "Realize o login e digite sua senha!",
+        type: Types.ERROR,
+      });
+      return false;
+    }
   }
 }

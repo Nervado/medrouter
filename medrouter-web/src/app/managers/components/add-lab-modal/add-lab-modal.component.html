@@ -25,7 +25,10 @@
       <div class="form-group text-admin">
         <div>
           <label for="name">Nome do Laboratório</label>
-          <app-input-container class="in-container in-container-admin my-2">
+          <app-input-container
+            class="in-container in-container-admin my-2"
+            [mainColor]="mainColor"
+          >
             <input
               formControlName="name"
               type="text"
@@ -43,7 +46,10 @@
         </div>
         <div>
           <label for="cnpj">CNPJ</label>
-          <app-input-container class="in-container in-container-admin my-2">
+          <app-input-container
+            class="in-container in-container-admin my-2"
+            [mainColor]="mainColor"
+          >
             <input
               formControlName="cnpj"
               type="text"
@@ -51,6 +57,7 @@
               autocomplete="off"
               class="in in-admin"
               style="border: 1px solid var(--admin); color: var(--admin);"
+              appCnpjMask
             />
             <div
               class="d-flex mx-2 flex-column justify-content-center align-items-center"
@@ -64,7 +71,7 @@
           <label for="category">Categorias</label>
           <div class="">
             <app-mult-selector-drop-drown
-              formControlName="category"
+              formControlName="labcategory"
               [states]="options"
             ></app-mult-selector-drop-drown>
             <div
@@ -91,7 +98,10 @@
         </div>
 
         <label for="password">Sua senha de admin</label>
-        <app-input-container class="in-container in-container-admin my-2">
+        <app-input-container
+          class="in-container in-container-admin my-2"
+          [mainColor]="mainColor"
+        >
           <input type="text" name="username" hidden autocomplete="username" />
           <input
             formControlName="password"
@@ -114,7 +124,12 @@
     <button type="button" class="bt bt-medium" (click)="modal.close('cancel')">
       Cancelar
     </button>
-    <button type="button" class="bt bt-base" (click)="modal.close('confirm')">
+    <button
+      type="button"
+      class="bt bt-base"
+      (click)="modal.close('confirm')"
+      [disabled]="actionsForm.invalid"
+    >
       Confirmar
     </button>
   </div>

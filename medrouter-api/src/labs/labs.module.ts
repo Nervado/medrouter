@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { LabsController } from './labs.controller';
 import { LabsService } from './labs.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Lab } from './models/lab.entity';
+import { LabsRepository } from './labs.repository';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Lab])],
+  imports: [TypeOrmModule.forFeature([LabsRepository]), UsersModule],
   controllers: [LabsController],
   providers: [LabsService],
 })

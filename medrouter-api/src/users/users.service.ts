@@ -233,11 +233,32 @@ export class UsersService {
     }
   }
 
+  async removeRole(id: any, role: Role): Promise<User> {
+    const user = await this.userRepository.findOne({ userId: id });
+
+    user.role = [...user.role.filter(rol => rol !== role)];
+
+    try {
+      return await this.userRepository.save(user);
+    } catch (error) {
+      throw new InternalServerErrorException('Fail to remove role');
+    }
+  }
+
   setConfirmationLink(token: string): string {
     return `${configService.getServerUrl()}/auth/confirmation/${token}`;
   }
 
   async changePassword(newPass: AuthPasswordChange, user: User): Promise<User> {
     return this.userRepository.changePassword(newPass, user);
+  }
+
+  async findByCpf(cpf: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { cpf } });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 }

@@ -70,8 +70,6 @@ export class OwnersDoctorsDashboardComponent implements OnInit {
   searchForm: FormGroup;
   specialtyForm: FormGroup;
 
-  //specialty
-
   doctors: EmployeeDto[] = [];
   employee: EmployeeDto;
 

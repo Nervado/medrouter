@@ -9,9 +9,8 @@ import {
 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { faLock, faFlask } from "@fortawesome/free-solid-svg-icons";
-import { LabDto } from "../lab-remove-confirmation/dtos/lab.dto";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
-import { ReceptionistDto } from "./dtos/receptionist-dto";
+import { EmployeeDto } from "../../dtos/employee-dto";
 
 @Component({
   selector: "app-managers-receptionists-dismiss-modal",
@@ -24,7 +23,7 @@ export class ManagersReceptionistsDismissModalComponent implements OnInit {
   faLock = faLock;
   faFlask = faFlask;
 
-  @Input() receptionist: ReceptionistDto;
+  @Input() employee: EmployeeDto;
 
   @ViewChild("content") elementRef: ElementRef;
   @Output() signOut: EventEmitter<any> = new EventEmitter();
@@ -37,7 +36,7 @@ export class ManagersReceptionistsDismissModalComponent implements OnInit {
         Validators.required,
         Validators.minLength(6),
       ]),
-      id: this.fb.control(this.receptionist.id, [Validators.required]),
+      id: this.fb.control(this.employee?.id, [Validators.required]),
     });
   }
 
@@ -53,6 +52,9 @@ export class ManagersReceptionistsDismissModalComponent implements OnInit {
             result === "confirm" &&
             this.actionsForm.value.password !== undefined
           ) {
+            this.actionsForm.patchValue({
+              id: this.employee.id,
+            });
             this.signOut.emit(this.actionsForm.value);
           }
 

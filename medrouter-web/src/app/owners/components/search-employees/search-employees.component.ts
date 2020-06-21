@@ -130,11 +130,20 @@ export class SearchEmployeesComponent implements OnInit {
             message: "Usuário excluído",
             type: Types.WARN,
           }),
-        error: () =>
-          this.ns.notify({
-            message: "Falha ao tentar excluir usuário",
-            type: Types.ERROR,
-          }),
+        error: (error) => {
+          if (error.error.statusCode === 403) {
+            this.ns.notify({
+              message: "Usuário possuí funções ativas!",
+              type: Types.ERROR,
+              timer: 3000,
+            });
+          } else {
+            this.ns.notify({
+              message: "Falha ao tentar excluir usuário",
+              type: Types.ERROR,
+            });
+          }
+        },
       });
     }
 
@@ -162,9 +171,6 @@ export class SearchEmployeesComponent implements OnInit {
               type: Types.WARN,
             }),
         });
-    }
-
-    if (event.type === TypeActions.EXCLUDE) {
     }
   }
 

@@ -17,7 +17,7 @@ export class DoctorsService extends Service<
   DoctorDto,
   Doctor,
   DoctorRepository,
-  number,
+  any,
   User,
   string
 > {
@@ -39,14 +39,14 @@ export class DoctorsService extends Service<
   }
 
   async modifyOne(
-    id: number,
+    id: string,
     body: DoctorDto,
     operation: string,
   ): Promise<Doctor> {
     return await this.repo.updateOne(id, body, operation);
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     const doctor = await this.getOne(id);
     try {
       await this.usersService.resetRole(doctor.user.userId);

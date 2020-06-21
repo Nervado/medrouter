@@ -1,7 +1,10 @@
 export class LabDto {
   name: string;
-  id: any;
-  cnpj: any;
-  exams: Array<string>;
-  users: Array<any>;
+  id: string;
+  cnpj: string;
+  exams: string[];
+  labcategory: string[];
+  users?: any[];
+  createdAt?: Date;
+  available?: boolean;
 }

@@ -7,7 +7,6 @@ import { AuthModule } from '../auth/auth.module';
 import { EmailsModule } from '../emails/emails.module';
 import { AvatarsModule } from 'src/avatars/avatars.module';
 import { AddressModule } from 'src/address/address.module';
-//import { AvatarsModule } from 'src/avatars/avatars.module';
 
 @Module({
   imports: [

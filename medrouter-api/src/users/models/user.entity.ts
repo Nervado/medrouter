@@ -9,6 +9,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  ManyToOne,
 } from 'typeorm';
 
 import { Avatar } from '../../avatars/models/avatar.entity';
@@ -19,6 +20,7 @@ import * as bcrypt from 'bcrypt';
 import { Address } from '../../address/models/address.entity';
 import { Role } from '../../auth/enums/role.enum';
 import { Sex } from '../enuns/sex.enum';
+import { Lab } from 'src/labs/models/lab.entity';
 
 @Entity('user')
 @Unique(['email'])
@@ -81,6 +83,14 @@ export class User extends BaseEntity {
   @Exclude()
   @DeleteDateColumn({ type: 'timestamp' })
   deletedAt: Date;
+
+  @Exclude()
+  @ManyToOne(
+    type => Lab,
+    lab => lab.users,
+    { nullable: true },
+  )
+  lab: Lab;
 
   @Expose()
   get fullname() {

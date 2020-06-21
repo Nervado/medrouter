@@ -14,7 +14,7 @@ import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
 
 @Injectable()
 export class ManagerService
-  implements ServiceInterface<Manager, number, ManagerDto, string> {
+  implements ServiceInterface<Manager, any, ManagerDto, string> {
   constructor(
     @InjectRepository(ManagerRepository)
     private managerRepository: ManagerRepository,
@@ -28,7 +28,7 @@ export class ManagerService
   async getAll(search: SearchFilterDto): Promise<Manager[]> {
     return this.managerRepository.getAll(search);
   }
-  async getOne(id: number): Promise<Manager> {
+  async getOne(id: string): Promise<Manager> {
     return this.managerRepository.findOne({ where: { id } });
   }
 
@@ -43,23 +43,23 @@ export class ManagerService
     return await this.managerRepository.createOne(body, user);
   }
 
-  async updateOne(id: number, body: ManagerDto): Promise<Manager> {
+  async updateOne(id: string, body: ManagerDto): Promise<Manager> {
     return this.managerRepository.updateOne(id, body);
   }
 
   async modifyOne(
-    id: number,
+    id: string,
     body: ManagerDto,
     operation: string,
   ): Promise<Manager> {
     return await this.managerRepository.updateOne(id, body, operation);
   }
 
-  async deleteOne(id: number): Promise<void> {
+  async deleteOne(id: string): Promise<void> {
     await this.managerRepository.softDelete({ id });
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     const manager = await this.getOne(id);
     try {
       await this.usersService.resetRole(manager.user.userId);

@@ -15,6 +15,7 @@ import {
   faChevronLeft,
   faChevronRight,
   faUserCog,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { EmployeeDto } from "../../dtos/employee-dto";
@@ -44,6 +45,7 @@ export class OwnersManagersDasboardComponent implements OnInit {
   faUserCog = faUserCog;
   faChevronLeft = faChevronLeft;
   faChevronRight = faChevronRight;
+  faTrash = faTrash;
 
   searchForm: FormGroup;
   managers: Array<EmployeeDto> = [];
