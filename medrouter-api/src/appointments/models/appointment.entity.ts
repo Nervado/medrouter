@@ -14,6 +14,7 @@ import { IsNotEmpty } from 'class-validator';
 import { AppointmentStatus } from '../enums/appointment.enum';
 import { Client } from 'src/client/models/client.entity';
 import { Doctor } from 'src/doctors/models/doctor.entity';
+import { Available } from 'src/doctors/enums/available.enum';
 
 @Entity('appointment')
 export class Appointment extends BaseEntity {
@@ -23,6 +24,10 @@ export class Appointment extends BaseEntity {
   @IsNotEmpty()
   @Column()
   date: Date;
+
+  @IsNotEmpty()
+  @Column()
+  hour: Available;
 
   @IsNotEmpty()
   @Column({

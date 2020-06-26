@@ -25,6 +25,5 @@ export class ProfilePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.link[1] = this.authService.getUser().user.userId;
-    console.log(this.link);
   }
 }

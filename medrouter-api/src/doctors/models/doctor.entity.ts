@@ -20,6 +20,7 @@ import { Specialty } from '../enums/specialty.enum';
 import { Appointment } from 'src/appointments/models/appointment.entity';
 import { Prescription } from 'src/prescriptions/models/prescription.entity';
 import { Schedule } from './schedule.entity';
+import { scheduled } from 'rxjs';
 
 @Entity('doctor')
 export class Doctor extends BaseEntity {
@@ -57,14 +58,18 @@ export class Doctor extends BaseEntity {
   )
   appointment: Appointment[];
 
-  @ManyToOne(() => Schedule)
-  schedule: Schedule[];
+  @OneToMany(
+    type => Schedule,
+    schedule => schedule.doctor,
+    { cascade: true, nullable: true },
+  )
+  schedules: Schedule[];
 
   @OneToMany(
     () => Prescription,
     prescription => prescription.doctor,
   )
-  prescription: Appointment[];
+  prescription: Prescription[];
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', nullable: true })

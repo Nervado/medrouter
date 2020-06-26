@@ -15,6 +15,9 @@ import { Types } from "../messages/toast/enums/types";
 import { Role } from "./enums/roles-types";
 import { NewAuth } from "./interfaces/newauth.dto";
 import { SignOutDto } from "../profile/models/sign-out.dto";
+import { RolesIds } from "./dto/roles-ids.dto";
+import { isThursday } from "date-fns";
+import { ro } from "date-fns/locale";
 
 @Injectable({
   providedIn: "root",
@@ -23,6 +26,7 @@ export class AuthService {
   user: User;
   defaultRoute: string;
   loginDto: Login;
+  rolesIds: RolesIds[] = [];
 
   constructor(private http: HttpClient, private router: Router) {
     const usersaved: User = JSON.parse(localStorage.getItem("user"));
@@ -67,6 +71,16 @@ export class AuthService {
               localStorage.setItem("user", JSON.stringify(this.user));
               localStorage.setItem("login", JSON.stringify(this.loginDto));
             }
+
+            this.user.user.role.forEach((rol) =>
+              this.getRulesId(rol).subscribe({
+                complete: () =>
+                  localStorage.setItem(
+                    "rulesIds",
+                    JSON.stringify(this.rolesIds)
+                  ),
+              })
+            );
           }
         )
       );
@@ -122,5 +136,26 @@ export class AuthService {
           console.log("Update user", User);
         })
       );
+  }
+
+  getRulesId(rol: Role): Observable<any> {
+    const query = rol === Role.RECEPT ? `receptionist` : rol;
+    return this.http
+      .get<any>(`${MEDROUTER_API}/${query}s/${this.user.user.userId}`)
+      .pipe(
+        tap((profile: any) => {
+          this.rolesIds.push({ role: rol, id: profile.id });
+        })
+      );
+  }
+
+  public getRuleId(role: Role): any {
+    if (this.rolesIds.length > 0) {
+      return this.rolesIds.filter((rol) => rol.role === role)[0]?.id;
+    } else {
+      return JSON.parse(localStorage.getItem("rulesIds")).filter(
+        (rol) => rol.role === role
+      )[0]?.id;
+    }
   }
 }

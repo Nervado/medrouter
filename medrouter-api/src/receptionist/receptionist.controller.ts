@@ -22,6 +22,8 @@ import { Allow } from 'src/auth/decorators/alow.decorator';
 import { ReceptionistDto } from './dto/receptionist.dto';
 import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
 import { Receptionist } from './models/receptionist.entity';
+import { GetUser } from 'src/users/decorators/get-user.decorator';
+import { User } from 'src/users/models/user.entity';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('receptionists')
@@ -47,10 +49,10 @@ export class ReceptionistController {
   }
 
   @Get('/:id')
-  @Allow('admin', 'owner')
+  @Roles('recept')
   @UseInterceptors(ClassSerializerInterceptor)
-  get(@Param('id') id: string): Promise<Receptionist> {
-    return this.receptionistService.getOne(id);
+  get(@GetUser() user: User, @Param('id') id: string): Promise<Receptionist> {
+    return this.receptionistService.getOne(id, user);
   }
 
   @Patch('/:id/status')

@@ -67,11 +67,11 @@ export const Buttons = {
     { icon: faCalendarPlus, path: "../receptionists/create-appointment" },
   ],
   doctor: [
-    { icon: faFileMedical, path: "../doctors/create-prescription" },
-    { icon: faFileMedicalAlt, path: "../doctors/exams" },
-    { icon: faBookMedical, path: "../doctors/history" },
-    { icon: faClock, path: "../doctors/schedule" },
-    { icon: faCalendarPlus, path: "../doctors/create-schedule" },
+    { icon: faFileMedical, path: "create-prescription" },
+    { icon: faFileMedicalAlt, path: "exams" },
+    { icon: faBookMedical, path: "history" },
+    { icon: faClock, path: "schedules" },
+    { icon: faCalendarPlus, path: "create-schedule" },
   ],
   manager: [
     // { icon: faChartBar, path: "../managers/dashboard" },

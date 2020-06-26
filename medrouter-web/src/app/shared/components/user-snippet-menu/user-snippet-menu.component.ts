@@ -12,6 +12,9 @@ import { Colors } from "src/app/messages/toast/enums/colors";
 import { ActivatedRoute } from "@angular/router";
 import { DefaultRoutes } from "src/app/auth/enums/default-routes";
 import { UserLogged } from "src/app/profile/models/logged-user";
+import { AuthService } from "src/app/auth/auth.service";
+import { NotificationService } from "src/app/messages/notification.service";
+import { Types } from "src/app/messages/toast/enums/types";
 //import { User } from "src/app/auth/models/user.model";
 
 @Component({
@@ -27,19 +30,28 @@ export class UserSnippetMenuComponent implements OnInit {
   isVerify: boolean = false;
   timer: any;
   roles: Role[] = [];
+  rolesIds: any[];
 
   @Input() mainColor: Colors = Colors.MANAGER;
   @Input() user: UserLogged = null;
 
   hoverStyle: string = "hover-base : true";
 
-  constructor(private activeRoute: ActivatedRoute) {}
+  constructor(
+    private activeRoute: ActivatedRoute,
+    private as: AuthService,
+    private ns: NotificationService
+  ) {}
 
   ngOnInit(): void {
     if (this.roles[0] !== Role.USER) {
       this.isVerify = true;
       this.setHoverClass();
       this.roles = this.user.role;
+      this.roles.forEach((role) => {
+        MenuLinks[role].id = this.as.getRuleId(role);
+      });
+      console.log(MenuLinks);
     } else {
       this.roles = [];
     }

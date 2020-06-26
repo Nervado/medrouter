@@ -97,6 +97,7 @@ export class UserRepository extends Repository<User> {
     const pageNumber: number = page ? page * 10 - 10 : 0;
 
     const query = this.createQueryBuilder('user');
+
     if (username) {
       query.andWhere(`username ILIKE '%${username}%'`);
     }

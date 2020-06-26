@@ -37,13 +37,6 @@ export class Manager extends BaseEntity {
   @JoinColumn()
   user: User;
 
-  @OneToMany(
-    type => Receptionist,
-    receptionist => receptionist.manager,
-  )
-  @JoinColumn()
-  receptionist: Receptionist[];
-
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', nullable: true })
   createdAt: Date;

@@ -29,7 +29,11 @@ export const MenuLinks = {
     path: DefaultRoutes.client,
     label: "Paciente",
   },
-  doctor: { icon: faUserMd, path: DefaultRoutes.doctor, label: "Médico" },
+  doctor: {
+    icon: faUserMd,
+    path: [DefaultRoutes.doctor, "id"],
+    label: "Médico",
+  },
   recept: {
     icon: faConciergeBell,
     path: DefaultRoutes.recept,

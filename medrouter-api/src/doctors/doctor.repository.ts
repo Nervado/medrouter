@@ -11,10 +11,12 @@ import { DoctorDto } from './dto/doctor.dto';
 import { RepositoryInterface } from '../utils/base-repository.interface';
 import { Role } from 'src/auth/enums/role.enum';
 import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
+import { Schedule } from './models/schedule.entity';
+import { ScheduleDto } from './dto/schedule.dto';
 
 @EntityRepository(Doctor)
 export class DoctorRepository extends Repository<Doctor>
-  implements RepositoryInterface<Doctor, number, DoctorDto, User, string> {
+  implements RepositoryInterface<Doctor, any, DoctorDto, User, string> {
   async createOne(doctorDto: DoctorDto, user: User): Promise<Doctor> {
     const doctor = new Doctor();
 
@@ -78,11 +80,11 @@ export class DoctorRepository extends Repository<Doctor>
     return doctors;
   }
 
-  async getById(id: number) {
+  async getById(id: string) {
     return this.findOne(id);
   }
 
-  async deleteOne(id: number) {
+  async deleteOne(id: string) {
     this.deleteOne(id);
   }
 
@@ -139,5 +141,22 @@ export class DoctorRepository extends Repository<Doctor>
         throw new BadRequestException('Operation fail', error);
       }
     }
+  }
+
+  /**
+   *
+   * @param schedules
+   *
+   * @param doctor
+   */
+
+  async saveSchedule(schedules: Schedule[], doctor: Doctor): Promise<boolean> {
+    doctor.schedules = [...doctor.schedules, ...schedules];
+    try {
+      await doctor.save();
+    } catch (error) {
+      throw new InternalServerErrorException('Fail to create Schedule');
+    }
+    return true;
   }
 }

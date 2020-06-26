@@ -2,6 +2,7 @@ import {
   Injectable,
   BadRequestException,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Service } from 'src/utils/generics.service';
 import { ReceptionistDto } from './dto/receptionist.dto';
@@ -52,5 +53,17 @@ export class ReceptionistService extends Service<
     } catch (error) {
       throw new InternalServerErrorException('Fail operation:delete');
     }
+  }
+
+  async getOne(userId: any, user?: User): Promise<Receptionist> {
+    if (parseInt(userId) !== user.userId) {
+      throw new UnauthorizedException('Not Allowed');
+    }
+
+    const query = this.repo.createQueryBuilder('receptionist');
+
+    query.andWhere('user.userId = :userId', { userId });
+
+    return await query.leftJoinAndSelect('receptionist.user', 'user').getOne();
   }
 }

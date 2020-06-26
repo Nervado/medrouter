@@ -16,6 +16,10 @@ import { Months } from "../../enums/months.enum";
 import { WeekDays } from "../../enums/week-days";
 import { DaySchedule } from "../../model/schedule";
 import { EscheduleView } from "../../model/schedule.view";
+import { DoctorsService } from "../../doctors.service";
+import { NotificationService } from "src/app/messages/notification.service";
+import { ScheduleDto } from "../../dtos/schedule-dto";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
   selector: "app-doctors-create-schedule",
@@ -39,11 +43,36 @@ export class DoctorsCreateScheduleComponent implements OnInit {
   today: Date;
 
   schedules: DaySchedule[];
-  constructor() {}
+  constructor(private ds: DoctorsService, private ns: NotificationService) {}
 
   ngOnInit(): void {
+    this.ds.get().subscribe({
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao carregar módulo",
+          type: Types.ERROR,
+        }),
+
+      next: (doctor) => this.ds.setDoctor(doctor),
+    });
+
     this.date = new Date();
     this.today = this.date;
+
+    this.ds
+      .getSchedules({
+        date: subDays(this.date, this.date.getDay()).toISOString(),
+        page: 1,
+      })
+      .subscribe({
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao obter agenda",
+            type: Types.ERROR,
+          }),
+        next: (schedules: DaySchedule[]) => (this.schedules = schedules),
+      });
+
     this.schedules = [
       {
         date: new Date(),
@@ -71,7 +100,7 @@ export class DoctorsCreateScheduleComponent implements OnInit {
       },
     ];
     this.days = this.setDays(this.date);
-    console.log(this.days, this.schedules);
+    //console.log(this.days, this.schedules);
   }
 
   mark(e, g) {
@@ -135,5 +164,43 @@ export class DoctorsCreateScheduleComponent implements OnInit {
     });
 
     console.log(this.schedules);
+  }
+
+  create() {
+    const schedules = this.schedules.map((schedule) => {
+      return {
+        date: schedule.date,
+        availablehours: [...schedule.hours.map((h) => h.hour)],
+      };
+    });
+
+    this.ds.createSchedule(this.ds.doctor.id, [...schedules]).subscribe({
+      next: (schedules: ScheduleDto[]) =>
+        (this.schedules = this.setSchedules(schedules)),
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao criar agenda",
+          type: Types.ERROR,
+        }),
+      complete: () =>
+        this.ns.notify({
+          message: "Agenda criada com sucesso",
+          type: Types.SUCCESS,
+        }),
+    });
+  }
+
+  setSchedules(schedules: ScheduleDto[]): DaySchedule[] {
+    return schedules.map((el) => {
+      return {
+        date: el.date,
+        hours: el.availablehours.map((hour) => {
+          return {
+            hour: hour,
+            busy: false,
+          };
+        }),
+      };
+    });
   }
 }

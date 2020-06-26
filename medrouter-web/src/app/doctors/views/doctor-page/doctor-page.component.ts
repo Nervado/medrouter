@@ -1,6 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { Role } from "src/app/auth/enums/roles-types";
+import { DoctorsService } from "../../doctors.service";
+import { AuthService } from "src/app/auth/auth.service";
+import { NotificationService } from "src/app/messages/notification.service";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
   selector: "app-doctor-page",
@@ -12,7 +16,11 @@ export class DoctorPageComponent implements OnInit {
 
   role: Role = Role.DOCTOR;
 
-  constructor() {}
+  link: any = ["/doctors", null];
 
-  ngOnInit(): void {}
+  constructor(private as: AuthService) {}
+
+  ngOnInit(): void {
+    this.link[1] = this.as.getRuleId(Role.DOCTOR);
+  }
 }

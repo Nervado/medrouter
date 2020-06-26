@@ -16,7 +16,7 @@ import { Exclude } from 'class-transformer';
 import { User } from '../../users/models/user.entity';
 import { Manager } from '../../manager/models/manager.entity';
 
-@Entity({ name: 'Receptionist' })
+@Entity('receptionist')
 export class Receptionist extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -36,13 +36,6 @@ export class Receptionist extends BaseEntity {
   @OneToOne(type => User, { eager: true, cascade: true })
   @JoinColumn()
   user: User;
-
-  @ManyToOne(
-    () => Manager,
-    manager => manager.receptionist,
-  )
-  @JoinColumn()
-  manager: Manager;
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp' })

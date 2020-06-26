@@ -1,12 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  ManyToOne,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Available } from '../enums/available.enum';
-@Entity()
-export class Schedule {
+import { Doctor } from './doctor.entity';
+import { Appointment } from 'src/appointments/models/appointment.entity';
+@Entity('schedule')
+export class Schedule extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  date: string;
+  date: Date;
 
   @Column({
     type: 'enum',
@@ -22,4 +32,11 @@ export class Schedule {
     array: true,
   })
   availablehours: Available[];
+
+  @ManyToOne(
+    type => Doctor,
+    doctor => doctor.schedules,
+    { nullable: true },
+  )
+  doctor: Doctor;
 }

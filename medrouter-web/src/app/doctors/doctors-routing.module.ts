@@ -13,6 +13,11 @@ import { DoctorsHistoryClientsDashboardComponent } from "./components/doctors-hi
 const routes: Routes = [
   {
     path: "",
+    redirectTo: "/",
+    pathMatch: "full",
+  },
+  {
+    path: ":id",
     component: DoctorPageComponent,
     children: [
       {
@@ -29,7 +34,7 @@ const routes: Routes = [
         component: DoctorsCreateScheduleComponent,
       },
       {
-        path: "schedule",
+        path: "schedules",
         component: ScheduleComponent,
       },
       {
