@@ -20,6 +20,7 @@ import { DoctorsService } from "../../doctors.service";
 import { NotificationService } from "src/app/messages/notification.service";
 import { ScheduleDto } from "../../dtos/schedule-dto";
 import { Types } from "src/app/messages/toast/enums/types";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-doctors-create-schedule",
@@ -41,37 +42,41 @@ export class DoctorsCreateScheduleComponent implements OnInit {
   days: EscheduleView[];
   date: Date;
   today: Date;
+  sunday: string;
+  saturday: string;
 
   schedules: DaySchedule[];
-  constructor(private ds: DoctorsService, private ns: NotificationService) {}
+  constructor(
+    private ds: DoctorsService,
+    private ns: NotificationService,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.ds.get().subscribe({
-      error: () =>
-        this.ns.notify({
-          message: "Falha ao carregar módulo",
-          type: Types.ERROR,
-        }),
-
-      next: (doctor) => this.ds.setDoctor(doctor),
-    });
-
     this.date = new Date();
     this.today = this.date;
+    this.sunday = subDays(this.today, this.date.getDay()).toISOString();
+    this.saturday = addDays(
+      subDays(this.today, this.date.getDay()),
+      6
+    ).toISOString();
 
-    this.ds
-      .getSchedules({
-        date: subDays(this.date, this.date.getDay()).toISOString(),
-        page: 1,
-      })
-      .subscribe({
-        error: () =>
-          this.ns.notify({
-            message: "Falha ao obter agenda",
-            type: Types.ERROR,
+    this.activatedRoute.parent.params.subscribe({
+      next: (params) =>
+        this.ds
+          .getSchedules(params["id"], {
+            date: this.sunday,
+            endDate: this.saturday,
+          })
+          .subscribe({
+            error: () =>
+              this.ns.notify({
+                message: "Falha ao obter agenda",
+                type: Types.ERROR,
+              }),
+            next: (schedules: DaySchedule[]) => (this.schedules = schedules),
           }),
-        next: (schedules: DaySchedule[]) => (this.schedules = schedules),
-      });
+    });
 
     this.schedules = [
       {

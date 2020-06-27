@@ -47,15 +47,17 @@ export class DoctorsService {
     this.doctor = doctor;
   }
 
-  getSchedules(search: SearchScheduleDto): Observable<DaySchedule[]> {
-    const { page, date, endDate, username } = search;
+  getSchedules(
+    id: string,
+    search: SearchScheduleDto
+  ): Observable<DaySchedule[]> {
+    const { date, endDate, username } = search;
 
     let query = endDate ? `&endDate=${endDate}` : "";
     query = username ? query + `&username=${username}` : query;
 
     return this.http.get<DaySchedule[]>(
-      `${MEDROUTER_API}/doctors/${this.doctor?.id}/schedules?page=${page}&date=${date}
-      ${query}`
+      `${MEDROUTER_API}/doctors/${id}/schedules?date=${date}${query}`
     );
   }
 }

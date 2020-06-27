@@ -135,9 +135,7 @@ export class DoctorsService extends Service<
   ): Promise<ScheduleDto[]> {
     const query = Schedule.createQueryBuilder('schedule');
 
-    const { username, date, page, endDate } = search;
-
-    const pageNumber: number = page ? page * 7 - 7 : 0;
+    const { username, date, endDate } = search;
 
     if (id) {
       query.andWhere(`doctor.id = :id`, { id });
@@ -148,18 +146,21 @@ export class DoctorsService extends Service<
     }
 
     if (endDate) {
-      query.andWhere('date >= :date', { date });
-      query.andWhere('date < :date', { date: endDate });
+      const date_ = new Date(new Date(date).setHours(0, 0, 0, 0));
+      const endDate_ = new Date(new Date(endDate).setHours(0, 0, 0, 0));
+      query.andWhere('date >= :date', { date: date_ });
+      query.andWhere('date <= :endDate', { endDate: endDate_ });
     } else {
-      query.andWhere(`date = :date`, { date });
+      const date_ = new Date(new Date(date).setHours(0, 0, 0, 0));
+      query.andWhere(`date = :date`, { date: date_ });
     }
 
     const founds = await query
       .leftJoinAndSelect('schedule.doctor', 'doctor')
       .leftJoinAndSelect('doctor.user', 'user')
-      .skip(pageNumber)
-      .take(7)
       .getMany();
+
+    console.log(founds);
 
     const schedules = [
       ...founds.map(sc => {

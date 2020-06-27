@@ -11,10 +11,6 @@ export class SearchScheduleDto {
   @IsDateString()
   date?: Date;
 
-  @IsNotEmpty()
-  @IsNumberString()
-  page?: number;
-
   @IsOptional()
   @IsString()
   username?: string;
