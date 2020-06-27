@@ -9,7 +9,7 @@ import {
   faSave,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { subDays, addDays, isSameDay } from "date-fns";
+import { subDays, addDays, isSameDay, parseISO } from "date-fns";
 
 import { Hour } from "../../enums/hours.enum";
 import { Months } from "../../enums/months.enum";
@@ -53,63 +53,38 @@ export class DoctorsCreateScheduleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.date = new Date();
-    this.today = this.date;
-    this.sunday = subDays(this.today, this.date.getDay()).toISOString();
-    this.saturday = addDays(
-      subDays(this.today, this.date.getDay()),
-      6
-    ).toISOString();
-
+    this.today = new Date();
     this.activatedRoute.parent.params.subscribe({
       next: (params) =>
-        this.ds
-          .getSchedules(params["id"], {
-            date: this.sunday,
-            endDate: this.saturday,
-          })
-          .subscribe({
-            error: () =>
-              this.ns.notify({
-                message: "Falha ao obter agenda",
-                type: Types.ERROR,
-              }),
-            next: (schedules: DaySchedule[]) => (this.schedules = schedules),
-          }),
+        this.getSchedule(
+          params["id"],
+          this.getSunday(this.today),
+          this.getSaturday(this.today)
+        ),
     });
-
-    this.schedules = [
-      {
-        date: new Date(),
-        hours: [
-          { hour: "08:00", busy: true },
-          { hour: "16:00", busy: true },
-        ],
-      },
-      {
-        date: addDays(new Date(), 1),
-        hours: [
-          { hour: "14:00", busy: false },
-          { hour: "08:00", busy: false },
-          { hour: "16:00", busy: false },
-        ],
-      },
-      {
-        date: addDays(new Date(), 3),
-        hours: [
-          { hour: "08:00", busy: true },
-          { hour: "16:00", busy: true },
-          { hour: "08:00", busy: true },
-          { hour: "16:00", busy: true },
-        ],
-      },
-    ];
-    this.days = this.setDays(this.date);
-    //console.log(this.days, this.schedules);
   }
 
   mark(e, g) {
     console.log(e, g);
+  }
+
+  getSchedule(id: string, date: Date | string, endDate?: Date | string) {
+    this.ds
+      .getSchedules(id, {
+        date,
+        endDate,
+      })
+      .subscribe({
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao obter agenda",
+            type: Types.ERROR,
+          }),
+        next: (schedules: DaySchedule[]) => {
+          this.schedules = [...schedules];
+          this.days = this.setDays(this.today);
+        },
+      });
   }
 
   setDays(ref: Date): Array<any> {
@@ -120,11 +95,15 @@ export class DoctorsCreateScheduleComponent implements OnInit {
         date: date,
         name: day,
         day: date.getDate(),
+
         hours: this.hours = Hour.map((el) => {
           const scheduled = { available: true, busy: false };
           this.schedules.find((s) =>
             s.hours.find((h) => {
-              if (h.hour === el && isSameDay(s.date, date)) {
+              if (
+                h.hour === el &&
+                isSameDay(parseISO(s.date.toString()), date)
+              ) {
                 scheduled["available"] = false;
                 scheduled["busy"] = h.busy;
               }
@@ -146,13 +125,21 @@ export class DoctorsCreateScheduleComponent implements OnInit {
   }
 
   nextWeek() {
-    this.date = addDays(this.date, 7);
-    this.days = this.setDays(this.date);
+    this.today = addDays(this.today, 7);
+    this.updateSchedule();
   }
 
   prevWeek() {
-    this.date = subDays(this.date, 7);
-    this.days = this.setDays(this.date);
+    this.today = subDays(this.today, 7);
+    this.updateSchedule();
+  }
+
+  updateSchedule() {
+    this.getSchedule(
+      this.activatedRoute.parent.snapshot.params["id"],
+      this.getSunday(this.today),
+      this.getSaturday(this.today)
+    );
   }
 
   setBusy(date: Date, hour: string, available: boolean): boolean {
@@ -167,8 +154,6 @@ export class DoctorsCreateScheduleComponent implements OnInit {
         hours: el.hours.filter((el) => !el.available).map((el) => el),
       };
     });
-
-    console.log(this.schedules);
   }
 
   create() {
@@ -179,20 +164,24 @@ export class DoctorsCreateScheduleComponent implements OnInit {
       };
     });
 
-    this.ds.createSchedule(this.ds.doctor.id, [...schedules]).subscribe({
-      next: (schedules: ScheduleDto[]) =>
-        (this.schedules = this.setSchedules(schedules)),
-      error: () =>
-        this.ns.notify({
-          message: "Falha ao criar agenda",
-          type: Types.ERROR,
-        }),
-      complete: () =>
-        this.ns.notify({
-          message: "Agenda criada com sucesso",
-          type: Types.SUCCESS,
-        }),
-    });
+    this.ds
+      .createSchedule(this.activatedRoute.parent.snapshot.params["id"], [
+        ...schedules,
+      ])
+      .subscribe({
+        next: (schedules: ScheduleDto[]) =>
+          (this.schedules = this.setSchedules(schedules)),
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao criar agenda",
+            type: Types.ERROR,
+          }),
+        complete: () =>
+          this.ns.notify({
+            message: "Agenda criada com sucesso",
+            type: Types.SUCCESS,
+          }),
+      });
   }
 
   setSchedules(schedules: ScheduleDto[]): DaySchedule[] {
@@ -207,5 +196,16 @@ export class DoctorsCreateScheduleComponent implements OnInit {
         }),
       };
     });
+  }
+
+  getSunday(date: Date): string {
+    return subDays(date, date.getDay()).toISOString();
+  }
+
+  getSaturday(date: Date): string {
+    return (this.saturday = addDays(
+      subDays(date, date.getDay()),
+      6
+    ).toISOString());
   }
 }

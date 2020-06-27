@@ -18,6 +18,8 @@ import { Schedule } from './models/schedule.entity';
 import { SearchScheduleDto } from './dto/searchSchedule.dto';
 import { throwError } from 'rxjs';
 import { AppointmentsService } from 'src/appointments/appointments.service';
+import { getMidnight } from 'src/utils/getMidnight';
+import { Appointment } from 'src/appointments/models/appointment.entity';
 @Injectable()
 export class DoctorsService extends Service<
   DoctorDto,
@@ -133,8 +135,42 @@ export class DoctorsService extends Service<
     id?: string,
     search?: SearchScheduleDto,
   ): Promise<ScheduleDto[]> {
-    const query = Schedule.createQueryBuilder('schedule');
+    try {
+      const founds = await this.searchMany(id, search);
 
+      const searchAppointments = await this.as.searchMany(id, search);
+
+      const schedules = [
+        ...founds.map(sc => {
+          const hours = sc.availablehours.map(hour => {
+            const find = searchAppointments.find(
+              appointment =>
+                sc.date === appointment.date &&
+                sc.availablehours.find(available => available === hour),
+            );
+
+            return { hour: hour, busy: find ? true : false };
+          });
+
+          return {
+            id: sc.id,
+            date: sc.date,
+            hours,
+          };
+        }),
+      ];
+
+      return schedules;
+    } catch (error) {
+      throw new InternalServerErrorException('Fail to retrive schedule');
+    }
+  }
+
+  async searchMany(
+    id?: string,
+    search?: SearchScheduleDto,
+  ): Promise<Schedule[]> {
+    const query = Schedule.createQueryBuilder('schedule');
     const { username, date, endDate } = search;
 
     if (id) {
@@ -146,44 +182,20 @@ export class DoctorsService extends Service<
     }
 
     if (endDate) {
-      const date_ = new Date(new Date(date).setHours(0, 0, 0, 0));
-      const endDate_ = new Date(new Date(endDate).setHours(0, 0, 0, 0));
-      query.andWhere('date >= :date', { date: date_ });
-      query.andWhere('date <= :endDate', { endDate: endDate_ });
+      query.andWhere('date >= :date', { date: getMidnight(date) });
+      query.andWhere('date <= :endDate', {
+        endDate: getMidnight(endDate),
+      });
     } else {
-      const date_ = new Date(new Date(date).setHours(0, 0, 0, 0));
-      query.andWhere(`date = :date`, { date: date_ });
+      query.andWhere('date = :date', { date: getMidnight(date) });
     }
 
-    const founds = await query
+    return await query
       .leftJoinAndSelect('schedule.doctor', 'doctor')
       .leftJoinAndSelect('doctor.user', 'user')
+      .orderBy('date', 'ASC')
       .getMany();
-
-    console.log(founds);
-
-    const schedules = [
-      ...founds.map(sc => {
-        const hours = sc.availablehours.map(hour => {
-          const find = this.as.searchOne({
-            doctorId: id,
-            hour: hour,
-            date: sc.date,
-          });
-          return { hour: hour, busy: find ? true : false };
-        });
-
-        return {
-          id: sc.id,
-          date: sc.date,
-          hours,
-        };
-      }),
-    ];
-
-    return schedules;
   }
-
   async getOne(userId: any, user?: User): Promise<Doctor> {
     if (parseInt(userId) !== user.userId) {
       throw new UnauthorizedException('Not Allowed');
