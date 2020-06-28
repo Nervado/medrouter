@@ -25,6 +25,12 @@ export class DoctorsService {
     });
   }
 
+  patchSchedules(id: string, schedules: ScheduleDto[]): Observable<void> {
+    return this.http.patch<void>(`${MEDROUTER_API}/doctors/${id}/schedules`, {
+      schedules: schedules,
+    });
+  }
+
   createSchedule(
     id: string,
     schedules: ScheduleDto[]

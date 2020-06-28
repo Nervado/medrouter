@@ -99,8 +99,6 @@ export class DoctorsController {
     @Param('id') id: string,
     @Query(ValidationPipe) search: SearchScheduleDto,
   ): Promise<ScheduleDto[]> {
-    console.log(search);
-
     return this.doctorService.getSchedules(id, search);
   }
 
@@ -111,7 +109,18 @@ export class DoctorsController {
     @Param('id') id: string,
     @GetUser() user: User,
     @Body(ValidationPipe) body: Schedules,
-  ): Promise<Schedule[]> {
+  ): Promise<void> {
     return this.doctorService.createSchedule(body, id, user);
+  }
+
+  @Patch('/:id/schedules')
+  @Roles('doctor')
+  @UseInterceptors(ClassSerializerInterceptor)
+  updateSchedule(
+    @Param('id') id: string,
+    @GetUser() user: User,
+    @Body(ValidationPipe) body: Schedules,
+  ): Promise<void> {
+    return this.doctorService.updateSchedules(body, id, user);
   }
 }

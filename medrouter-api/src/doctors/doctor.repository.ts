@@ -17,6 +17,9 @@ import { ScheduleDto } from './dto/schedule.dto';
 @EntityRepository(Doctor)
 export class DoctorRepository extends Repository<Doctor>
   implements RepositoryInterface<Doctor, any, DoctorDto, User, string> {
+
+
+
   async createOne(doctorDto: DoctorDto, user: User): Promise<Doctor> {
     const doctor = new Doctor();
 

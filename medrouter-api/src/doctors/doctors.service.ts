@@ -20,6 +20,7 @@ import { throwError } from 'rxjs';
 import { AppointmentsService } from 'src/appointments/appointments.service';
 import { getMidnight } from 'src/utils/getMidnight';
 import { Appointment } from 'src/appointments/models/appointment.entity';
+import { Available } from './enums/available.enum';
 @Injectable()
 export class DoctorsService extends Service<
   DoctorDto,
@@ -73,16 +74,10 @@ export class DoctorsService extends Service<
     schedules: Schedules,
     id: string,
     user: User,
-  ): Promise<Schedule[]> {
+  ): Promise<void> {
     const doctor = await this.repo.getById(id);
 
-    if (!doctor) {
-      throw new BadRequestException('Doctor dont exists!');
-    }
-
-    if (doctor.user.userId !== user.userId) {
-      throw new UnauthorizedException('You dont have permission!');
-    }
+    this.checkDoctor(doctor, user);
 
     const found = await this.checkIfSchedulesExists(
       id,
@@ -94,26 +89,30 @@ export class DoctorsService extends Service<
     }
 
     // if no, create a schedule for each given date
-    const newSchedules = [];
+    let newSchedules = [];
+
+    const now = new Date();
 
     schedules.schedules.forEach(async schedule => {
-      const newSchedule = new Schedule();
+      if (schedule?.date?.getTime() > now.getTime()) {
+        const newSchedule = new Schedule();
 
-      newSchedule.date = new Date(new Date(schedule.date).setHours(0, 0, 0, 0));
+        newSchedule.date = new Date(
+          new Date(schedule.date).setHours(0, 0, 0, 0),
+        );
 
-      newSchedule.availablehours = [...schedule.availablehours];
+        newSchedule.availablehours = [...schedule.availablehours];
 
-      newSchedule.doctor = doctor;
+        newSchedule.doctor = doctor;
 
-      try {
-        await newSchedule.save();
-        newSchedules.push(newSchedule);
-      } catch (error) {
-        throw new InternalServerErrorException('Fail to create schedule');
+        try {
+          await newSchedule.save();
+          newSchedules = [newSchedule, ...newSchedules];
+        } catch (error) {
+          throw new InternalServerErrorException('Fail to create schedule');
+        }
       }
     });
-
-    return newSchedules;
   }
 
   async checkIfSchedulesExists(id: string, date: Date): Promise<any> {
@@ -166,6 +165,67 @@ export class DoctorsService extends Service<
     }
   }
 
+  async updateSchedules(
+    schedules: Schedules,
+    id: string,
+    user: User,
+  ): Promise<void> {
+    const doctor = await this.repo.getById(id);
+
+    this.checkDoctor(doctor, user);
+
+    return await this.saveSchedules(id, schedules.schedules);
+  }
+
+  async saveSchedules(id: string, schedules: ScheduleDto[]): Promise<void> {
+    if (schedules) {
+      schedules.forEach(
+        async schedule => await this.updateSchedule(id, schedule),
+      );
+    }
+  }
+
+  async updateSchedule(id: string, schedule: ScheduleDto): Promise<boolean> {
+    const scheduleToUpdate = await Schedule.findOne({
+      where: { id: schedule.id },
+    });
+
+    const appointmentsScheduled = await this.as.searchMany(id, {
+      date: scheduleToUpdate.date,
+    });
+
+    // this hours could no be removed
+    const hoursTokeep = appointmentsScheduled.map(app => app.hour);
+    const hoursToAddOrRemove = schedule.availablehours;
+
+    scheduleToUpdate.availablehours = [
+      ...new Set([...hoursTokeep, ...hoursToAddOrRemove]),
+    ];
+
+    try {
+      const now = getMidnight(new Date());
+
+      if (scheduleToUpdate.date.getTime() >= now.getTime()) {
+        await scheduleToUpdate.save();
+      }
+    } catch (error) {
+      throw new InternalServerErrorException('Update schedule failure');
+    }
+
+    return hoursTokeep.length > 1 ? false : true;
+  }
+
+  checkDoctor(doctor: Doctor, user: User): void {
+    if (!doctor) {
+      throw new BadRequestException('Doctor dont exists!');
+    }
+
+    if (doctor.user.userId !== user.userId) {
+      throw new UnauthorizedException('You dont have permission!');
+    }
+  }
+
+  // query methods
   async searchMany(
     id?: string,
     search?: SearchScheduleDto,
@@ -196,6 +256,7 @@ export class DoctorsService extends Service<
       .orderBy('date', 'ASC')
       .getMany();
   }
+
   async getOne(userId: any, user?: User): Promise<Doctor> {
     if (parseInt(userId) !== user.userId) {
       throw new UnauthorizedException('Not Allowed');

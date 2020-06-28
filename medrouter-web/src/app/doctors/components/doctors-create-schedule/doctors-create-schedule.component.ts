@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Type } from "@angular/core";
 import {
   faChevronLeft,
   faChevronRight,
@@ -37,6 +37,7 @@ export class DoctorsCreateScheduleComponent implements OnInit {
   faShare = faShareSquare;
   faSave = faSave;
   isEditing: boolean = false;
+  isUpdated = false;
 
   months = Months;
   days: EscheduleView[];
@@ -53,7 +54,8 @@ export class DoctorsCreateScheduleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.today = new Date();
+    this.date = new Date();
+    this.today = this.date;
     this.activatedRoute.parent.params.subscribe({
       next: (params) =>
         this.getSchedule(
@@ -62,10 +64,6 @@ export class DoctorsCreateScheduleComponent implements OnInit {
           this.getSaturday(this.today)
         ),
     });
-  }
-
-  mark(e, g) {
-    console.log(e, g);
   }
 
   getSchedule(id: string, date: Date | string, endDate?: Date | string) {
@@ -92,10 +90,10 @@ export class DoctorsCreateScheduleComponent implements OnInit {
     return WeekDays.map((day, i) => {
       const date = addDays(dom, i);
       return {
+        id: this.schedules[i]?.id,
         date: date,
         name: day,
         day: date.getDate(),
-
         hours: this.hours = Hour.map((el) => {
           const scheduled = { available: true, busy: false };
           this.schedules.find((s) =>
@@ -121,7 +119,7 @@ export class DoctorsCreateScheduleComponent implements OnInit {
   }
 
   checkToday(date: Date): boolean {
-    return isSameDay(date, this.today);
+    return isSameDay(date, this.date);
   }
 
   nextWeek() {
@@ -143,17 +141,46 @@ export class DoctorsCreateScheduleComponent implements OnInit {
   }
 
   setBusy(date: Date, hour: string, available: boolean): boolean {
-    console.log(date, hour, available);
     return !available;
   }
 
   save() {
-    this.schedules = this.days.map((el) => {
+    this.schedules = this.days.map((el, i) => {
       return {
+        id: this.schedules[i]?.id,
         date: el.date,
         hours: el.hours.filter((el) => !el.available).map((el) => el),
       };
     });
+  }
+
+  createOrSave() {
+    this.save();
+    if (this.schedules[0].id !== undefined) {
+      this.ds
+        .patchSchedules(
+          this.activatedRoute.parent.snapshot.params["id"],
+          this.setSchedules()
+        )
+        .subscribe({
+          next: () => {
+            this.ns.notify({
+              message: "Agenda Atualizada",
+              type: Types.SUCCESS,
+            });
+          },
+          error: () =>
+            this.ns.notify({
+              message: "Falha ao atualizar agenda",
+              type: Types.ERROR,
+            }),
+          complete: () => {
+            this.isEditing = false;
+          },
+        });
+    } else {
+      this.create();
+    }
   }
 
   create() {
@@ -169,8 +196,9 @@ export class DoctorsCreateScheduleComponent implements OnInit {
         ...schedules,
       ])
       .subscribe({
-        next: (schedules: ScheduleDto[]) =>
-          (this.schedules = this.setSchedules(schedules)),
+        next: () => {
+          this.updateSchedule();
+        },
         error: () =>
           this.ns.notify({
             message: "Falha ao criar agenda",
@@ -184,16 +212,12 @@ export class DoctorsCreateScheduleComponent implements OnInit {
       });
   }
 
-  setSchedules(schedules: ScheduleDto[]): DaySchedule[] {
-    return schedules.map((el) => {
+  setSchedules(): any {
+    return this.schedules.map((schedule) => {
       return {
-        date: el.date,
-        hours: el.availablehours.map((hour) => {
-          return {
-            hour: hour,
-            busy: false,
-          };
-        }),
+        id: schedule.id,
+        date: schedule.date,
+        availablehours: [...schedule.hours.map((h) => h.hour)],
       };
     });
   }
