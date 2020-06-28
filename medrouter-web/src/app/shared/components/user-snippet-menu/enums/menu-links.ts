@@ -31,12 +31,12 @@ export const MenuLinks = {
   },
   doctor: {
     icon: faUserMd,
-    path: [DefaultRoutes.doctor, "id"],
+    path: [DefaultRoutes.doctor],
     label: "Médico",
   },
   recept: {
     icon: faConciergeBell,
-    path: DefaultRoutes.recept,
+    path: [DefaultRoutes.recept],
     label: "Recepção",
   },
   owner: { icon: faCrown, path: DefaultRoutes.owner, label: "Diretoria" },

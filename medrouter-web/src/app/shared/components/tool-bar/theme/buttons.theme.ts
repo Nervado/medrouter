@@ -61,10 +61,10 @@ export const Buttons = {
     { icon: faBookMedical, path: "../clients/history" },
   ],
   recept: [
-    { icon: faUserPlus, path: "../receptionists/add-client" },
-    { icon: faClipboardCheck, path: "../receptionists/verify" },
-    { icon: faCalendarDay, path: "../receptionists/appointments" },
-    { icon: faCalendarPlus, path: "../receptionists/create-appointment" },
+    { icon: faUserPlus, path: "add-client" },
+    { icon: faClipboardCheck, path: "verify" },
+    { icon: faCalendarDay, path: "appointments" },
+    { icon: faCalendarPlus, path: "create-appointment" },
   ],
   doctor: [
     { icon: faFileMedical, path: "create-prescription" },

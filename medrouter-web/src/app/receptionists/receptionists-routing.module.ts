@@ -9,8 +9,12 @@ import { ReceptionistsCreateAppointmentComponent } from "./components/receptioni
 const routes: Routes = [
   {
     path: "",
+    redirectTo: "/",
+    pathMatch: "full",
+  },
+  {
+    path: ":id",
     component: ReceptionistsPageComponent,
-
     children: [
       {
         path: "",
