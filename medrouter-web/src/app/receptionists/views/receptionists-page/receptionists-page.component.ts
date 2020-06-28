@@ -18,6 +18,6 @@ export class ReceptionistsPageComponent implements OnInit {
   constructor(private as: AuthService) {}
 
   ngOnInit(): void {
-    this.link[1] = this.as.getRuleId(Role.DOCTOR);
+    this.link[1] = this.as.getRuleId(Role.RECEPT);
   }
 }

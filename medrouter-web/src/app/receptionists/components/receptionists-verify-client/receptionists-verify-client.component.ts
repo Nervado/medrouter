@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef, Type } from "@angular/core";
 import {
   faFileMedicalAlt,
   faLock,
@@ -37,6 +37,10 @@ import { Appointment } from "src/app/doctors/model/appointment";
 import { Hour } from "src/app/doctors/enums/hours.enum";
 import { setHours } from "date-fns";
 import { AppointmentStatus } from "src/app/doctors/enums/appontment-status";
+import { ClientDto } from "../../dtos/client-dto";
+import { ReceptionistsService } from "../../receptionists.service";
+import { NotificationService } from "src/app/messages/notification.service";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
   selector: "app-receptionists-verify-client",
@@ -82,6 +86,9 @@ export class ReceptionistsVerifyClientComponent implements OnInit {
 
   filter: string;
 
+  clients: ClientDto[] = [];
+  page: number = 1;
+
   toogle() {
     this.showSearch = !this.showSearch;
   }
@@ -89,15 +96,31 @@ export class ReceptionistsVerifyClientComponent implements OnInit {
   search() {
     console.log("procurando nemo");
   }
-  constructor(private fb: FormBuilder, private cd: ChangeDetectorRef) {}
+
+  constructor(
+    private fb: FormBuilder,
+    private cd: ChangeDetectorRef,
+    private rs: ReceptionistsService,
+    private ns: NotificationService
+  ) {}
 
   ngOnInit(): void {
-    this.date = new Date();
-    this.today = this.date;
-
     this.docForm = this.fb.group({
       file: [null, Validators.required],
     });
+
+    this.rs
+      .getClients({
+        page: this.page,
+      })
+      .subscribe({
+        next: (clients: ClientDto[]) => (this.clients = clients),
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao obter lista de clients",
+            type: Types.ERROR,
+          }),
+      });
 
     this.appointments = [
       {

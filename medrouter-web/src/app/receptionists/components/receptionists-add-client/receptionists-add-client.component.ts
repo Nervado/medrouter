@@ -9,6 +9,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { ReceptionistsService } from "../../receptionists.service";
+import { NotificationService } from "src/app/messages/notification.service";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
   selector: "app-receptionists-add-client",
@@ -29,11 +32,12 @@ export class ReceptionistsAddClientComponent implements OnInit {
   mainColor: Colors = Colors.RECEPT;
   examForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private rs: ReceptionistsService,
+    private ns: NotificationService
+  ) {}
 
-  showModal(modal) {
-    modal.open();
-  }
   ngOnInit(): void {
     this.signUpForm = this.fb.group({
       username: this.fb.control("", [Validators.required]),
@@ -53,5 +57,19 @@ export class ReceptionistsAddClientComponent implements OnInit {
   }
   send() {
     console.log(this.signUpForm.value);
+
+    this.rs.addClient(this.signUpForm.value).subscribe({
+      next: () =>
+        this.ns.notify({
+          message: "Cadastro realizado",
+          type: Types.SUCCESS,
+        }),
+      error: () =>
+        this.ns.notify({
+          message: "Cadastro não concluído",
+          type: Types.ERROR,
+        }),
+      complete: () => this.signUpForm.reset(),
+    });
   }
 }

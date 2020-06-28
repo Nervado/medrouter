@@ -42,11 +42,11 @@
     </div>
 
     <div class="appointments">
-      <div *ngFor="let appointment of appointments" class="appointment">
+      <div *ngFor="let client of clients" class="appointment">
         <div class="user-info">
           <div class="avatar">
-            <ng-container *ngIf="appointment.client.user.avatar; else avatar">
-              <img [src]="appointment.client.user.avatar?.url" alt="avatar" />
+            <ng-container *ngIf="client.user.avatar?.url; else avatar">
+              <img [src]="client.user.avatar?.url" alt="avatar" />
             </ng-container>
 
             <ng-template #avatar>
@@ -56,28 +56,37 @@
 
           <div class="appointment-info d-flex flex-column text-recept">
             <div class="username">
-              {{ appointment.client.user.username }}
+              {{ client.user.username }}
 
               <fa-icon [icon]="faCheck" class="text-success"></fa-icon>
             </div>
 
             <div class="add">
               Gênero:
-              <strong>Masculino</strong>
+              <strong>{{ client.user.sex }}</strong>
             </div>
 
-            <div class="add">Idade: <strong>56 anos</strong></div>
+            <div class="add">
+              Idade:
+              <strong
+                >{{
+                  client.user.birthdate
+                    ? date.getFullYear() - client.user.birthdate?.getFullYear()
+                    : "Não informado"
+                }}
+              </strong>
+            </div>
           </div>
         </div>
 
         <div class="appointment-info email d-flex flex-column">
           <div>
             <fa-icon [icon]="faEnvelope"></fa-icon>
-            <strong class="ml-1">fulano@fulano.com</strong>
+            <strong class="ml-1">{{ client.user.email }}</strong>
           </div>
           <div>
             <fa-icon [icon]="faPhone"></fa-icon>
-            <strong class="ml-1">21 972857728</strong>
+            <strong class="ml-1">{{ client.user.phoneNumber }}</strong>
           </div>
         </div>
 
