@@ -42,6 +42,7 @@ export class UserRepository extends Repository<User> {
       passwordConfirmation,
       phoneNumber,
       surname,
+      cpf,
     } = authSingUpDto;
 
     if (!(passwordConfirmation && passwordConfirmation === password)) {
@@ -49,10 +50,12 @@ export class UserRepository extends Repository<User> {
     }
 
     const user = new User();
+
     user.username = username;
     user.email = email;
     user.phoneNumber = phoneNumber;
     user.surname = surname;
+    user.cpf = cpf;
 
     user.role = [Role.USER];
     user.salt = await bcrypt.genSalt();

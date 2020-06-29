@@ -21,8 +21,9 @@
           <input type="text" name="search" placeholder="Nome do paciente" />
           <fa-icon [icon]="faSearch" (click)="search()"></fa-icon>
         </div>
+        <!--
 
-        <div class="results">
+ <div class="results">
           <div class="label">
             Resultados
             <strong class="ml-1"> 4</strong>
@@ -37,12 +38,15 @@
               ></fa-icon>
             </div>
           </div>
-        </div>
+          </div>
+
+
+-->
       </div>
     </div>
 
     <div class="appointments">
-      <div *ngFor="let client of clients" class="appointment">
+      <div *ngFor="let client of clients" class="appointment" [id]="client.id">
         <div class="user-info">
           <div class="avatar">
             <ng-container *ngIf="client.user.avatar?.url; else avatar">
@@ -58,7 +62,11 @@
             <div class="username">
               {{ client.user.username }}
 
-              <fa-icon [icon]="faCheck" class="text-success"></fa-icon>
+              <fa-icon
+                [icon]="faCheck"
+                class="text-success"
+                *ngIf="client.user.checked"
+              ></fa-icon>
             </div>
 
             <div class="add">
@@ -97,26 +105,58 @@
             data-toggle="tooltip"
             data-placement="top"
             title="Validar usuário"
+            *ngIf="!client.user.checked"
+            onclick="handleCheck(client.id, true)"
           ></fa-icon>
-          <form
-            [formGroup]="docForm"
-            novalidate
-            (ngSubmit)="handleChange($event)"
-          >
+
+          <fa-icon
+            [icon]="faTimes"
+            class="text-oposity1 cursor ml-2"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Invalidar usuário"
+            *ngIf="client.user.checked"
+            onclick="handleCheck(client.id, false)"
+          ></fa-icon>
+
+          <a [href]="client.doc?.url" *ngIf="client.doc.url">
+            <fa-icon
+              [icon]="faFileDownload"
+              class="text-success cursor ml-2"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Baixar documento"
+            ></fa-icon>
+          </a>
+
+          <fa-icon
+            *ngIf="!client.doc.url"
+            [icon]="faFileDownload"
+            class="cursor ml-2"
+            [style.color]="'rgba(125,125,125,0.2)'"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Baixar documento"
+          ></fa-icon>
+
+          <form [formGroup]="docForm" novalidate>
             <label htmlFor="result">
               <fa-icon
                 [icon]="faIdCard"
-                class="text-medium cursor ml-2"
+                class="cursor ml-2"
+                [style.color]="
+                  client.doc.url ? 'var(--success)' : 'var(--medium)'
+                "
                 data-toggle="tooltip"
                 data-placement="top"
-                title="Addicionar documento"
+                title="Adicionar documento"
               ></fa-icon>
               <input
-                accept="application/pdf"
+                accept="application/pdf, image/*"
                 type="file"
                 name="file"
                 id="result"
-                (change)="handleChange($event)"
+                (change)="handleChange($event, client.id)"
                 value=""
                 class="doc-input"
               />

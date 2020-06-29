@@ -4,8 +4,8 @@ import { Exclude, Expose } from 'class-transformer';
 
 @Entity('documents')
 export class Doc extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   filename: string;

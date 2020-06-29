@@ -1,14 +1,15 @@
 import {
   IsString,
-  MinLength,
   MaxLength,
-  Matches,
-  IsOptional,
+  MinLength,
   IsNotEmpty,
+  IsOptional,
   IsPhoneNumber,
+  Matches,
 } from 'class-validator';
+import { Sex } from 'src/users/enuns/sex.enum';
 
-export class AuthSingUpDto {
+export class ClientDto {
   @IsString()
   @MaxLength(200)
   @MinLength(2)
@@ -38,29 +39,21 @@ export class AuthSingUpDto {
   )
   email: string;
 
-  @IsOptional()
-  @IsString()
-  @MinLength(8)
-  @MaxLength(20)
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'password too weak',
-  })
   password?: string;
 
-  @IsOptional()
-  @IsString()
-  @MinLength(8)
-  @MaxLength(20)
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'password dont match',
-  })
   passwordConfirmation?: string;
 
-  cpf?: string;
-
-  avatar?: {
-    avatarId: number;
-    url: string;
-    path: string;
+  user?: {
+    userId: string | number;
+    username: string;
+    surname: string;
+    fullname: string;
+    email: string;
+    phoneNumber: string;
+    sex: Sex;
+    birthdate: Date;
+    avatar: {
+      url: string;
+    };
   };
 }

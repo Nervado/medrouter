@@ -13,13 +13,15 @@ export class CelMaskDirective {
   constructor(public model: NgControl) {}
 
   onInputChange(value: string) {
-    const x = value
-      .replace(/\D/g, "")
-      .match(/(\d{0,2})(\d{0,1})(\d{0,4})(\d{0,4})/);
+    if (value !== null) {
+      const x = value
+        .replace(/\D/g, "")
+        .match(/(\d{0,2})(\d{0,1})(\d{0,4})(\d{0,4})/);
 
-    const y = x.input ? "(" + x[1] + ") " + x[2] + x[3] + "-" + x[4] : "";
+      const y = x.input ? "(" + x[1] + ") " + x[2] + x[3] + "-" + x[4] : "";
 
-    this.model.valueAccessor.writeValue(y);
-    this.rawChange.emit(y);
+      this.model.valueAccessor.writeValue(y);
+      this.rawChange.emit(y);
+    }
   }
 }

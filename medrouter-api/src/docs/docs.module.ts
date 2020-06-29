@@ -16,5 +16,6 @@ import { APP_GUARD } from '@nestjs/core';
       useClass: DocGuard,
     },
   ],
+  exports: [DocsService],
 })
 export class DocsModule {}

@@ -28,12 +28,12 @@ export class DocsController {
   @UseInterceptors(
     FileInterceptor('file', {
       fileFilter: (req, file, callback) => {
-        if (!file.originalname.match(/\.(pdf)$/)) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|gif|pdf)$/)) {
           return callback(null, false);
         }
         return callback(null, true);
       },
-      limits: { fileSize: 1000000 },
+      limits: { fileSize: 2000000 },
       storage: diskStorage({
         destination: configService.getDocsPath(),
         filename: (req, file, cb) => {
@@ -48,8 +48,6 @@ export class DocsController {
     }
     const { filename, path } = file;
 
-    console.log(path);
-
     return this.docsService.create({ filename, path });
   }
 
@@ -63,7 +61,6 @@ export class DocsController {
   @UseInterceptors(ClassSerializerInterceptor)
   @Delete('/:id')
   delete(@Param('id') id) {
-    console.log('Deleting... avatar id', id);
     return this.docsService.delete(id);
   }
 }

@@ -20,6 +20,7 @@ import {
   faUserMd,
   faUserTie,
   faCheck,
+  faFileDownload,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Colors } from "src/app/messages/toast/enums/colors";
@@ -41,6 +42,8 @@ import { ClientDto } from "../../dtos/client-dto";
 import { ReceptionistsService } from "../../receptionists.service";
 import { NotificationService } from "src/app/messages/notification.service";
 import { Types } from "src/app/messages/toast/enums/types";
+import { DocDto } from "../../dtos/doc-dto";
+import { DoctorDto } from "src/app/doctors/model/doctor-dto";
 
 @Component({
   selector: "app-receptionists-verify-client",
@@ -51,12 +54,7 @@ export class ReceptionistsVerifyClientComponent implements OnInit {
   hours: Array<any>;
   faChevronLeft = faChevronLeft;
   faChevronRight = faChevronRight;
-  faSquare = faSquare;
-  faCheckSquare = faCheckSquare;
-  faEdit = faEdit;
-  faShare = faShareSquare;
-  faSave = faSave;
-  faClock = faClock;
+
   faTimes = faTimesCircle;
   isEditing: boolean = false;
   faHistory = faHistory;
@@ -71,23 +69,23 @@ export class ReceptionistsVerifyClientComponent implements OnInit {
   faEnvelope = faEnvelope;
   faPhone = faPhone;
   faIdCard = faIdCard;
+  faFileDownload = faFileDownload;
 
   preview: any;
   file: File;
 
   docForm: FormGroup;
 
-  months = Months;
-  days: EscheduleView[];
   date: Date;
-  today: Date;
-  appointments: Array<Appointment>;
+
   showSearch: boolean = false;
 
   filter: string;
 
   clients: ClientDto[] = [];
   page: number = 1;
+
+  edit: false;
 
   toogle() {
     this.showSearch = !this.showSearch;
@@ -109,6 +107,8 @@ export class ReceptionistsVerifyClientComponent implements OnInit {
       file: [null, Validators.required],
     });
 
+    this.date = new Date();
+
     this.rs
       .getClients({
         page: this.page,
@@ -121,43 +121,6 @@ export class ReceptionistsVerifyClientComponent implements OnInit {
             type: Types.ERROR,
           }),
       });
-
-    this.appointments = [
-      {
-        id: 34,
-        hour: Hour[0],
-        date: setHours(new Date(2020, 4, 10, 0, 0), 6),
-        status: AppointmentStatus.ONESCHEDULE,
-        client: {
-          id: 1,
-          user: {
-            username: "Evandro Abreu",
-            surname: "Abreu",
-            avatar: {
-              url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-            },
-          },
-        },
-      },
-      {
-        id: 35,
-        hour: Hour[6],
-        date: setHours(new Date(2020, 4, 10, 0, 0), 4),
-        status: AppointmentStatus.ONESCHEDULE,
-        client: {
-          id: 1,
-          user: {
-            username: "Andressa",
-            surname: "Oliveira",
-            avatar: {
-              url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-            },
-          },
-        },
-      },
-    ];
-
-    console.log(this.appointments);
   }
 
   save() {}
@@ -166,7 +129,7 @@ export class ReceptionistsVerifyClientComponent implements OnInit {
 
   prevWeek() {}
 
-  handleChange(event) {
+  handleChange(event: any, id: string) {
     const reader = new FileReader();
 
     if (event.target.files && event.target.files.length) {
@@ -183,12 +146,64 @@ export class ReceptionistsVerifyClientComponent implements OnInit {
       };
 
       this.cd.markForCheck();
-      this.upload();
+      this.upload(id);
     }
   }
 
-  upload() {
+  upload(id: string) {
     let formData: FormData = new FormData();
-    formData.append("avatar", this.file);
+    formData.append("file", this.file);
+
+    this.rs.uploadDoc(formData).subscribe({
+      next: (doc: DocDto) => {
+        this.ns.notify({
+          message: "Documento atualizado",
+          type: Types.INFO,
+          timer: 2000,
+        });
+        this.updateClient(id, doc);
+      },
+      error: () =>
+        this.ns.notify({
+          message:
+            "Tamanho máximo: 2 MB, Tipos aceitos: pdf, .jpg, .jpeg, .png, ou .gif!",
+          type: Types.OPOSITY1,
+          timer: 4000,
+        }),
+    });
   }
+
+  updateClient(id: string, doc: DocDto) {
+    this.rs.updateClientDoc(id, doc).subscribe({
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao atualizar documento",
+          type: Types.ERROR,
+          timer: 2000,
+        }),
+      next: () => {
+        this.ns.notify({
+          message: "Documento atualizado",
+          type: Types.SUCCESS,
+        });
+      },
+    });
+  }
+
+  handleCheck(id: string, checked: boolean) {
+    this.rs.updateClientStatus(id, checked).subscribe({
+      next: () =>
+        this.ns.notify({
+          message: "Status atualizado",
+          type: Types.SUCCESS,
+        }),
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao atualizar status",
+          type: Types.ERROR,
+        }),
+    });
+  }
+
+  updateClientList() {}
 }

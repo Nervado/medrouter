@@ -8,6 +8,7 @@ export class UserDto {
 
   @IsEmail()
   email: string;
+
   username: string;
   phoneNumber?: string;
   surname?: string;

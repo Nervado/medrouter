@@ -1,7 +1,71 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+  UseGuards,
+  Body,
+  ValidationPipe,
+  Query,
+  Patch,
+  Param,
+} from '@nestjs/common';
 
-@Controller('client')
+import { ClientDto } from './dtos/cliente-dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
+import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { ClientService } from './client.service';
+import { AuthSingUpDto } from 'src/auth/dto/auth-signup.dto';
+import { SearchClientDto } from './dtos/search-client-dto';
+import { SearchResultDto } from './dtos/search-result-dto';
+
+import { GetUser } from 'src/users/decorators/get-user.decorator';
+import { User } from 'src/users/models/user.entity';
+import { Allow } from 'src/auth/decorators/alow.decorator';
+import { DocDto } from 'src/docs/dto/doc.dto';
+
+@UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
+@Controller('clients')
 export class ClientController {
+  constructor(private clientService: ClientService) {}
+
+  @Post()
+  @Roles('recept')
+  @UseInterceptors(ClassSerializerInterceptor)
+  createCliente(@Body(ValidationPipe) body: AuthSingUpDto): Promise<ClientDto> {
+    return this.clientService.create(body);
+  }
+
+  @Get()
+  @Roles('recept')
+  getClients(@Query() search: SearchClientDto): Promise<SearchResultDto[]> {
+    return this.clientService.getAll(search);
+  }
+
+  @Patch('/:id')
+  @Allow('recept', 'client')
+  @UseInterceptors(ClassSerializerInterceptor)
+  updateDoc(
+    @Param('id') id: string,
+    @GetUser() user: User,
+    @Body() body: DocDto,
+  ): Promise<void> {
+    return this.clientService.updateDoc(id, user, body);
+  }
+
+  @Patch('/:id/status')
+  @Allow('recept')
+  @UseInterceptors(ClassSerializerInterceptor)
+  updateStatus(
+    @Param('id') id: string,
+    @Body('checked') checked: boolean,
+  ): Promise<void> {
+    return this.clientService.updateStatus(id, checked);
+  }
+
   @Get('data-graph')
   createDoctor(): any {
     return [

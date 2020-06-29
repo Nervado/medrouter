@@ -25,8 +25,9 @@ export class Client extends BaseEntity {
   @ManyToOne(() => Photo)
   photos: Photo[];
 
-  @ManyToOne(() => Doc)
-  docs: Doc[];
+  @OneToOne(() => Doc, { eager: true, cascade: true })
+  @JoinColumn()
+  doc: Doc;
 
   @OneToOne(() => User, { eager: true, cascade: true })
   @JoinColumn()

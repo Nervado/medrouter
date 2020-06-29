@@ -261,4 +261,14 @@ export class UsersService {
     }
     return user;
   }
+
+  async checkUser(user: User): Promise<void> {
+    user.checked = true;
+
+    try {
+      await user.save();
+    } catch (error) {
+      throw new InternalServerErrorException('Fail at verify user');
+    }
+  }
 }

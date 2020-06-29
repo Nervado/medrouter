@@ -5,6 +5,7 @@ import * as PdfPrinter from 'pdfmake';
 
 import { DocRepository } from './doc.repository';
 import { DocDto } from './dto/doc.dto';
+import { Doc } from './models/doc.entity';
 
 @Injectable()
 export class DocsService {
@@ -21,11 +22,15 @@ export class DocsService {
     return { fileName: fileName };
   }
 
-  async delete(id: number): Promise<any> {
+  async delete(id: any): Promise<any> {
     return this.docRepository.delete({ id });
   }
 
   async create(docDto: DocDto): Promise<DocDto> {
     return this.docRepository.createOne(docDto);
+  }
+
+  async getOne(id: string): Promise<Doc> {
+    return await Doc.findOne({ where: { id } });
   }
 }
