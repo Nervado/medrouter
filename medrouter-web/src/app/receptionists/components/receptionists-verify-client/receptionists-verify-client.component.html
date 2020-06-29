@@ -2,7 +2,7 @@
   <div class="main-data aside text-doctor">
     <div class="month">
       <div class="control">
-        <fa-icon [icon]="faChevronLeft" (click)="prevWeek()"></fa-icon>
+        <fa-icon [icon]="faChevronLeft" (click)="pageDown()"></fa-icon>
       </div>
 
       <div class="control">Novos pacientes</div>
@@ -11,42 +11,26 @@
         <fa-icon [icon]="faSearch" (click)="toogle()"></fa-icon>
       </div>
       <div class="control">
-        <fa-icon [icon]="faChevronRight" (click)="nextWeek()"></fa-icon>
+        <fa-icon [icon]="faChevronRight" (click)="pageUp()"></fa-icon>
       </div>
     </div>
 
     <div class="search" *ngIf="showSearch" (mouseleave)="toogle()">
       <div class="form">
         <div class="input">
-          <input type="text" name="search" placeholder="Nome do paciente" />
-          <fa-icon [icon]="faSearch" (click)="search()"></fa-icon>
+          <input
+            type="text"
+            name="search"
+            placeholder="Nome do paciente"
+            #username
+          />
+          <fa-icon [icon]="faSearch" (click)="search(username.value)"></fa-icon>
         </div>
-        <!--
-
- <div class="results">
-          <div class="label">
-            Resultados
-            <strong class="ml-1"> 4</strong>
-          </div>
-
-          <div class="wrapper">
-            <div class="result">
-              <div>João das Colves</div>
-              <fa-icon
-                [icon]="faUserTie"
-                class="text-success cursor ml-2"
-              ></fa-icon>
-            </div>
-          </div>
-          </div>
-
-
--->
       </div>
     </div>
 
     <div class="appointments">
-      <div *ngFor="let client of clients" class="appointment" [id]="client.id">
+      <div *ngFor="let client of clients" class="appointment">
         <div class="user-info">
           <div class="avatar">
             <ng-container *ngIf="client.user.avatar?.url; else avatar">
@@ -106,7 +90,7 @@
             data-placement="top"
             title="Validar usuário"
             *ngIf="!client.user.checked"
-            onclick="handleCheck(client.id, true)"
+            (click)="handleCheck(client.id, true)"
           ></fa-icon>
 
           <fa-icon
@@ -116,7 +100,7 @@
             data-placement="top"
             title="Invalidar usuário"
             *ngIf="client.user.checked"
-            onclick="handleCheck(client.id, false)"
+            (click)="handleCheck(client.id, false)"
           ></fa-icon>
 
           <a [href]="client.doc?.url" *ngIf="client.doc.url">
@@ -155,7 +139,7 @@
                 accept="application/pdf, image/*"
                 type="file"
                 name="file"
-                id="result"
+                [id]="client.id"
                 (change)="handleChange($event, client.id)"
                 value=""
                 class="doc-input"

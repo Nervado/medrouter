@@ -91,8 +91,9 @@ export class ReceptionistsVerifyClientComponent implements OnInit {
     this.showSearch = !this.showSearch;
   }
 
-  search() {
-    console.log("procurando nemo");
+  search(username: string) {
+    this.page = 1;
+    this.updateClientList(this.page, username);
   }
 
   constructor(
@@ -103,31 +104,25 @@ export class ReceptionistsVerifyClientComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.date = new Date();
     this.docForm = this.fb.group({
       file: [null, Validators.required],
     });
-
-    this.date = new Date();
-
-    this.rs
-      .getClients({
-        page: this.page,
-      })
-      .subscribe({
-        next: (clients: ClientDto[]) => (this.clients = clients),
-        error: () =>
-          this.ns.notify({
-            message: "Falha ao obter lista de clients",
-            type: Types.ERROR,
-          }),
-      });
+    this.updateClientList(this.page);
   }
 
-  save() {}
-
-  nextWeek() {}
-
-  prevWeek() {}
+  pageUp() {
+    this.page += 1;
+    this.updateClientList(this.page);
+  }
+  pageDown() {
+    if (this.page === 1) {
+      this.page = 1;
+    } else {
+      this.page -= 1;
+      this.updateClientList(this.page);
+    }
+  }
 
   handleChange(event: any, id: string) {
     const reader = new FileReader();
@@ -186,17 +181,20 @@ export class ReceptionistsVerifyClientComponent implements OnInit {
           message: "Documento atualizado",
           type: Types.SUCCESS,
         });
+        this.updateClientList(this.page);
       },
     });
   }
 
   handleCheck(id: string, checked: boolean) {
     this.rs.updateClientStatus(id, checked).subscribe({
-      next: () =>
+      next: () => {
         this.ns.notify({
           message: "Status atualizado",
           type: Types.SUCCESS,
-        }),
+        });
+        this.updateClientList(this.page);
+      },
       error: () =>
         this.ns.notify({
           message: "Falha ao atualizar status",
@@ -205,5 +203,19 @@ export class ReceptionistsVerifyClientComponent implements OnInit {
     });
   }
 
-  updateClientList() {}
+  updateClientList(page: number, username?: string) {
+    this.rs
+      .getClients({
+        page,
+        username,
+      })
+      .subscribe({
+        next: (clients: ClientDto[]) => (this.clients = clients),
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao obter lista de clients",
+            type: Types.ERROR,
+          }),
+      });
+  }
 }

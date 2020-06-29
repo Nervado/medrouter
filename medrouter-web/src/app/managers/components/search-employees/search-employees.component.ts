@@ -119,7 +119,8 @@ export class SearchEmployeesComponent implements OnInit {
   }
 
   search() {
-    this.find(1);
+    this.page = 1;
+    this.find(this.page);
   }
 
   confirm(event: ActionForm) {
