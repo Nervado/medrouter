@@ -29,6 +29,7 @@ import { Types } from "src/app/messages/toast/enums/types";
 import { DoctorDto } from "../../dtos/schedules-dtos";
 import { th } from "date-fns/locale";
 import { ActivatedRoute } from "@angular/router";
+import { capitalizeAndRemoveUnderscores } from "src/app/utils/capitalizeAndRemoveUnderscore";
 
 @Component({
   selector: "app-receptionists-create-appointment",
@@ -111,8 +112,6 @@ export class ReceptionistsCreateAppointmentComponent implements OnInit {
   }
 
   search(username: string) {
-    //this.username = username;
-
     this.rs.getDoctors(username).subscribe({
       next: (doctors: DoctorDto[]) => (this.doctors = doctors),
 
@@ -203,5 +202,11 @@ export class ReceptionistsCreateAppointmentComponent implements OnInit {
       subDays(date, date.getDay()),
       6
     ).toISOString());
+  }
+
+  textAdjust(specialty: string): string {
+    return capitalizeAndRemoveUnderscores(specialty)
+      .replace('"', "")
+      .replace('"', "");
   }
 }

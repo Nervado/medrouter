@@ -26,8 +26,6 @@ export class MultiListViewComponent implements OnInit {
     this.tags = this.tags?.map((value) =>
       capitalizeAndRemoveUnderscores(value).replace('"', "").replace('"', "")
     );
-
-    console.log(this.tags);
   }
 
   up() {

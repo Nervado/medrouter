@@ -29,7 +29,7 @@
 
     <div class="search" *ngIf="showSearch" (mouseleave)="toogle()">
       <div class="form">
-        <div class="input">
+        <div class="header-search">
           <input
             type="text"
             name="search"
@@ -46,16 +46,28 @@
           </div>
 
           <div class="wrapper">
-            <div class="result" *ngFor="let doctor of doctors">
-              <div>{{ doctor.user.username }}</div>
-              <div>{{ doctor.specialty[0] }}</div>
-              <fa-icon
-                [icon]="faUserMd"
-                class="text-success cursor ml-2"
-                (click)="
-                  getSchedule(doctor, getSunday(today), getSaturday(today))
-                "
-              ></fa-icon>
+            <div
+              class="result"
+              *ngFor="let doctor of doctors"
+              (click)="
+                getSchedule(doctor, getSunday(today), getSaturday(today))
+              "
+            >
+              <ng-container
+                *ngIf="doctor.user.avatar?.url; else avatarTemplate"
+              >
+                <img [src]="doctor.user.avatar?.url" alt="avatar" />
+              </ng-container>
+              <ng-template #avatarTemplate>
+                <img src="../../../../assets/avatarmale.png" alt="avatar" />
+              </ng-template>
+
+              <div>
+                <strong>{{ doctor.user.username }}</strong>
+                <div class="specialty">
+                  {{ textAdjust(doctor.specialty[0]) }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
