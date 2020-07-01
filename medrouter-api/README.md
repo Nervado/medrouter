@@ -64,29 +64,29 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 
 - Incluir
 
-[ ] Recept
+[X] Recept
 
 - Excluir
 
-[ ] Recept
+[X] Recept
 
 - Recept
 
-[ ] List Recept
-[ ] Search by name
-[ ] View Profile
-[ ] Change Salary
-[ ] Dismis
+[X] List Recept
+[X] Search by name
+[X] View Profile
+[X] Change Salary
+[X] Dismis
 
 - Lab
 
-[ ] List
-[ ] Search by Name
-[ ] Add User
-[ ] Remove User
-[ ] List Users
-[ ] Remove Lab
-[ ] Add Lab
+[X] List
+[X] Search by Name
+[X] Add User
+[X] Remove User
+[X] List Users
+[X] Remove Lab
+[X] Add Lab
 
 # LAB
 
@@ -103,7 +103,7 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 
 ## New Prescriptions
 
-[ ] Search Medicine
+[X] Search Medicine
 [ ] Create Prescription
 [ ] Add Exam
 [ ] Remove Exam
@@ -129,22 +129,22 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 
 ## Schedule
 
-[ ] Create Schedule
-[ ] List Schedule by Week
-[ ] List Schedule by Date
-[ ] Remove Schedule
+[X] Create Schedule
+[X] List Schedule by Week
+[X] List Schedule by Date
+[X] Remove Schedule
 
 # Recept
 
 ## Clients
 
-[ ] Add Client
+[X] Add Client
 
 ## Verify
 
-[ ] List Clients
-[ ] Add ID document
-[ ] Confirm Client
+[X] List Clients
+[X] Add ID document
+[X] Confirm Client
 
 ## Appointments
 

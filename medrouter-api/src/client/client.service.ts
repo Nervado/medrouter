@@ -43,7 +43,7 @@ export class ClientService {
   async updateStatus(id: string, checked: boolean): Promise<void> {
     const client = await Client.findOne({ where: { id } });
 
-    if (client.doc.url === undefined || client.doc.url === null) {
+    if (client.doc?.url === undefined || client.doc?.url === null) {
       throw new BadRequestException('Not allowed');
     }
 

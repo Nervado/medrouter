@@ -42,10 +42,13 @@ export class DoctorsController {
   }
 
   @Get()
-  @Roles('owner')
+  @Roles('owner', 'recept', 'client')
   @UseInterceptors(ClassSerializerInterceptor)
-  getAll(@Query(ValidationPipe) search: SearchFilterDto): Promise<Doctor[]> {
-    return this.doctorService.getAll(search);
+  getAll(
+    @Query(ValidationPipe) search: SearchFilterDto,
+    @GetUser() user: User,
+  ): Promise<DoctorDto[]> {
+    return this.doctorService.getAll(user, search);
   }
 
   @Get('/:id')

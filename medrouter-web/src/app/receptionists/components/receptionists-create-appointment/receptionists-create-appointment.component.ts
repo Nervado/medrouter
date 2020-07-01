@@ -15,13 +15,20 @@ import {
 import { Months } from "src/app/doctors/enums/months.enum";
 import { EscheduleView } from "src/app/doctors/model/schedule.view";
 import { DaySchedule } from "src/app/doctors/model/schedule";
-import { addDays, subDays, isSameDay } from "date-fns";
+import { addDays, subDays, isSameDay, isThursday, parseISO } from "date-fns";
 import { WeekDays } from "src/app/doctors/enums/week-days";
 import { Hour } from "src/app/doctors/enums/hours.enum";
 import {
   faTimesCircle,
   faCalendarPlus,
 } from "@fortawesome/free-regular-svg-icons";
+import { NotificationService } from "src/app/messages/notification.service";
+import { ReceptionistsService } from "../../receptionists.service";
+
+import { Types } from "src/app/messages/toast/enums/types";
+import { DoctorDto } from "../../dtos/schedules-dtos";
+import { th } from "date-fns/locale";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-receptionists-create-appointment",
@@ -51,8 +58,20 @@ export class ReceptionistsCreateAppointmentComponent implements OnInit {
 
   faUserMd = faUserMd;
 
-  schedules: DaySchedule[];
-  constructor() {}
+  schedules: DaySchedule[] = [];
+
+  doctors: DoctorDto[];
+
+  sunday: string;
+  saturday: string;
+
+  username: string;
+
+  constructor(
+    private ns: NotificationService,
+    private rs: ReceptionistsService,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   showSearch: boolean = false;
 
@@ -63,46 +82,54 @@ export class ReceptionistsCreateAppointmentComponent implements OnInit {
   ngOnInit(): void {
     this.date = new Date();
     this.today = this.date;
-    this.schedules = [
-      {
-        date: new Date(),
-        hours: [
-          { hour: "08:00", busy: true },
-          { hour: "16:00", busy: true },
-        ],
-      },
-      {
-        date: addDays(new Date(), 1),
-        hours: [
-          { hour: "14:00", busy: false },
-          { hour: "08:00", busy: false },
-          { hour: "16:00", busy: false },
-        ],
-      },
-      {
-        date: addDays(new Date(), 3),
-        hours: [
-          { hour: "08:00", busy: true },
-          { hour: "16:00", busy: true },
-          { hour: "08:00", busy: true },
-          { hour: "16:00", busy: true },
-        ],
-      },
-    ];
-    this.days = this.setDays(this.date);
-    console.log(this.days, this.schedules);
+    this.days = this.setDays(this.today);
+  }
+
+  getSchedule(doctor: DoctorDto, date: Date | string, endDate?: Date | string) {
+    this.username = doctor.user.username;
+    this.rs
+      .getSchedules(doctor.id, {
+        date,
+        endDate,
+      })
+      .subscribe({
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao obter agenda",
+            type: Types.ERROR,
+          }),
+        next: (schedules: DaySchedule[]) => {
+          this.schedules = [...schedules];
+          this.days = this.setDays(this.today);
+          console.log(this.schedules);
+        },
+      });
   }
 
   mark(e, g) {
     console.log(e, g);
   }
 
-  search() {}
+  search(username: string) {
+    //this.username = username;
+
+    this.rs.getDoctors(username).subscribe({
+      next: (doctors: DoctorDto[]) => (this.doctors = doctors),
+
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao buscar médicos!",
+          type: Types.ERROR,
+        }),
+    });
+  }
+
   setDays(ref: Date): Array<any> {
     const dom = subDays(ref, ref.getDay());
     return WeekDays.map((day, i) => {
       const date = addDays(dom, i);
       return {
+        id: this.schedules[i]?.id,
         date: date,
         name: day,
         day: date.getDate(),
@@ -110,7 +137,10 @@ export class ReceptionistsCreateAppointmentComponent implements OnInit {
           const scheduled = { available: true, busy: false };
           this.schedules.find((s) =>
             s.hours.find((h) => {
-              if (h.hour === el && isSameDay(s.date, date)) {
+              if (
+                h.hour === el &&
+                isSameDay(parseISO(s.date.toString()), date)
+              ) {
                 scheduled["available"] = false;
                 scheduled["busy"] = h.busy;
               }
@@ -162,5 +192,16 @@ export class ReceptionistsCreateAppointmentComponent implements OnInit {
 
   showModal(modal) {
     modal.open();
+  }
+
+  getSunday(date: Date): string {
+    return subDays(date, date.getDay()).toISOString();
+  }
+
+  getSaturday(date: Date): string {
+    return (this.saturday = addDays(
+      subDays(date, date.getDay()),
+      6
+    ).toISOString());
   }
 }

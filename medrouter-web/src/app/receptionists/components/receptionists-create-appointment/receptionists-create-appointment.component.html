@@ -4,9 +4,9 @@
 <div class="dashboard d-flex flex-wrap justify-content-between">
   <div class="main-data aside text-doctor">
     <div class="month">
-      <div class="control filter">
+      <div class="control filter" *ngIf="username">
         <fa-icon [icon]="faUserMd"></fa-icon>
-        &nbsp;<strong>Fulano</strong>
+        &nbsp;<strong>{{ username }}</strong>
         <fa-icon [icon]="faTimes" class="cursor"></fa-icon>
       </div>
       <div class="control">
@@ -30,8 +30,13 @@
     <div class="search" *ngIf="showSearch" (mouseleave)="toogle()">
       <div class="form">
         <div class="input">
-          <input type="text" name="search" placeholder="Nome do médico" />
-          <fa-icon [icon]="faSearch" (click)="search()"></fa-icon>
+          <input
+            type="text"
+            name="search"
+            placeholder="Nome do médico"
+            #username
+          />
+          <fa-icon [icon]="faSearch" (click)="search(username.value)"></fa-icon>
         </div>
 
         <div class="results">
@@ -41,11 +46,15 @@
           </div>
 
           <div class="wrapper">
-            <div class="result">
-              <div>João das Colves</div>
+            <div class="result" *ngFor="let doctor of doctors">
+              <div>{{ doctor.user.username }}</div>
+              <div>{{ doctor.specialty[0] }}</div>
               <fa-icon
                 [icon]="faUserMd"
                 class="text-success cursor ml-2"
+                (click)="
+                  getSchedule(doctor, getSunday(today), getSaturday(today))
+                "
               ></fa-icon>
             </div>
           </div>

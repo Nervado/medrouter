@@ -1,18 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef, Type } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import {
-  faFileMedicalAlt,
-  faLock,
   faAt,
-  faUser,
   faPhone,
-  faAddressCard,
-  faTimes,
   faChevronLeft,
   faChevronRight,
-  faSquare,
-  faEdit,
-  faSave,
-  faClock,
   faHistory,
   faFileMedical,
   faSearch,
@@ -23,27 +14,19 @@ import {
   faFileDownload,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { Colors } from "src/app/messages/toast/enums/colors";
+
 import {
   faCheckCircle,
-  faShareSquare,
-  faCheckSquare,
   faTimesCircle,
   faEnvelope,
   faIdCard,
 } from "@fortawesome/free-regular-svg-icons";
-import { Months } from "src/app/doctors/enums/months.enum";
-import { EscheduleView } from "src/app/doctors/model/schedule.view";
-import { Appointment } from "src/app/doctors/model/appointment";
-import { Hour } from "src/app/doctors/enums/hours.enum";
-import { setHours } from "date-fns";
-import { AppointmentStatus } from "src/app/doctors/enums/appontment-status";
+
 import { ClientDto } from "../../dtos/client-dto";
 import { ReceptionistsService } from "../../receptionists.service";
 import { NotificationService } from "src/app/messages/notification.service";
 import { Types } from "src/app/messages/toast/enums/types";
 import { DocDto } from "../../dtos/doc-dto";
-import { DoctorDto } from "src/app/doctors/model/doctor-dto";
 
 @Component({
   selector: "app-receptionists-verify-client",
@@ -195,11 +178,16 @@ export class ReceptionistsVerifyClientComponent implements OnInit {
         });
         this.updateClientList(this.page);
       },
-      error: () =>
-        this.ns.notify({
-          message: "Falha ao atualizar status",
-          type: Types.ERROR,
-        }),
+      error: (error) =>
+        error.error.statusCode === 400
+          ? this.ns.notify({
+              message: "O cliente não possui identificação válida!",
+              type: Types.WARN,
+            })
+          : this.ns.notify({
+              message: "Falha ao atualizar status!",
+              type: Types.ERROR,
+            }),
     });
   }
 

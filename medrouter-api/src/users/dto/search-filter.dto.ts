@@ -11,15 +11,15 @@ import { Role } from 'src/auth/enums/role.enum';
 export class SearchFilterDto {
   @IsOptional()
   @IsEnum(Sex, { each: true })
-  sex: Sex;
+  sex?: Sex;
 
   @IsOptional()
   @IsString()
-  username: string;
+  username?: string;
 
   @IsOptional()
   @IsEnum(Role, { each: true })
-  role: Role;
+  role?: Role;
 
   @IsOptional()
   @IsNumberString()

@@ -18,7 +18,7 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        redirectTo: "create-appointment",
+        redirectTo: "appointments",
         pathMatch: "full",
       },
       {
@@ -36,6 +36,12 @@ const routes: Routes = [
       {
         path: "create-appointment",
         component: ReceptionistsCreateAppointmentComponent,
+        children: [
+          {
+            path: ":id",
+            component: ReceptionistsCreateAppointmentComponent,
+          },
+        ],
       },
     ],
   },

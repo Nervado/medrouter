@@ -66,8 +66,38 @@ export class DoctorsService extends Service<
     }
   }
 
-  getAll(search: SearchFilterDto): Promise<Doctor[]> {
-    return this.repo.getAll(search);
+  async getAll(user: User, search: SearchFilterDto): Promise<DoctorDto[]> {
+    if (this.checkRole(user, Role.OWNER)) {
+      return await this.repo.getAll(search);
+    }
+
+    if (
+      this.checkRole(user, Role.RECEPT) ||
+      this.checkRole(user, Role.CLIENT)
+    ) {
+      const results = await this.repo.getAll(search);
+      const doctors: DoctorDto[] = [
+        ...results.map((doctor: Doctor) => {
+          return {
+            id: doctor.id,
+            specialty: doctor.specialty,
+            user: {
+              username: doctor.user.username,
+              surname: doctor.user.surname,
+              avatar: {
+                avatarId: doctor.user.avatar.avatarId,
+              },
+            },
+          };
+        }),
+      ];
+
+      return doctors;
+    }
+  }
+
+  checkRole(user: User, role: Role): boolean {
+    return user.role.find(rol => rol === role) ? true : false;
   }
 
   async createSchedule(

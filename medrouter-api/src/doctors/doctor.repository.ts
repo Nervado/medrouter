@@ -17,9 +17,6 @@ import { ScheduleDto } from './dto/schedule.dto';
 @EntityRepository(Doctor)
 export class DoctorRepository extends Repository<Doctor>
   implements RepositoryInterface<Doctor, any, DoctorDto, User, string> {
-
-
-
   async createOne(doctorDto: DoctorDto, user: User): Promise<Doctor> {
     const doctor = new Doctor();
 
@@ -54,7 +51,7 @@ export class DoctorRepository extends Repository<Doctor>
 
   async getAll(search: SearchFilterDto): Promise<Doctor[]> {
     const { page, username } = search;
-    const pageNumber = page * 10 - 10;
+    const pageNumber = page ? page * 10 - 10 : 0;
     const query = this.createQueryBuilder('doctor');
 
     if (username) {

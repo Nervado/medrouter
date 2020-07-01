@@ -7,6 +7,11 @@ import { SignUp } from "../auth/models/signup.model";
 import { ClientDto } from "./dtos/client-dto";
 import { SearchClientDto } from "./dtos/search-client-dto";
 import { DocDto } from "./dtos/doc-dto";
+import {
+  SearchScheduleDto,
+  DaySchedule,
+  DoctorDto,
+} from "./dtos/schedules-dtos";
 
 @Injectable({
   providedIn: "root",
@@ -40,5 +45,24 @@ export class ReceptionistsService {
     return this.http.patch<void>(`${MEDROUTER_API}/clients/${id}/status`, {
       checked,
     });
+  }
+
+  getDoctors(username: string): Observable<DoctorDto[]> {
+    return this.http.get<any[]>(
+      `${MEDROUTER_API}/doctors?username=${username}`
+    );
+  }
+  getSchedules(
+    id: string,
+    search: SearchScheduleDto
+  ): Observable<DaySchedule[]> {
+    const { date, endDate, username } = search;
+
+    let query = endDate ? `&endDate=${endDate}` : "";
+    query = username ? query + `&username=${username}` : query;
+
+    return this.http.get<DaySchedule[]>(
+      `${MEDROUTER_API}/doctors/${id}/schedules?date=${date}${query}`
+    );
   }
 }
