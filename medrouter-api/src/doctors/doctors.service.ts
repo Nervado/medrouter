@@ -21,6 +21,7 @@ import { AppointmentsService } from 'src/appointments/appointments.service';
 import { getMidnight } from 'src/utils/getMidnight';
 import { Appointment } from 'src/appointments/models/appointment.entity';
 import { Available } from './enums/available.enum';
+import { doc } from 'prettier';
 @Injectable()
 export class DoctorsService extends Service<
   DoctorDto,
@@ -145,7 +146,7 @@ export class DoctorsService extends Service<
     });
   }
 
-  async checkIfSchedulesExists(id: string, date: Date): Promise<any> {
+  async checkIfSchedulesExists(id: string, date: Date): Promise<Schedule> {
     const datesearch = new Date(new Date(date).setHours(0, 0, 0, 0));
 
     const query = Schedule.createQueryBuilder('schedule');
@@ -174,9 +175,11 @@ export class DoctorsService extends Service<
           const hours = sc.availablehours.map(hour => {
             const find = searchAppointments.find(
               appointment =>
-                sc.date === appointment.date &&
-                sc.availablehours.find(available => available === hour),
+                appointment.hour === hour &&
+                sc.date.toString() === appointment.date.toString(),
             );
+
+            console.log(find);
 
             return { hour: hour, busy: find ? true : false };
           });
@@ -297,5 +300,15 @@ export class DoctorsService extends Service<
     query.andWhere('user.userId = :userId', { userId });
 
     return await query.leftJoinAndSelect('doctor.user', 'user').getOne();
+  }
+
+  async findOne(id: string): Promise<Doctor> {
+    const doctor: Doctor = await this.repo.findOne({ where: { id } });
+
+    if (!doctor) {
+      throw new BadRequestException('Doctor dont exists!');
+    }
+
+    return doctor;
   }
 }
