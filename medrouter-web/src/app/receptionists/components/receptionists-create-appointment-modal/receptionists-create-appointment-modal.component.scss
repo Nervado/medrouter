@@ -13,6 +13,7 @@
 
   .form {
     width: 260px;
+
     .results {
       background-color: var(--oposity);
       height: 100px;
@@ -30,7 +31,6 @@
         align-items: center;
         font-size: 12px;
         padding: 0px 10px 0px 10px;
-
         color: var(--recept);
       }
 
@@ -43,10 +43,32 @@
           width: 100%;
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          justify-content: flex-start;
           font-size: 14px;
           margin: 2px 0px;
-          color: var(--lab);
+          color: var(--recept);
+          padding: 2px;
+          border-radius: 4px;
+
+          &:hover {
+            background-color: rgba(0, 255, 255, 0.1);
+          }
+
+          cursor: pointer;
+
+          div div {
+            font-size: 12px;
+          }
+
+          img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--recept);
+            margin-right: 10px;
+            object-fit: cover;
+            margin-right: 4px;
+          }
         }
       }
     }

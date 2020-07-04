@@ -5,6 +5,7 @@ import {
   ElementRef,
   Output,
   EventEmitter,
+  Input,
 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import {
@@ -15,6 +16,9 @@ import {
   faUserMd,
   faCalendarDay,
   faSearch,
+  faChevronLeft,
+  faChevronRight,
+  faMobileAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
@@ -24,6 +28,11 @@ import { Appointment } from "../../model/appointment";
 import { AppointmentStatus } from "../../enums/appontment-status";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { format } from "date-fns";
+import { ReceptionistsService } from "../../receptionists.service";
+import { NotificationService } from "src/app/messages/notification.service";
+import { Client } from "../../model/client";
+import { ClientDto } from "../../dtos/client-dto";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
   selector: "app-receptionists-create-appointment-modal",
@@ -31,52 +40,69 @@ import { format } from "date-fns";
   styleUrls: ["./receptionists-create-appointment-modal.component.scss"],
 })
 export class ReceptionistsCreateAppointmentModalComponent implements OnInit {
-  closeResult = "";
-  actionsForm: FormGroup;
   faLock = faLock;
   faUser = faUser;
-  faFlask = faFlask;
   faUserTie = faUserTie;
   faClock = faClock;
   faUserMd = faUserMd;
   faCalendarDay = faCalendarDay;
   faSearch = faSearch;
+  faChevronLeft = faChevronLeft;
+  faChevronRight = faChevronRight;
+  faMobileAlt = faMobileAlt;
 
+  closeResult = "";
+  actionsForm: FormGroup;
   mainColor: Colors = Colors.RECEPT;
   exam: any;
+  page: number = 1;
+  username: string;
 
-  appointment: Appointment;
+  @Input() appointment: Appointment;
+  clients: ClientDto[] = [];
+
   @ViewChild("content") elementRef: ElementRef;
   @Output() signOut: EventEmitter<any> = new EventEmitter();
 
-  constructor(private modalService: NgbModal, private fb: FormBuilder) {}
+  constructor(
+    private modalService: NgbModal,
+    private fb: FormBuilder,
+    private rs: ReceptionistsService,
+    private ns: NotificationService
+  ) {}
 
-  search() {
-    console.log("procurando");
+  search(username: string) {
+    this.username = username;
+    this.page = 1;
+    this.findClients(username, this.page);
+  }
+
+  pageUp() {
+    this.page += 1;
+    this.findClients(this.username, this.page);
+  }
+  pageDonw() {
+    this.page = this.page > 1 ? this.page - 1 : 1;
+    this.findClients(this.username, this.page);
+  }
+
+  findClients(username, page) {
+    this.rs
+      .getClients({
+        username,
+        page,
+      })
+      .subscribe({
+        next: (clients: ClientDto[]) => (this.clients = clients),
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao buscar clientes!",
+            type: Types.ERROR,
+          }),
+      });
   }
 
   ngOnInit(): void {
-    this.appointment = {
-      id: 45,
-      status: AppointmentStatus.REQUESTED,
-      date: new Date(),
-      hour: "18:00",
-      doctor: {
-        id: 467575,
-        user: {
-          fullname: "Pedro Paulo II",
-        },
-      },
-      client: {
-        id: 2324,
-        user: {
-          username: "Pedro",
-          surname: "Rangel",
-          avatar: { url: "" },
-        },
-      },
-    };
-
     this.actionsForm = this.fb.group({
       password: this.fb.control("", [
         Validators.required,
@@ -85,7 +111,6 @@ export class ReceptionistsCreateAppointmentModalComponent implements OnInit {
     });
   }
 
-  selectUser(user: string) {}
   open(_content?) {
     const content = _content ? _content : this.elementRef;
 
@@ -96,9 +121,13 @@ export class ReceptionistsCreateAppointmentModalComponent implements OnInit {
           this.closeResult = `Closed with: ${result}`;
           if (
             result === "confirm" &&
-            this.actionsForm.value.password !== undefined
+            this.actionsForm.value.password !== undefined &&
+            this.appointment.client.id !== undefined
           ) {
-            this.signOut.emit(this.actionsForm.value);
+            this.signOut.emit({
+              password: this.actionsForm.value.password,
+              appointment: this.appointment,
+            });
           }
 
           this.actionsForm.reset();

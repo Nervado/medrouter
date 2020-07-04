@@ -6,7 +6,7 @@ export class Appointment {
   id: any;
   date: Date;
   hour: string;
-  status: AppointmentStatus;
-  client: Client;
+  status?: AppointmentStatus;
+  client?: Client;
   doctor?: DoctorDto;
 }

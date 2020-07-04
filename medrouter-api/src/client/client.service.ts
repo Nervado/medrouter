@@ -128,4 +128,14 @@ export class ClientService {
       throw new InternalServerErrorException('Update client doc failure');
     }
   }
+
+  async findOne(id: string): Promise<Client> {
+    const client: Client = await Client.findOne({ where: { id } });
+
+    if (!client) {
+      throw new BadRequestException('Client dont exists!');
+    }
+
+    return client;
+  }
 }

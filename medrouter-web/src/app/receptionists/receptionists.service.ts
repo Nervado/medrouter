@@ -12,6 +12,7 @@ import {
   DaySchedule,
   DoctorDto,
 } from "./dtos/schedules-dtos";
+import { Appointment } from "./model/appointment";
 
 @Injectable({
   providedIn: "root",
@@ -64,5 +65,11 @@ export class ReceptionistsService {
     return this.http.get<DaySchedule[]>(
       `${MEDROUTER_API}/doctors/${id}/schedules?date=${date}${query}`
     );
+  }
+
+  createAppointment(appointment: Appointment): Observable<void> {
+    return this.http.post<void>(`${MEDROUTER_API}/appointments`, {
+      ...appointment,
+    });
   }
 }

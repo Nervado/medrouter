@@ -11,20 +11,26 @@ import {
   Query,
   Delete,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
 import { IntFilterDto } from '../utils/int-filter.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 
 import { AppointmentsService } from './appointments.service';
-
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
+import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
+import { AppointmentDto } from './dto/appointment.dto';
+@UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('appointments')
 export class AppointmentsController {
-  constructor(private appointmentService: AppointmentsService) {}
+  constructor(private as: AppointmentsService) {}
 
   @Post()
+  @Roles('recept')
   @UseInterceptors(ClassSerializerInterceptor)
-  createDoctor(@Body(ValidationPipe) body: any) {
-    // return this.doctorService.create(body);
+  createDoctor(@Body(ValidationPipe) body: AppointmentDto) {
+    return this.as.create(body);
   }
 
   @Get()

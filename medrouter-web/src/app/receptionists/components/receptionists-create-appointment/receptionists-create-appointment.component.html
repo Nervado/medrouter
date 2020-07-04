@@ -1,13 +1,17 @@
-<app-receptionists-create-appointment-modal #modal (signOut)="confirm($event)">
+<app-receptionists-create-appointment-modal
+  #modal
+  (signOut)="confirm($event)"
+  [appointment]="newAppointment"
+>
 </app-receptionists-create-appointment-modal>
 
 <div class="dashboard d-flex flex-wrap justify-content-between">
   <div class="main-data aside text-doctor">
     <div class="month">
-      <div class="control filter" *ngIf="username">
+      <div class="control filter" *ngIf="doctor?.user.username">
         <fa-icon [icon]="faUserMd"></fa-icon>
-        &nbsp;<strong>{{ username }}</strong>
-        <fa-icon [icon]="faTimes" class="cursor"></fa-icon>
+        &nbsp;<strong>{{ doctor.user.username }}</strong>
+        <fa-icon [icon]="faTimes" class="cursor" (click)="clear()"></fa-icon>
       </div>
       <div class="control">
         <fa-icon [icon]="faChevronLeft" (click)="prevWeek()"></fa-icon>
@@ -16,7 +20,7 @@
       <div class="control">Agenda para&nbsp;</div>
 
       <div class="">
-        {{ months[date.getMonth()] }} de {{ date.getFullYear() }}
+        {{ months[today.getMonth()] }} de {{ today.getFullYear() }}
       </div>
 
       <div class="control">
@@ -83,22 +87,40 @@
           </div>
         </div>
 
-        <div *ngFor="let hour of day.hours" class="d-flex align-items-center">
+        <div
+          *ngFor="let hour of day.hours"
+          class="hour"
+          [ngClass]="{ past: past(day, hour) }"
+        >
           <div
             *ngIf="!hour.available"
             class="scheduled"
             [ngClass]="{ busy: hour.busy }"
-            (click)="!hour.available && !hour.busy && showModal(modal)"
+            (click)="
+              !past(day, hour) &&
+                !hour.available &&
+                !hour.busy &&
+                showModal(modal, day, hour, doctor)
+            "
           >
             {{ hour.hour }}
           </div>
           <fa-icon
             [icon]="faCalendarPlus"
-            class="text-success"
-            *ngIf="!hour.available && !hour.busy"
+            [style.color]="
+              past(day, hour) ? 'rgba(125,125,125,0.4)' : 'var(--success)'
+            "
             data-toggle="tooltip"
             data-placement="top"
             title="Marcar Consulta"
+            *ngIf="!hour.available && !hour.busy"
+          ></fa-icon>
+
+          <fa-icon
+            [icon]="faCalendarPlus"
+            [style.color]="'#fff'"
+            *ngIf="!hour.available && hour.busy"
+            class="no-pointer"
           ></fa-icon>
         </div>
       </div>

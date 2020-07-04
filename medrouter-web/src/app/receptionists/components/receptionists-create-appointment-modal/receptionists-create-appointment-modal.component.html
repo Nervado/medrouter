@@ -29,7 +29,7 @@
 
       <div class="infos text-recept">
         <fa-icon [icon]="faUserTie"></fa-icon>
-        {{ username.value }}
+        {{ appointment.client?.user?.username }}
       </div>
 
       <div class="infos text-recept">
@@ -45,71 +45,54 @@
       <div class="search">
         <div class="form">
           <div class="input">
+            <fa-icon [icon]="faChevronLeft" (click)="pageDonw()"></fa-icon>
             <input
               type="text"
               name="search"
               placeholder="Nome do paciente"
               #username
             />
-            <fa-icon [icon]="faSearch" (click)="search()"></fa-icon>
+            <fa-icon
+              [icon]="faSearch"
+              (click)="search(username.value)"
+            ></fa-icon>
+            <fa-icon [icon]="faChevronRight" (click)="pageUp()"></fa-icon>
           </div>
 
           <div class="results">
             <div class="label">
               Resultados
-              <strong class="ml-1"> 4</strong>
+              <strong class="ml-1">{{ clients ? clients.length : 0 }}</strong>
             </div>
 
             <div class="wrapper">
-              <div class="result">
-                <div>João das Colves</div>
-                <fa-icon
-                  [icon]="faUserTie"
-                  class="text-success cursor ml-2"
-                  (click)="username.value = 'João das Colves'"
-                ></fa-icon>
-              </div>
-              <div class="result">
-                <div>João das Colves</div>
-                <fa-icon
-                  [icon]="faUserTie"
-                  class="text-success cursor ml-2"
-                ></fa-icon>
-              </div>
-              <div class="result">
-                <div>João das Colves</div>
-                <fa-icon
-                  [icon]="faUserTie"
-                  class="text-success cursor ml-2"
-                ></fa-icon>
-              </div>
-              <div class="result">
-                <div>João das Colves</div>
-                <fa-icon
-                  [icon]="faUserTie"
-                  class="text-success cursor ml-2"
-                ></fa-icon>
-              </div>
-              <div class="result">
-                <div>João das Colves</div>
-                <fa-icon
-                  [icon]="faUserTie"
-                  class="text-success cursor ml-2"
-                ></fa-icon>
-              </div>
-              <div class="result">
-                <div>João das Colves</div>
-                <fa-icon
-                  [icon]="faUserTie"
-                  class="text-success cursor ml-2"
-                ></fa-icon>
-              </div>
-              <div class="result">
-                <div>João das Colves</div>
-                <fa-icon
-                  [icon]="faUserTie"
-                  class="text-success cursor ml-2"
-                ></fa-icon>
+              <div
+                class="result"
+                *ngFor="let client of clients"
+                (click)="appointment.client = client"
+              >
+                <ng-container
+                  *ngIf="client.user.avatar?.url; else avatarTemplate"
+                >
+                  <img [src]="client.user.avatar?.url" alt="avatar" />
+                </ng-container>
+                <ng-template #avatarTemplate>
+                  <img src="../../../../assets/avatarmale.png" alt="avatar" />
+                </ng-template>
+
+                <div>
+                  <strong>
+                    {{
+                      client.user.surname
+                        ? client.user.fullname
+                        : client.user.username
+                    }}</strong
+                  >
+                  <div>
+                    <fa-icon [icon]="faMobileAlt"></fa-icon>
+                    {{ client.user?.phoneNumber }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

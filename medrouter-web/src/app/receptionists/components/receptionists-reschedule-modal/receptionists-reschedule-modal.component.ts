@@ -70,7 +70,7 @@ export class ReceptionistsRescheduleModalComponent implements OnInit {
       date: new Date(),
       hour: "18:00",
       doctor: {
-        id: 467575,
+        id: "uusususu",
         user: {
           fullname: "Pedro Paulo II",
         },
