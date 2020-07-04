@@ -1,9 +1,7 @@
-import { Available } from 'src/doctors/enums/available.enum';
-import { IsDateString, IsNotEmpty } from 'class-validator';
-import { AppointmentStatus } from '../enums/appointment.enum';
+import { Available } from "../enums/hours.enum";
+import { AppointmentStatus } from "../enums/appontment-status";
 
-export class AppointmentDto {
-  @IsNotEmpty()
+export class Appointment {
   client: {
     id: string;
     user: {
@@ -16,7 +14,6 @@ export class AppointmentDto {
     };
   };
 
-  @IsNotEmpty()
   doctor: {
     id: string;
     user: {
@@ -29,11 +26,8 @@ export class AppointmentDto {
     };
   };
 
-  @IsNotEmpty()
-  @IsDateString()
   date: Date;
 
-  @IsNotEmpty()
   hour: Available;
 
   status: AppointmentStatus;

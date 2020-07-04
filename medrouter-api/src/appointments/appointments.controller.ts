@@ -13,14 +13,14 @@ import {
   Patch,
   UseGuards,
 } from '@nestjs/common';
-import { IntFilterDto } from '../utils/int-filter.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-
 import { AppointmentsService } from './appointments.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
 import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
 import { AppointmentDto } from './dto/appointment.dto';
+import { SearchAppointment } from './dto/search-appointment.dto';
+import { UpdateAppointmentDto } from './dto/update-appointment';
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('appointments')
 export class AppointmentsController {
@@ -34,49 +34,35 @@ export class AppointmentsController {
   }
 
   @Get()
+  @Roles('recept')
   @UseInterceptors(ClassSerializerInterceptor)
-  getAll(@Query(ValidationPipe) page: IntFilterDto) {
-    // return this.doctorService.getMany(page.page);
+  getAll(
+    @Query(ValidationPipe) search: SearchAppointment,
+  ): Promise<AppointmentDto[]> {
+    return this.as.getAll(search);
   }
 
   @Get('/:id')
+  @Roles('recept')
   @UseInterceptors(ClassSerializerInterceptor)
-  get(@Param('id') id: number): void {
-    //return this.doctorService.getOne(id);
+  get(@Param('id') id: string): Promise<AppointmentDto> {
+    return this.as.getOne(id);
   }
 
   @Delete('/:id')
+  @Roles('recept')
   @UseInterceptors(ClassSerializerInterceptor)
-  deleteDoctor(@Param('id') id: number) {
-    //return this.doctorService.delete(id);
-  }
-
-  @Put('/:id')
-  @UseInterceptors(ClassSerializerInterceptor)
-  update(
-    @Param('id') id: number,
-    @Body('specialty', ValidationPipe) body: any,
-  ) {
-    // return this.doctorService.updateOne(id, body);
+  deleteDoctor(@Param('id') id: string) {
+    return this.as.delete(id);
   }
 
   @Patch('/:id/status')
-  @Roles('owner')
+  @Roles('recept')
   @UseInterceptors(ClassSerializerInterceptor)
   changeStatus(
-    @Param('id') id: number,
-    @Body('status', ValidationPipe) body: any,
-  ) {
-    //return this.doctorService.modifyOne(id, body, 'status');
-  }
-
-  @Patch('/:id/status')
-  @Roles('owner')
-  @UseInterceptors(ClassSerializerInterceptor)
-  modifyPath(
-    @Param('id') id: number,
-    @Body('status', ValidationPipe) body: any,
-  ) {
-    //return this.doctorService.modifyOne(id, body, 'status');
+    @Param('id') id: string,
+    @Body(ValidationPipe) body: UpdateAppointmentDto,
+  ): Promise<void> {
+    return this.as.modifyOne(id, body);
   }
 }

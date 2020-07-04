@@ -87,7 +87,7 @@
 
         <div class="user-info">
           <div class="avatar">
-            <ng-container *ngIf="appointment.client.user.avatar; else avatar">
+            <ng-container *ngIf="appointment.client.user?.avatar; else avatar">
               <img [src]="appointment.client.user.avatar?.url" alt="avatar" />
             </ng-container>
 

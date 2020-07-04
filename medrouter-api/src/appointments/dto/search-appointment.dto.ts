@@ -5,4 +5,5 @@ export class SearchAppointment {
   date?: Date;
   endDate?: Date;
   hour?: Available;
+  username?: string;
 }

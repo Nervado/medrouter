@@ -13,6 +13,9 @@ import {
   DoctorDto,
 } from "./dtos/schedules-dtos";
 import { Appointment } from "./model/appointment";
+import { SearchAppointmentsDto } from "./dtos/search-appointments-dto";
+import { Available } from "./enums/hours.enum";
+import { UpdateAppointmentDto } from "./dtos/update-appointment";
 
 @Injectable({
   providedIn: "root",
@@ -71,5 +74,24 @@ export class ReceptionistsService {
     return this.http.post<void>(`${MEDROUTER_API}/appointments`, {
       ...appointment,
     });
+  }
+
+  getAppointments(search: SearchAppointmentsDto): Observable<Appointment[]> {
+    const { username, date } = search;
+    const query = username ? `&username=${username}` : "";
+
+    return this.http.get<Appointment[]>(
+      `${MEDROUTER_API}/appointments?date=${date}${query}`
+    );
+  }
+
+  patchAppoiments(id: string, update: UpdateAppointmentDto): Observable<void> {
+    return this.http.patch<void>(`${MEDROUTER_API}/appointments/${id}`, {
+      ...update,
+    });
+  }
+
+  deleteAppointment(id: string): Observable<void> {
+    return this.http.delete<void>(`${MEDROUTER_API}/appointments/${id}`);
   }
 }

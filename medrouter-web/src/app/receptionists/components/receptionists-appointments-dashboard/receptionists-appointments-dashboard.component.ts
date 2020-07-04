@@ -26,6 +26,11 @@ import {
   faTimesCircle,
   faCheckCircle,
 } from "@fortawesome/free-regular-svg-icons";
+import { SearchAppointmentsDto } from "../../dtos/search-appointments-dto";
+import { NotificationService } from "src/app/messages/notification.service";
+import { ReceptionistsService } from "../../receptionists.service";
+import { AuthService } from "src/app/auth/auth.service";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
   selector: "app-receptionists-appointments-dashboard",
@@ -75,48 +80,19 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
   search() {
     console.log("procurando nemo");
   }
-  constructor() {}
+  constructor(
+    private ns: NotificationService,
+    private rs: ReceptionistsService,
+    private as: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.date = new Date();
     this.today = this.date;
 
-    this.appointments = [
-      {
-        id: 34,
-        hour: Hour[0],
-        date: setHours(new Date(2020, 4, 10, 0, 0), 6),
-        status: AppointmentStatus.ONESCHEDULE,
-        client: {
-          id: 1,
-          user: {
-            username: "Evandro Abreu",
-            surname: "Abreu",
-            avatar: {
-              url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-            },
-          },
-        },
-      },
-      {
-        id: 35,
-        hour: Hour[6],
-        date: setHours(new Date(2020, 4, 10, 0, 0), 4),
-        status: AppointmentStatus.ONESCHEDULE,
-        client: {
-          id: 1,
-          user: {
-            username: "Andressa",
-            surname: "Oliveira",
-            avatar: {
-              url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-            },
-          },
-        },
-      },
-    ];
-
-    console.log(this.appointments);
+    this.findAppointments({
+      date: this.date,
+    });
   }
 
   save() {}
@@ -124,4 +100,20 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
   nextWeek() {}
 
   prevWeek() {}
+
+  findAppointments(search: SearchAppointmentsDto) {
+    this.rs
+      .getAppointments({
+        ...search,
+      })
+      .subscribe({
+        next: (appointments: Appointment[]) =>
+          (this.appointments = appointments),
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao buscar agendamentos",
+            type: Types.ERROR,
+          }),
+      });
+  }
 }
