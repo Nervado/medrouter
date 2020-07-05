@@ -67,7 +67,11 @@
               </ng-template>
 
               <div>
-                <strong>{{ doctor.user.username }}</strong>
+                <strong>{{
+                  doctor.user.surname
+                    ? doctor.user.fullname
+                    : doctor.user.username
+                }}</strong>
                 <div class="specialty">
                   {{ textAdjust(doctor.specialty[0]) }}
                 </div>

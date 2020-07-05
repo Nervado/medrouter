@@ -3,6 +3,6 @@ import { AppointmentStatus } from "../enums/appontment-status";
 
 export class UpdateAppointmentDto {
   status: AppointmentStatus;
-  date?: Date;
+  date?: Date | string;
   hour?: Available;
 }

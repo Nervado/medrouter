@@ -25,6 +25,7 @@ export class DoctorDto {
   user: {
     username: string;
     surname: string;
+    fullname: string;
     avatar: {
       url: string;
     };

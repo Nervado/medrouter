@@ -15,12 +15,13 @@ import {
   faUserMd,
   faUserTie,
   faCheck,
+  faTrash,
+  faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { Months } from "src/app/doctors/enums/months.enum";
 import { EscheduleView } from "src/app/doctors/model/schedule.view";
 
-import { Hour } from "src/app/doctors/enums/hours.enum";
-import { setHours, add, addDays, subDays } from "date-fns";
+import { addDays, subDays } from "date-fns";
 import { AppointmentStatus } from "src/app/doctors/enums/appontment-status";
 import {
   faTimesCircle,
@@ -35,6 +36,8 @@ import { Appointment } from "../../dtos/appointment-dto";
 import { capitalizeAndRemoveUnderscores } from "src/app/utils/capitalizeAndRemoveUnderscore";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { DoctorDto } from "../../model/doctor-dto";
+import { Available } from "../../enums/hours.enum";
+import { UpdateAppointmentDto } from "../../dtos/update-appointment";
 
 @Component({
   selector: "app-receptionists-appointments-dashboard",
@@ -52,7 +55,6 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
   faSave = faSave;
   faClock = faClock;
   faTimes = faTimesCircle;
-  isEditing: boolean = false;
   faHistory = faHistory;
   faFileMedical = faFileMedical;
   faSearch = faSearch;
@@ -61,34 +63,20 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
   faUserTie = faUserTie;
   faCheckCircle = faCheckCircle;
   faCheck = faCheck;
+  faTrash = faTrashAlt;
 
   months = Months;
-  days: EscheduleView[];
   date: Date;
   today: Date;
   appointments: Appointment[];
   showSearch: boolean = false;
   doctor: DoctorDto = undefined;
   results: DoctorDto[] = [];
+  AppointmentStatus = AppointmentStatus;
+  appointment: Appointment = undefined;
 
   filter: string;
 
-  toogle() {
-    this.showSearch = !this.showSearch;
-  }
-
-  confirm(e) {
-    console.log(e);
-  }
-  openModal(modal) {
-    modal.open();
-  }
-  search(username: string) {
-    this.findAppointments({ date: this.date, username });
-    this.results = this.appointments.map((app) => app.doctor);
-
-    this.setResults(this.appointments);
-  }
   constructor(
     private ns: NotificationService,
     private rs: ReceptionistsService,
@@ -104,7 +92,33 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
     });
   }
 
-  save() {}
+  toogle() {
+    this.showSearch = !this.showSearch;
+  }
+
+  confirm(update: UpdateAppointmentDto) {
+    console.log(update);
+  }
+
+  openModal(modal, appointment: Appointment) {
+    this.appointment = appointment;
+    modal.open();
+  }
+
+  save(doctor: DoctorDto) {
+    this.doctor = doctor;
+    this.setSearch();
+  }
+
+  clear() {
+    this.doctor = undefined;
+    this.setSearch();
+  }
+
+  search(username: string) {
+    this.doctor = undefined;
+    this.findAppointments({ date: this.date, username });
+  }
 
   nextDay() {
     this.date = addDays(this.date, 1);
@@ -129,8 +143,10 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
         ...search,
       })
       .subscribe({
-        next: (appointments: Appointment[]) =>
-          (this.appointments = appointments),
+        next: (appointments: Appointment[]) => {
+          this.appointments = appointments;
+          this.setResults(this.appointments);
+        },
         error: () =>
           this.ns.notify({
             message: "Falha ao buscar agendamentos",
@@ -140,7 +156,9 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
   }
 
   formatText(text: string): string {
-    return capitalizeAndRemoveUnderscores(text);
+    return capitalizeAndRemoveUnderscores(text)
+      .replace('"', "")
+      .replace('"', "");
   }
 
   getStatusColor(status: AppointmentStatus): Colors {
@@ -155,7 +173,6 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
         return Colors.RECEPT;
       case AppointmentStatus.ONESCHEDULE:
         return Colors.INFO;
-
       default:
         return Colors.BASE;
     }
@@ -169,5 +186,42 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
         .map((appointment: Appointment) => appointment.doctor)
         .find((doctor) => doctor.id === id)
     );
+  }
+
+  // controls
+  modifyAppoiment(
+    id: string,
+    status: AppointmentStatus,
+    date?: Date,
+    hour?: Available
+  ) {
+    console.log(id, status, date, hour);
+
+    this.rs
+      .patchAppoiments(id, { status, date: date?.toISOString(), hour })
+      .subscribe({
+        next: () => this.setSearch(),
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao atualizar agendamento",
+            type: Types.ERROR,
+          }),
+      });
+  }
+  deleteSchedule(id) {
+    this.rs.deleteAppointment(id).subscribe({
+      next: () => {
+        this.setSearch();
+        this.ns.notify({
+          message: "Agendamento deletado",
+          type: Types.INFO,
+        });
+      },
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao deletar agendamento",
+          type: Types.ERROR,
+        }),
+    });
   }
 }

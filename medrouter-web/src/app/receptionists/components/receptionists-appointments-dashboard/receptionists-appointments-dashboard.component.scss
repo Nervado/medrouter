@@ -76,10 +76,36 @@
               width: 100%;
               display: flex;
               align-items: center;
-              justify-content: space-between;
+              justify-content: flex-start;
               font-size: 14px;
-              margin: 2px 0px;
-              color: var(--lab);
+              margin: 4px 0px;
+              color: var(--recept);
+              padding: 2px;
+              border-radius: 4px;
+
+              cursor: pointer;
+
+              &:hover {
+                background-color: rgba(0, 255, 255, 0.1);
+              }
+
+              div {
+                overflow: hidden;
+
+                .specialty {
+                  font-size: 12px;
+                }
+              }
+
+              img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                border: 1px solid var(--recept);
+                margin-right: 10px;
+                object-fit: cover;
+                margin-right: 2px;
+              }
             }
           }
         }
@@ -163,9 +189,11 @@
           justify-content: center;
 
           .controls {
+            width: 100%;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-end;
+
             fa-icon {
               font-size: 1.2em;
               cursor: pointer;
@@ -197,4 +225,9 @@
 
 .cursor {
   cursor: pointer;
+}
+
+.disable {
+  color: rgba(125, 125, 125, 0.4);
+  cursor: default;
 }

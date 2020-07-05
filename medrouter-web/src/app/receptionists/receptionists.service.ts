@@ -86,7 +86,7 @@ export class ReceptionistsService {
   }
 
   patchAppoiments(id: string, update: UpdateAppointmentDto): Observable<void> {
-    return this.http.patch<void>(`${MEDROUTER_API}/appointments/${id}`, {
+    return this.http.patch<void>(`${MEDROUTER_API}/appointments/${id}/status`, {
       ...update,
     });
   }

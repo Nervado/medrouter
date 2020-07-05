@@ -47,6 +47,7 @@
             [btColor]="btColor"
             [tick]="tick"
             [defaut]="date"
+            formControlName="date"
           ></app-datepicker>
           <!--[old]="date  formControlName="birthdate""-->
         </div>
@@ -63,12 +64,12 @@
         >
           <select
             formControlName="hour"
-            id="include"
-            name="hours"
             class="in in-recept"
             style="border: 1px solid var(--recept); color: var(--recept);"
           >
-            <option value="hour" *ngFor="let hour of hours">{{ hour }}</option>
+            <option [value]="hour" *ngFor="let hour of hours"
+              >{{ hour }}h</option
+            >
           </select>
 
           <div

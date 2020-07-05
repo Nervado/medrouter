@@ -1,12 +1,16 @@
-<app-receptionists-reschedule-modal #modal (signOut)="confirm($event)">
+<app-receptionists-reschedule-modal
+  #modal
+  (signOut)="confirm($event)"
+  [appointment]="appointment"
+>
 </app-receptionists-reschedule-modal>
 
 <div class="dashboard d-flex flex-wrap justify-content-between">
   <div class="main-data aside text-doctor">
     <div class="month">
-      <div class="control filter">
-        Doutor &nbsp;<strong>Fulano</strong>
-        <fa-icon [icon]="faTimes" class="cursor"></fa-icon>
+      <div class="control filter" *ngIf="doctor">
+        Doutor &nbsp;<strong>{{ doctor.user.username }}</strong>
+        <fa-icon [icon]="faTimes" class="cursor" (click)="clear()"></fa-icon>
       </div>
       <div class="control">
         <fa-icon [icon]="faChevronLeft" (click)="prevDay()"></fa-icon>
@@ -46,18 +50,30 @@
           </div>
 
           <div class="wrapper">
-            <div class="result" *ngFor="let doctor of results">
+            <div
+              class="result"
+              *ngFor="let doctor of results"
+              (click)="save(doctor)"
+            >
+              <ng-container
+                *ngIf="doctor.user.avatar?.url; else avatarTemplate"
+              >
+                <img [src]="doctor.user.avatar?.url" alt="avatar" />
+              </ng-container>
+              <ng-template #avatarTemplate>
+                <img src="../../../../assets/avatarmale.png" alt="avatar" />
+              </ng-template>
+
               <div>
-                {{
+                <strong>{{
                   doctor.user.surname
                     ? doctor.user.fullname
                     : doctor.user.username
-                }}
+                }}</strong>
+                <div class="specialty">
+                  {{ formatText(doctor.specialty[0]) }}
+                </div>
               </div>
-              <fa-icon
-                [icon]="faUserMd"
-                class="text-success cursor ml-2"
-              ></fa-icon>
             </div>
           </div>
         </div>
@@ -92,6 +108,17 @@
                   data-toggle="tooltip"
                   data-placement="top"
                   title="Agendado"
+                  class="text-success cursor"
+                  *ngIf="appointment.status === AppointmentStatus.ONESCHEDULE"
+                ></fa-icon>
+
+                <fa-icon
+                  [icon]="faHistory"
+                  class="text-medium cursor ml-1"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Reagendado"
+                  *ngIf="appointment.status === AppointmentStatus.RESCHEDULED"
                 ></fa-icon>
               </div>
             </div>
@@ -132,26 +159,44 @@
           </div>
           <div class="controls">
             <fa-icon
+              *ngIf="appointment.status === AppointmentStatus.REQUESTED"
               [icon]="faCheckCircle"
               class="text-success cursor"
               data-toggle="tooltip"
               data-placement="top"
               title="Confirmar"
+              (click)="
+                modifyAppoiment(appointment.id, AppointmentStatus.ONESCHEDULE)
+              "
             ></fa-icon>
             <fa-icon
+              *ngIf="appointment.status !== AppointmentStatus.CANCELED"
               [icon]="faHistory"
               class="text-medium cursor"
               data-toggle="tooltip"
               data-placement="top"
               title="Remarcar"
-              (click)="openModal(modal)"
+              (click)="openModal(modal, appointment)"
             ></fa-icon>
             <fa-icon
+              *ngIf="appointment.status !== AppointmentStatus.CANCELED"
               [icon]="faTimes"
               class="text-oposity1 cursor"
               data-toggle="tooltip"
               data-placement="top"
               title="Cancelar"
+              (click)="
+                modifyAppoiment(appointment.id, AppointmentStatus.CANCELED)
+              "
+            ></fa-icon>
+            <fa-icon
+              *ngIf="appointment.status === AppointmentStatus.CANCELED"
+              [icon]="faTrash"
+              class="cursor disable"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Deletar"
+              (click)="deleteSchedule(appointment.id)"
             ></fa-icon>
           </div>
         </div>

@@ -5,6 +5,7 @@ import {
   ElementRef,
   Output,
   EventEmitter,
+  Input,
 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import {
@@ -32,7 +33,7 @@ import { Hour } from "../../enums/hours.enum";
 })
 export class ReceptionistsRescheduleModalComponent implements OnInit {
   closeResult = "";
-  actionsForm: FormGroup;
+
   faLock = faLock;
   faUser = faUser;
   faFlask = faFlask;
@@ -51,9 +52,10 @@ export class ReceptionistsRescheduleModalComponent implements OnInit {
   mainColor: Colors = Colors.RECEPT;
   exam: any;
 
-  hours: Array<string> = Hour.map((hour) => `${hour}h`);
+  hours: Array<string> = Hour.map((hour) => `${hour}`);
+  actionsForm: FormGroup;
 
-  appointment: Appointment;
+  @Input() appointment: Appointment;
   @ViewChild("content") elementRef: ElementRef;
   @Output() signOut: EventEmitter<any> = new EventEmitter();
 
@@ -64,28 +66,9 @@ export class ReceptionistsRescheduleModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.appointment = {
-      id: 45,
-      status: AppointmentStatus.REQUESTED,
-      date: new Date(),
-      hour: "18:00",
-      doctor: {
-        id: "uusususu",
-        user: {
-          fullname: "Pedro Paulo II",
-        },
-      },
-      client: {
-        id: 2324,
-        user: {
-          username: "Pedro",
-          surname: "Rangel",
-          avatar: { url: "" },
-        },
-      },
-    };
-
     this.actionsForm = this.fb.group({
+      hour: this.fb.control("", [Validators.required]),
+      date: this.fb.control(new Date(), [Validators.required]),
       password: this.fb.control("", [
         Validators.required,
         Validators.minLength(6),
@@ -93,7 +76,6 @@ export class ReceptionistsRescheduleModalComponent implements OnInit {
     });
   }
 
-  selectUser(user: string) {}
   open(_content?) {
     const content = _content ? _content : this.elementRef;
 

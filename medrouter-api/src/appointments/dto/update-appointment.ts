@@ -7,6 +7,7 @@ export class UpdateAppointmentDto {
   @IsEnum(AppointmentStatus, { each: true })
   status: AppointmentStatus;
 
+  @IsOptional()
   @IsDateString()
   date?: Date;
 
