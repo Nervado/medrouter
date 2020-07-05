@@ -108,7 +108,7 @@ export class DoctorsController {
   }
 
   @Get('/:id/appointments')
-  @Allow('doctor')
+  @Roles('doctor')
   @UseInterceptors(ClassSerializerInterceptor)
   getAppointments(
     @Param('id') id: string,
@@ -116,6 +116,17 @@ export class DoctorsController {
     @GetUser() user: User,
   ): Promise<AppointmentDto[]> {
     return this.doctorService.getAppointments(id, search, user);
+  }
+
+  @Get('/:id/appointments/:appointmentId')
+  @Roles('doctor')
+  @UseInterceptors(ClassSerializerInterceptor)
+  getAppointment(
+    @Param('id') id: string,
+    @Param('appointmentId') apptId: string,
+    @GetUser() user: User,
+  ): Promise<AppointmentDto> {
+    return this.doctorService.getAppointment(id, apptId, user);
   }
 
   @Post('/:id/schedules')

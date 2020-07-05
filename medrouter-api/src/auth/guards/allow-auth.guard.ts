@@ -22,6 +22,7 @@ export class AlowGuard implements CanActivate {
     }
 
     if (!this.matchRoles(allow, user.role)) {
+      console.log(allow, user.role);
       throw new UnauthorizedException('Not authorized by AllowGuard!');
     }
 

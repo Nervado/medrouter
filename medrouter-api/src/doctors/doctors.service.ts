@@ -24,6 +24,7 @@ import { Available } from './enums/available.enum';
 import { doc } from 'prettier';
 import { SearchAppointment } from 'src/appointments/dto/search-appointment.dto';
 import { AppointmentDto } from 'src/appointments/dto/appointment.dto';
+import { threadId } from 'worker_threads';
 @Injectable()
 export class DoctorsService extends Service<
   DoctorDto,
@@ -330,5 +331,15 @@ export class DoctorsService extends Service<
       date: search.date,
       clientname: search.clientname,
     });
+  }
+
+  async getAppointment(id, apptId, user): Promise<AppointmentDto> {
+    const doctor = await this.repo.findOne(id);
+
+    this.checkDoctor(doctor, user);
+
+    const find = await this.as.getOne(apptId);
+
+    return find;
   }
 }

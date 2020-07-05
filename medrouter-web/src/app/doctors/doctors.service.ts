@@ -78,4 +78,20 @@ export class DoctorsService {
       `${MEDROUTER_API}/doctors/${id}/appointments?date=${search.date}${query}`
     );
   }
+  getAppointment(
+    doctorId: string,
+    appointmentId: string
+  ): Observable<Appointment> {
+    return this.http.get<Appointment>(
+      `${MEDROUTER_API}/doctors/${doctorId}/appointments/${appointmentId}`
+    );
+  }
+
+  //TO DO
+  // getExams with search fields
+  // Post Exams
+  // Get Exams
+  // Post Medicines
+  // GetMedicines
+  // Post Prescription
 }

@@ -20,7 +20,9 @@
       <div *ngFor="let appointment of appointments" class="appointment">
         <div class="user-info">
           <div class="avatar">
-            <ng-container *ngIf="appointment.client.user.avatar; else avatar">
+            <ng-container
+              *ngIf="appointment.client.user.avatar?.url; else avatar"
+            >
               <img [src]="appointment.client.user.avatar?.url" alt="avatar" />
             </ng-container>
 
@@ -46,10 +48,12 @@
           >
             {{ appointment.status }}
           </div>
-          <fa-icon
-            [icon]="faFileMedical"
-            class="text-success cursor ml-2"
-          ></fa-icon>
+          <a [routerLink]="['../create-prescription', appointment.id]">
+            <fa-icon
+              [icon]="faFileMedical"
+              class="text-success cursor ml-2"
+            ></fa-icon
+          ></a>
         </div>
       </div>
     </div>

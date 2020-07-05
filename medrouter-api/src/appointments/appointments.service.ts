@@ -24,7 +24,21 @@ export class AppointmentsService {
   ) {}
 
   async getOne(id: string): Promise<AppointmentDto> {
-    return await Appointment.findOne({ where: { id } });
+    const query = Appointment.createQueryBuilder('appointment');
+
+    query.andWhere('appointment.id = :id', { id });
+
+    const find = await query
+
+      .leftJoinAndSelect('appointment.doctor', 'doctor')
+      .leftJoinAndSelect('doctor.user', 'doctorUser')
+      .leftJoinAndSelect('doctorUser.avatar', 'doctorAvatar')
+      .leftJoinAndSelect('appointment.client', 'client')
+      .leftJoinAndSelect('client.user', 'clientUser')
+      .leftJoinAndSelect('clientUser.avatar', 'clientAvatar')
+      .getOne();
+
+    return this.serializeAppointment(find);
   }
 
   async searchOne(search: SearchAppointment): Promise<Appointment> {
@@ -166,8 +180,6 @@ export class AppointmentsService {
       .leftJoinAndSelect('appointment.client', 'client')
       .getMany();
 
-    console.log(results);
-
     return results;
   }
 
@@ -207,37 +219,7 @@ export class AppointmentsService {
         .getMany();
 
       const appoiments: AppointmentDto[] = [
-        ...resuts.map((app: Appointment) => {
-          return {
-            id: app.id,
-            client: {
-              id: app.client.id,
-              user: {
-                username: app.client.user.username,
-                fullname: app.client.user.fullname,
-                surname: app.client.user.surname,
-                avatar: {
-                  url: app.client.user.avatar?.url,
-                },
-              },
-            },
-            doctor: {
-              id: app.doctor.id,
-              specialty: app.doctor.specialty,
-              user: {
-                username: app.doctor.user.username,
-                fullname: app.doctor.user.fullname,
-                surname: app.doctor.user.surname,
-                avatar: {
-                  url: app.doctor.user.avatar?.url,
-                },
-              },
-            },
-            date: app.date,
-            hour: app.hour,
-            status: app.status,
-          };
-        }),
+        ...resuts.map((app: Appointment) => this.serializeAppointment(app)),
       ];
 
       return appoiments;
@@ -338,5 +320,37 @@ export class AppointmentsService {
 
   async delete(id: string): Promise<any> {
     return await Appointment.getRepository().softDelete(id);
+  }
+
+  serializeAppointment(appointment: Appointment): AppointmentDto {
+    return {
+      id: appointment.id,
+      client: {
+        id: appointment.client.id,
+        user: {
+          username: appointment.client.user.username,
+          fullname: appointment.client.user.fullname,
+          surname: appointment.client.user.surname,
+          avatar: {
+            url: appointment.client.user.avatar?.url,
+          },
+        },
+      },
+      doctor: {
+        id: appointment.doctor.id,
+        specialty: appointment.doctor.specialty,
+        user: {
+          username: appointment.doctor.user.username,
+          fullname: appointment.doctor.user.fullname,
+          surname: appointment.doctor.user.surname,
+          avatar: {
+            url: appointment.doctor.user.avatar?.url,
+          },
+        },
+      },
+      date: appointment.date,
+      hour: appointment.hour,
+      status: appointment.status,
+    };
   }
 }

@@ -1,8 +1,13 @@
 import { Available } from 'src/doctors/enums/available.enum';
-import { IsDateString, IsNotEmpty } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsUUID, IsOptional } from 'class-validator';
 import { AppointmentStatus } from '../enums/appointment.enum';
+import { Specialty } from 'src/doctors/enums/specialty.enum';
 
 export class AppointmentDto {
+  @IsOptional()
+  @IsUUID()
+  id?: string;
+
   @IsNotEmpty()
   client: {
     id: string;
@@ -19,6 +24,7 @@ export class AppointmentDto {
   @IsNotEmpty()
   doctor: {
     id: string;
+    specialty: Specialty[];
     user: {
       username: string;
       fullname: string;

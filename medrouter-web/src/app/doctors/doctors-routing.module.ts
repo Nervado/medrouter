@@ -9,6 +9,7 @@ import { DoctorsCreateScheduleComponent } from "./components/doctors-create-sche
 import { DoctorsCreatePrescriptionComponent } from "./components/doctors-create-prescription/doctors-create-prescription.component";
 import { DoctorsExamsDashboardComponent } from "./components/doctors-exams-dashboard/doctors-exams-dashboard.component";
 import { DoctorsHistoryClientsDashboardComponent } from "./components/doctors-history-clients-dashboard/doctors-history-clients-dashboard.component";
+import { path } from "d3";
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
       },
       {
         path: "create-prescription",
+        component: DoctorsCreatePrescriptionComponent,
+      },
+      {
+        path: "create-prescription/:id",
         component: DoctorsCreatePrescriptionComponent,
       },
       {

@@ -39,6 +39,8 @@ import { capitalizeAndRemoveUnderscores } from "src/app/utils/capitalizeAndRemov
 import { format } from "date-fns";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Appointment } from "../../model/appointment";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-doctors-create-prescription",
@@ -90,24 +92,36 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
   date: Date;
   prettyDate: string;
 
+  doctorId: string = undefined;
+  appointmentId: string = undefined;
+
   mainColor: Colors = Colors.DOCTOR;
 
   prescriptionForm: FormGroup;
 
+  latestAppointment: Appointment = undefined;
+
   constructor(
     private ds: DoctorsService,
     private ns: NotificationService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.recomendations.length;
-    console.log(this.category, this.subcategory);
     this.date = new Date();
     this.prettyDate = format(new Date(), "dd/MM/yyyy");
-    this.searchMedicine("peni");
     this.prescriptionForm = this.fb.group({
       exams: this.fb.control([], [Validators.required]),
+    });
+
+    this.activatedRoute.params.subscribe({
+      next: (params) => {
+        this.appointmentId = params["id"];
+        this.doctorId = this.activatedRoute.parent.snapshot.params["id"];
+        this.getLatestAppointment(this.doctorId, this.appointmentId);
+      },
     });
   }
 
@@ -167,5 +181,30 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
 
   showAddNF() {
     this.addNF = !this.addNF;
+  }
+
+  getLatestAppointment(doctorId: string, appointmentId: string) {
+    if (this.appointmentId !== undefined) {
+      this.ds.getAppointment(doctorId, appointmentId).subscribe({
+        next: (appointment: Appointment) => {
+          this.latestAppointment = appointment;
+          this.ns.notify({
+            message: "Clique em editar para iniciar uma nova prescricão",
+            type: Types.INFO,
+          });
+        },
+        error: () => {
+          this.ns.notify({
+            message: "Paciente não tem consulta agendada",
+            type: Types.ERROR,
+          });
+        },
+      });
+    } else {
+      this.ns.notify({
+        message: "Selecione um paciente para criar uma prescricão",
+        type: Types.INFO,
+      });
+    }
   }
 }
