@@ -63,7 +63,7 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
   faUserTie = faUserTie;
   faCheckCircle = faCheckCircle;
   faCheck = faCheck;
-  faTrash = faTrashAlt;
+  faTrash = faTrash;
 
   months = Months;
   date: Date;
@@ -86,7 +86,6 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.date = new Date();
     this.today = this.date;
-
     this.findAppointments({
       date: this.date,
     });
@@ -98,6 +97,27 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
 
   confirm(update: UpdateAppointmentDto) {
     console.log(update);
+
+    if (this.checkPassword(update.password)) {
+      this.modifyAppoiment(
+        this.appointment.id,
+        AppointmentStatus.RESCHEDULED,
+        new Date(update.date),
+        update.hour
+      );
+    }
+  }
+
+  checkPassword(password: string): boolean {
+    if (!(this.as.loginDto.password === password) && password !== undefined) {
+      this.ns.notify({
+        message: "Refaça o login para realizar a operação!",
+        type: Types.WARN,
+      });
+      return false;
+    } else {
+      return true;
+    }
   }
 
   openModal(modal, appointment: Appointment) {
@@ -170,9 +190,9 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
       case AppointmentStatus.REQUESTED:
         return Colors.WARN;
       case AppointmentStatus.RESCHEDULED:
-        return Colors.RECEPT;
-      case AppointmentStatus.ONESCHEDULE:
         return Colors.INFO;
+      case AppointmentStatus.ONESCHEDULE:
+        return Colors.RECEPT;
       default:
         return Colors.BASE;
     }
@@ -200,7 +220,13 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
     this.rs
       .patchAppoiments(id, { status, date: date?.toISOString(), hour })
       .subscribe({
-        next: () => this.setSearch(),
+        next: () => {
+          this.ns.notify({
+            message: "Agendamento atualizado",
+            type: Types.INFO,
+          });
+          this.setSearch();
+        },
         error: () =>
           this.ns.notify({
             message: "Falha ao atualizar agendamento",

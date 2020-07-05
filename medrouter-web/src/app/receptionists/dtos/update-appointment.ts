@@ -5,4 +5,5 @@ export class UpdateAppointmentDto {
   status: AppointmentStatus;
   date?: Date | string;
   hour?: Available;
+  password?: string;
 }

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { Appointment } from './models/appointment.entity';
 import { SearchAppointment } from './dto/search-appointment.dto';
-import { getMidnight } from 'src/utils/getMidnight';
+import { getMidnight, isPast } from 'src/utils/getMidnight';
 import { AppointmentDto } from './dto/appointment.dto';
 import { DoctorsService } from 'src/doctors/doctors.service';
 import { ClientService } from 'src/client/client.service';
@@ -73,7 +73,6 @@ export class AppointmentsService {
     const client = await this.cs.findOne(app.client.id);
 
     const find = await this.checkIfClientHasAppointment(
-      doctor.id,
       client.id,
       app.hour,
       app.date,
@@ -128,36 +127,47 @@ export class AppointmentsService {
   }
 
   async checkIfClientHasAppointment(
-    doctorId: string,
     clientId: string,
     hour: Available,
     date: Date,
   ): Promise<Appointment> {
     const query = Appointment.createQueryBuilder('appointment');
+    query.andWhere('hour = :hour', { hour });
+    query.andWhere('date = :date', { date: getMidnight(date) });
+    query.andWhere('client.id = :clientId', { clientId });
+    query.andWhere('status != :status', {
+      status: AppointmentStatus.CANCELED,
+    });
+
+    const results1 = await query
+      .leftJoinAndSelect('appointment.doctor', 'doctor')
+      .leftJoinAndSelect('appointment.client', 'client')
+      .getOne();
+
+    return results1;
+  }
+
+  async checkIfClientHasAnotherAppointment(
+    doctorId: string,
+    clientId: string,
+  ): Promise<Appointment[]> {
+    const query = Appointment.createQueryBuilder('appointment');
 
     query.andWhere('doctor.id = :doctorId', { doctorId });
     query.andWhere('client.id = :clientId', { clientId });
-    query.andWhere('status != :status', { status: AppointmentStatus.CANCELED });
+    query.andWhere('status != :cancel AND status != :attend', {
+      cancel: AppointmentStatus.CANCELED,
+      attend: AppointmentStatus.ATTENDED,
+    });
 
     const results = await query
       .leftJoinAndSelect('appointment.doctor', 'doctor')
       .leftJoinAndSelect('appointment.client', 'client')
-      .getOne();
+      .getMany();
 
-    const query2 = Appointment.createQueryBuilder('appointment');
-    query2.andWhere('hour = :hour', { hour });
-    query2.andWhere('date = :date', { date: getMidnight(date) });
-    query2.andWhere('client.id = :clientId', { clientId });
-    query2.andWhere('status != :status', {
-      status: AppointmentStatus.CANCELED,
-    });
+    console.log(results);
 
-    const results1 = await query2
-      .leftJoinAndSelect('appointment.doctor', 'doctor')
-      .leftJoinAndSelect('appointment.client', 'client')
-      .getOne();
-
-    return results ? results : results1;
+    return results;
   }
 
   async getAll(search: SearchAppointment): Promise<AppointmentDto[]> {
@@ -230,10 +240,22 @@ export class AppointmentsService {
   async modifyOne(id: string, update: UpdateAppointmentDto): Promise<void> {
     const { status, date, hour } = update;
 
-    const appointment = await Appointment.findOne(id);
+    const appointment = await Appointment.createQueryBuilder('appointment')
+      .andWhere('appointment.id = :id', { id })
+      .leftJoinAndSelect('appointment.doctor', 'doctor')
+      .leftJoinAndSelect('appointment.client', 'client')
+      .getOne();
 
     if (!appointment) {
       throw new NotFoundException('Not found');
+    }
+
+    //schedule not in past
+    if (
+      status === AppointmentStatus.RESCHEDULED &&
+      isPast(update.date, update.hour)
+    ) {
+      throw new BadRequestException('Time travel is forbidden =(');
     }
 
     if (
@@ -257,14 +279,18 @@ export class AppointmentsService {
         appointment.status === AppointmentStatus.RESCHEDULED)
     ) {
       // check if client has appointment in this hour or another active apppointment with same doctor
-      const search = await this.checkIfClientHasAppointment(
-        appointment.doctor.id,
+      const search1 = await this.checkIfClientHasAppointment(
         appointment.client.id,
         update.hour,
         update.date,
       );
 
-      if (search) {
+      const search2 = await this.checkIfClientHasAnotherAppointment(
+        appointment.doctor.id,
+        appointment.client.id,
+      );
+
+      if (search1 || search2.length > 1) {
         throw new BadRequestException('Client has conflict schedule');
       }
 
@@ -279,7 +305,6 @@ export class AppointmentsService {
       }
 
       // check if schedule is taken
-
       const find = await this.getAll({
         id: appointment.doctor.id,
         date: update.date,

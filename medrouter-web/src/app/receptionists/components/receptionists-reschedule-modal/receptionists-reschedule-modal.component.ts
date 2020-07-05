@@ -68,7 +68,7 @@ export class ReceptionistsRescheduleModalComponent implements OnInit {
   ngOnInit(): void {
     this.actionsForm = this.fb.group({
       hour: this.fb.control("", [Validators.required]),
-      date: this.fb.control(new Date(), [Validators.required]),
+      date: this.fb.control("", [Validators.required]),
       password: this.fb.control("", [
         Validators.required,
         Validators.minLength(6),

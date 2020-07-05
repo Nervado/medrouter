@@ -127,12 +127,10 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
   @Input() tick: boolean = false;
 
   value: any;
-
   faCalendarAlt = faCalendarAlt;
   faTimes = faTimes;
   faCheck = faCheck;
   @Input() values: Data;
-
   @Input() defaut: any = "Data";
 
   onChange: any;
@@ -163,9 +161,8 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
   }
 
   setValue(value: any) {
-    const newdate = new Date(value.year, value.month, value.day, 0, 0, 0);
+    const newdate = new Date(value.year, value.month - 1, value.day, 0, 0, 0);
     this.value = newdate;
-
     this.onChange(this.value);
   }
 
