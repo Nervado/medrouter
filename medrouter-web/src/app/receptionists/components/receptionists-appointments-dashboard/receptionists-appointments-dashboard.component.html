@@ -9,7 +9,7 @@
         <fa-icon [icon]="faTimes" class="cursor"></fa-icon>
       </div>
       <div class="control">
-        <fa-icon [icon]="faChevronLeft" (click)="prevWeek()"></fa-icon>
+        <fa-icon [icon]="faChevronLeft" (click)="prevDay()"></fa-icon>
       </div>
 
       <div class="control">Agendamentos para&nbsp;</div>
@@ -23,15 +23,20 @@
         <fa-icon [icon]="faSearch" (click)="toogle()"></fa-icon>
       </div>
       <div class="control">
-        <fa-icon [icon]="faChevronRight" (click)="nextWeek()"></fa-icon>
+        <fa-icon [icon]="faChevronRight" (click)="nextDay()"></fa-icon>
       </div>
     </div>
 
     <div class="search" *ngIf="showSearch" (mouseleave)="toogle()">
       <div class="form">
         <div class="input">
-          <input type="text" name="search" placeholder="Nome do médico" />
-          <fa-icon [icon]="faSearch" (click)="search()"></fa-icon>
+          <input
+            type="text"
+            name="search"
+            placeholder="Nome do médico"
+            #username
+          />
+          <fa-icon [icon]="faSearch" (click)="search(username.value)"></fa-icon>
         </div>
 
         <div class="results">
@@ -41,8 +46,14 @@
           </div>
 
           <div class="wrapper">
-            <div class="result">
-              <div>João das Colves</div>
+            <div class="result" *ngFor="let doctor of results">
+              <div>
+                {{
+                  doctor.user.surname
+                    ? doctor.user.fullname
+                    : doctor.user.username
+                }}
+              </div>
               <fa-icon
                 [icon]="faUserMd"
                 class="text-success cursor ml-2"
@@ -57,7 +68,9 @@
       <div *ngFor="let appointment of appointments" class="appointment">
         <div class="user-info">
           <div class="avatar">
-            <ng-container *ngIf="appointment.client.user.avatar; else avatar">
+            <ng-container
+              *ngIf="appointment.client.user.avatar?.url; else avatar"
+            >
               <img [src]="appointment.client.user.avatar?.url" alt="avatar" />
             </ng-container>
 
@@ -87,8 +100,10 @@
 
         <div class="user-info">
           <div class="avatar">
-            <ng-container *ngIf="appointment.client.user?.avatar; else avatar">
-              <img [src]="appointment.client.user.avatar?.url" alt="avatar" />
+            <ng-container
+              *ngIf="appointment.doctor.user.avatar?.url; else avatar"
+            >
+              <img [src]="appointment.doctor.user.avatar?.url" alt="avatar" />
             </ng-container>
 
             <ng-template #avatar>
@@ -98,37 +113,47 @@
 
           <div class="username">
             <fa-icon [icon]="faUserMd" class="text-medium"></fa-icon>
-            {{ appointment.client.user.username }}
+            {{ appointment.doctor.user.username }}
             <div class="hours">
               <fa-icon [icon]="faMedKit" class="text-medium"></fa-icon>
-              <div class="hour ml-1 text-medium">Clinicio Geral</div>
+              <div class="hour ml-1 text-medium">
+                {{ formatText(appointment.doctor.specialty[0]) }}
+              </div>
             </div>
           </div>
         </div>
 
         <div class="appointment-info">
-          <fa-icon
-            [icon]="faCheckCircle"
-            class="text-success cursor ml-2"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Confirmar"
-          ></fa-icon>
-          <fa-icon
-            [icon]="faHistory"
-            class="text-medium cursor ml-2"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Remarcar"
-            (click)="openModal(modal)"
-          ></fa-icon>
-          <fa-icon
-            [icon]="faTimes"
-            class="text-oposity1 cursor ml-2"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Cancelar"
-          ></fa-icon>
+          <div
+            class="status"
+            [style.background-color]="getStatusColor(appointment.status)"
+          >
+            {{ appointment.status }}
+          </div>
+          <div class="controls">
+            <fa-icon
+              [icon]="faCheckCircle"
+              class="text-success cursor"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Confirmar"
+            ></fa-icon>
+            <fa-icon
+              [icon]="faHistory"
+              class="text-medium cursor"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Remarcar"
+              (click)="openModal(modal)"
+            ></fa-icon>
+            <fa-icon
+              [icon]="faTimes"
+              class="text-oposity1 cursor"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Cancelar"
+            ></fa-icon>
+          </div>
         </div>
       </div>
     </div>

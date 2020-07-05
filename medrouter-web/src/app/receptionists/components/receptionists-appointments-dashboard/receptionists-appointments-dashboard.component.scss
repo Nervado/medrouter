@@ -151,21 +151,43 @@
               width: 50px;
               border-radius: 50%;
               border: 1px solid var(--medium);
+              object-fit: cover;
             }
           }
         }
 
         .appointment-info {
           display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
 
-          fa-icon {
-            font-size: 1.2em;
-            cursor: pointer;
+          .controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            fa-icon {
+              font-size: 1.2em;
+              cursor: pointer;
+              margin: 2px 2px;
 
-            &:hover {
-              transform: scale(1.1);
-              opacity: 0.8;
+              &:hover {
+                transform: scale(1.1);
+                opacity: 0.8;
+              }
             }
+          }
+          .status {
+            color: var(--oposity);
+            font-size: 12px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            height: 1.5em;
+            font-weight: bold;
+            width: 100%;
           }
         }
       }

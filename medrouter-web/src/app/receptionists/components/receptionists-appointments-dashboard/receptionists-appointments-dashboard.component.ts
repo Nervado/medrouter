@@ -18,9 +18,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Months } from "src/app/doctors/enums/months.enum";
 import { EscheduleView } from "src/app/doctors/model/schedule.view";
-import { Appointment } from "src/app/doctors/model/appointment";
+
 import { Hour } from "src/app/doctors/enums/hours.enum";
-import { setHours } from "date-fns";
+import { setHours, add, addDays, subDays } from "date-fns";
 import { AppointmentStatus } from "src/app/doctors/enums/appontment-status";
 import {
   faTimesCircle,
@@ -31,6 +31,10 @@ import { NotificationService } from "src/app/messages/notification.service";
 import { ReceptionistsService } from "../../receptionists.service";
 import { AuthService } from "src/app/auth/auth.service";
 import { Types } from "src/app/messages/toast/enums/types";
+import { Appointment } from "../../dtos/appointment-dto";
+import { capitalizeAndRemoveUnderscores } from "src/app/utils/capitalizeAndRemoveUnderscore";
+import { Colors } from "src/app/messages/toast/enums/colors";
+import { DoctorDto } from "../../model/doctor-dto";
 
 @Component({
   selector: "app-receptionists-appointments-dashboard",
@@ -62,8 +66,10 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
   days: EscheduleView[];
   date: Date;
   today: Date;
-  appointments: Array<Appointment>;
+  appointments: Appointment[];
   showSearch: boolean = false;
+  doctor: DoctorDto = undefined;
+  results: DoctorDto[] = [];
 
   filter: string;
 
@@ -77,8 +83,11 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
   openModal(modal) {
     modal.open();
   }
-  search() {
-    console.log("procurando nemo");
+  search(username: string) {
+    this.findAppointments({ date: this.date, username });
+    this.results = this.appointments.map((app) => app.doctor);
+
+    this.setResults(this.appointments);
   }
   constructor(
     private ns: NotificationService,
@@ -97,9 +106,22 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
 
   save() {}
 
-  nextWeek() {}
+  nextDay() {
+    this.date = addDays(this.date, 1);
+    this.setSearch();
+  }
 
-  prevWeek() {}
+  prevDay() {
+    this.date = subDays(this.date, 1);
+    this.setSearch();
+  }
+
+  setSearch() {
+    const search = this.doctor
+      ? { date: this.date, id: this.doctor.id }
+      : { date: this.date };
+    this.findAppointments(search);
+  }
 
   findAppointments(search: SearchAppointmentsDto) {
     this.rs
@@ -115,5 +137,37 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
             type: Types.ERROR,
           }),
       });
+  }
+
+  formatText(text: string): string {
+    return capitalizeAndRemoveUnderscores(text);
+  }
+
+  getStatusColor(status: AppointmentStatus): Colors {
+    switch (status) {
+      case AppointmentStatus.ATTENDED:
+        return Colors.SUCCESS;
+      case AppointmentStatus.CANCELED:
+        return Colors.ERROR;
+      case AppointmentStatus.REQUESTED:
+        return Colors.WARN;
+      case AppointmentStatus.RESCHEDULED:
+        return Colors.RECEPT;
+      case AppointmentStatus.ONESCHEDULE:
+        return Colors.INFO;
+
+      default:
+        return Colors.BASE;
+    }
+  }
+
+  setResults(results: Appointment[]) {
+    const ids = results.map((app) => app.doctor.id);
+    const uniqueList = [...new Set(ids)];
+    this.results = uniqueList.map((id) =>
+      results
+        .map((appointment: Appointment) => appointment.doctor)
+        .find((doctor) => doctor.id === id)
+    );
   }
 }

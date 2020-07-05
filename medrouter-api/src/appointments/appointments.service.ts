@@ -168,7 +168,7 @@ export class AppointmentsService {
     }
 
     if (search.username) {
-      query.andWhere(`doctor.user.username ILIKE '%${search.username}%'`);
+      query.andWhere(`doctorUser.username ILIKE '%${search.username}%'`);
     }
 
     if (search.id) {
@@ -206,13 +206,14 @@ export class AppointmentsService {
             },
           },
           doctor: {
-            id: app.client.id,
+            id: app.doctor.id,
+            specialty: app.doctor.specialty,
             user: {
-              username: app.client.user.username,
-              fullname: app.client.user.fullname,
-              surname: app.client.user.surname,
+              username: app.doctor.user.username,
+              fullname: app.doctor.user.fullname,
+              surname: app.doctor.user.surname,
               avatar: {
-                url: app.client.user.avatar?.url,
+                url: app.doctor.user.avatar?.url,
               },
             },
           },
