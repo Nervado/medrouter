@@ -2,7 +2,7 @@
   <div class="main-data aside text-doctor">
     <div class="month">
       <div class="control">
-        <fa-icon [icon]="faChevronLeft" (click)="prevWeek()"></fa-icon>
+        <fa-icon [icon]="faChevronLeft" (click)="prevDay()"></fa-icon>
       </div>
 
       <div class="control">Agendamentos para&nbsp;</div>
@@ -13,7 +13,7 @@
       </div>
 
       <div class="control">
-        <fa-icon [icon]="faChevronRight" (click)="nextWeek()"></fa-icon>
+        <fa-icon [icon]="faChevronRight" (click)="nextDay()"></fa-icon>
       </div>
     </div>
     <div class="appointments">
@@ -40,12 +40,16 @@
         </div>
 
         <div class="appointment-info">
+          <div
+            class="status"
+            [style.background-color]="getStatusColor(appointment.status)"
+          >
+            {{ appointment.status }}
+          </div>
           <fa-icon
             [icon]="faFileMedical"
             class="text-success cursor ml-2"
           ></fa-icon>
-          <fa-icon [icon]="faHistory" class="text-medium cursor ml-2"></fa-icon>
-          <fa-icon [icon]="faTimes" class="text-oposity1 cursor ml-2"></fa-icon>
         </div>
       </div>
     </div>

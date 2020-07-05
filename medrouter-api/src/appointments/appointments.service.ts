@@ -135,8 +135,9 @@ export class AppointmentsService {
     query.andWhere('hour = :hour', { hour });
     query.andWhere('date = :date', { date: getMidnight(date) });
     query.andWhere('client.id = :clientId', { clientId });
-    query.andWhere('status != :status', {
-      status: AppointmentStatus.CANCELED,
+    query.andWhere('status != :cancel AND status != :attend', {
+      cancel: AppointmentStatus.CANCELED,
+      attend: AppointmentStatus.ATTENDED,
     });
 
     const results1 = await query
@@ -181,6 +182,10 @@ export class AppointmentsService {
       query.andWhere(`doctorUser.username ILIKE '%${search.username}%'`);
     }
 
+    if (search.clientname) {
+      query.andWhere(`clientUser.username ILIKE '%${search.clientname}%'`);
+    }
+
     if (search.id) {
       query.andWhere('doctor.id = :id', { id: search.id });
     }
@@ -191,50 +196,54 @@ export class AppointmentsService {
 
     //query.andWhere('status != :status', { status: AppointmentStatus.CANCELED });
 
-    const resuts = await query
-      .leftJoinAndSelect('appointment.doctor', 'doctor')
-      .leftJoinAndSelect('doctor.user', 'doctorUser')
-      .leftJoinAndSelect('doctorUser.avatar', 'doctorAvatar')
-      .leftJoinAndSelect('appointment.client', 'client')
-      .leftJoinAndSelect('client.user', 'clientUser')
-      .leftJoinAndSelect('clientUser.avatar', 'clientAvatar')
-      .getMany();
+    try {
+      const resuts = await query
+        .leftJoinAndSelect('appointment.doctor', 'doctor')
+        .leftJoinAndSelect('doctor.user', 'doctorUser')
+        .leftJoinAndSelect('doctorUser.avatar', 'doctorAvatar')
+        .leftJoinAndSelect('appointment.client', 'client')
+        .leftJoinAndSelect('client.user', 'clientUser')
+        .leftJoinAndSelect('clientUser.avatar', 'clientAvatar')
+        .getMany();
 
-    const appoiments: AppointmentDto[] = [
-      ...resuts.map((app: Appointment) => {
-        return {
-          id: app.id,
-          client: {
-            id: app.client.id,
-            user: {
-              username: app.client.user.username,
-              fullname: app.client.user.fullname,
-              surname: app.client.user.surname,
-              avatar: {
-                url: app.client.user.avatar?.url,
+      const appoiments: AppointmentDto[] = [
+        ...resuts.map((app: Appointment) => {
+          return {
+            id: app.id,
+            client: {
+              id: app.client.id,
+              user: {
+                username: app.client.user.username,
+                fullname: app.client.user.fullname,
+                surname: app.client.user.surname,
+                avatar: {
+                  url: app.client.user.avatar?.url,
+                },
               },
             },
-          },
-          doctor: {
-            id: app.doctor.id,
-            specialty: app.doctor.specialty,
-            user: {
-              username: app.doctor.user.username,
-              fullname: app.doctor.user.fullname,
-              surname: app.doctor.user.surname,
-              avatar: {
-                url: app.doctor.user.avatar?.url,
+            doctor: {
+              id: app.doctor.id,
+              specialty: app.doctor.specialty,
+              user: {
+                username: app.doctor.user.username,
+                fullname: app.doctor.user.fullname,
+                surname: app.doctor.user.surname,
+                avatar: {
+                  url: app.doctor.user.avatar?.url,
+                },
               },
             },
-          },
-          date: app.date,
-          hour: app.hour,
-          status: app.status,
-        };
-      }),
-    ];
+            date: app.date,
+            hour: app.hour,
+            status: app.status,
+          };
+        }),
+      ];
 
-    return appoiments;
+      return appoiments;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async modifyOne(id: string, update: UpdateAppointmentDto): Promise<void> {
@@ -328,6 +337,6 @@ export class AppointmentsService {
   }
 
   async delete(id: string): Promise<any> {
-    return await Appointment.delete(id);
+    return await Appointment.getRepository().softDelete(id);
   }
 }

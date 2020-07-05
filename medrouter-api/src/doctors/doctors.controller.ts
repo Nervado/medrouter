@@ -28,6 +28,8 @@ import { GetUser } from 'src/users/decorators/get-user.decorator';
 import { User } from 'src/users/models/user.entity';
 import { Allow } from 'src/auth/decorators/alow.decorator';
 import { SearchScheduleDto } from './dto/searchSchedule.dto';
+import { SearchAppointment } from 'src/appointments/dto/search-appointment.dto';
+import { AppointmentDto } from 'src/appointments/dto/appointment.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('doctors')
@@ -103,6 +105,17 @@ export class DoctorsController {
     @Query(ValidationPipe) search: SearchScheduleDto,
   ): Promise<ScheduleDto[]> {
     return this.doctorService.getSchedules(id, search);
+  }
+
+  @Get('/:id/appointments')
+  @Allow('doctor')
+  @UseInterceptors(ClassSerializerInterceptor)
+  getAppointments(
+    @Param('id') id: string,
+    @Query(ValidationPipe) search: SearchAppointment,
+    @GetUser() user: User,
+  ): Promise<AppointmentDto[]> {
+    return this.doctorService.getAppointments(id, search, user);
   }
 
   @Post('/:id/schedules')

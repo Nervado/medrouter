@@ -45,6 +45,18 @@
 
         margin: 10px 5px;
 
+        .status {
+          color: var(--oposity);
+          font-size: 12px;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 4px;
+          height: 1.5em;
+          font-weight: bold;
+        }
+
         .user-info {
           display: flex;
           align-items: center;
@@ -76,6 +88,8 @@
 
         .appointment-info {
           display: flex;
+          align-items: center;
+          justify-content: flex-start;
 
           fa-icon {
             font-size: 1.2em;

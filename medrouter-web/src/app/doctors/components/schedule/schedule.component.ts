@@ -17,9 +17,15 @@ import { EscheduleView } from "../../model/schedule.view";
 import { Appointment } from "../../model/appointment";
 import { AppointmentStatus } from "../../enums/appontment-status";
 
-import { setHours } from "date-fns";
+import { setHours, isThursday, addDays, subDays } from "date-fns";
 import { Hour } from "../../enums/hours.enum";
 import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
+import { SearchAppointmentsDto } from "../../dtos/search-appointments-dto";
+import { DoctorsService } from "../../doctors.service";
+import { NotificationService } from "src/app/messages/notification.service";
+import { ActivatedRoute } from "@angular/router";
+import { Colors } from "src/app/messages/toast/enums/colors";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
   selector: "app-schedule",
@@ -48,53 +54,60 @@ export class ScheduleComponent implements OnInit {
 
   appointments: Array<Appointment>;
 
-  constructor() {}
-
+  constructor(
+    private ds: DoctorsService,
+    private ns: NotificationService,
+    private activatedRoute: ActivatedRoute
+  ) {}
   ngOnInit(): void {
     this.date = new Date();
     this.today = this.date;
 
-    this.appointments = [
-      {
-        id: 34,
-        hour: Hour[0],
-        date: setHours(new Date(2020, 4, 10, 0, 0), 6),
-        status: AppointmentStatus.ONESCHEDULE,
-        client: {
-          id: 1,
-          user: {
-            username: "Evandro",
-            surname: "Abreu",
-            avatar: {
-              url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-            },
-          },
-        },
-      },
-      {
-        id: 35,
-        hour: Hour[6],
-        date: setHours(new Date(2020, 4, 10, 0, 0), 4),
-        status: AppointmentStatus.ONESCHEDULE,
-        client: {
-          id: 1,
-          user: {
-            username: "Andressa",
-            surname: "Oliveira",
-            avatar: {
-              url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-            },
-          },
-        },
-      },
-    ];
-
-    console.log(this.appointments);
+    this.activatedRoute.parent.params.subscribe({
+      next: (params) =>
+        this.findAppointments(params["id"], { date: this.date.toISOString() }),
+    });
   }
 
-  save() {}
+  nextDay() {
+    this.date = addDays(this.date, 1);
+    this.findAppointments(this.activatedRoute.parent.snapshot.params["id"], {
+      date: this.date.toISOString(),
+    });
+  }
 
-  nextWeek() {}
+  prevDay() {
+    this.date = subDays(this.date, 1);
+    this.findAppointments(this.activatedRoute.parent.snapshot.params["id"], {
+      date: this.date.toISOString(),
+    });
+  }
 
-  prevWeek() {}
+  findAppointments(id: string, search: SearchAppointmentsDto) {
+    this.ds.getAppointments(id, search).subscribe({
+      next: (appointments: Appointment[]) => (this.appointments = appointments),
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao buscar agendamentos",
+          type: Types.ERROR,
+        }),
+    });
+  }
+
+  getStatusColor(status: AppointmentStatus): Colors {
+    switch (status) {
+      case AppointmentStatus.ATTENDED:
+        return Colors.SUCCESS;
+      case AppointmentStatus.CANCELED:
+        return Colors.ERROR;
+      case AppointmentStatus.REQUESTED:
+        return Colors.WARN;
+      case AppointmentStatus.RESCHEDULED:
+        return Colors.INFO;
+      case AppointmentStatus.ONESCHEDULE:
+        return Colors.RECEPT;
+      default:
+        return Colors.BASE;
+    }
+  }
 }

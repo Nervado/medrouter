@@ -1,8 +1,8 @@
-import { Available } from "../enums/hours.enum";
+import { Available } from "../enums/available.enum";
 
 export class SearchAppointmentsDto {
-  date: Date;
-  endDate?: Date;
+  date: Date | string;
+  endDate?: Date | string;
   hour?: Available;
   username?: string;
   clientname?: string;

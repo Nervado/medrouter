@@ -7,6 +7,8 @@ import { DoctorDto } from "./model/doctor-dto";
 import { AuthService } from "../auth/auth.service";
 import { DaySchedule } from "./model/schedule";
 import { SearchScheduleDto } from "./dtos/searchSchedule.dto";
+import { Appointment } from "./model/appointment";
+import { SearchAppointmentsDto } from "./dtos/search-appointments-dto";
 
 @Injectable({
   providedIn: "root",
@@ -64,6 +66,16 @@ export class DoctorsService {
 
     return this.http.get<DaySchedule[]>(
       `${MEDROUTER_API}/doctors/${id}/schedules?date=${date}${query}`
+    );
+  }
+
+  getAppointments(
+    id: string,
+    search: SearchAppointmentsDto
+  ): Observable<Appointment[]> {
+    const query = search.clientname ? `&clientname=${search.clientname}` : "";
+    return this.http.get<Appointment[]>(
+      `${MEDROUTER_API}/doctors/${id}/appointments?date=${search.date}${query}`
     );
   }
 }

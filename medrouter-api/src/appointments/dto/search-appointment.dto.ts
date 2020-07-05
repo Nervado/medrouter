@@ -6,4 +6,5 @@ export class SearchAppointment {
   endDate?: Date;
   hour?: Available;
   username?: string;
+  clientname?: string;
 }

@@ -22,6 +22,8 @@ import { getMidnight } from 'src/utils/getMidnight';
 import { Appointment } from 'src/appointments/models/appointment.entity';
 import { Available } from './enums/available.enum';
 import { doc } from 'prettier';
+import { SearchAppointment } from 'src/appointments/dto/search-appointment.dto';
+import { AppointmentDto } from 'src/appointments/dto/appointment.dto';
 @Injectable()
 export class DoctorsService extends Service<
   DoctorDto,
@@ -310,5 +312,23 @@ export class DoctorsService extends Service<
     }
 
     return doctor;
+  }
+
+  async getAppointments(
+    id: string,
+    search: SearchAppointment,
+    user: User,
+  ): Promise<AppointmentDto[]> {
+    const doctor = await this.repo.findOne(id);
+
+    if (user.userId !== doctor.user.userId) {
+      throw new UnauthorizedException('Not allowed!');
+    }
+
+    return await this.as.getAll({
+      id: doctor.id,
+      date: search.date,
+      clientname: search.clientname,
+    });
   }
 }

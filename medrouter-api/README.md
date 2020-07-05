@@ -148,19 +148,20 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 
 ## Appointments
 
-[ ] List by Week
-[ ] List by Date
-[ ] Search by Doctor Name
-[ ] Confirm Appointment
-[ ] Reeschedule
-[ ] Cancel
+[X] List by Week
+[X] List by Date
+[X] Search by Doctor Name
+[X] Confirm Appointment
+[X] Reeschedule
+[X] Cancel
+[X] Delete
 
 ## Eschedules
 
-[ ] List Schedules by Week
-[ ] List Schedules by Date
-[ ] Search Schedules by Name
-[ ] Create Appoinment
+[X] List Schedules by Week
+[X] List Schedules by Date
+[X] Search Schedules by Name
+[X] Create Appoinment
 
 # Client
 
@@ -169,7 +170,7 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 [ ] Data graph
 [ ] List appoinments
 [ ] List Notifications
-[ ] List Doctors
+[X] List Doctors
 [ ] Search Doctor by Name
 [ ] Create Appointment
 
