@@ -6,29 +6,44 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { MedicineSubcategory, MedicineCategory } from '../enums/category.enum';
 import { Exclude } from 'class-transformer';
+import { Prescription } from 'src/prescriptions/models/prescription.entity';
 
 @Entity('medicine')
 export class Medicine extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: true })
   genericname: string;
 
-  @Column()
-  substancy: string;
+  @Column({ nullable: true })
+  cnpj: string;
 
   @Column()
-  branch: string;
+  substance: string;
 
   @Column()
-  laboratoryname: string;
+  therapeutic_class: string;
 
   @Column()
-  editorid: string;
+  laboratory: string;
+
+  @Column()
+  product: string;
+
+  @Column()
+  product_type: string;
+
+  @Column()
+  stripe: string;
+
+  @Column()
+  presentantion: string;
 
   @Column({
     type: 'enum',
@@ -43,6 +58,13 @@ export class Medicine extends BaseEntity {
     default: MedicineCategory.NONCONTROLED,
   })
   category: MedicineCategory;
+
+  @ManyToOne(
+    type => Prescription,
+    prescription => prescription.medicines,
+  )
+  @JoinColumn()
+  prescription: Prescription;
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', nullable: true })

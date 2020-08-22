@@ -33,6 +33,11 @@ import { ExamStatus } from "../../enums/status.enum";
 import { format } from "date-fns";
 import { PrescriptionDto } from "../../model/prescription";
 import { Medicine } from "../../model/medicine";
+import { DoctorsService } from "../../doctors.service";
+import { NotificationService } from "src/app/messages/notification.service";
+import { FormBuilder } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
   selector: "app-doctors-history-clients-dashboard",
@@ -71,48 +76,37 @@ export class DoctorsHistoryClientsDashboardComponent implements OnInit {
 
   prescriptions: Array<PrescriptionDto>;
 
-  constructor() {}
+  page: number = 1;
+
+  constructor(
+    private ds: DoctorsService,
+    private ns: NotificationService,
+    private fb: FormBuilder,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.prescriptions = [
-      {
-        id: 12,
-        doctor: {
-          id: 12,
-          user: {
-            fullname: "Marcos Paulo",
-            avatar: {
-              url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-            },
-          },
+    this.activatedRoute.parent.params.subscribe({
+      next: (params) => this.getPrescriptions(params["id"]),
+    });
+  }
+
+  getPrescriptions(id: string) {
+    this.ds
+      .getPrescriptions(id, {
+        page: this.page,
+      })
+      .subscribe({
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao consultar histórico",
+            type: Types.ERROR,
+          }),
+        next: (prescriptions: PrescriptionDto[]) => {
+          this.prescriptions = prescriptions;
+          console.log(prescriptions);
         },
-        client: {
-          id: 12,
-          user: {
-            fullname: "Pedro Paulo",
-            avatar: {
-              url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-            },
-          },
-        },
-        recomendations: ["R01. Ficar em casa"],
-        exams: [
-          {
-            id: 455,
-            type: ExamsEnum.ABDMO,
-          },
-          {
-            id: 355,
-            type: ExamsEnum.ANUSC,
-          },
-        ],
-        medicines: [
-          { id: 1, substance: "acido" },
-          { id: 24, substance: "fito+" },
-        ],
-        createdAt: new Date(),
-      },
-    ];
+      });
   }
 
   toogle() {
@@ -124,11 +118,24 @@ export class DoctorsHistoryClientsDashboardComponent implements OnInit {
   }
 
   pretty(date: Date): string {
-    return format(date, "dd/MM/yyyy");
+    if (date !== undefined) return format(new Date(date), "dd/MM/yyyy");
   }
 
   fmrt(name: string) {
     const newSentece = name.replace(/_/g, " ").toLowerCase();
     return newSentece[0].toUpperCase() + newSentece.slice(1);
+  }
+
+  pageUp() {
+    this.page += 1;
+    this.getPrescriptions(this.activatedRoute.parent.snapshot.params["id"]);
+  }
+  pageDown() {
+    this.page = this.page > 1 ? this.page - 1 : 1;
+    this.getPrescriptions(this.activatedRoute.parent.snapshot.params["id"]);
+  }
+
+  arrayFromObject(data: string): String[] {
+    return data.replace("{", "").replace("}", "").split(",");
   }
 }

@@ -56,7 +56,7 @@ export class Doctor extends BaseEntity {
     () => Appointment,
     appointment => appointment.doctor,
   )
-  appointment: Appointment[];
+  appointments: Appointment[];
 
   @OneToMany(
     type => Schedule,
@@ -69,7 +69,7 @@ export class Doctor extends BaseEntity {
     () => Prescription,
     prescription => prescription.doctor,
   )
-  prescription: Prescription[];
+  prescriptions: Prescription[];
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', nullable: true })

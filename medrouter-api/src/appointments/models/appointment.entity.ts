@@ -39,14 +39,14 @@ export class Appointment extends BaseEntity {
 
   @ManyToOne(
     () => Client,
-    client => client.appointment,
+    client => client.appointments,
   )
   @JoinColumn()
   client: Client;
 
   @ManyToOne(
     () => Doctor,
-    doctor => doctor.appointment,
+    doctor => doctor.appointments,
   )
   @JoinColumn()
   doctor: Doctor;

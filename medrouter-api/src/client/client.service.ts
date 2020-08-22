@@ -16,6 +16,8 @@ import { DocDto } from 'src/docs/dto/doc.dto';
 import { Role } from 'src/auth/enums/role.enum';
 import { DocsService } from 'src/docs/docs.service';
 import { doc } from 'prettier';
+import { Doctor } from 'src/doctors/models/doctor.entity';
+import { AppointmentStatus } from 'src/appointments/enums/appointment.enum';
 
 @Injectable()
 export class ClientService {
@@ -56,6 +58,45 @@ export class ClientService {
     }
   }
 
+  async getClientsWithActiveAppointments(
+    search: SearchClientDto,
+  ): Promise<SearchResultDto[]> {
+    const { page, username } = search;
+
+    const pageNumber: number = page ? page * 10 - 10 : 0;
+
+    const query = Client.createQueryBuilder('client');
+
+    if (username) {
+      query.andWhere(
+        `user.username  ILIKE '%${username}%' OR user.surname  ILIKE '%${username}%'`,
+      );
+    }
+
+    const founds = await query
+      .leftJoinAndSelect('client.user', 'user')
+      .leftJoinAndSelect('user.avatar', 'avatar')
+      .skip(pageNumber)
+      .take(10)
+      .getMany();
+
+    const results = founds.map(client => {
+      return {
+        id: client.id,
+        user: {
+          username: client.user.username,
+          fullname: client.user.fullname,
+          surname: client.user.surname,
+          avatar: {
+            url: client.user.avatar?.url,
+          },
+        },
+      };
+    });
+
+    return results;
+  }
+
   async getAll(search: SearchClientDto): Promise<SearchResultDto[]> {
     const { page, username } = search;
 
@@ -64,7 +105,9 @@ export class ClientService {
     const query = Client.createQueryBuilder('client');
 
     if (username) {
-      query.andWhere(`user.username ILIKE '%${username}%'`);
+      query.andWhere(
+        `user.username  ILIKE '%${username}%' OR user.surname  ILIKE '%${username}%'`,
+      );
     }
 
     const founds = await query
@@ -76,28 +119,7 @@ export class ClientService {
       .getMany();
 
     const clients: SearchResultDto[] = [
-      ...founds.map((client: Client) => {
-        return {
-          id: client.id,
-          doc: {
-            url: client.doc?.url,
-          },
-          user: {
-            userId: client.user.userId,
-            username: client.user.username,
-            fullname: client.user.fullname,
-            email: client.user.email,
-            phoneNumber: client.user.phoneNumber,
-            birthday: client.user.birthdate,
-            sex: client.user.sex,
-            checked: client.user.checked,
-            avatar: {
-              avatarId: client.user.avatar?.avatarId,
-              url: client.user.avatar?.url,
-            },
-          },
-        };
-      }),
+      ...founds.map((client: Client) => this.serializeClient(client)),
     ];
 
     return clients;
@@ -137,5 +159,28 @@ export class ClientService {
     }
 
     return client;
+  }
+
+  serializeClient(client: Client): SearchResultDto {
+    return {
+      id: client.id,
+      doc: {
+        url: client.doc?.url,
+      },
+      user: {
+        userId: client.user.userId,
+        username: client.user.username,
+        fullname: client.user.fullname,
+        email: client.user.email,
+        phoneNumber: client.user.phoneNumber,
+        birthdate: client.user.birthdate,
+        sex: client.user.sex,
+        checked: client.user.checked,
+        avatar: {
+          avatarId: client.user.avatar?.avatarId,
+          url: client.user.avatar?.url,
+        },
+      },
+    };
   }
 }

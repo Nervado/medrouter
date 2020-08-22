@@ -3,7 +3,7 @@ set -e
 
 SERVER="pg_server";
 PW="olegari2020";
-DB="cv_reformas";
+DB="medrouter";
 
 echo "echo stop & remove old docker [$SERVER] and starting new fresh instance of [$SERVER]"
 (docker kill $SERVER || :) && \

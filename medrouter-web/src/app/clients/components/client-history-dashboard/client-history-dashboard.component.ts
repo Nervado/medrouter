@@ -91,7 +91,7 @@ export class ClientHistoryDashboardComponent implements OnInit {
             },
           },
         },
-        recomendations: ["R01. Ficar em casa"],
+        recommendations: ["R01. Ficar em casa"],
         exams: [
           {
             id: 455,

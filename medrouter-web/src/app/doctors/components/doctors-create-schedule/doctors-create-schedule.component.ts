@@ -90,7 +90,9 @@ export class DoctorsCreateScheduleComponent implements OnInit {
     return WeekDays.map((day, i) => {
       const date = addDays(dom, i);
       return {
-        id: this.schedules[i]?.id,
+        id: this.schedules.find((s) =>
+          isSameDay(parseISO(s.date.toString()), date)
+        )?.id,
         date: date,
         name: day,
         day: date.getDate(),
@@ -145,9 +147,11 @@ export class DoctorsCreateScheduleComponent implements OnInit {
   }
 
   save() {
-    this.schedules = this.days.map((el, i) => {
+    this.schedules = this.days.map((el: EscheduleView) => {
+      console.log(el);
+
       return {
-        id: this.schedules[i]?.id,
+        id: el.id,
         date: el.date,
         hours: el.hours.filter((el) => !el.available).map((el) => el),
       };
@@ -156,7 +160,8 @@ export class DoctorsCreateScheduleComponent implements OnInit {
 
   createOrSave() {
     this.save();
-    if (this.schedules[0].id !== undefined) {
+
+    if (this.schedules.find((sc) => sc.id !== undefined)) {
       this.ds
         .patchSchedules(
           this.activatedRoute.parent.snapshot.params["id"],

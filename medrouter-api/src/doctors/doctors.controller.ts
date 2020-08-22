@@ -12,6 +12,7 @@ import {
   Delete,
   Patch,
   UseGuards,
+  UsePipes,
 } from '@nestjs/common';
 import { DoctorsService } from './doctors.service';
 import { DoctorDto } from './dto/doctor.dto';
@@ -30,6 +31,10 @@ import { Allow } from 'src/auth/decorators/alow.decorator';
 import { SearchScheduleDto } from './dto/searchSchedule.dto';
 import { SearchAppointment } from 'src/appointments/dto/search-appointment.dto';
 import { AppointmentDto } from 'src/appointments/dto/appointment.dto';
+import { SearchClientDto } from 'src/client/dtos/search-client-dto';
+import { SearchResultDto } from 'src/client/dtos/search-result-dto';
+import { PrescriptionDto } from 'src/prescriptions/dto/prescription.dto';
+import { AnamnesisPipe } from 'src/prescriptions/pipes/anamnesis.pipe';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('doctors')
@@ -44,7 +49,7 @@ export class DoctorsController {
   }
 
   @Get()
-  @Roles('owner', 'recept', 'client')
+  @Allow('owner', 'recept', 'client')
   @UseInterceptors(ClassSerializerInterceptor)
   getAll(
     @Query(ValidationPipe) search: SearchFilterDto,
@@ -102,7 +107,7 @@ export class DoctorsController {
   @UseInterceptors(ClassSerializerInterceptor)
   getSchedule(
     @Param('id') id: string,
-    @Query(ValidationPipe) search: SearchScheduleDto,
+    @Query() search: SearchScheduleDto,
   ): Promise<ScheduleDto[]> {
     return this.doctorService.getSchedules(id, search);
   }
@@ -112,10 +117,21 @@ export class DoctorsController {
   @UseInterceptors(ClassSerializerInterceptor)
   getAppointments(
     @Param('id') id: string,
-    @Query(ValidationPipe) search: SearchAppointment,
+    @Query() search: SearchAppointment,
     @GetUser() user: User,
   ): Promise<AppointmentDto[]> {
     return this.doctorService.getAppointments(id, search, user);
+  }
+
+  @Get('/:id/clients')
+  @Roles('doctor')
+  @UseInterceptors(ClassSerializerInterceptor)
+  getClients(
+    @Param('id') id: string,
+    @Query() search: SearchClientDto,
+    @GetUser() user: User,
+  ): Promise<SearchResultDto[]> {
+    return this.doctorService.getClients(id, search, user);
   }
 
   @Get('/:id/appointments/:appointmentId')
@@ -135,7 +151,7 @@ export class DoctorsController {
   createSchedule(
     @Param('id') id: string,
     @GetUser() user: User,
-    @Body(ValidationPipe) body: Schedules,
+    @Body() body: Schedules,
   ): Promise<void> {
     return this.doctorService.createSchedule(body, id, user);
   }
@@ -146,8 +162,54 @@ export class DoctorsController {
   updateSchedule(
     @Param('id') id: string,
     @GetUser() user: User,
-    @Body(ValidationPipe) body: Schedules,
+    @Body() body: Schedules,
   ): Promise<void> {
     return this.doctorService.updateSchedules(body, id, user);
+  }
+
+  @Post('/:id/prescriptions')
+  @Roles('doctor')
+  createPrescription(
+    @Param('id') id: string,
+    @GetUser() user: User,
+    @Body(ValidationPipe) body: PrescriptionDto,
+  ): Promise<{ id: string }> {
+    return this.doctorService.createPrescription(id, body, user);
+  }
+
+  @Get('/:id/prescriptions/:prescriptionId')
+  @Roles('doctor')
+  getPrescription(
+    @Param('id') id: string,
+    @Param('prescriptionId') prescriptionId: string,
+    @GetUser() user: User,
+  ) {
+    return this.doctorService.getPrescription(id, prescriptionId, user);
+  }
+
+  @Put('/:id/prescriptions/:prescriptionId')
+  @Roles('doctor')
+  putPrescription(
+    @Param('id') id: string,
+    @Param('prescriptionId') prescriptionId: string,
+    @GetUser() user: User,
+    @Body(new ValidationPipe({ transform: true })) body: PrescriptionDto,
+  ): Promise<void> {
+    return this.doctorService.updatePrescription(
+      id,
+      prescriptionId,
+      user,
+      body,
+    );
+  }
+
+  @Get('/:id/prescriptions')
+  @Roles('doctor')
+  getPrescriptions(
+    @Param('id') id: string,
+    @GetUser() user: User,
+    @Query() search: SearchClientDto,
+  ): Promise<PrescriptionDto[]> {
+    return this.doctorService.findPrescriptions(id, search, user);
   }
 }

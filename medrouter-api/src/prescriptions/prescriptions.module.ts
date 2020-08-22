@@ -8,5 +8,6 @@ import { Prescription } from './models/prescription.entity';
   imports: [TypeOrmModule.forFeature([Prescription])],
   controllers: [PrescriptionsController],
   providers: [PrescriptionsService],
+  exports: [PrescriptionsService],
 })
 export class PrescriptionsModule {}

@@ -1,4 +1,4 @@
-export const MEDROUTER_API = "http://192.168.0.16:3001";
+export const MEDROUTER_API = "http://localhost:3001";
 
 export const MEDICINES_API = "https://scalr.api.appbase.io/medicines/_search";
 

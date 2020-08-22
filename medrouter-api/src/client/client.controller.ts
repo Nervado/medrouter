@@ -26,6 +26,7 @@ import { GetUser } from 'src/users/decorators/get-user.decorator';
 import { User } from 'src/users/models/user.entity';
 import { Allow } from 'src/auth/decorators/alow.decorator';
 import { DocDto } from 'src/docs/dto/doc.dto';
+import { Role } from 'src/auth/enums/role.enum';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('clients')

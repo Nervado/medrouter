@@ -1,25 +1,53 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsUUID, IsOptional } from 'class-validator';
 
 import { MedicineSubcategory, MedicineCategory } from '../enums/category.enum';
 import { CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
 export class MedicineDto {
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  presentantion: string;
+
+  @IsOptional()
+  @IsString()
+  product_type?: string;
+
+  @IsOptional()
+  @IsString()
+  therapeutic_class?: string;
+
+  @IsOptional()
+  @IsString()
+  cnpj: string;
+
+  @IsOptional()
+  @IsUUID()
+  prescriptionId: string;
+
+  @IsOptional()
+  @IsString()
   genericname: string;
 
   @IsString()
   @IsNotEmpty()
-  substancy: string;
+  substance: string;
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   branch: string;
 
   @IsString()
   @IsNotEmpty()
-  laboratoryname: string;
+  laboratory: string;
+
+  @IsString()
+  @IsNotEmpty()
+  product?: string;
+
+  @IsOptional()
+  @IsString()
+  stripe?: string;
 
   @IsNotEmpty()
   @IsString()

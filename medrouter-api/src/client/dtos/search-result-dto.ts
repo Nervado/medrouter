@@ -3,7 +3,11 @@ import { ValidateNested, IsString } from 'class-validator';
 
 export class SearchResultDto {
   @IsString()
-  id: string;
+  id?: string;
+
+  doc?: {
+    url: string;
+  };
 
   @ValidateNested()
   user?: {
@@ -15,6 +19,8 @@ export class SearchResultDto {
     phoneNumber?: string;
     sex?: Sex;
     birthdate?: Date;
+    checked?: boolean;
+
     avatar?: {
       avatarId?: number | string;
       url?: string;

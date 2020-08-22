@@ -2,71 +2,12 @@
   <div class="main-data aside text-doctor">
     <div class="header">
       <div class="mx-2">
-        Nova Receita
+        Editar receita
       </div>
 
       <div class="control">
-        <fa-icon [icon]="faEdit" (click)="create()"></fa-icon>
         <fa-icon [icon]="faSave" (click)="update()"></fa-icon>
         <fa-icon [icon]="faShare"></fa-icon>
-        <fa-icon [icon]="faSearch" (click)="toogle()"></fa-icon>
-      </div>
-    </div>
-
-    <div class="search" *ngIf="showSearch" (mouseleave)="showSearch = false">
-      <div class="form">
-        <div class="input">
-          <input
-            type="text"
-            name="search"
-            placeholder="Nome do paciente"
-            #clientname
-          />
-          <fa-icon
-            [icon]="faSearch"
-            (click)="search(clientname.value)"
-          ></fa-icon>
-        </div>
-
-        <div class="results">
-          <div class="label">
-            Resultados
-
-            <strong class="ml-1"> 4</strong>
-          </div>
-
-          <div class="wrapper">
-            <div
-              class="result"
-              *ngFor="let client of clients"
-              (click)="save(client)"
-            >
-              <ng-container *ngIf="client.user.avatar?.url; else avatar">
-                <img [src]="client.user.avatar?.url" alt="avatar" />
-              </ng-container>
-
-              <ng-template #avatar>
-                <img src="../../../assets/avatarmale.png" alt="avatar" />
-              </ng-template>
-              <div>
-                <strong>
-                  {{
-                    client.user.surname
-                      ? client.user.fullname
-                      : client.user.username
-                  }}</strong
-                >
-                <div>
-                  <fa-icon
-                    [icon]="faMobileAlt"
-                    *ngIf="client.user?.phoneNumber"
-                  ></fa-icon>
-                  {{ client.user?.phoneNumber }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -77,10 +18,7 @@
             <fa-icon [icon]="faUserMd" class="mr-1"></fa-icon>
           </div>
           Doutor:
-          <strong>{{
-            prescription?.doctor?.user.fullname ||
-              latestAppointment?.doctor?.user.username
-          }}</strong>
+          <strong>{{ latestAppointment?.doctor?.user.fullname }}</strong>
         </div>
         <div class="field">
           <div class="icon">
@@ -99,10 +37,7 @@
           <div class="icon">
             <fa-icon [icon]="faFileMedical" class="mr-1"></fa-icon>
           </div>
-          Receita
-          <strong>{{
-            prescriptionForm.value?.code || prescription?.code
-          }}</strong>
+          Receita <strong>{{ prescriptionForm.value?.code }}</strong>
         </div>
         <div class="field">
           <div class="icon"><fa-icon [icon]="faCalendarPlus"></fa-icon></div>
@@ -121,7 +56,7 @@
           Pressão arterial:
           <strong>
             <ng-container *ngIf="annaminese; else pressure">
-              {{ prescription.pressure }}
+              12.8/9.9
             </ng-container>
             <ng-template #pressure>
               <input
@@ -135,7 +70,6 @@
             mmHg</strong
           >
         </div>
-
         <div class="field">
           <div class="icon">
             <fa-icon [icon]="faWeight" class="mr-1"></fa-icon>
@@ -144,7 +78,7 @@
           Peso:
           <strong>
             <ng-container *ngIf="annaminese; else w">
-              {{ prescription.weight }}
+              60
             </ng-container>
             <ng-template #w>
               <input
@@ -166,7 +100,7 @@
           Batimentos:
           <strong>
             <ng-container *ngIf="annaminese; else b">
-              {{ prescription.bpm }}
+              78
             </ng-container>
             <ng-template #b>
               <input
@@ -180,16 +114,15 @@
             bpm</strong
           >
         </div>
-
         <div class="field">
           <div class="icon"><fa-icon [icon]="faRulerVertical"></fa-icon></div>
           Altura:<strong>
             <ng-container *ngIf="annaminese; else h">
-              {{ prescription.height }}
+              1,05
             </ng-container>
             <ng-template #h>
               <input
-                type="number"
+                type="text"
                 placeholder="Altura"
                 class="ana"
                 formControlName="height"
@@ -203,12 +136,12 @@
         <div class="field">
           <div class="icon"><fa-icon [icon]="faRulerHorizontal"></fa-icon></div>
           Cintura:<strong>
-            <ng-container *ngIf="annaminese; else waist">
-              {{ prescription.waist }}
+            <ng-container *ngIf="annaminese; else h">
+              1,05
             </ng-container>
-            <ng-template #waist>
+            <ng-template #h>
               <input
-                type="number"
+                type="text"
                 placeholder="Cintura"
                 class="ana"
                 formControlName="waist"

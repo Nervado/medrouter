@@ -25,6 +25,11 @@ import { doc } from 'prettier';
 import { SearchAppointment } from 'src/appointments/dto/search-appointment.dto';
 import { AppointmentDto } from 'src/appointments/dto/appointment.dto';
 import { threadId } from 'worker_threads';
+import { SearchResultDto } from 'src/client/dtos/search-result-dto';
+import { ClientService } from 'src/client/client.service';
+import { SearchClientDto } from 'src/client/dtos/search-client-dto';
+import { PrescriptionDto } from 'src/prescriptions/dto/prescription.dto';
+import { PrescriptionsService } from 'src/prescriptions/prescriptions.service';
 @Injectable()
 export class DoctorsService extends Service<
   DoctorDto,
@@ -38,6 +43,8 @@ export class DoctorsService extends Service<
     @InjectRepository(DoctorRepository) repo: DoctorRepository,
     private usersService: UsersService,
     private as: AppointmentsService,
+    private cs: ClientService,
+    private ps: PrescriptionsService,
   ) {
     super(repo);
   }
@@ -115,7 +122,7 @@ export class DoctorsService extends Service<
 
     const found = await this.checkIfSchedulesExists(
       id,
-      schedules.schedules[0].date,
+      schedules.schedules[6].date,
     );
 
     if (found) {
@@ -123,12 +130,11 @@ export class DoctorsService extends Service<
     }
 
     // if no, create a schedule for each given date
-    let newSchedules = [];
 
     const now = new Date();
 
     schedules.schedules.forEach(async schedule => {
-      if (schedule?.date?.getTime() > now.getTime()) {
+      if (new Date(schedule?.date).getTime() > getMidnight(now).getTime()) {
         const newSchedule = new Schedule();
 
         newSchedule.date = new Date(
@@ -141,7 +147,6 @@ export class DoctorsService extends Service<
 
         try {
           await newSchedule.save();
-          newSchedules = [newSchedule, ...newSchedules];
         } catch (error) {
           throw new InternalServerErrorException('Fail to create schedule');
         }
@@ -225,6 +230,10 @@ export class DoctorsService extends Service<
     const scheduleToUpdate = await Schedule.findOne({
       where: { id: schedule.id },
     });
+
+    if (!scheduleToUpdate) {
+      return false;
+    }
 
     const appointmentsScheduled = await this.as.searchMany(id, {
       date: scheduleToUpdate.date,
@@ -333,6 +342,17 @@ export class DoctorsService extends Service<
     });
   }
 
+  async getClients(
+    id: string,
+    search: SearchClientDto,
+    user: User,
+  ): Promise<SearchResultDto[]> {
+    const doctor = await this.repo.findOne(id);
+
+    this.checkDoctor(doctor, user);
+
+    return await this.cs.getClientsWithActiveAppointments(search);
+  }
   async getAppointment(id, apptId, user): Promise<AppointmentDto> {
     const doctor = await this.repo.findOne(id);
 
@@ -341,5 +361,76 @@ export class DoctorsService extends Service<
     const find = await this.as.getOne(apptId);
 
     return find;
+  }
+
+  async createPrescription(
+    id: string,
+    body: PrescriptionDto,
+    user: User,
+  ): Promise<{ id: string }> {
+    const doctor = await this.repo.findOne(id);
+
+    const client = await this.cs.findOne(body.client.id);
+
+    this.checkDoctor(doctor, user);
+
+    this.checkIfHaveActiveAppointment(doctor.id, client.id);
+
+    return {
+      id: await this.ps.createOne(doctor, client),
+    };
+  }
+
+  async findPrescriptions(
+    id: string,
+    search: SearchClientDto,
+    user: User,
+  ): Promise<PrescriptionDto[]> {
+    const doctor = await this.repo.findOne(id);
+
+    this.checkDoctor(doctor, user);
+
+    return await this.ps.getAll(id, search);
+  }
+
+  async getPrescription(
+    id: string,
+    prescriptionId: string,
+    user: User,
+  ): Promise<PrescriptionDto> {
+    const doctor = await this.repo.findOne(id);
+
+    this.checkDoctor(doctor, user);
+
+    return await this.ps.getOne(id, prescriptionId);
+  }
+
+  async updatePrescription(
+    id: string,
+    prescriptionId: string,
+    user: User,
+    body: PrescriptionDto,
+  ): Promise<void> {
+    const doctor = await this.repo.findOne(id);
+
+    this.checkDoctor(doctor, user);
+
+    this.checkIfHaveActiveAppointment(id, body.client.id);
+
+    return await this.ps.updateOne(id, prescriptionId, body);
+  }
+
+  async checkIfHaveActiveAppointment(
+    doctorId: string,
+    clientId: string,
+  ): Promise<void> {
+    const hasAppointments = await this.as.checkIfClientHasAnotherAppointment(
+      doctorId,
+      clientId,
+    );
+
+    if (hasAppointments.length === 0) {
+      throw new BadRequestException('Client have not active schedule');
+    }
   }
 }

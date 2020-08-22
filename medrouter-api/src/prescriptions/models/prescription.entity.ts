@@ -10,6 +10,8 @@ import {
   ManyToMany,
   JoinTable,
   Column,
+  OneToMany,
+  Generated,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Medicine } from '../../medicines/models/medicine.entity';
@@ -24,26 +26,56 @@ export class Prescription extends BaseEntity {
   @ManyToOne(
     () => Client,
     client => client.prescription,
+    { eager: true, cascade: true },
   )
   @JoinColumn()
   client: Client;
 
   @ManyToOne(
-    () => Doctor,
-    doctor => doctor.prescription,
+    type => Doctor,
+    doctor => doctor.prescriptions,
+    { eager: true, cascade: true },
   )
   @JoinColumn()
   doctor: Doctor;
 
-  @Column('text')
-  recommendations: string;
+  @Column('text', { nullable: true, array: true })
+  recommendations: string[];
 
-  @ManyToMany(type => Medicine)
+  @Generated('increment')
+  @Column()
+  code: number;
+
+  @Column({ nullable: true })
+  waist: number;
+
+  @Column({ nullable: true })
+  height: number;
+
+  @Column({ nullable: true })
+  bpm: number;
+
+  @Column({ nullable: true })
+  weight: number;
+
+  @Column({ nullable: true })
+  pressure: string;
+
+  @OneToMany(
+    type => Medicine,
+    medicine => medicine.prescription,
+    { eager: true, cascade: true },
+  )
   @JoinTable()
-  medicine: Medicine[];
+  medicines: Medicine[];
 
-  @ManyToOne(type => Exam)
-  exam: Exam[];
+  @OneToMany(
+    type => Exam,
+    exam => exam.prescription,
+    { eager: true, cascade: true },
+  )
+  @JoinColumn()
+  exams: Exam[];
 
   @CreateDateColumn({ type: 'timestamp', nullable: true })
   createdAt: Date;

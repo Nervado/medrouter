@@ -9,6 +9,10 @@ import { DaySchedule } from "./model/schedule";
 import { SearchScheduleDto } from "./dtos/searchSchedule.dto";
 import { Appointment } from "./model/appointment";
 import { SearchAppointmentsDto } from "./dtos/search-appointments-dto";
+import { Client } from "./model/client";
+import { ExamDto } from "./model/exam";
+import { Medicine } from "./model/medicine";
+import { PrescriptionDto } from "./model/prescription";
 
 @Injectable({
   providedIn: "root",
@@ -87,11 +91,75 @@ export class DoctorsService {
     );
   }
 
-  //TO DO
-  // getExams with search fields
-  // Post Exams
-  // Get Exams
-  // Post Medicines
-  // GetMedicines
-  // Post Prescription
+  getClients(doctorId: string, username: string): Observable<Client[]> {
+    return this.http.get<Client[]>(
+      `${MEDROUTER_API}/doctors/${doctorId}/clients?username=${username}`
+    );
+  }
+
+  getExams(id: string, search: any): Observable<ExamDto[]> {
+    const { page, username } = search;
+    const query = username ? `&username=${username}` : "";
+    return this.http.get<ExamDto[]>(
+      `${MEDROUTER_API}/doctors/${id}/exams/page=${page}${query}`
+    );
+  }
+
+  createExam(exam: ExamDto): Observable<void> {
+    return this.http.post<void>(`${MEDROUTER_API}/exams`, { ...exam });
+  }
+
+  modifyExam(id: string, exam: ExamDto): Observable<void> {
+    return this.http.patch<void>(`${MEDROUTER_API}/exams/${id}/status`, {
+      ...exam,
+    });
+  }
+
+  deleteExam(id: string): Observable<void> {
+    return this.http.delete<void>(`${MEDROUTER_API}/exams/${id}`);
+  }
+
+  createMedicine(medicine: Medicine): Observable<void> {
+    return this.http.post<void>(`${MEDROUTER_API}/medicines`, { ...medicine });
+  }
+
+  deleteMedicine(id: string): Observable<void> {
+    return this.http.delete<void>(`${MEDROUTER_API}/medicines/${id}`);
+  }
+
+  createPrescription(
+    id: string,
+    prescription: PrescriptionDto
+  ): Observable<{
+    id: string;
+  }> {
+    return this.http.post<{
+      id: string;
+    }>(`${MEDROUTER_API}/doctors/${id}/prescriptions`, { ...prescription });
+  }
+
+  getPrescriptions(id: string, search: any): Observable<PrescriptionDto[]> {
+    const { username, page } = search;
+    const query = username ? `&username=${username}` : "";
+    return this.http.get<PrescriptionDto[]>(
+      `${MEDROUTER_API}/doctors/${id}/prescriptions?page=${page}${query}`
+    );
+  }
+
+  updatePrescription(
+    doctorId: string,
+    id: string,
+    body: PrescriptionDto
+  ): Observable<void> {
+    return this.http.put<void>(
+      `${MEDROUTER_API}/doctors/${doctorId}/prescriptions/${id}`,
+      { ...body }
+    );
+  }
+
+  getPrescription(doctorId: string, id: string): Observable<PrescriptionDto> {
+    return this.http.get<PrescriptionDto>(
+      `${MEDROUTER_API}/doctors/${doctorId}/prescriptions/${id}`
+    );
+  }
 }

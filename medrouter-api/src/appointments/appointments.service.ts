@@ -27,6 +27,10 @@ export class AppointmentsService {
     const query = Appointment.createQueryBuilder('appointment');
 
     query.andWhere('appointment.id = :id', { id });
+    query.andWhere('status != :cancel AND status != :attend', {
+      cancel: AppointmentStatus.CANCELED,
+      attend: AppointmentStatus.ATTENDED,
+    });
 
     const find = await query
 
@@ -216,6 +220,7 @@ export class AppointmentsService {
         .leftJoinAndSelect('appointment.client', 'client')
         .leftJoinAndSelect('client.user', 'clientUser')
         .leftJoinAndSelect('clientUser.avatar', 'clientAvatar')
+        .orderBy('appointment.hour', 'DESC')
         .getMany();
 
       const appoiments: AppointmentDto[] = [

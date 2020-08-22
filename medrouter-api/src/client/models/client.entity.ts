@@ -45,7 +45,7 @@ export class Client extends BaseEntity {
     appointment => appointment.client,
   )
   @JoinColumn()
-  appointment: Appointment[];
+  appointments: Appointment[];
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp' })

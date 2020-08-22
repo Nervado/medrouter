@@ -1,56 +1,52 @@
-import { Component, OnInit, Type } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
+  faRulerVertical,
+  faTachometerAlt,
+  faWeight,
+  faHeart,
   faEdit,
+  faTimes,
   faShareSquare,
   faSave,
-  faUserMd,
-  faHeartbeat,
   faSearch,
+  faFlask,
   faFileMedical,
   faCapsules,
   faVial,
   faExclamationCircle,
-  faTimes,
-  faFlask,
+  faUserMd,
+  faHeartbeat,
   faBox,
   faPlusCircle,
   faCalendarPlus,
-  faHeart,
-  faWeight,
-  faTachometerAlt,
-  faRulerVertical,
   faMobileAlt,
   faTrash,
   faRulerHorizontal,
 } from "@fortawesome/free-solid-svg-icons";
-import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
 import { Medicine } from "../../model/medicine";
+import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
+import { getArrayFromEnum } from "src/app/utils/getArrayFromEnum";
+import {
+  MedicineCategory,
+  MedicineSubcategory,
+} from "../../enums/medicines.enum";
+import { Client } from "src/app/clients/models/client";
+import { Colors } from "src/app/messages/toast/enums/colors";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { Appointment } from "src/app/clients/models/appointment";
+import { PrescriptionDto } from "../../model/prescription";
 import { DoctorsService } from "../../doctors.service";
 import { NotificationService } from "src/app/messages/notification.service";
-import { Types } from "src/app/messages/toast/enums/types";
-import {
-  MedicineSubcategory,
-  MedicineCategory,
-} from "../../enums/medicines.enum";
-
-import { getArrayFromEnum } from "src/app/utils/getArrayFromEnum";
-import { capitalizeAndRemoveUnderscores } from "src/app/utils/capitalizeAndRemoveUnderscore";
-import { format } from "date-fns";
-import { Colors } from "src/app/messages/toast/enums/colors";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Appointment } from "../../model/appointment";
 import { ActivatedRoute } from "@angular/router";
-import { Client } from "../../model/client";
-import { PrescriptionDto } from "../../model/prescription";
-import { thresholdFreedmanDiaconis } from "d3";
-import { types } from "util";
+import { format } from "date-fns";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
-  selector: "app-doctors-create-prescription",
-  templateUrl: "./doctors-create-prescription.component.html",
-  styleUrls: ["./doctors-create-prescription.component.scss"],
+  selector: "app-edit-prescription",
+  templateUrl: "./edit-prescription.component.html",
+  styleUrls: ["./edit-prescription.component.scss"],
 })
-export class DoctorsCreatePrescriptionComponent implements OnInit {
+export class EditPrescriptionComponent implements OnInit {
   faRulerVertical = faRulerVertical;
   faTachometerAlt = faTachometerAlt;
   faWeight = faWeight;
@@ -125,18 +121,10 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
     this.date = new Date();
     this.prettyDate = format(new Date(), "dd/MM/yyyy");
 
-    this.activatedRoute.params.subscribe({
-      next: (params) => {
-        this.appointmentId = params["id"];
-        this.doctorId = this.activatedRoute.parent.snapshot.params["id"];
-        this.getLatestAppointment(this.doctorId, this.appointmentId);
-      },
-    });
-
     this.prescriptionForm = this.fb.group({
       id: this.fb.control("", [Validators.required]),
-      height: this.fb.control(0, [Validators.required]),
       waist: this.fb.control(0, [Validators.required]),
+      height: this.fb.control(0, [Validators.required]),
       bpm: this.fb.control(0, [Validators.required]),
       weight: this.fb.control(0, [Validators.required]),
       pressure: this.fb.control("", [Validators.required]),
@@ -165,76 +153,24 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
   }
 
   update() {
-    console.log(this.prescriptionForm.value);
     if (this.prescriptionForm.value.id !== "")
       this.ds
         .updatePrescription(this.doctorId, this.prescriptionForm.value.id, {
           ...this.prescriptionForm.value,
           recommendations: this.recommendations,
-          waist: this.prescriptionForm.value.waist,
         })
         .subscribe({
-          next: () => {
+          next: () =>
             this.ns.notify({
               message: "Prescrição atualizada!",
               type: Types.SUCCESS,
-            });
-            this.getPrescription();
-          },
-
+            }),
           error: () =>
             this.ns.notify({
               message: "Prescrição não pode ser atualizada!",
               type: Types.ERROR,
             }),
         });
-  }
-
-  create() {
-    this.isEditing = !this.isEditing;
-
-    if (this.prescriptionForm.value.id === "") {
-      if (this.prescriptionForm.value.client?.id !== undefined) {
-        this.latestAppointment = {
-          client: this.prescriptionForm.value.client,
-        };
-      }
-
-      this.ds
-        .createPrescription(this.doctorId, {
-          client: {
-            id: this.latestAppointment?.client.id,
-          },
-        })
-        .subscribe({
-          next: (prescription: { id: string }) => {
-            this.prescriptionForm.patchValue({
-              id: prescription.id,
-            });
-            this.ns.notify({
-              message: "Prescrição inicializada",
-              type: Types.SUCCESS,
-            });
-          },
-
-          error: (error) => {
-            console.log(error);
-            this.ns.notify({
-              message: "Não foi possível criar esta prescrição.",
-              type: Types.ERROR,
-            });
-          },
-          complete: () =>
-            this.ds
-              .getPrescription(this.doctorId, this.prescriptionForm.value.id)
-              .subscribe({
-                next: (prescription: PrescriptionDto) =>
-                  this.prescriptionForm.patchValue({
-                    ...prescription,
-                  }),
-              }),
-        });
-    }
   }
 
   save(client: Client) {
@@ -311,7 +247,6 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
             type: Types.INFO,
           });
           // request updated prescription
-          this.getPrescription();
         },
         error: () =>
           this.ns.notify({
@@ -328,33 +263,6 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
 
   showAddNF() {
     this.addNF = !this.addNF;
-  }
-
-  //(mouseleave)="showAddE()"
-
-  getLatestAppointment(doctorId: string, appointmentId: string) {
-    if (this.appointmentId !== undefined) {
-      this.ds.getAppointment(doctorId, appointmentId).subscribe({
-        next: (appointment: Appointment) => {
-          this.latestAppointment = appointment;
-          this.ns.notify({
-            message: "Clique em editar para iniciar uma nova prescricão",
-            type: Types.INFO,
-          });
-        },
-        error: () => {
-          this.ns.notify({
-            message: "Agendamento inválido",
-            type: Types.ERROR,
-          });
-        },
-      });
-    } else {
-      this.ns.notify({
-        message: "Selecione um paciente para criar uma prescricão",
-        type: Types.INFO,
-      });
-    }
   }
 
   createExam(exam: ExamsEnum) {

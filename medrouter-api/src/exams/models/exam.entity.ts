@@ -20,6 +20,7 @@ import { Doc } from 'src/docs/models/doc.entity';
 import { Lab } from 'src/labs/models/lab.entity';
 import { Client } from 'src/client/models/client.entity';
 import { Doctor } from 'src/doctors/models/doctor.entity';
+import { Prescription } from 'src/prescriptions/models/prescription.entity';
 
 @Entity('exam')
 export class Exam extends BaseEntity {
@@ -32,34 +33,39 @@ export class Exam extends BaseEntity {
   @Column({
     type: 'enum',
     enum: ExamsEnum,
-    default: [ExamsEnum.CATET],
-    array: true,
   })
-  exams: ExamsEnum[];
+  type: ExamsEnum;
 
   @Column({ type: 'enum', enum: ExamStatus, default: ExamStatus.REQUEST })
-  status: ExamStatus[];
+  status: ExamStatus;
 
   @Column({ nullable: true })
   deadline: number;
 
-  @ManyToOne(type => Photo)
+  @ManyToOne(type => Photo, { nullable: true })
   photos: Photo[];
 
-  @ManyToOne(type => Doc)
+  @ManyToOne(type => Doc, { nullable: true })
   docs: Doc[];
 
-  @OneToOne(() => Lab, { eager: true })
+  @OneToOne(() => Lab, { nullable: true })
   @JoinColumn()
   lab: Lab;
 
-  @OneToOne(() => Client, { eager: true })
+  @ManyToOne(() => Client)
   @JoinColumn()
   client: Client;
 
-  @OneToOne(() => Doctor, { eager: true })
+  @ManyToOne(() => Doctor)
   @JoinColumn()
   doctor: Doctor;
+
+  @ManyToOne(
+    type => Prescription,
+    prescription => prescription.exams,
+  )
+  @JoinColumn()
+  prescription: Prescription;
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', nullable: true })

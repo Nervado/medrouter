@@ -1,14 +1,8 @@
-import {
-  IsNumberString,
-  IsString,
-  IsOptional,
-  IsNotEmpty,
-} from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 
 export class SearchClientDto {
-  @IsNotEmpty()
-  @IsNumberString()
-  page: number = 1;
+  @IsOptional()
+  page?: number = 1;
 
   @IsOptional()
   @IsString()

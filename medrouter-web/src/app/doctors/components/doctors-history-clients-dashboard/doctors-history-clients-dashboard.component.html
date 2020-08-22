@@ -2,7 +2,7 @@
   <div class="main-data aside text-doctor">
     <div class="header">
       <div class="control">
-        <fa-icon [icon]="faChevronLeft"></fa-icon>
+        <fa-icon [icon]="faChevronLeft" (click)="pageDown()"></fa-icon>
       </div>
       <div class="mx-2">
         Receituário
@@ -12,7 +12,7 @@
         <fa-icon [icon]="faSearch" (click)="toogle()"></fa-icon>
       </div>
 
-      <div class="control">
+      <div class="control" (click)="pageUp()">
         <fa-icon [icon]="faChevronRight"></fa-icon>
       </div>
     </div>
@@ -42,9 +42,9 @@
         </div>
       </div>
     </div>
-    <div class="founds">Encontrados {{ prescriptions.length }}</div>
+    <div class="founds">Encontrados {{ prescriptions?.length }}</div>
 
-    <div class="wrapper-results" *ngIf="prescriptions.length > 0">
+    <div class="wrapper-results" *ngIf="prescriptions?.length > 0">
       <div *ngFor="let prescription of prescriptions" class="prescriptions">
         <header>
           <div class="info user">
@@ -61,7 +61,7 @@
 
           <div class="info">
             <fa-icon [icon]="faFileMedical"></fa-icon>
-            Receita 456
+            {{ prescription?.code }}
           </div>
 
           <div class="user info">
@@ -83,25 +83,33 @@
             <fa-icon [icon]="faCalendarDay"></fa-icon>
             {{ pretty(prescription.createdAt) }}
           </div>
+
+          <div class="info">
+            <a [routerLink]="['.', prescription.id]"
+              ><fa-icon [icon]="faEdit"></fa-icon>
+            </a>
+          </div>
         </header>
 
         <div
           class="resume"
           *ngIf="
-            prescription.recomendations.length > 0 ||
-            prescription.medicines.length > 0 ||
-            prescription.exams.length > 0
+            prescription.recommendations !== {} ||
+            prescription.medicines?.length > 0 ||
+            prescription.exams?.length > 0
           "
         >
           <div class="title"><strong> Resumo</strong></div>
 
           <div class="itens">
-            <div *ngIf="prescription.recomendations.length > 0" class="my-1">
+            <div *ngIf="prescription?.recommendations" class="my-1">
               <div>
                 <fa-icon [icon]="faExclamationCircle"></fa-icon>
                 <strong> Recomendações</strong>
               </div>
-              <div *ngFor="let r of prescription.recomendations">
+              <div
+                *ngFor="let r of arrayFromObject(prescription.recommendations)"
+              >
                 <div>{{ r }}</div>
               </div>
             </div>
@@ -116,14 +124,14 @@
               </div>
             </div>
 
-            <div *ngIf="prescription.exams.length > 0" class="my-1">
+            <div *ngIf="prescription.exams?.length > 0" class="my-1">
               <div>
                 <fa-icon [icon]="faVial"></fa-icon>
 
                 <strong> Exames</strong>
               </div>
               <div *ngFor="let exam of prescription.exams">
-                {{ exam.type }}
+                {{ fmrt(exam.type) }}
               </div>
             </div>
           </div>

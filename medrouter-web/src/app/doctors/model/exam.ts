@@ -3,17 +3,18 @@ import { DoctorDto } from "./doctor-dto";
 import { ExamStatus } from "../enums/status.enum";
 
 export class ExamDto {
-  id: any;
-  price: number;
+  id?: any;
+  prescriptionId?: string;
+  price?: number;
   type: ExamsEnum;
-  doctor: DoctorDto;
-  status: ExamStatus;
+  doctor?: DoctorDto;
+  status?: ExamStatus;
   docs?: [{ id: any; url: string }];
   lab?: {
     id: any;
     name: string;
   };
-  client: {
+  client?: {
     id: any;
     user: {
       fullname?: string;
@@ -21,5 +22,5 @@ export class ExamDto {
       avatar: { url: string };
     };
   };
-  createdAt: Date;
+  createdAt?: Date;
 }

@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { NgModule, Component } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
 import { DoctorPageComponent } from "./views/doctor-page/doctor-page.component";
@@ -10,6 +10,7 @@ import { DoctorsCreatePrescriptionComponent } from "./components/doctors-create-
 import { DoctorsExamsDashboardComponent } from "./components/doctors-exams-dashboard/doctors-exams-dashboard.component";
 import { DoctorsHistoryClientsDashboardComponent } from "./components/doctors-history-clients-dashboard/doctors-history-clients-dashboard.component";
 import { path } from "d3";
+import { EditPrescriptionComponent } from "./components/edit-prescription/edit-prescription.component";
 
 const routes: Routes = [
   {
@@ -49,6 +50,10 @@ const routes: Routes = [
       {
         path: "history",
         component: DoctorsHistoryClientsDashboardComponent,
+      },
+      {
+        path: "history/:id",
+        component: EditPrescriptionComponent,
       },
     ],
   },

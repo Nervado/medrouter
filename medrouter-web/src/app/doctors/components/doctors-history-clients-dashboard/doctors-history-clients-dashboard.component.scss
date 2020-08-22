@@ -193,3 +193,9 @@
     opacity: 0.6;
   }
 }
+
+a,
+a:link {
+  text-decoration: none;
+  color: var(--doctor);
+}
