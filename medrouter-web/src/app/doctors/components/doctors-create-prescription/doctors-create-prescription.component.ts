@@ -82,7 +82,7 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
   addE: boolean = false;
   addNF: boolean = false;
   searchMed: boolean = false;
-  annaminese: boolean = false;
+  annaminese: boolean = true;
 
   searchMedicines: Array<any> = [];
   recommendations: Array<string> = [];
@@ -166,6 +166,7 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
 
   update() {
     console.log(this.prescriptionForm.value);
+
     if (this.prescriptionForm.value.id !== "")
       this.ds
         .updatePrescription(this.doctorId, this.prescriptionForm.value.id, {
@@ -179,6 +180,7 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
               message: "Prescrição atualizada!",
               type: Types.SUCCESS,
             });
+            this.annaminese = true;
             this.getPrescription();
           },
 
@@ -215,8 +217,8 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
               message: "Prescrição inicializada",
               type: Types.SUCCESS,
             });
+            this.getPrescription();
           },
-
           error: (error) => {
             console.log(error);
             this.ns.notify({
@@ -224,15 +226,6 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
               type: Types.ERROR,
             });
           },
-          complete: () =>
-            this.ds
-              .getPrescription(this.doctorId, this.prescriptionForm.value.id)
-              .subscribe({
-                next: (prescription: PrescriptionDto) =>
-                  this.prescriptionForm.patchValue({
-                    ...prescription,
-                  }),
-              }),
         });
     }
   }
@@ -351,7 +344,7 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
       });
     } else {
       this.ns.notify({
-        message: "Selecione um paciente para criar uma prescricão",
+        message: "Selecione um paciente para criar uma prescrição",
         type: Types.INFO,
       });
     }
@@ -370,7 +363,6 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
               message: "Exame adicionado com sucesso",
               type: Types.SUCCESS,
             });
-
             this.getPrescription();
           },
           error: () =>
@@ -387,11 +379,26 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
       .getPrescription(this.doctorId, this.prescriptionForm.value.id)
       .subscribe({
         next: (prescription: PrescriptionDto) => {
-          this.prescriptionForm.patchValue({
-            ...prescription,
-          });
-          this.prescription = prescription;
+          this.prescription = prescription; // only update the representation
+          console.log(this.prescription);
         },
       });
+  }
+
+  deleteExam(id: string) {
+    this.ds.deleteExam(id).subscribe({
+      next: () => {
+        this.ns.notify({
+          message: "Exame excluído",
+          type: Types.WARN,
+        });
+        this.getPrescription();
+      },
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao excluir exame",
+          type: Types.ERROR,
+        }),
+    });
   }
 }

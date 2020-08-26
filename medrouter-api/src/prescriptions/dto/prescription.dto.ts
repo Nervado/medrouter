@@ -17,23 +17,19 @@ export class PrescriptionDto {
   createdAt?: Date;
 
   @IsOptional()
-  @IsNumber()
-  @Transform(value => parseInt(value))
+  @Transform(value => parseInt(value) || 0)
   waist?: number;
 
   @IsOptional()
-  @Transform(value => parseInt(value))
-  @IsNumber()
+  @Transform(value => parseInt(value) || 0)
   height?: number;
 
   @IsOptional()
-  @Transform(value => parseInt(value))
-  @IsNumber()
+  @Transform(value => parseInt(value) || 0)
   bpm?: number;
 
   @IsOptional()
-  @IsNumber()
-  @Transform(value => parseInt(value))
+  @Transform(value => parseInt(value) || 0)
   weight?: number;
 
   @IsOptional()

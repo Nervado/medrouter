@@ -145,7 +145,7 @@ export class PrescriptionsService {
     Prescription.merge(prescriptionUpdated, body);
 
     try {
-      prescriptionUpdated.save();
+      await prescriptionUpdated.save();
     } catch (error) {
       throw new InternalServerErrorException('Fail to update prescription');
     }

@@ -41,4 +41,12 @@ export class ExamsService {
       throw new InternalServerErrorException('Creation of exam has fail');
     }
   }
+
+  async delete(id: string): Promise<void> {
+    try {
+      await Exam.getRepository().softDelete(id);
+    } catch (error) {
+      throw new InternalServerErrorException('fail to delte exam');
+    }
+  }
 }

@@ -104,10 +104,10 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 ## New Prescriptions
 
 [X] Search Medicine
-[ ] Create Prescription
-[ ] Add Exam
+[X] Create Prescription
+[X] Add Exam
 [ ] Remove Exam
-[ ] Add Medicine
+[X] Add Medicine
 [ ] Remove Medicine
 
 ## Exams
@@ -118,13 +118,13 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 
 ## Prescriptions
 
-[ ] List
+[x] List
 [ ] Search by Name
 
 ## Appointments
 
-[ ] List by Date
-[ ] Add new Prescription
+[x] List by Date
+[x] Add new Prescription
 [ ] Cancel
 
 ## Schedule

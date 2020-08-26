@@ -23,6 +23,7 @@ import { CpfMaskDirective } from "./directives/cpf-mask.directive";
 import { CepMaskDirective } from "./directives/cep-mask.directive";
 import { MultiListViewComponent } from "./components/multi-list-view/multi-list-view.component";
 import { CnpjMaskDirective } from "./directives/cnpj-mask.directive";
+import { PressureMaskDirective } from "./directives/pressure-mask.directive";
 @NgModule({
   declarations: [
     InputComponent,
@@ -43,6 +44,7 @@ import { CnpjMaskDirective } from "./directives/cnpj-mask.directive";
     CepMaskDirective,
     MultiListViewComponent,
     CnpjMaskDirective,
+    PressureMaskDirective,
   ],
   imports: [
     CommonModule,
@@ -76,6 +78,7 @@ import { CnpjMaskDirective } from "./directives/cnpj-mask.directive";
     CpfMaskDirective,
     CepMaskDirective,
     CnpjMaskDirective,
+    PressureMaskDirective,
     MultiListViewComponent,
   ],
 })

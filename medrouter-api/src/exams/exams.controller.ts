@@ -48,9 +48,10 @@ export class ExamsController {
   }
 
   @Delete('/:id')
+  @Roles('doctor')
   @UseInterceptors(ClassSerializerInterceptor)
-  deleteDoctor(@Param('id') id: number) {
-    //return this.doctorService.delete(id);
+  deleteExam(@Param('id') id: string) {
+    return this.examsService.delete(id);
   }
 
   @Put('/:id')

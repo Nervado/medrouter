@@ -6,10 +6,33 @@
       </div>
 
       <div class="control">
-        <fa-icon [icon]="faEdit" (click)="create()"></fa-icon>
-        <fa-icon [icon]="faSave" (click)="update()"></fa-icon>
-        <fa-icon [icon]="faShare"></fa-icon>
-        <fa-icon [icon]="faSearch" (click)="toogle()"></fa-icon>
+        <fa-icon
+          [icon]="faSearch"
+          (click)="toogle()"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Buscar paciente"
+        ></fa-icon>
+        <fa-icon
+          [icon]="faEdit"
+          (click)="create()"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Editar prescrição"
+        ></fa-icon>
+        <fa-icon
+          [icon]="faSave"
+          (click)="update()"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Salvar prescrição"
+        ></fa-icon>
+        <fa-icon
+          [icon]="faTrash"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Deletar prescrição"
+        ></fa-icon>
       </div>
     </div>
 
@@ -121,7 +144,7 @@
           Pressão arterial:
           <strong>
             <ng-container *ngIf="annaminese; else pressure">
-              {{ prescription.pressure }}
+              {{ prescription?.pressure || "_ _" }}
             </ng-container>
             <ng-template #pressure>
               <input
@@ -129,6 +152,8 @@
                 placeholder="Pressão"
                 class="ana"
                 formControlName="pressure"
+                appPressureMask
+                
               />
             </ng-template>
 
@@ -144,7 +169,7 @@
           Peso:
           <strong>
             <ng-container *ngIf="annaminese; else w">
-              {{ prescription.weight }}
+              {{ prescription?.weight || "_ _" }}
             </ng-container>
             <ng-template #w>
               <input
@@ -166,11 +191,11 @@
           Batimentos:
           <strong>
             <ng-container *ngIf="annaminese; else b">
-              {{ prescription.bpm }}
+              {{ prescription?.bpm || "_ _" }}
             </ng-container>
             <ng-template #b>
               <input
-                type="text"
+                type="number"
                 placeholder="Batimentos"
                 class="ana"
                 formControlName="bpm"
@@ -185,7 +210,7 @@
           <div class="icon"><fa-icon [icon]="faRulerVertical"></fa-icon></div>
           Altura:<strong>
             <ng-container *ngIf="annaminese; else h">
-              {{ prescription.height }}
+              {{ prescription?.height || "_ _" }}
             </ng-container>
             <ng-template #h>
               <input
@@ -204,7 +229,7 @@
           <div class="icon"><fa-icon [icon]="faRulerHorizontal"></fa-icon></div>
           Cintura:<strong>
             <ng-container *ngIf="annaminese; else waist">
-              {{ prescription.waist }}
+              {{ prescription?.waist || "_ _" }}
             </ng-container>
             <ng-template #waist>
               <input
@@ -468,7 +493,7 @@
           </div>
         </div>
 
-        <div *ngIf="prescriptionForm.value.exams.length > 0" class="my-1">
+        <div *ngIf="prescription.exams.length > 0" class="my-1">
           <div>
             <fa-icon [icon]="faVial"></fa-icon>
 
@@ -476,7 +501,7 @@
           </div>
           <div *ngFor="let exam of prescription.exams">
             {{ exam.type }}
-            <fa-icon [icon]="faTimes"></fa-icon>
+            <fa-icon [icon]="faTimes" (click)="deleteExam(exam.id)"></fa-icon>
           </div>
         </div>
       </div>
