@@ -3,6 +3,8 @@ import {
   BadRequestException,
   InternalServerErrorException,
   UnauthorizedException,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { Service } from '../utils/generics.service';
 import { DoctorRepository } from './doctor.repository';
@@ -42,6 +44,7 @@ export class DoctorsService extends Service<
   constructor(
     @InjectRepository(DoctorRepository) repo: DoctorRepository,
     private usersService: UsersService,
+    @Inject(forwardRef(() => AppointmentsService))
     private as: AppointmentsService,
     private cs: ClientService,
     private ps: PrescriptionsService,

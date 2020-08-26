@@ -16,3 +16,9 @@ export function isPast(date: Date, hour: Available): boolean {
     return false;
   }
 }
+
+export function getFullHour(date: Date): Available {
+  return Available[
+    `H${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}`
+  ];
+}

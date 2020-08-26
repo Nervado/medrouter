@@ -12,8 +12,7 @@ import { PrescriptionsModule } from 'src/prescriptions/prescriptions.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([DoctorRepository, Schedule]),
-    //forwardRef(() => AppointmentsModule),
-    AppointmentsModule,
+    forwardRef(() => AppointmentsModule),
     UsersModule,
     ClientModule,
     PrescriptionsModule,

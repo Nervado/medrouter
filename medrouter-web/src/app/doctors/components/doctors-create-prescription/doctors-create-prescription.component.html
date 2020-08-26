@@ -153,7 +153,6 @@
                 class="ana"
                 formControlName="pressure"
                 appPressureMask
-                
               />
             </ng-template>
 
@@ -466,8 +465,8 @@
         class="resume"
         *ngIf="
           recommendations.length > 0 ||
-          medicines.length > 0 ||
-          prescriptionForm.value.exams.length > 0
+          prescription?.medicines.length > 0 ||
+          prescription?.exams.length > 0
         "
       >
         <strong> Resumo</strong>
@@ -478,18 +477,31 @@
             <strong> Recomendações</strong>
           </div>
           <div *ngFor="let r of recommendations">
-            <div>{{ r }}</div>
+            <div>
+              {{ r }}
+              <fa-icon
+                [icon]="faTimes"
+                class="text-oposity1"
+                (click)="deleteRecomendation(r)"
+              ></fa-icon>
+            </div>
           </div>
         </div>
-        <div *ngIf="medicines.length > 0" class="my-1">
+        <div *ngIf="prescription.medicines.length > 0" class="my-1">
           <div>
             <fa-icon [icon]="faCapsules"></fa-icon>
 
             <strong> Medicamentos</strong>
           </div>
-          <div *ngFor="let medicine of medicines">
+          <div *ngFor="let medicine of prescription.medicines">
             {{ fmrt(medicine.substance) }} &nbsp;
             {{ fmrt(medicine.presentantion) }}
+
+            <fa-icon
+              [icon]="faTimes"
+              class="text-oposity1"
+              (click)="deleteMedicine(medicine.id)"
+            ></fa-icon>
           </div>
         </div>
 
@@ -500,8 +512,14 @@
             <strong> Exames</strong>
           </div>
           <div *ngFor="let exam of prescription.exams">
-            {{ exam.type }}
-            <fa-icon [icon]="faTimes" (click)="deleteExam(exam.id)"></fa-icon>
+            <div *ngIf="exam.status !== 'cancelado'">
+              {{ exam.type }}
+              <fa-icon
+                [icon]="faTimes"
+                class="text-oposity1"
+                (click)="deleteExam(exam.id)"
+              ></fa-icon>
+            </div>
           </div>
         </div>
       </div>

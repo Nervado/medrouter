@@ -38,4 +38,12 @@ export class MedicinesService {
       throw new InternalServerErrorException('Creation of medicine has fail');
     }
   }
+
+  async delete(id: string): Promise<void> {
+    try {
+      await Medicine.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException('Fail at delete medicine');
+    }
+  }
 }

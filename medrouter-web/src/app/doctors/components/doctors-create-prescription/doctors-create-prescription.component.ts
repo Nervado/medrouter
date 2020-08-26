@@ -401,4 +401,30 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
         }),
     });
   }
+
+  deleteMedicine(id: string) {
+    console.log(id);
+
+    this.ds.deleteMedicine(id).subscribe({
+      next: () => {
+        this.ns.notify({
+          message: "Remédio excluído",
+          type: Types.WARN,
+        });
+        this.getPrescription();
+      },
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao excluir remédio",
+          type: Types.ERROR,
+        }),
+    });
+  }
+
+  deleteRecomendation(recom: string) {
+    this.recommendations = this.recommendations.filter(
+      (rec) => !rec.match(recom)
+    );
+    this.update();
+  }
 }

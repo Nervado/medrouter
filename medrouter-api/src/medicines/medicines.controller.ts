@@ -1,4 +1,11 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Delete,
+  Param,
+} from '@nestjs/common';
 import { MedicineDto } from './dto/medicine.dto';
 import { MedicinesService } from './medicines.service';
 import { User } from 'src/users/models/user.entity';
@@ -17,5 +24,11 @@ export class MedicinesController {
   @Roles('doctor')
   create(@Body() medicine: MedicineDto, @GetUser() user: User) {
     return this.ms.create(medicine, user);
+  }
+
+  @Delete('/:id')
+  @Roles('doctor')
+  delete(@Param() id: string) {
+    return this.ms.delete(id);
   }
 }

@@ -1,4 +1,5 @@
 import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
+import { ExamStatus } from "../enums/status.enum";
 
 export class PrescriptionDto {
   id?: any;
@@ -25,10 +26,12 @@ export class PrescriptionDto {
   exams?: Array<{
     id: any;
     type: ExamsEnum;
+    status?: ExamStatus;
   }>;
   medicines?: Array<{
     id: any;
     substance: string;
+    presentantion?: string;
   }>;
 
   createdAt?: Date;

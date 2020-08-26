@@ -9,6 +9,7 @@ import { Exam } from './models/exam.entity';
 import { PrescriptionsService } from 'src/prescriptions/prescriptions.service';
 import { User } from 'src/users/models/user.entity';
 import { ExamsEnum } from './enums/exams.enum';
+import { ExamStatus } from './enums/status.enum';
 
 @Injectable()
 export class ExamsService {
@@ -43,10 +44,21 @@ export class ExamsService {
   }
 
   async delete(id: string): Promise<void> {
+    console.log('Removing', id);
+
+    const exam = await Exam.findOne(id);
+
+    if (exam.status !== ExamStatus.REQUEST) {
+      throw new BadRequestException('Exam cannot be canceled');
+    }
+
+    exam.status = ExamStatus.CANCELED;
+
     try {
-      await Exam.getRepository().softDelete(id);
+      await exam.save();
+      //await Exam.getRepository().softDelete(id);
     } catch (error) {
-      throw new InternalServerErrorException('fail to delte exam');
+      throw new InternalServerErrorException('fail to delete exam');
     }
   }
 }

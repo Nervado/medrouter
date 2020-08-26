@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { Appointment } from './models/appointment.entity';
 import { SearchAppointment } from './dto/search-appointment.dto';
-import { getMidnight, isPast } from 'src/utils/getMidnight';
+import { getMidnight, isPast, getFullHour } from 'src/utils/getMidnight';
 import { AppointmentDto } from './dto/appointment.dto';
 import { DoctorsService } from 'src/doctors/doctors.service';
 import { ClientService } from 'src/client/client.service';
@@ -357,5 +357,46 @@ export class AppointmentsService {
       hour: appointment.hour,
       status: appointment.status,
     };
+  }
+
+  async completeSchedules(): Promise<number> {
+    const query = Appointment.createQueryBuilder('appointment');
+
+    const date = new Date();
+
+    query.where(
+      '(appointment.status = :scheduled OR appointment.status = :rescheduled  ) AND (appointment.date < :date OR ( appointment.date = :date AND appointment.hour <= :hour ))',
+      {
+        date: getMidnight(date),
+        /**
+         * 
+         * hour: `${
+          date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+        }:00`,
+         */
+        hour: Available.H20,
+
+        scheduled: AppointmentStatus.ONESCHEDULE,
+        rescheduled: AppointmentStatus.RESCHEDULED,
+      },
+    );
+
+    try {
+      const resuts = await query.getMany();
+
+      console.log(resuts, getMidnight(date), getFullHour(date));
+
+      resuts.map(async (app: Appointment) => {
+        app.status = AppointmentStatus.ATTENDED;
+        await app.save();
+      });
+
+      return resuts.length;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Fail at update status of schedules appointments',
+        error,
+      );
+    }
   }
 }

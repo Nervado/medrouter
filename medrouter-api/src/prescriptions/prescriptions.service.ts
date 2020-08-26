@@ -8,6 +8,7 @@ import { Client } from 'src/client/models/client.entity';
 import { Prescription } from './models/prescription.entity';
 import { PrescriptionDto } from './dto/prescription.dto';
 import { SearchClientDto } from 'src/client/dtos/search-client-dto';
+import { ExamStatus } from 'src/exams/enums/status.enum';
 
 @Injectable()
 export class PrescriptionsService {
@@ -81,6 +82,7 @@ export class PrescriptionsService {
       .leftJoinAndSelect('prescription.client', 'client')
       .leftJoinAndSelect('client.user', 'clientUser')
       .leftJoinAndSelect('clientUser.avatar', 'clientAvatar')
+      .orderBy('prescription.code', 'DESC')
       .skip(pageNumber)
       .take(10)
       .getMany();
@@ -93,7 +95,7 @@ export class PrescriptionsService {
   serializePrescription(prescription: Prescription): PrescriptionDto {
     return {
       id: prescription?.id,
-      code: prescription.code,
+      code: prescription?.code,
       recommendations: prescription.recommendations,
       waist: prescription.waist,
       weight: prescription.weight,
