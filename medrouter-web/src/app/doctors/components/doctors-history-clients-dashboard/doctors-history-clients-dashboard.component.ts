@@ -26,6 +26,8 @@ import {
   faLock,
   faLockOpen,
   faFileMedicalAlt,
+  faMobileAlt,
+  faUserTie,
 } from "@fortawesome/free-solid-svg-icons";
 import { ExamDto } from "../../model/exam";
 import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
@@ -38,6 +40,7 @@ import { NotificationService } from "src/app/messages/notification.service";
 import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { Types } from "src/app/messages/toast/enums/types";
+import { Client } from "../../model/client";
 
 @Component({
   selector: "app-doctors-history-clients-dashboard",
@@ -69,6 +72,8 @@ export class DoctorsHistoryClientsDashboardComponent implements OnInit {
   faFileDownload = faFileDownload;
   faSend = faPaperPlane;
   faFileMedicalAlt = faFileMedicalAlt;
+  faMobileAlt = faMobileAlt;
+  faUserTie = faUserTie;
 
   showSearch: boolean = false;
 
@@ -78,10 +83,13 @@ export class DoctorsHistoryClientsDashboardComponent implements OnInit {
 
   page: number = 1;
 
+  clients: Client[] = [];
+
+  client: Client;
+
   constructor(
     private ds: DoctorsService,
     private ns: NotificationService,
-    private fb: FormBuilder,
     private activatedRoute: ActivatedRoute
   ) {}
 
@@ -91,10 +99,11 @@ export class DoctorsHistoryClientsDashboardComponent implements OnInit {
     });
   }
 
-  getPrescriptions(id: string) {
+  getPrescriptions(id: string, username?: string) {
     this.ds
       .getPrescriptions(id, {
         page: this.page,
+        username: username,
       })
       .subscribe({
         error: () =>
@@ -113,8 +122,12 @@ export class DoctorsHistoryClientsDashboardComponent implements OnInit {
     this.showSearch = !this.showSearch;
   }
 
-  search() {
-    console.log("procurando ...");
+  search(username: string) {
+    this.ds
+      .getClients(this.activatedRoute.parent.snapshot.params["id"], username)
+      .subscribe({
+        next: (clients: Client[]) => (this.clients = clients),
+      });
   }
 
   pretty(date: Date): string {
@@ -137,5 +150,22 @@ export class DoctorsHistoryClientsDashboardComponent implements OnInit {
 
   arrayFromObject(data: string): String[] {
     return data.replace("{", "").replace("}", "").split(",");
+  }
+
+  save(client: Client) {
+    this.client = client;
+
+    this.showSearch = false;
+
+    this.getPrescriptions(
+      this.activatedRoute.parent.snapshot.params["id"],
+      client.user.username
+    );
+  }
+
+  clear() {
+    this.client = undefined;
+
+    // to do
   }
 }

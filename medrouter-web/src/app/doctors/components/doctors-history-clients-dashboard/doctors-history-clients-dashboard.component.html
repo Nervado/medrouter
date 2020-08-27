@@ -1,6 +1,16 @@
 <div class="dashboard d-flex flex-wrap justify-content-between">
   <div class="main-data aside text-doctor">
     <div class="header">
+      <div class="control filter" *ngIf="client?.user.username">
+        <fa-icon [icon]="faUserTie"></fa-icon>
+        &nbsp;<strong>{{ client.user.username }}</strong>
+        <fa-icon
+          [icon]="faTimes"
+          class="cursor"
+          class="text-oposity1"
+          (click)="clear()"
+        ></fa-icon>
+      </div>
       <div class="control">
         <fa-icon [icon]="faChevronLeft" (click)="pageDown()"></fa-icon>
       </div>
@@ -15,32 +25,66 @@
       </div>
     </div>
 
-    <div class="search" *ngIf="showSearch" (mouseleave)="toogle()">
+    <div class="search" *ngIf="showSearch" (mouseleave)="showSearch = false">
       <div class="form">
         <div class="input">
-          <input type="text" name="search" placeholder="Nome do paciente" />
-          <fa-icon [icon]="faSearch" (click)="search()"></fa-icon>
+          <input
+            type="text"
+            name="search"
+            placeholder="Nome do paciente"
+            #clientname
+          />
+          <fa-icon
+            [icon]="faSearch"
+            (click)="search(clientname.value)"
+          ></fa-icon>
         </div>
 
         <div class="results">
           <div class="label">
             Resultados
-            <strong class="ml-1"> 4</strong>
+
+            <strong class="ml-1"> {{ clients?.length }}</strong>
           </div>
 
           <div class="wrapper">
-            <div class="result">
-              <div>João das Colves</div>
-              <fa-icon
-                [icon]="faVial"
-                class="text-success cursor ml-2"
-              ></fa-icon>
+            <div
+              class="result"
+              *ngFor="let client of clients"
+              (click)="save(client)"
+            >
+              <ng-container *ngIf="client.user.avatar?.url; else avatar">
+                <img [src]="client.user.avatar?.url" alt="avatar" />
+              </ng-container>
+
+              <ng-template #avatar>
+                <img src="../../../assets/avatarmale.png" alt="avatar" />
+              </ng-template>
+              <div>
+                <strong>
+                  {{
+                    client.user.surname
+                      ? client.user.fullname
+                      : client.user.username
+                  }}</strong
+                >
+                <div>
+                  <fa-icon
+                    [icon]="faMobileAlt"
+                    *ngIf="client.user?.phoneNumber"
+                  ></fa-icon>
+                  {{ client.user?.phoneNumber }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="founds">Encontrados {{ prescriptions?.length }}</div>
+
+    <div class="founds">
+      Encontrados <strong>{{ prescriptions?.length }}</strong>
+    </div>
 
     <div class="wrapper-results" *ngIf="prescriptions?.length > 0">
       <div *ngFor="let prescription of prescriptions" class="prescriptions">
@@ -92,7 +136,7 @@
         <div
           class="resume"
           *ngIf="
-            prescription.recommendations !== {} ||
+            prescription?.recommendations !== {} ||
             prescription.medicines?.length > 0 ||
             prescription.exams?.length > 0
           "

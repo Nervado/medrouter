@@ -450,4 +450,12 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
       });
     }
   }
+
+  back() {
+    this.router.navigate([
+      "doctors",
+      this.activatedRoute.parent.snapshot.params["id"],
+      "history",
+    ]);
+  }
 }

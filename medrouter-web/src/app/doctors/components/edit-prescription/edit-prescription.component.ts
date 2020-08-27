@@ -78,7 +78,7 @@ export class EditPrescriptionComponent implements OnInit {
   addE: boolean = false;
   addNF: boolean = false;
   searchMed: boolean = false;
-  annaminese: boolean = false;
+  annaminese: boolean = true;
 
   searchMedicines: Array<any> = [];
   recommendations: Array<string> = [];
@@ -102,8 +102,6 @@ export class EditPrescriptionComponent implements OnInit {
   mainColor: Colors = Colors.DOCTOR;
 
   prescriptionForm: FormGroup;
-
-  latestAppointment: Appointment = undefined;
 
   filteredExams = this.availableExams;
 
@@ -129,16 +127,13 @@ export class EditPrescriptionComponent implements OnInit {
       bpm: this.fb.control(0, [Validators.required]),
       weight: this.fb.control(0, [Validators.required]),
       pressure: this.fb.control("", [Validators.required]),
-      doctor: this.fb.control(this.latestAppointment?.doctor, [
-        Validators.required,
-      ]),
-      client: this.fb.control(this.latestAppointment?.client, [
-        Validators.required,
-      ]),
+      doctor: this.fb.control("", [Validators.required]),
+      client: this.fb.control("", [Validators.required]),
       exams: this.fb.control([], [Validators.required]),
       medicines: this.fb.control([], [Validators.required]),
       category: this.fb.control(""),
       subcategory: this.fb.control(""),
+      formula: this.fb.control(""),
     });
 
     this.activatedRoute.params.subscribe((params) => {
@@ -162,24 +157,28 @@ export class EditPrescriptionComponent implements OnInit {
   }
 
   update() {
-    if (this.prescriptionForm.value.id !== "")
-      this.ds
-        .updatePrescription(this.doctorId, this.prescriptionForm.value.id, {
-          ...this.prescriptionForm.value,
-          recommendations: this.recommendations,
-        })
-        .subscribe({
-          next: () =>
-            this.ns.notify({
-              message: "Prescrição atualizada!",
-              type: Types.SUCCESS,
-            }),
-          error: () =>
-            this.ns.notify({
-              message: "Prescrição não pode ser atualizada!",
-              type: Types.ERROR,
-            }),
-        });
+    this.ds
+      .updatePrescription(this.doctorId, this.prescriptionForm.value.id, {
+        ...this.prescriptionForm.value,
+        recommendations: this.recommendations,
+        waist: this.prescriptionForm.value.waist,
+      })
+      .subscribe({
+        next: () => {
+          this.ns.notify({
+            message: "Prescrição atualizada!",
+            type: Types.SUCCESS,
+          });
+          this.annaminese = true;
+          this.getPrescription();
+        },
+
+        error: () =>
+          this.ns.notify({
+            message: "Prescrição não pode ser atualizada!",
+            type: Types.ERROR,
+          }),
+      });
   }
 
   save(client: Client) {
@@ -242,12 +241,15 @@ export class EditPrescriptionComponent implements OnInit {
   }
 
   addMedicine(med: any) {
+    this.addNF = false;
+
     this.ds
       .createMedicine({
         ...med,
         prescriptionId: this.prescriptionForm.value.id,
         category: this.prescriptionForm.value.category,
         subcategory: this.prescriptionForm.value.subcategory,
+        formula: this.prescriptionForm.value.formula,
       })
       .subscribe({
         next: () => {
@@ -256,6 +258,10 @@ export class EditPrescriptionComponent implements OnInit {
             type: Types.INFO,
           });
           // request updated prescription
+          this.getPrescription();
+          this.prescriptionForm.patchValue({
+            formula: "",
+          });
         },
         error: () =>
           this.ns.notify({
@@ -311,6 +317,67 @@ export class EditPrescriptionComponent implements OnInit {
           });
         },
       });
+  }
+
+  deleteExam(id: string) {
+    this.ds.deleteExam(id).subscribe({
+      next: () => {
+        this.ns.notify({
+          message: "Exame excluído",
+          type: Types.WARN,
+        });
+        this.getPrescription();
+      },
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao excluir exame",
+          type: Types.ERROR,
+        }),
+    });
+  }
+
+  deleteMedicine(id: string) {
+    this.ds.deleteMedicine(id).subscribe({
+      next: () => {
+        this.ns.notify({
+          message: "Remédio excluído",
+          type: Types.WARN,
+        });
+        this.getPrescription();
+      },
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao excluir remédio",
+          type: Types.ERROR,
+        }),
+    });
+  }
+
+  deleteRecomendation(recom: string) {
+    this.recommendations = this.recommendations.filter(
+      (rec) => !rec.match(recom)
+    );
+    this.update();
+  }
+
+  deletePrescription(id: string) {
+    if (this.prescriptionForm.value.id !== "") {
+      this.ds.deletePrescription(this.prescription.doctor.id, id).subscribe({
+        next: () => {
+          this.ns.notify({
+            message: "Prescrição eliminada",
+            type: Types.INFO,
+          });
+          this.back();
+        },
+        error: () =>
+          this.ns.notify({
+            message:
+              "Verifique se a prescrição ainda possui exames ou remédios",
+            type: Types.ERROR,
+          }),
+      });
+    }
   }
 
   back() {

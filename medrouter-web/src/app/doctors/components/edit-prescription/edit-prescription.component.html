@@ -5,8 +5,13 @@
 
       <div class="control">
         <fa-icon [icon]="faSave" (click)="update()"></fa-icon>
-        <fa-icon [icon]="faTrash"></fa-icon>
+
         <fa-icon [icon]="faShare" (click)="back()"></fa-icon>
+
+        <fa-icon
+          [icon]="faTrash"
+          (click)="deletePrescription(prescription.id)"
+        ></fa-icon>
       </div>
     </div>
 
@@ -17,26 +22,21 @@
             <fa-icon [icon]="faUserMd" class="mr-1"></fa-icon>
           </div>
           Doutor:
-          <strong>{{ latestAppointment?.doctor?.user.fullname }}</strong>
+          <strong>{{ prescription?.doctor?.user.fullname }}</strong>
         </div>
         <div class="field">
           <div class="icon">
             <fa-icon [icon]="faHeartbeat" class="mr-1"></fa-icon>
           </div>
           Paciente:
-          <strong>
-            {{
-              prescriptionForm.value?.client?.user.username ||
-                latestAppointment?.client?.user.username
-            }}</strong
-          >
+          <strong> {{ prescription?.client?.user.fullname }}</strong>
         </div>
 
         <div class="field">
           <div class="icon">
             <fa-icon [icon]="faFileMedical" class="mr-1"></fa-icon>
           </div>
-          Receita <strong>{{ prescriptionForm.value?.code }}</strong>
+          Receita <strong>{{ prescription?.code }}</strong>
         </div>
         <div class="field">
           <div class="icon"><fa-icon [icon]="faCalendarPlus"></fa-icon></div>
@@ -47,6 +47,7 @@
         Anamnese
         <fa-icon [icon]="faEdit" (click)="toogleAna()" class="ml-1"></fa-icon>
       </div>
+
       <div class="anamnese prescription-header">
         <div class="field">
           <div class="icon">
@@ -55,7 +56,7 @@
           Pressão arterial:
           <strong>
             <ng-container *ngIf="annaminese; else pressure">
-              12.8/9.9
+              {{ prescription?.pressure || "_ _" }}
             </ng-container>
             <ng-template #pressure>
               <input
@@ -63,12 +64,14 @@
                 placeholder="Pressão"
                 class="ana"
                 formControlName="pressure"
+                appPressureMask
               />
             </ng-template>
 
             mmHg</strong
           >
         </div>
+
         <div class="field">
           <div class="icon">
             <fa-icon [icon]="faWeight" class="mr-1"></fa-icon>
@@ -76,7 +79,9 @@
 
           Peso:
           <strong>
-            <ng-container *ngIf="annaminese; else w"> 60 </ng-container>
+            <ng-container *ngIf="annaminese; else w">
+              {{ prescription?.weight || "_ _" }}
+            </ng-container>
             <ng-template #w>
               <input
                 type="text"
@@ -96,10 +101,12 @@
           </div>
           Batimentos:
           <strong>
-            <ng-container *ngIf="annaminese; else b"> 78 </ng-container>
+            <ng-container *ngIf="annaminese; else b">
+              {{ prescription?.bpm || "_ _" }}
+            </ng-container>
             <ng-template #b>
               <input
-                type="text"
+                type="number"
                 placeholder="Batimentos"
                 class="ana"
                 formControlName="bpm"
@@ -109,13 +116,16 @@
             bpm</strong
           >
         </div>
+
         <div class="field">
           <div class="icon"><fa-icon [icon]="faRulerVertical"></fa-icon></div>
           Altura:<strong>
-            <ng-container *ngIf="annaminese; else h"> 1,05 </ng-container>
+            <ng-container *ngIf="annaminese; else h">
+              {{ prescription?.height || "_ _" }}
+            </ng-container>
             <ng-template #h>
               <input
-                type="text"
+                type="number"
                 placeholder="Altura"
                 class="ana"
                 formControlName="height"
@@ -129,10 +139,12 @@
         <div class="field">
           <div class="icon"><fa-icon [icon]="faRulerHorizontal"></fa-icon></div>
           Cintura:<strong>
-            <ng-container *ngIf="annaminese; else h"> 1,05 </ng-container>
-            <ng-template #h>
+            <ng-container *ngIf="annaminese; else waist">
+              {{ prescription?.waist || "_ _" }}
+            </ng-container>
+            <ng-template #waist>
               <input
-                type="text"
+                type="number"
                 placeholder="Cintura"
                 class="ana"
                 formControlName="waist"
@@ -279,7 +291,11 @@
       <div *ngIf="addNF" class="new-formule">
         <div class="tools">
           Fórmula
-          <fa-icon [icon]="faSave" class="mr-1 cursor"></fa-icon>
+          <fa-icon
+            [icon]="faSave"
+            (click)="addMedicine({})"
+            class="mr-1 cursor"
+          ></fa-icon>
           <fa-icon
             [icon]="faTimes"
             class="mr-1 cursor"
@@ -287,8 +303,8 @@
           ></fa-icon>
         </div>
         <textarea
-          name="formula"
-          #reconm
+          formControlName="formula"
+          #formula
           cols="30"
           rows="10"
           placeholder="Descreva a formula do medicamento"
@@ -364,9 +380,9 @@
       <div
         class="resume"
         *ngIf="
-          recommendations.length > 0 ||
-          medicines.length > 0 ||
-          prescriptionForm.value.exams.length > 0
+          recommendations?.length > 0 ||
+          prescription?.medicines.length > 0 ||
+          prescription?.exams.length > 0
         "
       >
         <strong> Resumo</strong>
@@ -377,30 +393,55 @@
             <strong> Recomendações</strong>
           </div>
           <div *ngFor="let r of recommendations">
-            <div>{{ r }}</div>
+            <div>
+              {{ r }}
+              <fa-icon
+                [icon]="faTimes"
+                class="text-oposity1"
+                (click)="deleteRecomendation(r)"
+              ></fa-icon>
+            </div>
           </div>
         </div>
-        <div *ngIf="medicines.length > 0" class="my-1">
+        <div *ngIf="prescription.medicines.length > 0" class="my-1">
           <div>
             <fa-icon [icon]="faCapsules"></fa-icon>
 
             <strong> Medicamentos</strong>
           </div>
-          <div *ngFor="let medicine of medicines">
-            {{ fmrt(medicine.substance) }} &nbsp;
-            {{ fmrt(medicine.presentantion) }}
+          <div *ngFor="let medicine of prescription.medicines">
+            <ng-container *ngIf="medicine.formula === ''; else formula">
+              {{ fmrt(medicine.substance) }} &nbsp;
+              {{ fmrt(medicine.presentantion) }}
+            </ng-container>
+            <ng-template #formula>
+              <strong>Formula: </strong>{{ medicine.formula }}
+            </ng-template>
+            >
+
+            <fa-icon
+              [icon]="faTimes"
+              class="text-oposity1"
+              (click)="deleteMedicine(medicine.id)"
+            ></fa-icon>
           </div>
         </div>
 
-        <div *ngIf="prescriptionForm.value.exams.length > 0" class="my-1">
+        <div *ngIf="prescription.exams.length > 0" class="my-1">
           <div>
             <fa-icon [icon]="faVial"></fa-icon>
 
             <strong> Exames</strong>
           </div>
           <div *ngFor="let exam of prescription.exams">
-            {{ exam.type }}
-            <fa-icon [icon]="faTimes"></fa-icon>
+            <div *ngIf="exam.status !== 'cancelado'">
+              {{ exam.type }}
+              <fa-icon
+                [icon]="faTimes"
+                class="text-oposity1"
+                (click)="deleteExam(exam.id)"
+              ></fa-icon>
+            </div>
           </div>
         </div>
       </div>
