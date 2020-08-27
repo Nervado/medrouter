@@ -1,8 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { Role } from "src/app/auth/enums/roles-types";
-import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: "app-managers-page",
@@ -12,9 +11,12 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 export class ManagersPageComponent implements OnInit {
   mainColor: Colors = Colors.MANAGER;
   role: Role = Role.MANAGER;
-  faPlus = faPlus;
 
-  constructor() {}
+  link: any = ["/managers", null];
 
-  ngOnInit(): void {}
+  constructor(private as: AuthService) {}
+
+  ngOnInit(): void {
+    this.link[1] = this.as.getRuleId(Role.MANAGER);
+  }
 }

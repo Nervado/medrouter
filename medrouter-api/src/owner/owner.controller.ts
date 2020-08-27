@@ -21,6 +21,8 @@ import { Allow } from 'src/auth/decorators/alow.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
 import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
+import { GetUser } from 'src/users/decorators/get-user.decorator';
+import { User } from 'src/users/models/user.entity';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('owners')
@@ -39,6 +41,13 @@ export class OwnerController {
   @UseInterceptors(ClassSerializerInterceptor)
   getAll(@Query(ValidationPipe) search: SearchFilterDto): Promise<Owner[]> {
     return this.os.getAll(search);
+  }
+
+  @Get('/:id')
+  @Roles('owner')
+  @UseInterceptors(ClassSerializerInterceptor)
+  get(@GetUser() user: User, @Param('id') id: string): Promise<Owner> {
+    return this.os.getOne(id, user);
   }
 
   @Patch('/:id/status')

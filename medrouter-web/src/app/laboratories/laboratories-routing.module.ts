@@ -7,6 +7,11 @@ import { LabEditExamComponent } from "./components/lab-edit-exam/lab-edit-exam.c
 const routes: Routes = [
   {
     path: "",
+    redirectTo: "/",
+    pathMatch: "full",
+  },
+  {
+    path: ":id",
     component: LaboratoryPageComponent,
     children: [
       {

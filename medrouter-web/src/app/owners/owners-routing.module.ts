@@ -11,6 +11,11 @@ import { OwnersDasboardSearchEditComponent } from "./components/owners-dasboard-
 const routes: Routes = [
   {
     path: "",
+    redirectTo: "/",
+    pathMatch: "full",
+  },
+  {
+    path: ":id",
     component: OwnersPageComponent,
     children: [
       {

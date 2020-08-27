@@ -8,6 +8,11 @@ import { ClientHistoryDashboardComponent } from "./components/client-history-das
 const routes: Routes = [
   {
     path: "",
+    redirectTo: "/",
+    pathMatch: "full",
+  },
+  {
+    path: ":id",
     component: ClientPageComponent,
     children: [
       {

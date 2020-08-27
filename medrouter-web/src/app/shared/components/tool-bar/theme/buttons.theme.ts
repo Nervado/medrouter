@@ -49,16 +49,16 @@ export const Buttons = {
     { icon: faPowerOff, path: "unsubscribe" },
   ], //
   owner: [
-    { icon: faChartBar, path: "../owners/dashboard" },
-    { icon: faUserMd, path: "../owners/doctors" },
-    { icon: faUserCog, path: "../owners/managers" },
-    { icon: faCrown, path: "../owners/owners" },
-    { icon: faSearch, path: "../owners/search" },
+    { icon: faChartBar, path: "dashboard" },
+    { icon: faUserMd, path: "doctors" },
+    { icon: faUserCog, path: "managers" },
+    { icon: faCrown, path: "owners" },
+    { icon: faSearch, path: "search" },
   ],
   client: [
-    { icon: faChartBar, path: "../clients/dashboard" },
-    { icon: faFileMedicalAlt, path: "../clients/exams" },
-    { icon: faBookMedical, path: "../clients/history" },
+    { icon: faChartBar, path: "dashboard" },
+    { icon: faFileMedicalAlt, path: "exams" },
+    { icon: faBookMedical, path: "history" },
   ],
   recept: [
     { icon: faUserPlus, path: "add-client" },
@@ -75,12 +75,12 @@ export const Buttons = {
   ],
   manager: [
     // { icon: faChartBar, path: "../managers/dashboard" },
-    { icon: faFlask, path: "../managers/labs" },
-    { icon: faConciergeBell, path: "../managers/receptionists" },
-    { icon: faSearch, path: "../managers/search" },
+    { icon: faFlask, path: "labs" },
+    { icon: faConciergeBell, path: "receptionists" },
+    { icon: faSearch, path: "search" },
   ],
   lab: [
-    { icon: faFileMedical, path: "../laboratories/dashboard" },
-    { icon: faClock, path: "../laboratories/exams" },
+    { icon: faFileMedical, path: "dashboard" },
+    { icon: faClock, path: "exams" },
   ],
 };

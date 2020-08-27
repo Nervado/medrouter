@@ -19,6 +19,8 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
+import { GetUser } from 'src/users/decorators/get-user.decorator';
+import { User } from 'src/users/models/user.entity';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('managers')
@@ -44,8 +46,8 @@ export class ManagerController {
   @Get('/:id')
   @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
-  getManager(@Param('id') id: string): Promise<Manager> {
-    return this.managerService.getOne(id);
+  getManager(@Param('id') id: any, @GetUser() user: User): Promise<Manager> {
+    return this.managerService.getOne(id, user);
   }
 
   @Delete('/:id')

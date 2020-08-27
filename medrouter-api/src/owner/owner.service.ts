@@ -2,6 +2,7 @@ import {
   Injectable,
   BadRequestException,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Owner } from './models/owner.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -52,5 +53,17 @@ export class OwnerService extends Service<
     } catch (error) {
       throw new InternalServerErrorException('Fail operation:delete');
     }
+  }
+
+  async getOne(userId: any, user?: User): Promise<Owner> {
+    if (parseInt(userId) !== user.userId) {
+      throw new UnauthorizedException('Not Allowed');
+    }
+
+    const query = this.repo.createQueryBuilder('owner');
+
+    query.andWhere('user.userId = :userId', { userId });
+
+    return await query.leftJoinAndSelect('owner.user', 'user').getOne();
   }
 }

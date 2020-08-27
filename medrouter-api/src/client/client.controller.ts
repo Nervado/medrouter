@@ -27,6 +27,7 @@ import { User } from 'src/users/models/user.entity';
 import { Allow } from 'src/auth/decorators/alow.decorator';
 import { DocDto } from 'src/docs/dto/doc.dto';
 import { Role } from 'src/auth/enums/role.enum';
+import { Client } from './models/client.entity';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('clients')
@@ -44,6 +45,16 @@ export class ClientController {
   @Roles('recept')
   getClients(@Query() search: SearchClientDto): Promise<SearchResultDto[]> {
     return this.clientService.getAll(search);
+  }
+
+  @Get('/:id')
+  @Allow('client')
+  @UseInterceptors(ClassSerializerInterceptor)
+  get(@GetUser() user: User, @Param('id') id: any): Promise<Client> {
+    const client = this.clientService.getOne(id, user);
+    console.log(client);
+
+    return client;
   }
 
   @Patch('/:id')

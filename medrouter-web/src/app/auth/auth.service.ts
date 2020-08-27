@@ -52,15 +52,6 @@ export class AuthService {
             this.user = User;
             this.loginDto = login;
 
-            User.user.role = [
-              Role.MANAGER,
-              Role.CLIENT,
-              Role.OWNER,
-              Role.DOCTOR,
-              Role.LAB,
-              Role.RECEPT,
-            ];
-
             this.defaultRoute = DefaultRoutes[User.user.role[0]]; // setup default route
           },
           () => {

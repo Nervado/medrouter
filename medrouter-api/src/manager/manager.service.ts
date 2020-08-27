@@ -2,6 +2,7 @@ import {
   Injectable,
   InternalServerErrorException,
   BadRequestException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ServiceInterface } from '../utils/service.interface';
 import { Manager } from './models/manager.entity';
@@ -11,6 +12,7 @@ import { ManagerRepository } from './manager.repository';
 import { UsersService } from '../users/users.service';
 import { Role } from 'src/auth/enums/role.enum';
 import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
+import { User } from 'src/users/models/user.entity';
 
 @Injectable()
 export class ManagerService
@@ -28,8 +30,16 @@ export class ManagerService
   async getAll(search: SearchFilterDto): Promise<Manager[]> {
     return this.managerRepository.getAll(search);
   }
-  async getOne(id: string): Promise<Manager> {
-    return this.managerRepository.findOne({ where: { id } });
+  async getOne(userId: any, user?: User): Promise<Manager> {
+    if (parseInt(userId) !== user.userId) {
+      throw new UnauthorizedException('Not Allowed');
+    }
+
+    const query = this.managerRepository.createQueryBuilder('manager');
+
+    query.andWhere('user.userId = :userId', { userId });
+
+    return await query.leftJoinAndSelect('manager.user', 'user').getOne();
   }
 
   async createOne(body: ManagerDto): Promise<Manager> {

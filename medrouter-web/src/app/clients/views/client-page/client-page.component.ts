@@ -55,8 +55,9 @@ export class ClientPageComponent implements OnInit {
   faSignOutAlt = faSignOutAlt;
 
   mainColor: Colors = Colors.CLIENT;
-
   role: Role = Role.CLIENT;
+  link: any = ["/clients", null];
+
   constructor(
     private authService: AuthService,
     private notificationService: NotificationService
@@ -65,6 +66,7 @@ export class ClientPageComponent implements OnInit {
   user: User;
   ngOnInit(): void {
     this.user = this.authService.getUser();
+    this.link[1] = this.authService.getRuleId(Role.CLIENT);
   }
 
   logout() {

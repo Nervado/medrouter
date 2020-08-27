@@ -21,12 +21,12 @@ export const MenuLinks = {
 
   manager: {
     icon: faUsersCog,
-    path: DefaultRoutes.manager,
+    path: [DefaultRoutes.manager],
     label: "Administração",
   },
   client: {
     icon: faHeartbeat,
-    path: DefaultRoutes.client,
+    path: [DefaultRoutes.client],
     label: "Paciente",
   },
   doctor: {
@@ -39,6 +39,6 @@ export const MenuLinks = {
     path: [DefaultRoutes.recept],
     label: "Recepção",
   },
-  owner: { icon: faCrown, path: DefaultRoutes.owner, label: "Diretoria" },
-  lab: { icon: faFlask, path: DefaultRoutes.lab, label: "Laboratório" },
+  owner: { icon: faCrown, path: [DefaultRoutes.owner], label: "Diretoria" },
+  lab: { icon: faFlask, path: [DefaultRoutes.lab], label: "Laboratório" },
 };

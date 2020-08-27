@@ -9,6 +9,11 @@ import { ManagersReceptionistsSearchEditComponent } from "./components/managers-
 const routes: Routes = [
   {
     path: "",
+    redirectTo: "/",
+    pathMatch: "full",
+  },
+  {
+    path: ":id",
     component: ManagersPageComponent,
     children: [
       {

@@ -187,4 +187,16 @@ export class ClientService {
       },
     };
   }
+
+  async getOne(userId: any, user?: User): Promise<Client> {
+    if (parseInt(userId) !== user.userId) {
+      throw new UnauthorizedException('Not Allowed');
+    }
+
+    const query = Client.createQueryBuilder('client');
+
+    query.andWhere('user.userId = :userId', { userId });
+
+    return await query.leftJoinAndSelect('client.user', 'user').getOne();
+  }
 }

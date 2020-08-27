@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { Role } from "src/app/auth/enums/roles-types";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: "app-owners-page",
@@ -12,9 +13,11 @@ export class OwnersPageComponent implements OnInit {
 
   role: Role = Role.OWNER;
 
-  link = ["/owners"];
+  link = ["/owners", null];
 
-  constructor() {}
+  constructor(private as: AuthService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.link[1] = this.as.getRuleId(Role.OWNER);
+  }
 }
