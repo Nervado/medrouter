@@ -37,7 +37,7 @@ import { Appointment } from "src/app/clients/models/appointment";
 import { PrescriptionDto } from "../../model/prescription";
 import { DoctorsService } from "../../doctors.service";
 import { NotificationService } from "src/app/messages/notification.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { format } from "date-fns";
 import { Types } from "src/app/messages/toast/enums/types";
 
@@ -113,7 +113,8 @@ export class EditPrescriptionComponent implements OnInit {
     private ds: DoctorsService,
     private ns: NotificationService,
     private fb: FormBuilder,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -138,6 +139,14 @@ export class EditPrescriptionComponent implements OnInit {
       medicines: this.fb.control([], [Validators.required]),
       category: this.fb.control(""),
       subcategory: this.fb.control(""),
+    });
+
+    this.activatedRoute.params.subscribe((params) => {
+      this.doctorId = this.activatedRoute.parent.snapshot.params["id"];
+      this.prescriptionForm.patchValue({
+        id: params["id"],
+      });
+      this.getPrescription();
     });
   }
 
@@ -295,11 +304,16 @@ export class EditPrescriptionComponent implements OnInit {
       .getPrescription(this.doctorId, this.prescriptionForm.value.id)
       .subscribe({
         next: (prescription: PrescriptionDto) => {
+          this.prescription = prescription; // only update the representation
+          console.log(this.prescription);
           this.prescriptionForm.patchValue({
             ...prescription,
           });
-          this.prescription = prescription;
         },
       });
+  }
+
+  back() {
+    this.router.navigate(["doctors", this.prescription.doctor.id, "history"]);
   }
 }

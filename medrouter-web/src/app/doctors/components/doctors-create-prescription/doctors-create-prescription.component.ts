@@ -1,4 +1,4 @@
-import { Component, OnInit, Type } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   faEdit,
   faShareSquare,
@@ -39,11 +39,9 @@ import { format } from "date-fns";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Appointment } from "../../model/appointment";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Client } from "../../model/client";
 import { PrescriptionDto } from "../../model/prescription";
-import { thresholdFreedmanDiaconis } from "d3";
-import { types } from "util";
 
 @Component({
   selector: "app-doctors-create-prescription",
@@ -117,7 +115,8 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
     private ds: DoctorsService,
     private ns: NotificationService,
     private fb: FormBuilder,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -150,6 +149,7 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
       medicines: this.fb.control([], [Validators.required]),
       category: this.fb.control(""),
       subcategory: this.fb.control(""),
+      formula: this.fb.control(""),
     });
   }
 
@@ -165,8 +165,6 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
   }
 
   update() {
-    console.log(this.prescriptionForm.value);
-
     if (this.prescriptionForm.value.id !== "")
       this.ds
         .updatePrescription(this.doctorId, this.prescriptionForm.value.id, {
@@ -290,12 +288,15 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
   }
 
   addMedicine(med: any) {
+    this.addNF = false;
+
     this.ds
       .createMedicine({
         ...med,
         prescriptionId: this.prescriptionForm.value.id,
         category: this.prescriptionForm.value.category,
         subcategory: this.prescriptionForm.value.subcategory,
+        formula: this.prescriptionForm.value.formula,
       })
       .subscribe({
         next: () => {
@@ -305,6 +306,9 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
           });
           // request updated prescription
           this.getPrescription();
+          this.prescriptionForm.patchValue({
+            formula: "",
+          });
         },
         error: () =>
           this.ns.notify({
@@ -322,8 +326,6 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
   showAddNF() {
     this.addNF = !this.addNF;
   }
-
-  //(mouseleave)="showAddE()"
 
   getLatestAppointment(doctorId: string, appointmentId: string) {
     if (this.appointmentId !== undefined) {
@@ -381,6 +383,9 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
         next: (prescription: PrescriptionDto) => {
           this.prescription = prescription; // only update the representation
           console.log(this.prescription);
+          this.prescriptionForm.patchValue({
+            ...prescription,
+          });
         },
       });
   }
@@ -403,8 +408,6 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
   }
 
   deleteMedicine(id: string) {
-    console.log(id);
-
     this.ds.deleteMedicine(id).subscribe({
       next: () => {
         this.ns.notify({
@@ -426,5 +429,25 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
       (rec) => !rec.match(recom)
     );
     this.update();
+  }
+
+  deletePrescription(id: string) {
+    if (this.prescriptionForm.value.id !== "") {
+      this.ds.deletePrescription(this.prescription.doctor.id, id).subscribe({
+        next: () => {
+          this.ns.notify({
+            message: "Prescrição eliminada",
+            type: Types.INFO,
+          });
+          this.router.navigate(["doctors", this.prescription.doctor.id]);
+        },
+        error: () =>
+          this.ns.notify({
+            message:
+              "Verifique se a prescrição ainda possui exames ou remédios",
+            type: Types.ERROR,
+          }),
+      });
+    }
   }
 }

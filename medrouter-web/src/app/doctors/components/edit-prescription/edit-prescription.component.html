@@ -1,13 +1,12 @@
 <div class="dashboard d-flex flex-wrap justify-content-between">
   <div class="main-data aside text-doctor">
     <div class="header">
-      <div class="mx-2">
-        Editar receita
-      </div>
+      <div class="mx-2">Editar receita</div>
 
       <div class="control">
         <fa-icon [icon]="faSave" (click)="update()"></fa-icon>
-        <fa-icon [icon]="faShare"></fa-icon>
+        <fa-icon [icon]="faTrash"></fa-icon>
+        <fa-icon [icon]="faShare" (click)="back()"></fa-icon>
       </div>
     </div>
 
@@ -77,9 +76,7 @@
 
           Peso:
           <strong>
-            <ng-container *ngIf="annaminese; else w">
-              60
-            </ng-container>
+            <ng-container *ngIf="annaminese; else w"> 60 </ng-container>
             <ng-template #w>
               <input
                 type="text"
@@ -99,9 +96,7 @@
           </div>
           Batimentos:
           <strong>
-            <ng-container *ngIf="annaminese; else b">
-              78
-            </ng-container>
+            <ng-container *ngIf="annaminese; else b"> 78 </ng-container>
             <ng-template #b>
               <input
                 type="text"
@@ -117,9 +112,7 @@
         <div class="field">
           <div class="icon"><fa-icon [icon]="faRulerVertical"></fa-icon></div>
           Altura:<strong>
-            <ng-container *ngIf="annaminese; else h">
-              1,05
-            </ng-container>
+            <ng-container *ngIf="annaminese; else h"> 1,05 </ng-container>
             <ng-template #h>
               <input
                 type="text"
@@ -136,9 +129,7 @@
         <div class="field">
           <div class="icon"><fa-icon [icon]="faRulerHorizontal"></fa-icon></div>
           Cintura:<strong>
-            <ng-container *ngIf="annaminese; else h">
-              1,05
-            </ng-container>
+            <ng-container *ngIf="annaminese; else h"> 1,05 </ng-container>
             <ng-template #h>
               <input
                 type="text"
@@ -175,11 +166,11 @@
             <select
               formControlName="category"
               class="in cursor"
-              style="border: 1px solid var(--doctor); color: var(--doctor);"
+              style="border: 1px solid var(--doctor); color: var(--doctor)"
             >
-              <option [value]="cat.value" *ngFor="let cat of category">{{
-                cat.label
-              }}</option>
+              <option [value]="cat.value" *ngFor="let cat of category">
+                {{ cat.label }}
+              </option>
             </select>
           </div>
 
@@ -188,11 +179,11 @@
             <select
               formControlName="subcategory"
               class="in cursor"
-              style="border: 1px solid var(--doctor); color: var(--doctor);"
+              style="border: 1px solid var(--doctor); color: var(--doctor)"
             >
-              <option [value]="sub.value" *ngFor="let sub of subcategory">{{
-                sub.label
-              }}</option>
+              <option [value]="sub.value" *ngFor="let sub of subcategory">
+                {{ sub.label }}
+              </option>
             </select>
           </div>
           <div class="buttons">
@@ -316,7 +307,7 @@
                   #examName
                   type="text"
                   placeholder="Nome do exame"
-                  style="border: 1px solid var(--doctor); color: var(--doctor);"
+                  style="border: 1px solid var(--doctor); color: var(--doctor)"
                   (keyup)="applyFilter(examName.value)"
                 />
 

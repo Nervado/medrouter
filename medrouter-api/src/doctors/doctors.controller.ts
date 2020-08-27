@@ -203,6 +203,16 @@ export class DoctorsController {
     );
   }
 
+  @Delete('/:id/prescriptions/:prescriptionId')
+  @Roles('doctor')
+  deletePrescription(
+    @Param('id') id: string,
+    @Param('prescriptionId') prescriptionId: string,
+    @GetUser() user: User,
+  ) {
+    return this.doctorService.deletePrescription(id, prescriptionId, user);
+  }
+
   @Get('/:id/prescriptions')
   @Roles('doctor')
   getPrescriptions(

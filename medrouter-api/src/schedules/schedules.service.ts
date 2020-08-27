@@ -1,4 +1,4 @@
-import { Injectable, Logger, Inject, forwardRef } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { AppointmentsService } from 'src/appointments/appointments.service';
 
@@ -8,7 +8,7 @@ export class SchedulesService {
 
   private readonly logger = new Logger(SchedulesService.name);
 
-  @Cron('45 * * * * *') // one task
+  @Cron('1 0 0 * * *') // one task
   async handleActiveSchedules() {
     this.logger.verbose('Completing active schedules...');
 

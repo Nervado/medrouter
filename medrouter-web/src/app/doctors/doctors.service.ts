@@ -162,4 +162,10 @@ export class DoctorsService {
       `${MEDROUTER_API}/doctors/${doctorId}/prescriptions/${id}`
     );
   }
+
+  deletePrescription(doctorId: string, id: string): Observable<void> {
+    return this.http.delete<void>(
+      `${MEDROUTER_API}/doctors/${doctorId}/prescriptions/${id}`
+    );
+  }
 }

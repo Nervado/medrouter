@@ -2,6 +2,7 @@ import {
   Injectable,
   InternalServerErrorException,
   UnauthorizedException,
+  BadRequestException,
 } from '@nestjs/common';
 import { Doctor } from 'src/doctors/models/doctor.entity';
 import { Client } from 'src/client/models/client.entity';
@@ -47,8 +48,6 @@ export class PrescriptionsService {
       .leftJoinAndSelect('client.user', 'clientUser')
       .leftJoinAndSelect('clientUser.avatar', 'clientAvatar')
       .getOne();
-
-    //console.log(founds, 'result');
 
     return this.serializePrescription(founds);
   }
@@ -120,11 +119,11 @@ export class PrescriptionsService {
       doctor: {
         id: prescription.doctor.id,
         user: {
-          username: prescription.client.user.username,
-          fullname: prescription.client.user.fullname,
-          surname: prescription.client.user.surname,
+          username: prescription.doctor.user.username,
+          fullname: prescription.doctor.user.fullname,
+          surname: prescription.doctor.user.surname,
           avatar: {
-            url: prescription.client.user.avatar?.url,
+            url: prescription.doctor.user.avatar?.url,
           },
         },
       },
@@ -150,6 +149,32 @@ export class PrescriptionsService {
       await prescriptionUpdated.save();
     } catch (error) {
       throw new InternalServerErrorException('Fail to update prescription');
+    }
+  }
+
+  async delete(id: string): Promise<void> {
+    const prescription = await Prescription.findOne(id);
+
+    if (prescription.medicines.length > 0) {
+      throw new BadRequestException(
+        'Prescriptions has active medicine request',
+      );
+    }
+
+    const notCanceledExams = prescription.exams.filter(
+      exam => exam.status !== ExamStatus.CANCELED,
+    );
+
+    if (notCanceledExams.length > 0) {
+      throw new BadRequestException('Prescriptions has active exam request');
+    }
+
+    try {
+      await Prescription.getRepository().softDelete(id);
+    } catch (error) {
+      console.log(error);
+
+      throw new InternalServerErrorException('Fail at delete prescription');
     }
   }
 }

@@ -368,14 +368,7 @@ export class AppointmentsService {
       '(appointment.status = :scheduled OR appointment.status = :rescheduled  ) AND (appointment.date < :date OR ( appointment.date = :date AND appointment.hour <= :hour ))',
       {
         date: getMidnight(date),
-        /**
-         * 
-         * hour: `${
-          date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-        }:00`,
-         */
-        hour: Available.H20,
-
+        hour: getFullHour(date),
         scheduled: AppointmentStatus.ONESCHEDULE,
         rescheduled: AppointmentStatus.RESCHEDULED,
       },
@@ -383,8 +376,6 @@ export class AppointmentsService {
 
     try {
       const resuts = await query.getMany();
-
-      console.log(resuts, getMidnight(date), getFullHour(date));
 
       resuts.map(async (app: Appointment) => {
         app.status = AppointmentStatus.ATTENDED;

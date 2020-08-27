@@ -1,9 +1,7 @@
 <div class="dashboard d-flex flex-wrap justify-content-between">
   <div class="main-data aside text-doctor">
     <div class="header">
-      <div class="mx-2">
-        Nova Receita
-      </div>
+      <div class="mx-2">Nova Receita</div>
 
       <div class="control">
         <fa-icon
@@ -32,6 +30,7 @@
           data-toggle="tooltip"
           data-placement="top"
           title="Deletar prescrição"
+          (click)="deletePrescription(prescription.id)"
         ></fa-icon>
       </div>
     </div>
@@ -55,7 +54,7 @@
           <div class="label">
             Resultados
 
-            <strong class="ml-1"> 4</strong>
+            <strong class="ml-1"> {{ clients?.length }}</strong>
           </div>
 
           <div class="wrapper">
@@ -266,11 +265,11 @@
             <select
               formControlName="category"
               class="in cursor"
-              style="border: 1px solid var(--doctor); color: var(--doctor);"
+              style="border: 1px solid var(--doctor); color: var(--doctor)"
             >
-              <option [value]="cat.value" *ngFor="let cat of category">{{
-                cat.label
-              }}</option>
+              <option [value]="cat.value" *ngFor="let cat of category">
+                {{ cat.label }}
+              </option>
             </select>
           </div>
 
@@ -279,11 +278,11 @@
             <select
               formControlName="subcategory"
               class="in cursor"
-              style="border: 1px solid var(--doctor); color: var(--doctor);"
+              style="border: 1px solid var(--doctor); color: var(--doctor)"
             >
-              <option [value]="sub.value" *ngFor="let sub of subcategory">{{
-                sub.label
-              }}</option>
+              <option [value]="sub.value" *ngFor="let sub of subcategory">
+                {{ sub.label }}
+              </option>
             </select>
           </div>
           <div class="buttons">
@@ -379,7 +378,11 @@
       <div *ngIf="addNF" class="new-formule">
         <div class="tools">
           Fórmula
-          <fa-icon [icon]="faSave" class="mr-1 cursor"></fa-icon>
+          <fa-icon
+            [icon]="faSave"
+            (click)="addMedicine({})"
+            class="mr-1 cursor"
+          ></fa-icon>
           <fa-icon
             [icon]="faTimes"
             class="mr-1 cursor"
@@ -387,8 +390,8 @@
           ></fa-icon>
         </div>
         <textarea
-          name="formula"
-          #reconm
+          formControlName="formula"
+          #formula
           cols="30"
           rows="10"
           placeholder="Descreva a formula do medicamento"
@@ -407,7 +410,7 @@
                   #examName
                   type="text"
                   placeholder="Nome do exame"
-                  style="border: 1px solid var(--doctor); color: var(--doctor);"
+                  style="border: 1px solid var(--doctor); color: var(--doctor)"
                   (keyup)="applyFilter(examName.value)"
                 />
 
@@ -464,7 +467,7 @@
       <div
         class="resume"
         *ngIf="
-          recommendations.length > 0 ||
+          recommendations?.length > 0 ||
           prescription?.medicines.length > 0 ||
           prescription?.exams.length > 0
         "
@@ -494,8 +497,14 @@
             <strong> Medicamentos</strong>
           </div>
           <div *ngFor="let medicine of prescription.medicines">
-            {{ fmrt(medicine.substance) }} &nbsp;
-            {{ fmrt(medicine.presentantion) }}
+            <ng-container *ngIf="medicine.formula === ''; else formula">
+              {{ fmrt(medicine.substance) }} &nbsp;
+              {{ fmrt(medicine.presentantion) }}
+            </ng-container>
+            <ng-template #formula>
+              <strong>Formula: </strong>{{ medicine.formula }}
+            </ng-template>
+            >
 
             <fa-icon
               [icon]="faTimes"

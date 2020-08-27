@@ -32,6 +32,7 @@ export class PrescriptionDto {
     id: any;
     substance: string;
     presentantion?: string;
+    formula?: string;
   }>;
 
   createdAt?: Date;

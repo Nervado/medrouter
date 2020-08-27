@@ -29,21 +29,25 @@ export class MedicineDto {
   @IsString()
   genericname: string;
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   substance: string;
 
   @IsOptional()
   @IsString()
   branch: string;
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   laboratory: string;
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   product?: string;
+
+  @IsOptional()
+  @IsString()
+  formula: string;
 
   @IsOptional()
   @IsString()

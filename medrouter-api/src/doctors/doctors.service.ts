@@ -436,4 +436,17 @@ export class DoctorsService extends Service<
       throw new BadRequestException('Client have not active schedule');
     }
   }
+
+  async deletePrescription(
+    id: string,
+    prescriptionId: string,
+    user: User,
+  ): Promise<void> {
+    // check docktor
+    const doctor = await this.repo.findOne(id);
+
+    this.checkDoctor(doctor, user);
+
+    return this.ps.delete(prescriptionId);
+  }
 }

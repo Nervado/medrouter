@@ -24,26 +24,29 @@ export class Medicine extends BaseEntity {
   @Column({ nullable: true })
   cnpj: string;
 
-  @Column()
+  @Column({ nullable: true })
   substance: string;
 
-  @Column()
+  @Column({ nullable: true })
   therapeutic_class: string;
 
-  @Column()
+  @Column({ nullable: true })
   laboratory: string;
 
-  @Column()
+  @Column({ nullable: true })
   product: string;
 
-  @Column()
+  @Column({ nullable: true })
   product_type: string;
 
-  @Column()
+  @Column({ nullable: true })
   stripe: string;
 
-  @Column()
+  @Column({ nullable: true })
   presentantion: string;
+
+  @Column({ nullable: true })
+  formula: string;
 
   @Column({
     type: 'enum',

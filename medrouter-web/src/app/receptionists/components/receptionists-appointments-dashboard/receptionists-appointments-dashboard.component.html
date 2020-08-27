@@ -170,7 +170,10 @@
               "
             ></fa-icon>
             <fa-icon
-              *ngIf="appointment.status !== AppointmentStatus.CANCELED"
+              *ngIf="
+                appointment.status !== AppointmentStatus.CANCELED &&
+                appointment.status !== AppointmentStatus.ATTENDED
+              "
               [icon]="faHistory"
               class="text-medium cursor"
               data-toggle="tooltip"
@@ -179,7 +182,10 @@
               (click)="openModal(modal, appointment)"
             ></fa-icon>
             <fa-icon
-              *ngIf="appointment.status !== AppointmentStatus.CANCELED"
+              *ngIf="
+                appointment.status !== AppointmentStatus.CANCELED &&
+                appointment.status !== AppointmentStatus.ATTENDED
+              "
               [icon]="faTimes"
               class="text-oposity1 cursor"
               data-toggle="tooltip"

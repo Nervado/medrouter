@@ -4,9 +4,7 @@
       <div class="control">
         <fa-icon [icon]="faChevronLeft" (click)="pageDown()"></fa-icon>
       </div>
-      <div class="mx-2">
-        Receituário
-      </div>
+      <div class="mx-2">Receituário</div>
 
       <div class="control">
         <fa-icon [icon]="faSearch" (click)="toogle()"></fa-icon>
@@ -49,9 +47,9 @@
         <header>
           <div class="info user">
             <ng-container
-              *ngIf="prescription.client.user.avatar?.url; else avatar"
+              *ngIf="prescription.doctor.user.avatar?.url; else avatar"
             >
-              <img [src]="prescription.client.user.avatar.url" alt="avatar" />
+              <img [src]="prescription.doctor.user.avatar.url" alt="avatar" />
             </ng-container>
             <ng-template #avatar>
               <img src="../../../../assets/avatarmale.png" alt="avatar"
@@ -120,7 +118,12 @@
                 <strong> Medicamentos</strong>
               </div>
               <div *ngFor="let medicine of prescription.medicines">
-                {{ fmrt(medicine.substance) }}
+                <ng-container *ngIf="medicine.formula === ''; else formula">
+                  {{ fmrt(medicine.substance) }}
+                </ng-container>
+                <ng-template #formula>
+                  Formula: {{ medicine.formula }}
+                </ng-template>
               </div>
             </div>
 

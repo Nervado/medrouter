@@ -15,4 +15,5 @@ export class Medicine {
   presentantion?: string;
   product_type?: string;
   therapeutic_class?: string;
+  formula?: string;
 }
