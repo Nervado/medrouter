@@ -66,7 +66,7 @@
           }
 
           .wrapper {
-            padding: 5px 20px 5px 20px;
+            padding: 5px 10px 5px 10px;
             overflow-y: scroll;
             width: 100%;
 
@@ -74,9 +74,32 @@
               width: 100%;
               display: flex;
               align-items: center;
-              justify-content: space-between;
+              justify-content: flex-start;
               font-size: 14px;
               margin: 2px 0px;
+              color: var(--doctor);
+              padding: 2px;
+              border-radius: 4px;
+
+              &:hover {
+                background-color: rgba(114, 85, 192, 0.1);
+              }
+
+              cursor: pointer;
+
+              div div {
+                font-size: 12px;
+              }
+
+              img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                border: 1px solid var(--doctor);
+                margin-right: 10px;
+                object-fit: cover;
+                margin-right: 4px;
+              }
             }
           }
         }
@@ -126,44 +149,102 @@
 
       .exam {
         font-size: 14px;
-        margin: 15px;
+        margin: 10px;
+        padding: 2px 5px 2px 2px;
         border-radius: 4px;
-        padding: 5px;
-
-        //border: 1px solid rgba(0, 0, 0, 0.1);
 
         border-top: none;
         box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.1);
         background-color: var(--oposity);
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
-        flex-wrap: wrap;
 
-        .user {
+        .body {
+          width: 100%;
+
           display: flex;
-          justify-content: flex-start;
           align-items: center;
-          img {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 1px solid var(--success);
-            object-fit: cover;
-            margin-right: 10px;
+          justify-content: space-between;
+
+          .user {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            overflow: hidden;
+            flex-wrap: nowrap;
+
+            width: 200px;
+
+            .data {
+              display: flex;
+              flex-direction: column;
+
+              .client {
+                font-weight: bold;
+              }
+
+              .doctor,
+              .info-date {
+                font-size: 10px;
+              }
+            }
+            img {
+              width: 60px;
+              height: 60px;
+              border-radius: 50%;
+              border: 1px solid var(--doctor);
+              object-fit: cover;
+              margin-right: 10px;
+            }
           }
-        }
 
-        .info {
-          margin: 15px;
-        }
+          .lab-data {
+            width: 150px;
+            overflow: hidden;
+            .type,
+            .cost,
+            .name {
+              font-size: 10px;
+            }
+          }
+          .type {
+            font-weight: bold;
+          }
+          .info {
+            .controls {
+              display: flex;
 
-        .result {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          fa-icon {
-            margin-left: 5px;
+              div,
+              fa-icon {
+                margin-right: 5px;
+                cursor: pointer;
+                &:hover {
+                  transform: scale(1.05);
+                  opacity: 0.6;
+                }
+              }
+            }
+
+            .status {
+              color: var(--oposity);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 4px;
+              font-weight: bold;
+              font-size: 12px;
+              padding: 1px 3px;
+            }
+          }
+
+          .result {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            fa-icon {
+              margin-left: 5px;
+            }
           }
         }
       }
@@ -174,7 +255,7 @@
 .cursor {
   cursor: pointer;
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1);
     opacity: 0.6;
   }
 }

@@ -32,6 +32,8 @@ import { ClientService } from 'src/client/client.service';
 import { SearchClientDto } from 'src/client/dtos/search-client-dto';
 import { PrescriptionDto } from 'src/prescriptions/dto/prescription.dto';
 import { PrescriptionsService } from 'src/prescriptions/prescriptions.service';
+import { ExamDto } from 'src/exams/dto/exam.dto';
+import { ExamsService } from 'src/exams/exams.service';
 @Injectable()
 export class DoctorsService extends Service<
   DoctorDto,
@@ -48,6 +50,7 @@ export class DoctorsService extends Service<
     private as: AppointmentsService,
     private cs: ClientService,
     private ps: PrescriptionsService,
+    private es: ExamsService,
   ) {
     super(repo);
   }
@@ -426,7 +429,7 @@ export class DoctorsService extends Service<
   async checkIfHaveActiveAppointment(
     doctorId: string,
     clientId: string,
-  ): Promise<void> {
+  ): Promise<void | Error> {
     const hasAppointments = await this.as.checkIfClientHasAnotherAppointment(
       doctorId,
       clientId,
@@ -448,5 +451,25 @@ export class DoctorsService extends Service<
     this.checkDoctor(doctor, user);
 
     return this.ps.delete(prescriptionId);
+  }
+
+  async findExams(
+    id: string,
+    search: SearchClientDto,
+    user: User,
+  ): Promise<ExamDto[]> {
+    const doctor = await this.repo.findOne(id);
+
+    this.checkDoctor(doctor, user);
+
+    return this.es.getAll(id, search);
+  }
+
+  async changeExamStatus(id, examId, user): Promise<void> {
+    const doctor = await this.repo.findOne(id);
+
+    this.checkDoctor(doctor, user);
+
+    return this.es.change(examId);
   }
 }

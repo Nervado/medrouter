@@ -6,13 +6,17 @@ import { ClientDto } from 'src/client/dtos/cliente-dto';
 import { DoctorDto } from 'src/doctors/dto/doctor.dto';
 import { IsOptional, IsUUID, IsNumber } from 'class-validator';
 import { isNumber } from 'util';
+import { PhotoDto } from 'src/photos/dto/photo.dto';
 
 export class ExamDto {
+  @IsUUID()
+  id: string;
+
   @IsOptional()
   @IsUUID()
-  prescriptionId: string;
+  prescriptionId?: string;
 
-  @IsNumber()
+  @IsOptional()
   price: number;
 
   type: ExamsEnum;
@@ -23,5 +27,33 @@ export class ExamDto {
 
   docs: DocDto[];
 
+  photos: PhotoDto[];
+
   lab: LabDto;
+
+  createdAt: Date;
+
+  client: {
+    id: string;
+    user: {
+      username: string;
+      surname: string;
+      fullname: string;
+      avatar: {
+        url: string;
+      };
+    };
+  };
+
+  doctor: {
+    id: string;
+    user: {
+      username: string;
+      surname: string;
+      fullname: string;
+      avatar: {
+        url: string;
+      };
+    };
+  };
 }

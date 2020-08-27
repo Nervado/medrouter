@@ -31,7 +31,7 @@ export class PrescriptionsService {
     return await Prescription.findOne(id);
   }
 
-  async getOne(id, prescriptionId) {
+  async getOne(id: string, prescriptionId: string) {
     const query = Prescription.createQueryBuilder('prescription');
 
     query.andWhere('doctor.id = :id', { id });
@@ -40,14 +40,16 @@ export class PrescriptionsService {
 
     const founds = await query
       .leftJoinAndSelect('prescription.doctor', 'doctor')
+      .leftJoinAndSelect('prescription.exams', 'exams')
+      .leftJoinAndSelect('prescription.medicines', 'medicines')
       .leftJoinAndSelect('doctor.user', 'doctorUser')
       .leftJoinAndSelect('doctorUser.avatar', 'doctorAvatar')
       .leftJoinAndSelect('prescription.client', 'client')
-      .leftJoinAndSelect('prescription.exams', 'exams')
-      .leftJoinAndSelect('prescription.medicines', 'medicines')
       .leftJoinAndSelect('client.user', 'clientUser')
       .leftJoinAndSelect('clientUser.avatar', 'clientAvatar')
       .getOne();
+
+    console.log(founds.exams, founds.medicines);
 
     return this.serializePrescription(founds);
   }
@@ -101,7 +103,6 @@ export class PrescriptionsService {
       height: prescription.height,
       pressure: prescription.pressure,
       bpm: prescription.bpm,
-
       exams: prescription.exams,
       medicines: prescription.medicines,
       createdAt: prescription.createdAt,

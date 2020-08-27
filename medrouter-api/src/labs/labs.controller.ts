@@ -11,6 +11,7 @@ import {
   Query,
   Delete,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
 import { IntFilterDto } from '../utils/int-filter.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -19,7 +20,15 @@ import { LabsService } from './labs.service';
 import { LabDto } from './dto/lab.dto';
 import { SearchLab } from './dto/searchlab.dto';
 import { LabChangesDto } from './dto/labStatus-dto';
+import { GetUser } from 'src/users/decorators/get-user.decorator';
+import { User } from 'src/users/models/user.entity';
+import { Lab } from './models/lab.entity';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
+import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
+import { Allow } from 'src/auth/decorators/alow.decorator';
 
+@UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('labs')
 export class LabsController {
   constructor(private labsService: LabsService) {}
@@ -37,9 +46,10 @@ export class LabsController {
   }
 
   @Get('/:id')
+  @Allow('lab')
   @UseInterceptors(ClassSerializerInterceptor)
-  get(@Param('id') id: number): void {
-    //return this.doctorService.getOne(id);
+  get(@GetUser() user: User, @Param('id') id: string): Promise<Lab> {
+    return this.labsService.getOne(id, user);
   }
 
   @Delete('/:id')

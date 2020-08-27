@@ -29,6 +29,10 @@ export class ClientService {
 
     const user = await this.us.signUp(client);
 
+    if (!user) {
+      throw new InternalServerErrorException('Fail at init client');
+    }
+
     const cliente = new Client();
 
     cliente.user = user;

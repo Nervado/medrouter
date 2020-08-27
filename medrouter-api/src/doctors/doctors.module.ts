@@ -8,6 +8,7 @@ import { Schedule } from './models/schedule.entity';
 import { AppointmentsModule } from 'src/appointments/appointments.module';
 import { ClientModule } from 'src/client/client.module';
 import { PrescriptionsModule } from 'src/prescriptions/prescriptions.module';
+import { ExamsModule } from 'src/exams/exams.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { PrescriptionsModule } from 'src/prescriptions/prescriptions.module';
     UsersModule,
     ClientModule,
     PrescriptionsModule,
+    ExamsModule,
   ],
   controllers: [DoctorsController],
   providers: [DoctorsService],

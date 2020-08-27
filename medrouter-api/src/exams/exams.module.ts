@@ -9,5 +9,6 @@ import { PrescriptionsModule } from 'src/prescriptions/prescriptions.module';
   imports: [TypeOrmModule.forFeature([Exam]), PrescriptionsModule],
   controllers: [ExamsController],
   providers: [ExamsService],
+  exports: [ExamsService],
 })
 export class ExamsModule {}

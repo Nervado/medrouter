@@ -33,8 +33,6 @@ export class MedicinesService {
     try {
       await medicine.save();
     } catch (error) {
-      console.log(error);
-
       throw new InternalServerErrorException('Creation of medicine has fail');
     }
   }

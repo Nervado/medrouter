@@ -32,13 +32,15 @@ export class ExamsController {
   @Roles('doctor')
   @UseInterceptors(ClassSerializerInterceptor)
   createDoctor(@Body(ValidationPipe) body: any, @GetUser() user: User) {
+    console.log(body);
+
     return this.examsService.create(body, user);
   }
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
   getAll(@Query(ValidationPipe) page: IntFilterDto) {
-    // return this.doctorService.getMany(page.page);
+    //return this.examsService.getMany(page.page);
   }
 
   @Get('/:id')

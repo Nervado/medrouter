@@ -23,4 +23,5 @@ export class ExamDto {
     };
   };
   createdAt?: Date;
+  deadline?: number;
 }

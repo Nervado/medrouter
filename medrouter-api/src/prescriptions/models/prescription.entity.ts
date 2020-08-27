@@ -74,7 +74,7 @@ export class Prescription extends BaseEntity {
     exam => exam.prescription,
     { eager: true, cascade: true },
   )
-  @JoinColumn()
+  @JoinTable()
   exams: Exam[];
 
   @CreateDateColumn({ type: 'timestamp', nullable: true })

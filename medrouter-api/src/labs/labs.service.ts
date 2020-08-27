@@ -2,6 +2,7 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Lab } from './models/lab.entity';
@@ -11,6 +12,7 @@ import { SearchLab } from './dto/searchlab.dto';
 import { LabChangesDto } from './dto/labStatus-dto';
 import { UsersService } from 'src/users/users.service';
 import { Role } from 'src/auth/enums/role.enum';
+import { User } from 'src/users/models/user.entity';
 
 @Injectable()
 export class LabsService {
@@ -62,5 +64,16 @@ export class LabsService {
       exams,
       labcategory,
     );
+  }
+
+  async getOne(userId: any, user?: User): Promise<Lab> {
+    if (parseInt(userId) !== user.userId) {
+      throw new UnauthorizedException('Not Allowed');
+    }
+    const query = this.repo.createQueryBuilder('labs');
+
+    query.andWhere('users.userId = :userId', { userId });
+
+    return await query.leftJoinAndSelect('labs.users', 'users').getOne();
   }
 }

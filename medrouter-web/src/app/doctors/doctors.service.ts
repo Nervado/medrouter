@@ -13,6 +13,7 @@ import { Client } from "./model/client";
 import { ExamDto } from "./model/exam";
 import { Medicine } from "./model/medicine";
 import { PrescriptionDto } from "./model/prescription";
+import { ExamStatus } from "./enums/status.enum";
 
 @Injectable({
   providedIn: "root",
@@ -101,7 +102,7 @@ export class DoctorsService {
     const { page, username } = search;
     const query = username ? `&username=${username}` : "";
     return this.http.get<ExamDto[]>(
-      `${MEDROUTER_API}/doctors/${id}/exams/page=${page}${query}`
+      `${MEDROUTER_API}/doctors/${id}/exams?page=${page}${query}`
     );
   }
 
@@ -109,10 +110,18 @@ export class DoctorsService {
     return this.http.post<void>(`${MEDROUTER_API}/exams`, { ...exam });
   }
 
+  //remove
   modifyExam(id: string, exam: ExamDto): Observable<void> {
     return this.http.patch<void>(`${MEDROUTER_API}/exams/${id}/status`, {
       ...exam,
     });
+  }
+
+  patchExam(id: string, examId: string): Observable<void> {
+    return this.http.patch<void>(
+      `${MEDROUTER_API}/doctors/${id}/exams/${examId}`,
+      { status: ExamStatus.AVAILABLE }
+    );
   }
 
   deleteExam(id: string): Observable<void> {

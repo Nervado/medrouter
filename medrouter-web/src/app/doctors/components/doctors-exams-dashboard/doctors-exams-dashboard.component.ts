@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 
+import getStatusColor from "../../../utils/getStatusColor";
+
 import {
   faShareSquare,
   faSquare,
@@ -26,12 +28,21 @@ import {
   faPaperPlane,
   faLock,
   faLockOpen,
+  faClock,
+  faMobileAlt,
+  faUserTie,
 } from "@fortawesome/free-solid-svg-icons";
 import { ExamDto } from "../../model/exam";
 import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
 import { ExamStatus } from "../../enums/status.enum";
-import { format } from "date-fns";
+import { format, isThisQuarter, parseISO, addDays } from "date-fns";
 import { EmailValidator } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
+import { DoctorsService } from "../../doctors.service";
+import { NotificationService } from "src/app/messages/notification.service";
+import { Types } from "src/app/messages/toast/enums/types";
+import { ClientDto } from "src/app/receptionists/dtos/client-dto";
+import { Client } from "src/app/clients/models/client";
 
 @Component({
   selector: "app-doctors-exams-dashboard",
@@ -50,11 +61,10 @@ export class DoctorsExamsDashboardComponent implements OnInit {
   faSearch = faSearch;
   faFlask = faFlask;
   faFileMedical = faFileMedical;
-  faCapsules = faCapsules;
+  faMobileAlt = faMobileAlt;
   faVial = faVial;
-  faExclamationCircle = faExclamationCircle;
   faUserMd = faUserMd;
-  faHeartbeat = faHeartbeat;
+
   faBox = faBox;
   faPlusCircle = faPlusCircle;
   faCalendarPlus = faCalendarPlus;
@@ -62,6 +72,8 @@ export class DoctorsExamsDashboardComponent implements OnInit {
   faCoins = faCoins;
   faFileDownload = faFileDownload;
   faSend = faPaperPlane;
+  faClock = faClock;
+  faUserTie = faUserTie;
 
   faLock = faLock;
   faLockOpen = faLockOpen;
@@ -70,191 +82,118 @@ export class DoctorsExamsDashboardComponent implements OnInit {
 
   showSearch: boolean = false;
 
-  exams: Array<ExamDto> = [];
+  exams: ExamDto[] = [];
 
-  constructor() {}
+  page: number = 1;
+
+  clients: Client[];
+  client: Client;
+
+  getStatusColor = getStatusColor;
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private ds: DoctorsService,
+    private ns: NotificationService
+  ) {}
 
   ngOnInit(): void {
-    this.exams = [
-      {
-        id: 12,
-        price: 200,
-        type: ExamsEnum.ABDMO,
-        doctor: {
-          id: 123,
-          user: { fullname: "Paulo Bessa" },
-        },
-        status: ExamStatus.CONCLUDED,
-        docs: [
-          {
-            id: 435,
-            url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-          },
-        ],
-        lab: {
-          id: 122,
-          name: "LabA+",
-        },
-        client: {
-          id: 264,
-          user: {
-            fullname: "Pedro da Silva",
-            avatar: {
-              url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-            },
-          },
-        },
-        createdAt: new Date(),
-      },
+    this.activatedRoute.parent.params.subscribe((params) =>
+      this.getExams(params["id"])
+    );
+  }
 
-      {
-        id: 12,
-        price: 200,
-        type: ExamsEnum.ABDMO,
-        doctor: {
-          id: 123,
-          user: { fullname: "Paulo Bessa" },
-        },
-        status: ExamStatus.AVAILABLE,
-        docs: [
-          {
-            id: 435,
-            url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-          },
-        ],
-        lab: {
-          id: 122,
-          name: "LabA+",
-        },
-        client: {
-          id: 264,
-          user: {
-            fullname: "Pedro da Silva",
-            avatar: {
-              url: "",
-            },
-          },
-        },
-        createdAt: new Date(),
-      },
-
-      {
-        id: 12,
-        price: 200,
-        type: ExamsEnum.ABDMO,
-        doctor: {
-          id: 123,
-          user: { fullname: "Paulo Bessa" },
-        },
-        status: ExamStatus.CANCELED,
-        docs: [
-          {
-            id: 435,
-            url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-          },
-        ],
-        lab: {
-          id: 122,
-          name: "LabA+",
-        },
-        client: {
-          id: 264,
-          user: {
-            fullname: "Pedro da Silva",
-            avatar: {
-              url: "",
-            },
-          },
-        },
-        createdAt: new Date(),
-      },
-
-      {
-        id: 12,
-        price: 200,
-        type: ExamsEnum.ABDMO,
-        doctor: {
-          id: 123,
-          user: { fullname: "Paulo Bessa" },
-        },
-        status: ExamStatus.AVAILABLE,
-        docs: [
-          {
-            id: 435,
-            url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-          },
-        ],
-        lab: {
-          id: 122,
-          name: "LabA+",
-        },
-        client: {
-          id: 264,
-          user: {
-            fullname: "Pedro da Silva",
-            avatar: {
-              url: "",
-            },
-          },
-        },
-        createdAt: new Date(),
-      },
-
-      {
-        id: 12,
-        price: 200,
-        type: ExamsEnum.ABDMO,
-        doctor: {
-          id: 123,
-          user: { fullname: "Paulo Bessa" },
-        },
-        status: ExamStatus.AVAILABLE,
-        docs: [
-          {
-            id: 435,
-            url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-          },
-        ],
-        lab: {
-          id: 122,
-          name: "LabA+",
-        },
-        client: {
-          id: 264,
-          user: {
-            fullname: "Pedro da Silva",
-            avatar: {
-              url: "",
-            },
-          },
-        },
-        createdAt: new Date(),
-      },
-    ];
+  getExams(id: string, username?: string) {
+    this.ds
+      .getExams(id, {
+        page: this.page,
+        username: username,
+      })
+      .subscribe({
+        next: (exams: ExamDto[]) => (this.exams = exams),
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao obter exames",
+            type: Types.WARN,
+          }),
+      });
   }
 
   unlock(exam: ExamDto) {
-    this.lock = true;
+    this.ds.patchExam(exam.doctor.id, exam.id).subscribe({
+      next: () => {
+        this.ns.notify({
+          message: "Exame enviado ao paciente",
+          type: Types.SUCCESS,
+        });
 
-    this.exams = this.exams.map((exam) => {
-      if (exam.status === ExamStatus.CONCLUDED) {
-        exam.status = ExamStatus.AVAILABLE;
-      }
-      return exam;
+        this.getExams(
+          this.activatedRoute.parent.snapshot.params["id"],
+          this.client ? this.client.user.username : ""
+        );
+      },
+      error: () =>
+        this.ns.notify({
+          message: "Não foi possível liberar este exame.",
+          type: Types.ERROR,
+        }),
     });
-
-    console.log(exam);
   }
 
   toogle() {
     this.showSearch = !this.showSearch;
   }
 
-  search() {
-    console.log("procurando ...");
+  pretty(date: Date, diff?: number): string {
+    if (diff && diff > 0) {
+      return format(addDays(new Date(), diff), "dd/MM/yyyy");
+    } else {
+      return format(parseISO(date.toString()), "dd/MM/yyyy");
+    }
   }
 
-  pretty(date: Date): string {
-    return format(date, "dd/MM/yyyy");
+  fmrt(name: string) {
+    const newSentece = name.replace(/_/g, " ").toLowerCase();
+    return newSentece[0].toUpperCase() + newSentece.slice(1);
+  }
+
+  save(client: Client) {
+    this.showSearch = false;
+    this.client = client;
+    this.page = 1;
+    this.getExams(
+      this.activatedRoute.parent.snapshot.params["id"],
+      client.user.username
+    );
+  }
+
+  clear() {
+    this.client = undefined;
+    this.page = 1;
+    this.getExams(this.activatedRoute.parent.snapshot.params["id"]);
+  }
+
+  search(username: string) {
+    this.ds
+      .getClients(this.activatedRoute.parent.snapshot.params["id"], username)
+      .subscribe({
+        next: (clients: Client[]) => (this.clients = clients),
+      });
+  }
+
+  pageUp() {
+    this.page += 1;
+    this.getExams(
+      this.activatedRoute.parent.snapshot.params["id"],
+      this.client ? this.client.user.username : ""
+    );
+  }
+
+  pageDown() {
+    this.page = this.page > 1 ? this.page - 1 : 1;
+    this.getExams(
+      this.activatedRoute.parent.snapshot.params["id"],
+      this.client ? this.client.user.username : ""
+    );
   }
 }

@@ -222,4 +222,24 @@ export class DoctorsController {
   ): Promise<PrescriptionDto[]> {
     return this.doctorService.findPrescriptions(id, search, user);
   }
+
+  @Get('/:id/exams')
+  @Roles('doctor')
+  getExams(
+    @Param('id') id: string,
+    @GetUser() user: User,
+    @Query() search: SearchClientDto,
+  ): Promise<PrescriptionDto[]> {
+    return this.doctorService.findExams(id, search, user);
+  }
+
+  @Patch('/:id/exams/:examId')
+  @Roles('doctor')
+  changeStatusOfExam(
+    @Param('id') id: string,
+    @Param('examId') examId: string,
+    @GetUser() user: User,
+  ): Promise<void> {
+    return this.doctorService.changeExamStatus(id, examId, user);
+  }
 }

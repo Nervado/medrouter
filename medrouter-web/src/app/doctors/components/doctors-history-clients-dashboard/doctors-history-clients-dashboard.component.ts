@@ -165,7 +165,7 @@ export class DoctorsHistoryClientsDashboardComponent implements OnInit {
 
   clear() {
     this.client = undefined;
-
-    // to do
+    this.page = 1;
+    this.getPrescriptions(this.activatedRoute.parent.snapshot.params["id"]);
   }
 }
