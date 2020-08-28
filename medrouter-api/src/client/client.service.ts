@@ -3,6 +3,8 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
   BadRequestException,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { ClientDto } from './dtos/cliente-dto';
@@ -15,13 +17,13 @@ import { User } from 'src/users/models/user.entity';
 import { DocDto } from 'src/docs/dto/doc.dto';
 import { Role } from 'src/auth/enums/role.enum';
 import { DocsService } from 'src/docs/docs.service';
-import { doc } from 'prettier';
-import { Doctor } from 'src/doctors/models/doctor.entity';
-import { AppointmentStatus } from 'src/appointments/enums/appointment.enum';
 
 @Injectable()
 export class ClientService {
-  constructor(private us: UsersService, private ds: DocsService) {}
+  constructor(
+    @Inject(forwardRef(() => UsersService)) private us: UsersService,
+    private ds: DocsService,
+  ) {}
 
   async create(client: AuthSingUpDto): Promise<any> {
     client.password = generatePass();
@@ -33,13 +35,31 @@ export class ClientService {
       throw new InternalServerErrorException('Fail at init client');
     }
 
-    const cliente = new Client();
+    return this.addClient(user);
+  }
 
-    cliente.user = user;
+  async addClient(user: User): Promise<Client> {
+    const query = Client.createQueryBuilder('client');
+
+    query.andWhere(`user.userId = :userId`, { userId: user.userId });
+
+    const founds = await query
+      .leftJoinAndSelect('client.user', 'user')
+      .getOne();
+
+    if (founds) {
+      throw new BadRequestException('User already have a client rule');
+    }
+
+    const client = new Client();
+
+    client.user = user;
 
     try {
-      await cliente.save();
+      await client.save();
     } catch (error) {
+      console.log(error);
+
       throw new InternalServerErrorException('Fail at create client');
     }
 

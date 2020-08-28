@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,6 +8,8 @@ import { EmailsModule } from '../emails/emails.module';
 import { AvatarsModule } from 'src/avatars/avatars.module';
 import { AddressModule } from 'src/address/address.module';
 
+import { ClientModule } from 'src/client/client.module';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserRepository]),
@@ -15,6 +17,7 @@ import { AddressModule } from 'src/address/address.module';
     AuthModule,
     AvatarsModule,
     AddressModule,
+    forwardRef(() => ClientModule),
   ],
   controllers: [UsersController],
   providers: [UsersService],

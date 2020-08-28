@@ -13,6 +13,7 @@ import { ExamsEnum } from './enums/exams.enum';
 import { ExamStatus } from './enums/status.enum';
 import { SearchClientDto } from 'src/client/dtos/search-client-dto';
 import { PrescriptionDto } from 'src/prescriptions/dto/prescription.dto';
+import { promisify } from 'util';
 
 @Injectable()
 export class ExamsService {
@@ -168,5 +169,28 @@ export class ExamsService {
     } catch (error) {
       throw new InternalServerErrorException('Fail to send Exam');
     }
+  }
+
+  async reduceDeadlineExams(): Promise<number> {
+    const query = Exam.createQueryBuilder('exam');
+
+    query.andWhere('status = :status', { status: ExamStatus.EXECUTION });
+
+    const founds = await query.getMany();
+
+    founds.map(async exam => {
+      exam.deadline = exam.deadline > 0 ? exam.deadline - 1 : 0;
+
+      try {
+        await exam.save();
+      } catch (error) {
+        throw new InternalServerErrorException(
+          'Fail at update deadline count at exam',
+          exam.id,
+        );
+      }
+    });
+
+    return founds.length;
   }
 }

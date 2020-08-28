@@ -7,7 +7,11 @@ import { UsersModule } from 'src/users/users.module';
 import { DocsModule } from 'src/docs/docs.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Client]), UsersModule, DocsModule],
+  imports: [
+    TypeOrmModule.forFeature([Client]),
+    forwardRef(() => UsersModule),
+    DocsModule,
+  ],
   controllers: [ClientController],
   providers: [ClientService],
   exports: [ClientService],

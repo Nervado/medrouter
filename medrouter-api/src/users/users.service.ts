@@ -5,6 +5,8 @@ import {
   InternalServerErrorException,
   BadRequestException,
   ForbiddenException,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,8 +25,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AuthPasswordChange } from '../auth/dto/auth-password-change.dto';
 import { AvatarsService } from 'src/avatars/avatars.service';
 import { nXorNull } from 'src/utils/logic';
-
-import { SearchFilterDto } from './dto/search-filter.dto';
+import { ClientService } from 'src/client/client.service';
 
 @Injectable()
 export class UsersService {
@@ -39,6 +40,8 @@ export class UsersService {
     private emailsService: EmailsService,
     private addressService: AddressService,
     private avatarsService: AvatarsService,
+    @Inject(forwardRef(() => ClientService))
+    private clientsService: ClientService,
   ) {}
 
   async find(searchFilterDto: any): Promise<User[]> {
@@ -218,6 +221,7 @@ export class UsersService {
     const user = await this.userRepository.findOne({ userId: id });
 
     if (role === Role.CLIENT) {
+      await this.clientsService.addClient(user);
       user.role = user.role.filter(role => role !== Role.USER);
       user.role = [...user.role, Role.CLIENT];
     }

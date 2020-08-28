@@ -59,6 +59,12 @@ export class AuthService {
     try {
       const userId = await this.redis.get(token); // retrive value from redis
 
+      //delete key
+
+      console.log(userId);
+
+      this.redis.del(token);
+
       this.logger.warn(`${userId} ${token}`);
 
       const { username } = await this.userService.setRole(
@@ -71,6 +77,8 @@ export class AuthService {
 
       return { data };
     } catch (error) {
+      console.log(error);
+
       throw new InternalServerErrorException('Uknow user');
     }
   }
