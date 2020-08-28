@@ -35,6 +35,7 @@ import { SearchClientDto } from 'src/client/dtos/search-client-dto';
 import { SearchResultDto } from 'src/client/dtos/search-result-dto';
 import { PrescriptionDto } from 'src/prescriptions/dto/prescription.dto';
 import { AnamnesisPipe } from 'src/prescriptions/pipes/anamnesis.pipe';
+import { ExamDto } from 'src/exams/dto/exam.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('doctors')
@@ -229,7 +230,7 @@ export class DoctorsController {
     @Param('id') id: string,
     @GetUser() user: User,
     @Query() search: SearchClientDto,
-  ): Promise<PrescriptionDto[]> {
+  ): Promise<ExamDto[]> {
     return this.doctorService.findExams(id, search, user);
   }
 

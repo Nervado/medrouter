@@ -45,8 +45,8 @@ export class LabsController {
   @Get('/:id')
   @Allow('lab')
   @UseInterceptors(ClassSerializerInterceptor)
-  get(@GetUser() user: User, @Param('id') id: string): Promise<Lab> {
-    return this.labsService.getOne(id, user);
+  get(@GetUser() user: User, @Param('id') id: any): Promise<Lab> {
+    return this.labsService.findOne(id, user);
   }
 
   @Delete('/:id')

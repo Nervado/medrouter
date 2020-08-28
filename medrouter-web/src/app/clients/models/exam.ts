@@ -22,4 +22,5 @@ export class ExamDto {
     };
   };
   createdAt: Date;
+  code?: string;
 }

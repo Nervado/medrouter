@@ -1,4 +1,4 @@
-<app-lab-add-exam-modal #modal (signOut)="confirm($event)">
+<app-lab-add-exam-modal #modal (signOut)="confirm($event)" [exam]="exam">
 </app-lab-add-exam-modal>
 
 <div class="main-data">
@@ -9,7 +9,7 @@
     <div class="content">
       <div class="title">Introduza o código da solicitação</div>
 
-      <form class="form" [formGroup]="examForm">
+      <form class="form">
         <label for="name" class="text-lab">
           <strong>Código do exame</strong>
         </label>
@@ -18,13 +18,14 @@
           class="in-container in-container-lab my-2"
         >
           <input
+            ngModel
             name="code"
-            formControlName="code"
+            #code
             type="text"
             placeholder="Código de solicitação"
             autocomplete="off"
             class="in in-lab"
-            style="border: 1px solid var(--lab); color: var(--lab);"
+            style="border: 1px solid var(--lab); color: var(--lab)"
           />
           <div
             class="d-flex mx-2 flex-column justify-content-center align-items-center"
@@ -33,7 +34,9 @@
           </div>
         </app-input-container>
 
-        <button class="bt bt-lab" (click)="showModal(modal)">Enviar</button>
+        <button class="bt bt-lab" (click)="showModal(modal, code.value)">
+          Enviar
+        </button>
       </form>
     </div>
   </div>

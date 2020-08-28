@@ -9,6 +9,7 @@ import {
   ManyToOne,
   OneToOne,
   JoinColumn,
+  Unique,
 } from 'typeorm';
 
 import { ExamsEnum } from '../enums/exams.enum';
@@ -23,6 +24,7 @@ import { Doctor } from 'src/doctors/models/doctor.entity';
 import { Prescription } from 'src/prescriptions/models/prescription.entity';
 
 @Entity('exam')
+@Unique(['code'])
 export class Exam extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -52,11 +54,11 @@ export class Exam extends BaseEntity {
   @JoinColumn()
   lab: Lab;
 
-  @ManyToOne(() => Client)
+  @ManyToOne(() => Client, { eager: true })
   @JoinColumn()
   client: Client;
 
-  @ManyToOne(() => Doctor)
+  @ManyToOne(() => Doctor, { eager: true })
   @JoinColumn()
   doctor: Doctor;
 

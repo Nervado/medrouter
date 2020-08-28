@@ -45,18 +45,18 @@
       </div>
 
       <div class="form-group text-lab">
-        <label for="price">Prazo em dias úteis</label>
+        <label for="price">Prazo em dias corridos</label>
         <app-input-container
           class="in-container in-container-lab my-2"
           [mainColor]="mainColor"
         >
           <input
+            type="number"
             formControlName="deadline"
-            type="deadline"
             placeholder="Prazo"
             autocomplete="off"
             class="in in-lab"
-            style="border: 1px solid var(--lab); color: var(--lab);"
+            style="border: 1px solid var(--lab); color: var(--lab)"
           />
           <div
             class="d-flex mx-2 flex-column justify-content-center align-items-center"
@@ -72,12 +72,18 @@
           class="in-container in-container-lab my-2"
         >
           <input
+            currencyMask
+            [options]="{
+              prefix: 'R$ ',
+              thousands: '.',
+              decimal: ',',
+              align: 'left'
+            }"
             formControlName="price"
-            type="price"
             placeholder="Preço"
             autocomplete="off"
             class="in in-lab"
-            style="border: 1px solid var(--lab); color: var(--lab);"
+            style="border: 1px solid var(--lab); color: var(--lab)"
           />
           <div
             class="d-flex mx-2 flex-column justify-content-center align-items-center"
@@ -99,7 +105,7 @@
             placeholder="Senha"
             autocomplete="off"
             class="in in-lab"
-            style="border: 1px solid var(--lab); color: var(--lab);"
+            style="border: 1px solid var(--lab); color: var(--lab)"
           />
           <div
             class="d-flex mx-2 flex-column justify-content-center align-items-center"

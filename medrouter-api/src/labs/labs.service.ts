@@ -66,14 +66,33 @@ export class LabsService {
     );
   }
 
-  async getOne(userId: any, user?: User): Promise<Lab> {
+  async getOne(id: string, user?: User): Promise<Lab> {
+    const query = this.repo.createQueryBuilder('lab');
+
+    if (id) {
+      query.andWhere('id = :id', { id });
+    }
+
+    const lab = await query.leftJoinAndSelect('lab.users', 'users').getOne();
+
+    if (user && !lab.users.find(_user => _user.userId === user.userId)) {
+      throw new UnauthorizedException('Access not allowed');
+    }
+
+    return lab;
+  }
+
+  async findOne(userId: any, user?: User): Promise<Lab> {
     if (parseInt(userId) !== user.userId) {
       throw new UnauthorizedException('Not Allowed');
     }
-    const query = this.repo.createQueryBuilder('labs');
+
+    const query = this.repo.createQueryBuilder('lab');
 
     query.andWhere('users.userId = :userId', { userId });
 
-    return await query.leftJoinAndSelect('labs.users', 'users').getOne();
+    const lab = await query.leftJoinAndSelect('lab.users', 'users').getOne();
+
+    return lab;
   }
 }

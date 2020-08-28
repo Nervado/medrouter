@@ -3,21 +3,24 @@ import {
   BadRequestException,
   UnauthorizedException,
   InternalServerErrorException,
-  BadGatewayException,
+  NotAcceptableException,
+  ForbiddenException,
+  NotFoundException,
 } from '@nestjs/common';
 import { ExamDto } from './dto/exam.dto';
 import { Exam } from './models/exam.entity';
 import { PrescriptionsService } from 'src/prescriptions/prescriptions.service';
 import { User } from 'src/users/models/user.entity';
-import { ExamsEnum } from './enums/exams.enum';
 import { ExamStatus } from './enums/status.enum';
 import { SearchClientDto } from 'src/client/dtos/search-client-dto';
-import { PrescriptionDto } from 'src/prescriptions/dto/prescription.dto';
-import { promisify } from 'util';
+import { generatePass } from 'src/utils/hash-pass';
+import { Role } from 'src/auth/enums/role.enum';
+import { ExamStatusDto } from './dto/exam-status.dto';
+import { LabsService } from 'src/labs/labs.service';
 
 @Injectable()
 export class ExamsService {
-  constructor(private ps: PrescriptionsService) {}
+  constructor(private ps: PrescriptionsService, private ls: LabsService) {}
 
   async create(examdto: ExamDto, user: User): Promise<void> {
     const prescription = await this.ps.findById(examdto.prescriptionId);
@@ -35,6 +38,7 @@ export class ExamsService {
     exam.prescription = prescription;
     exam.client = prescription.client;
     exam.doctor = prescription.doctor;
+    exam.code = generatePass();
 
     Exam.merge(exam, examdto);
 
@@ -66,7 +70,8 @@ export class ExamsService {
   async getAll(
     id: string,
     search: SearchClientDto,
-    userId?: string,
+    user?: User,
+    labId?: string,
   ): Promise<ExamDto[]> {
     const { page, username } = search;
 
@@ -78,8 +83,12 @@ export class ExamsService {
       query.andWhere('doctor.id = :id', { id: id });
     }
 
-    if (userId) {
-      query.andWhere('doctor.id = :userId', { userId });
+    if (user?.userId) {
+      query.andWhere('clientUser.userId = :userId', { userId: user.userId });
+    }
+
+    if (labId && user.role.find(role => role === Role.LAB)) {
+      query.andWhere('lab.id = :labId', { labId });
     }
 
     query.andWhere('status <> :status', { status: ExamStatus.CANCELED });
@@ -103,13 +112,15 @@ export class ExamsService {
       .take(10)
       .getMany();
 
-    return founds.map((exam: Exam) => this.serializeExam(exam));
+    return founds.map((exam: Exam) =>
+      this.serializeExam(exam, user?.userId === exam.client.user.userId),
+    );
   }
 
-  serializeExam(exam: Exam): ExamDto {
+  serializeExam(exam: Exam, sendCode?: boolean): ExamDto {
     return {
       id: exam?.id,
-      //code: exam?.code,
+      code: sendCode ? exam.code : null,
       price: exam.price,
       status: exam.status,
       deadline: exam.deadline,
@@ -192,5 +203,88 @@ export class ExamsService {
     });
 
     return founds.length;
+  }
+
+  async changeStatus(
+    id: string,
+    statusDto: ExamStatusDto,
+    user: User,
+  ): Promise<void> {
+    const exam = await Exam.findOne(id);
+
+    const { code, status, labId } = statusDto;
+
+    // console.log(id, statusDto, user, code, status);
+
+    if (!exam) {
+      throw new BadRequestException('Exam dont exists');
+    }
+
+    if (
+      labId &&
+      code &&
+      code === exam.code &&
+      status === ExamStatus.EXECUTION &&
+      exam.status === ExamStatus.REQUEST
+    ) {
+      const lab = await this.ls.getOne(labId, user);
+
+      if (!lab) {
+        throw new NotFoundException('Lab not found');
+      }
+
+      if (!lab.exams.find(type => type === exam.type)) {
+        throw new BadRequestException('Lab not able to exec');
+      }
+
+      exam.lab = lab;
+      exam.status = ExamStatus.EXECUTION;
+      exam.price = statusDto.price;
+      exam.deadline = statusDto.deadline;
+
+      // to do notify
+    }
+
+    if (
+      status === ExamStatus.CANCELED &&
+      exam.status === ExamStatus.EXECUTION &&
+      exam.docs.length === 0
+    ) {
+      exam.status = ExamStatus.REQUEST;
+      exam.deadline = null;
+      exam.price = null;
+      exam.lab = null;
+      exam.code = generatePass();
+      // todo notify
+    }
+
+    if (
+      status === ExamStatus.CONCLUDED &&
+      exam.status === ExamStatus.EXECUTION
+    ) {
+      exam.status = ExamStatus.CONCLUDED;
+      exam.code = null;
+    }
+    //
+
+    if (exam.status !== status) {
+      throw new BadRequestException('Wrong condition to modify exam status');
+    }
+
+    try {
+      await exam.save();
+    } catch (error) {
+      throw new InternalServerErrorException('Fail at modify exam status ');
+    }
+  }
+
+  async getOne(code: string): Promise<ExamDto> {
+    const exam = await Exam.findOne({ where: { code } });
+
+    if (!exam) {
+      throw new BadRequestException('Exam not found');
+    }
+
+    return this.serializeExam(exam);
   }
 }

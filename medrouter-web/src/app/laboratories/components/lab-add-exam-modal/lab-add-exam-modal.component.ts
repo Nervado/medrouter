@@ -5,6 +5,7 @@ import {
   ElementRef,
   Output,
   EventEmitter,
+  Input,
 } from "@angular/core";
 import {
   faLock,
@@ -19,7 +20,7 @@ import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { capitalizeAndRemoveUnderscores } from "src/app/utils/capitalizeAndRemoveUnderscore";
 import { Colors } from "src/app/messages/toast/enums/colors";
-import { ExamStatus } from "src/app/doctors/enums/status.enum";
+import { ExamDto } from "src/app/clients/models/exam";
 
 @Component({
   selector: "app-lab-add-exam-modal",
@@ -35,7 +36,7 @@ export class LabAddExamModalComponent implements OnInit {
   faUserTie = faUserTie;
 
   mainColor: Colors = Colors.LAB;
-  exam: any;
+  @Input() exam: ExamDto;
 
   @ViewChild("content") elementRef: ElementRef;
   @Output() signOut: EventEmitter<any> = new EventEmitter();
@@ -48,42 +49,12 @@ export class LabAddExamModalComponent implements OnInit {
         Validators.required,
         Validators.minLength(6),
       ]),
-      name: this.fb.control("", [Validators.required]),
-      cnpj: this.fb.control("", [Validators.required]),
-      category: this.fb.control([], [Validators.required]),
-      exams: this.fb.control([], [Validators.required]),
+      price: this.fb.control("", [Validators.required]),
+      deadline: this.fb.control("", [Validators.required]),
+      code: this.fb.control("", [Validators.required]),
+      labId: this.fb.control("", [Validators.required]),
+      id: this.fb.control("", [Validators.required]),
     });
-
-    this.exam = {
-      id: 12,
-      price: 200,
-      type: ExamsEnum.ABDMO,
-      doctor: {
-        id: 123,
-        user: { fullname: "Paulo Bessa" },
-      },
-      status: ExamStatus.CONCLUDED,
-      docs: [
-        {
-          id: 435,
-          url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-        },
-      ],
-      lab: {
-        id: 122,
-        name: "LabA+",
-      },
-      client: {
-        id: 264,
-        user: {
-          fullname: "Pedro da Silva",
-          avatar: {
-            url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-          },
-        },
-      },
-      createdAt: new Date(),
-    };
   }
 
   open(_content?) {
@@ -98,6 +69,11 @@ export class LabAddExamModalComponent implements OnInit {
             result === "confirm" &&
             this.actionsForm.value.password !== undefined
           ) {
+            this.actionsForm.patchValue({
+              code: this.exam.code,
+              labId: this.exam.lab.id,
+              id: this.exam.id,
+            });
             this.signOut.emit(this.actionsForm.value);
           }
 

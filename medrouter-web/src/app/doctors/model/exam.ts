@@ -1,6 +1,6 @@
-import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
 import { DoctorDto } from "./doctor-dto";
 import { ExamStatus } from "../enums/status.enum";
+import { ExamsEnum } from "../enums/exams-types";
 
 export class ExamDto {
   id?: any;
