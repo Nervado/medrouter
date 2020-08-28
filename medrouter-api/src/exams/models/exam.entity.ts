@@ -50,7 +50,7 @@ export class Exam extends BaseEntity {
   @ManyToOne(type => Doc, { nullable: true })
   docs: Doc[];
 
-  @OneToOne(() => Lab, { nullable: true })
+  @ManyToOne(() => Lab, { nullable: true, eager: true })
   @JoinColumn()
   lab: Lab;
 

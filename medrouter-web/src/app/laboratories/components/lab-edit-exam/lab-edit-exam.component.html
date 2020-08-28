@@ -1,135 +1,227 @@
 <div class="dashboard d-flex flex-wrap justify-content-between">
-  <div class="main-data">
-    <div
-      class="d-flex aside flex-column justify-content-center align-itens-center"
-    >
-      <div class="header">
-        <div class="control">
-          <fa-icon [icon]="faChevronLeft"></fa-icon>
-        </div>
-        <div class="mx-2">
-          Exames
-        </div>
-
-        <div class="control">
-          <fa-icon [icon]="faSearch" (click)="toogle()"></fa-icon>
-        </div>
-
-        <div class="control">
-          <fa-icon [icon]="faChevronRight"></fa-icon>
-        </div>
+  <div class="main-data aside text-lab">
+    <div class="header">
+      <div class="control filter" *ngIf="client?.user.username">
+        <fa-icon [icon]="faUserTie"></fa-icon>
+        &nbsp;<strong>{{ client.user.username }}</strong>
+        <fa-icon
+          [icon]="faTimes"
+          class="cursor"
+          class="text-oposity1"
+          (click)="clear()"
+        ></fa-icon>
       </div>
 
-      <div class="search" *ngIf="showSearch" (mouseleave)="toogle()">
-        <div class="form">
-          <div class="input">
-            <input type="text" name="search" placeholder="Nome do paciente" />
-            <fa-icon [icon]="faSearch" (click)="search()"></fa-icon>
+      <div class="control">
+        <fa-icon [icon]="faChevronLeft" (click)="pageDown()"></fa-icon>
+      </div>
+      <div class="mx-2">Exames</div>
+
+      <div class="control">
+        <fa-icon [icon]="faSearch" (click)="toogle()"></fa-icon>
+      </div>
+
+      <div class="control">
+        <fa-icon [icon]="faChevronRight" (click)="pageUp()"></fa-icon>
+      </div>
+    </div>
+
+    <div class="search" *ngIf="showSearch" (mouseleave)="showSearch = false">
+      <div class="form">
+        <div class="input">
+          <input
+            type="text"
+            name="search"
+            placeholder="Nome do paciente"
+            #clientname
+          />
+          <fa-icon
+            [icon]="faSearch"
+            (click)="search(clientname.value)"
+          ></fa-icon>
+        </div>
+
+        <div class="results">
+          <div class="label">
+            Resultados
+
+            <strong class="ml-1"> {{ clients?.length }}</strong>
           </div>
 
-          <div class="results">
-            <div class="label text-lab">
-              Resultados
-              <strong class="ml-1"> 4</strong>
-            </div>
+          <div class="wrapper">
+            <div
+              class="result"
+              *ngFor="let client of clients"
+              (click)="save(client)"
+            >
+              <ng-container *ngIf="client.user.avatar?.url; else avatar">
+                <img [src]="client.user.avatar?.url" alt="avatar" />
+              </ng-container>
 
-            <div class="wrapper">
-              <div class="result text-lab">
-                <div>João das Colves</div>
-                <fa-icon
-                  [icon]="faVial"
-                  class="text-success cursor ml-2"
-                ></fa-icon>
+              <ng-template #avatar>
+                <img src="../../../assets/avatarmale.png" alt="avatar" />
+              </ng-template>
+              <div>
+                <strong>
+                  {{
+                    client.user.surname
+                      ? client.user.fullname
+                      : client.user.username
+                  }}</strong
+                >
+                <div>
+                  <fa-icon
+                    [icon]="faMobileAlt"
+                    *ngIf="client.user?.phoneNumber"
+                  ></fa-icon>
+                  {{ client.user?.phoneNumber }}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class="founds">
+      Encontrados <strong> {{ exams.length }}</strong>
+    </div>
 
-      <!-- Resultado da buscas -->
-      <div class="founds">
-        Encontrados <strong>{{ exams.length }}</strong>
-      </div>
-
-      <div class="wrapper-results" *ngIf="exams.length > 0">
-        <div *ngFor="let exam of exams" class="exam">
+    <div class="wrapper-results" *ngIf="exams.length > 0">
+      <div *ngFor="let exam of exams" class="exam">
+        <div class="body">
           <div class="user info">
             <ng-container *ngIf="exam.client.user.avatar?.url; else avatar">
-              <img [src]="exam.client.user.avatar.url" alt="avatar" />
+              <img [src]="exam.client.user.avatar?.url" alt="avatar" />
             </ng-container>
             <ng-template #avatar>
               <img src="../../../../assets/avatarmale.png" alt="avatar"
             /></ng-template>
-            <div class="text-lab">
-              <strong> {{ exam.client.user.fullname }}</strong>
-            </div>
-          </div>
-          <div class="info text-lab">
-            <fa-icon [icon]="faVial"></fa-icon>
-            {{ exam.type }}
-          </div>
+            <div class="data">
+              <div class="client">{{ exam.client.user.fullname }}</div>
 
-          <div class="info text-lab">
-            <fa-icon [icon]="faCoins" class="text-lab"></fa-icon>
+              <div class="doctor">
+                <fa-icon [icon]="faUserMd"></fa-icon>
+                {{ exam.doctor.user?.fullname }}
+              </div>
 
-            <strong> R$ {{ exam.price }}</strong>
-          </div>
-
-          <div class="info text-lab">
-            Status:
-            <strong class="text-lab"> {{ exam.status }}</strong>
-          </div>
-
-          <div class="info text-lab">
-            <fa-icon [icon]="faUserMd"></fa-icon>
-            {{ exam.doctor.user.fullname }}
-          </div>
-
-          <div class="info text-lab">
-            <fa-icon [icon]="faFlask"></fa-icon>
-            {{ exam.lab.name }}
-          </div>
-
-          <div class="info text-lab">
-            <fa-icon [icon]="faCalendarDay"></fa-icon>
-            <strong> {{ pretty(exam.createdAt) }}</strong>
-          </div>
-
-          <div class="info result text-lab">
-            <div>Resultados</div>
-
-            <div *ngFor="let doc of exam.docs">
-              <a [href]="doc.url">
-                <fa-icon [icon]="faFileDownload" class="text-lab"></fa-icon>
-              </a>
+              <div class="info-date">
+                <fa-icon [icon]="faCalendarDay"></fa-icon>
+                {{ pretty(exam.createdAt) }}
+              </div>
             </div>
           </div>
 
-          <div class="info cursor text-lab" (click)="unlock(exam)">
-            <ng-container
-              *ngIf="
-                exam.status !== 'disponivel' || exam.status === 'cancelado';
-                else tlock
-              "
+          <div class="lab-data">
+            <div class="type">
+              <fa-icon [icon]="faVial"></fa-icon>
+
+              {{ fmrt(exam.type) }}
+            </div>
+
+            <div class="name">
+              <fa-icon [icon]="faFlask"></fa-icon>
+              {{ exam.lab?.name ? exam.lab.name : "-" }}
+            </div>
+
+            <div class="cost" *ngIf="exam">
+              <fa-icon [icon]="faCoins"></fa-icon>
+
+              <ng-container *ngIf="exam?.price; else elseTemplate">
+                {{ exam.price | currency: "R$" }}
+              </ng-container>
+              <ng-template #elseTemplate> - </ng-template>
+
+              <fa-icon [icon]="faClock"></fa-icon>
+
+              <ng-container *ngIf="exam?.deadline; else deadline">
+                {{ pretty(exam.createdAt, exam.deadline) }}
+              </ng-container>
+              <ng-template #deadline> - </ng-template>
+            </div>
+          </div>
+
+          <div class="info">
+            <div class="results">Resultados</div>
+
+            <div class="docs">
+              <div class="doc">
+                <div class="pdf">PDF</div>
+                <fa-icon [icon]="faTrash" class="remove"></fa-icon>
+              </div>
+              <div class="doc">
+                <div class="pdf">PDF</div>
+                <fa-icon [icon]="faTrash" class="remove"></fa-icon>
+              </div>
+              <div class="doc">
+                <div class="imag">
+                  <fa-icon [icon]="faCameraRetro" size="32px"></fa-icon>
+                </div>
+
+                <fa-icon [icon]="faTrash" class="remove"></fa-icon>
+              </div>
+            </div>
+          </div>
+
+          <div class="info">
+            <div class="controls">
+              <fa-icon
+                [icon]="faFileUpload"
+                [style.color]="'rgb(151, 32, 32)'"
+              ></fa-icon>
+
+              <fa-icon
+                [icon]="faFileImage"
+                [style.color]="'var(--green)'"
+              ></fa-icon>
+
+              <div class="cursor" (click)="unlock(exam)">
+                <ng-container
+                  *ngIf="
+                    exam.status !== 'disponivel' || exam.status === 'cancelado';
+                    else tlock
+                  "
+                >
+                  <fa-icon
+                    [icon]="faLock"
+                    class="text-warn"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Resultado não liberado"
+                    (click)="unlock(exam.id)"
+                  ></fa-icon>
+                </ng-container>
+                <ng-template #tlock>
+                  <fa-icon
+                    [icon]="faLockOpen"
+                    class="text-success"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Resultado liberado"
+                  ></fa-icon>
+                </ng-template>
+              </div>
+
+              <fa-icon
+                [icon]="faTrash"
+                [style.color]="'var(--oposity1)'"
+              ></fa-icon>
+            </div>
+
+            <div
+              class="status"
+              [style.background-color]="getStatusColor(exam.status)"
             >
-              <fa-icon [icon]="faLock" class="text-warn"></fa-icon>
-
-              <strong class="text-warn"> Liberar</strong>
-            </ng-container>
-            <ng-template #tlock>
-              <fa-icon [icon]="faLockOpen"></fa-icon>
-
-              <strong class="text-success"> Liberado</strong>
-            </ng-template>
-          </div>
-
-          <div class="actions">
-            <div class="text-error">
-              Remover Resultados
-              <fa-icon [icon]="faTimes" class="ml-1"></fa-icon>
+              {{ exam.status }}
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-            <form
+<!--
+   <form
               [formGroup]="formResult"
               novalidate
               (ngSubmit)="handleChange($event)"
@@ -150,14 +242,4 @@
               </label>
             </form>
 
-            <div class="text-warn">
-              Anular Exame
-
-              <fa-icon [icon]="faMinus" class="ml-1"></fa-icon>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+-->

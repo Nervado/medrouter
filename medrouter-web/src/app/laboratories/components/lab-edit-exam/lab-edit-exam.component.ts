@@ -28,12 +28,26 @@ import {
   faLockOpen,
   faPlus,
   faMinus,
+  faUserTie,
+  faMobileAlt,
+  faClock,
+  faTrash,
+  faCameraRetro,
+  faFileImage,
+  faFileUpload,
 } from "@fortawesome/free-solid-svg-icons";
-import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
 import { ExamStatus } from "src/app/doctors/enums/status.enum";
-import { format } from "date-fns";
+import { format, parseISO, addDays } from "date-fns";
 import { ExamDto } from "src/app/doctors/model/exam";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Client } from "src/app/clients/models/client";
+import { LaboratoriesService } from "../../laboratories.service";
+import { ActivatedRoute } from "@angular/router";
+import { NotificationService } from "src/app/messages/notification.service";
+import { Types } from "src/app/messages/toast/enums/types";
+import { SearchClientDto } from "../../dtos/search-client.dto";
+import getStatusColor from "src/app/utils/getStatusColor";
+import { ExamsEnum } from "src/app/doctors/enums/exams-types";
 
 @Component({
   selector: "app-lab-edit-exam",
@@ -67,15 +81,27 @@ export class LabEditExamComponent implements OnInit {
   faFileMedicalAlt = faFileMedicalAlt;
   faPlus = faPlus;
   faMinus = faMinus;
+  faUserTie = faUserTie;
+  faTrash = faTrash;
+  faCameraRetro = faCameraRetro;
+  faFileImage = faFileImage;
+  faFileUpload = faFileUpload;
 
   faLock = faLock;
   faLockOpen = faLockOpen;
+  faMobileAlt = faMobileAlt;
+  faClock = faClock;
 
-  exams;
+  exams: ExamDto[] = [];
 
   showSearch: boolean = false;
 
+  clients: Client[];
+  client: Client;
+
   lock: boolean = false;
+
+  page: number = 1;
 
   formResult: FormGroup;
 
@@ -90,171 +116,24 @@ export class LabEditExamComponent implements OnInit {
     this.showSearch = !this.showSearch;
   }
 
-  constructor(private fb: FormBuilder, private cd: ChangeDetectorRef) {}
+  getStatusColor = getStatusColor;
+
+  constructor(
+    private fb: FormBuilder,
+    private cd: ChangeDetectorRef,
+    private activatedRoute: ActivatedRoute,
+    private ls: LaboratoriesService,
+    private ns: NotificationService
+  ) {}
 
   ngOnInit(): void {
-    console.log("estou aqui");
+    this.activatedRoute.parent.params.subscribe((params) =>
+      this.getExams(params["id"], { page: this.page })
+    );
 
     this.formResult = this.fb.group({
       file: [null, Validators.required],
     });
-
-    this.exams = [
-      {
-        id: 12,
-        price: 200,
-        type: ExamsEnum.ABDMO,
-        doctor: {
-          id: 123,
-          user: { fullname: "Paulo Bessa" },
-        },
-        status: ExamStatus.CONCLUDED,
-        docs: [
-          {
-            id: 435,
-            url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-          },
-        ],
-        lab: {
-          id: 122,
-          name: "LabA+",
-        },
-        client: {
-          id: 264,
-          user: {
-            fullname: "Pedro da Silva",
-            avatar: {
-              url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-            },
-          },
-        },
-        createdAt: new Date(),
-      },
-
-      {
-        id: 12,
-        price: 200,
-        type: ExamsEnum.ABDMO,
-        doctor: {
-          id: 123,
-          user: { fullname: "Paulo Bessa" },
-        },
-        status: ExamStatus.AVAILABLE,
-        docs: [
-          {
-            id: 435,
-            url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-          },
-        ],
-        lab: {
-          id: 122,
-          name: "LabA+",
-        },
-        client: {
-          id: 264,
-          user: {
-            fullname: "Pedro da Silva",
-            avatar: {
-              url: "",
-            },
-          },
-        },
-        createdAt: new Date(),
-      },
-
-      {
-        id: 12,
-        price: 200,
-        type: ExamsEnum.ABDMO,
-        doctor: {
-          id: 123,
-          user: { fullname: "Paulo Bessa" },
-        },
-        status: ExamStatus.CANCELED,
-        docs: [
-          {
-            id: 435,
-            url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-          },
-        ],
-        lab: {
-          id: 122,
-          name: "LabA+",
-        },
-        client: {
-          id: 264,
-          user: {
-            fullname: "Pedro da Silva",
-            avatar: {
-              url: "",
-            },
-          },
-        },
-        createdAt: new Date(),
-      },
-
-      {
-        id: 12,
-        price: 200,
-        type: ExamsEnum.ABDMO,
-        doctor: {
-          id: 123,
-          user: { fullname: "Paulo Bessa" },
-        },
-        status: ExamStatus.AVAILABLE,
-        docs: [
-          {
-            id: 435,
-            url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-          },
-        ],
-        lab: {
-          id: 122,
-          name: "LabA+",
-        },
-        client: {
-          id: 264,
-          user: {
-            fullname: "Pedro da Silva",
-            avatar: {
-              url: "",
-            },
-          },
-        },
-        createdAt: new Date(),
-      },
-
-      {
-        id: 12,
-        price: 200,
-        type: ExamsEnum.ABDMO,
-        doctor: {
-          id: 123,
-          user: { fullname: "Paulo Bessa" },
-        },
-        status: ExamStatus.AVAILABLE,
-        docs: [
-          {
-            id: 435,
-            url: "https://api.adorable.io/avatars/50/abott@adorable.png",
-          },
-        ],
-        lab: {
-          id: 122,
-          name: "LabA+",
-        },
-        client: {
-          id: 264,
-          user: {
-            fullname: "Pedro da Silva",
-            avatar: {
-              url: "",
-            },
-          },
-        },
-        createdAt: new Date(),
-      },
-    ];
   }
 
   unlock(exam: ExamDto) {
@@ -270,12 +149,23 @@ export class LabEditExamComponent implements OnInit {
     console.log(exam);
   }
 
-  search() {
-    console.log("procurando ...");
+  search(username: string) {
+    this.ls
+      .getClients(this.activatedRoute.parent.snapshot.params["id"], {
+        username: username,
+        page: 1,
+      })
+      .subscribe({
+        next: (clients: Client[]) => (this.clients = clients),
+      });
   }
 
-  pretty(date: Date): string {
-    return format(date, "dd/MM/yyyy");
+  pretty(date: Date, diff?: number): string {
+    if (diff && diff > 0) {
+      return format(addDays(new Date(), diff), "dd/MM/yyyy");
+    } else {
+      return format(parseISO(date.toString()), "dd/MM/yyyy");
+    }
   }
 
   handleChange(event) {
@@ -319,5 +209,55 @@ export class LabEditExamComponent implements OnInit {
     );
 
      */
+  }
+
+  fmrt(name: string) {
+    const newSentece = name.replace(/_/g, " ").toLowerCase();
+    return newSentece[0].toUpperCase() + newSentece.slice(1);
+  }
+
+  clear() {
+    this.client = undefined;
+    this.page = 1;
+    this.getExams(this.activatedRoute.parent.snapshot.params["id"], {
+      page: this.page,
+    });
+  }
+
+  pageUp() {
+    this.page += 1;
+    this.getExams(this.activatedRoute.parent.snapshot.params["id"], {
+      username: this.client ? this.client.user.username : "",
+      page: this.page,
+    });
+  }
+
+  pageDown() {
+    this.page = this.page > 1 ? this.page - 1 : 1;
+    this.getExams(this.activatedRoute.parent.snapshot.params["id"], {
+      username: this.client ? this.client.user.username : "",
+      page: this.page,
+    });
+  }
+
+  getExams(id: string, search?: SearchClientDto) {
+    this.ls.getExams(id, search).subscribe({
+      next: (exams: ExamDto[]) => (this.exams = exams),
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao obter exames",
+          type: Types.WARN,
+        }),
+    });
+  }
+
+  save(client: Client) {
+    this.showSearch = false;
+    this.client = client;
+    this.page = 1;
+    this.getExams(this.activatedRoute.parent.snapshot.params["id"], {
+      username: this.client ? this.client.user.username : "",
+      page: this.page,
+    });
   }
 }

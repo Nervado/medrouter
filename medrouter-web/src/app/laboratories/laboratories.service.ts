@@ -4,6 +4,8 @@ import { Observable } from "rxjs";
 import { MEDROUTER_API } from "../api/app.api";
 import { ExamStatusDto } from "./dtos/exam-status.dto";
 import { ExamDto } from "../doctors/model/exam";
+import { SearchClientDto } from "./dtos/search-client.dto";
+import { Client } from "../clients/models/client";
 
 @Injectable({
   providedIn: "root",
@@ -25,9 +27,22 @@ export class LaboratoriesService {
     return this.http.post<void>(this.api + `/docs`, file);
   }
 
-  getExams(page: number, username?: string): Observable<ExamDto[]> {
+  getExams(id: string, search: SearchClientDto): Observable<ExamDto[]> {
+    const { page, username } = search;
     const query = username ? `&username=${username}` : "";
-    return this.http.get<ExamDto[]>(this.api + `/exams?page=${page}${query}`);
+
+    return this.http.get<ExamDto[]>(
+      this.api + `/labs/${id}/exams?page=${page}${query}`
+    );
+  }
+
+  getClients(id: string, search: SearchClientDto): Observable<Client[]> {
+    const { page, username } = search;
+    const query = username ? `&username=${username}` : "";
+
+    return this.http.get<Client[]>(
+      `${MEDROUTER_API}/labs/${id}/clients?page=${page}${query}`
+    );
   }
 
   getByCode(code: string): Observable<ExamDto> {

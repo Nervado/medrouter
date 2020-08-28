@@ -24,6 +24,10 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
 import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
 import { Allow } from 'src/auth/decorators/alow.decorator';
+import { SearchClientDto } from 'src/client/dtos/search-client-dto';
+import { ExamDto } from 'src/exams/dto/exam.dto';
+import { Role } from 'src/auth/enums/role.enum';
+import { ClientDto } from 'src/client/dtos/cliente-dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('labs')
@@ -49,10 +53,26 @@ export class LabsController {
     return this.labsService.findOne(id, user);
   }
 
-  @Delete('/:id')
+  @Get('/:id/exams')
+  @Allow(Role.LAB)
   @UseInterceptors(ClassSerializerInterceptor)
-  deleteDoctor(@Param('id') id: number) {
-    //return this.doctorService.delete(id);
+  getExams(
+    @GetUser() user: User,
+    @Param('id') id: string,
+    @Query() search: SearchClientDto,
+  ): Promise<ExamDto[]> {
+    return this.labsService.findAll(search, user, id);
+  }
+
+  @Get('/:id/clients')
+  @Roles(Role.LAB)
+  @UseInterceptors(ClassSerializerInterceptor)
+  getClients(
+    @Param('id') id: string,
+    @Query() search: SearchClientDto,
+    @GetUser() user: User,
+  ): Promise<ClientDto[]> {
+    return this.labsService.getClientsWithRelatedExam(id, search, user);
   }
 
   @Patch('/:id')

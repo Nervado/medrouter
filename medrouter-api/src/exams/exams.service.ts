@@ -17,6 +17,8 @@ import { generatePass } from 'src/utils/hash-pass';
 import { Role } from 'src/auth/enums/role.enum';
 import { ExamStatusDto } from './dto/exam-status.dto';
 import { LabsService } from 'src/labs/labs.service';
+import { ClientDto } from 'src/client/dtos/cliente-dto';
+import { Client } from 'src/client/models/client.entity';
 
 @Injectable()
 export class ExamsService {
@@ -83,7 +85,7 @@ export class ExamsService {
       query.andWhere('doctor.id = :id', { id: id });
     }
 
-    if (user?.userId) {
+    if (user?.userId && !user) {
       query.andWhere('clientUser.userId = :userId', { userId: user.userId });
     }
 
@@ -286,5 +288,61 @@ export class ExamsService {
     }
 
     return this.serializeExam(exam);
+  }
+
+  serializeLabClient(clients: Client[]): ClientDto[] {
+    return [
+      ...new Set(
+        clients.map((client: Client) => {
+          return {
+            username: client.user.username,
+            email: client.user.email,
+            id: client.id,
+            user: {
+              username: client.user.username,
+              fullname: client.user.fullname,
+              surname: client.user.surname,
+              avatar: {
+                url: client.user.avatar?.url,
+              },
+            },
+          };
+        }),
+      ),
+    ];
+  }
+
+  async getClientsWithRelatedExam(
+    id: string,
+    search: SearchClientDto,
+  ): Promise<ClientDto[]> {
+    const { page, username } = search;
+
+    console.log(page, username);
+
+    const pageNumber: number = page ? page * 10 - 10 : 0;
+
+    const query = Exam.createQueryBuilder('exam');
+
+    query.andWhere('lab.id = :id ', { id });
+
+    if (username) {
+      query.andWhere(
+        `user.username  ILIKE '%${username}%' OR user.surname  ILIKE '%${username}%'`,
+      );
+    }
+
+    const founds = await query
+      .leftJoinAndSelect('exam.lab', 'lab')
+      .leftJoinAndSelect('exam.client', 'client')
+      .leftJoinAndSelect('client.user', 'user')
+      .leftJoinAndSelect('user.avatar', 'avatar')
+      .skip(pageNumber)
+      .take(10)
+      .getMany();
+
+    console.log(founds.map(exam => exam.client));
+
+    return this.serializeLabClient(founds.map(exam => exam.client));
   }
 }

@@ -10,10 +10,10 @@ import {
 import { Sex } from 'src/users/enuns/sex.enum';
 
 export class ClientDto {
+  @IsOptional()
   @IsString()
   @MaxLength(200)
   @MinLength(2)
-  @IsNotEmpty()
   username: string;
 
   @IsString()
@@ -27,10 +27,10 @@ export class ClientDto {
   @IsPhoneNumber('BR')
   phoneNumber?: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(5)
   @MaxLength(200)
-  @IsNotEmpty()
   @Matches(
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     {
@@ -44,16 +44,16 @@ export class ClientDto {
   passwordConfirmation?: string;
 
   user?: {
-    userId: string | number;
-    username: string;
-    surname: string;
-    fullname: string;
-    email: string;
-    phoneNumber: string;
-    sex: Sex;
-    birthdate: Date;
-    avatar: {
-      url: string;
+    userId?: string | number;
+    username?: string;
+    surname?: string;
+    fullname?: string;
+    email?: string;
+    phoneNumber?: string;
+    sex?: Sex;
+    birthdate?: Date;
+    avatar?: {
+      url?: string;
     };
   };
 }

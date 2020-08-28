@@ -16,6 +16,7 @@ import { User } from 'src/users/models/user.entity';
 import { DocDto } from 'src/docs/dto/doc.dto';
 import { Role } from 'src/auth/enums/role.enum';
 import { DocsService } from 'src/docs/docs.service';
+import { ClientDto } from './dtos/cliente-dto';
 
 @Injectable()
 export class ClientService {
