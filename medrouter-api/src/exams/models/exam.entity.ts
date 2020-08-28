@@ -67,6 +67,9 @@ export class Exam extends BaseEntity {
   @JoinColumn()
   prescription: Prescription;
 
+  @Column({ nullable: true })
+  code: string;
+
   @CreateDateColumn({ type: 'timestamp', nullable: true })
   createdAt: Date;
 

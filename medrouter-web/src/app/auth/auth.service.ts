@@ -11,13 +11,9 @@ import { Login } from "./models/login.model";
 import { SignUp } from "./models/signup.model";
 
 import { DefaultRoutes } from "./enums/default-routes";
-import { Types } from "../messages/toast/enums/types";
 import { Role } from "./enums/roles-types";
 import { NewAuth } from "./interfaces/newauth.dto";
-import { SignOutDto } from "../profile/models/sign-out.dto";
 import { RolesIds } from "./dto/roles-ids.dto";
-import { isThursday } from "date-fns";
-import { ro } from "date-fns/locale";
 
 @Injectable({
   providedIn: "root",

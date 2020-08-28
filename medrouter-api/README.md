@@ -106,26 +106,25 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 [X] Search Medicine
 [X] Create Prescription
 [X] Add Exam
-[ ] Remove Exam
+[X] Remove Exam
 [X] Add Medicine
-[ ] Remove Medicine
+[X] Remove Medicine
 
 ## Exams
 
-[ ] Download results
-[ ] Release Exams
-[ ] Cancel Exams
+[X] Download results
+[X] Release Exams
+[X] Cancel Exams
 
 ## Prescriptions
 
 [x] List
-[ ] Search by Name
+[X] Search by Name
 
 ## Appointments
 
 [x] List by Date
 [x] Add new Prescription
-[ ] Cancel
 
 ## Schedule
 
@@ -182,6 +181,6 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 
 ## History
 
-[ ] List Prescreptions
+[ ] List Prescriptions
 [ ] Donwload Prescriptions
 [ ] Search prescription by doctor name

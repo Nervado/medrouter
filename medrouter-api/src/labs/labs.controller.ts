@@ -2,7 +2,6 @@ import {
   Controller,
   Body,
   Post,
-  Put,
   UseInterceptors,
   ClassSerializerInterceptor,
   Get,
@@ -13,9 +12,7 @@ import {
   Patch,
   UseGuards,
 } from '@nestjs/common';
-import { IntFilterDto } from '../utils/int-filter.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-
 import { LabsService } from './labs.service';
 import { LabDto } from './dto/lab.dto';
 import { SearchLab } from './dto/searchlab.dto';

@@ -7,7 +7,6 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
-import { ClientDto } from './dtos/cliente-dto';
 import { Client } from './models/client.entity';
 import { AuthSingUpDto } from 'src/auth/dto/auth-signup.dto';
 import { generatePass } from 'src/utils/hash-pass';
