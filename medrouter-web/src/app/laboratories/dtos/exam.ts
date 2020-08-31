@@ -1,7 +1,8 @@
-import { DoctorDto } from "./doctor-dto";
 import { ExamStatus } from "../enums/status.enum";
-import { ExamsEnum } from "../enums/exams-types";
+
 import { DocDto } from "../dtos/doc-dto";
+import { ExamsEnum } from "../enums/exams.enum";
+import { DoctorDto } from "./doctor-dto";
 
 export class ExamDto {
   id?: any;
@@ -10,8 +11,8 @@ export class ExamDto {
   type: ExamsEnum;
   doctor?: DoctorDto;
   status?: ExamStatus;
-  docs?: DocDto[];
-  photos?: DocDto[];
+  docs?: DocDto;
+  photos?: [{ id?: string; url?: string; path?: string; filename?: string }];
   lab?: {
     id: any;
     name: string;

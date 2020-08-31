@@ -47,7 +47,7 @@ import { NotificationService } from "src/app/messages/notification.service";
 import { Types } from "src/app/messages/toast/enums/types";
 import { SearchClientDto } from "../../dtos/search-client.dto";
 import getStatusColor from "src/app/utils/getStatusColor";
-import { ExamsEnum } from "src/app/doctors/enums/exams-types";
+import { DocDto } from "../../dtos/doc-dto";
 
 @Component({
   selector: "app-lab-edit-exam",
@@ -142,24 +142,30 @@ export class LabEditExamComponent implements OnInit {
     });
   }
 
-  unlock(exam: ExamDto) {
-    this.lock = true;
-
-    this.exams = this.exams.map((exam) => {
-      if (exam.status === ExamStatus.CONCLUDED) {
-        exam.status = ExamStatus.AVAILABLE;
-      }
-      return exam;
-    });
-
-    console.log(exam);
+  unlock(id: string) {
+    this.ls
+      .changeStatus(id, {
+        status: ExamStatus.CONCLUDED,
+      })
+      .subscribe({
+        next: () =>
+          this.ns.notify({
+            message: "Exame enviado",
+            type: Types.SUCCESS,
+          }),
+        error: () =>
+          this.ns.notify({
+            message: "Falha ao enviar exame",
+            type: Types.ERROR,
+          }),
+      });
   }
 
-  search(username: string) {
+  search(username: string, page?: number) {
     this.ls
       .getClients(this.activatedRoute.parent.snapshot.params["id"], {
         username: username,
-        page: 1,
+        page: page ? page : 1,
       })
       .subscribe({
         next: (clients: Client[]) => (this.clients = clients),
@@ -174,47 +180,48 @@ export class LabEditExamComponent implements OnInit {
     }
   }
 
-  handleChange(event) {
+  handleChange(event, exam: ExamDto, type: boolean, username?: string) {
     const reader = new FileReader();
 
     if (event.target.files && event.target.files.length) {
       const [file] = event.target.files;
       this.file = file;
-
       reader.readAsDataURL(file);
-
-      reader.onload = () => {
-        this.formResult.patchValue({
-          avatar: reader.result,
-        });
-        this.preview = reader.result;
-      };
-
       this.cd.markForCheck();
-      this.upload();
+      this.upload(type, exam, username);
     }
   }
 
-  upload() {
+  upload(type: boolean, exam: ExamDto, username?: string) {
     let formData: FormData = new FormData();
-    formData.append("avatar", this.file);
+    formData.append("file", this.file);
 
-    /**
-
-    this.usersService.uploadAvatar(formData).subscribe(
-      (avatar: Avatar) => (this.newAvatar = avatar),
-      () => {
-        this.notification.notify({
+    this.ls.uploadPdfOrPhoto(formData, type).subscribe({
+      next: (file: DocDto) => {
+        //update exam
+        if (type) {
+          exam.docs = [...exam.docs, file];
+        } else {
+          exam.photos = [...exam.photos, file];
+        }
+        this.ls.updateExamDocuments(exam.id, exam).subscribe({
+          next: () => {
+            this.ns.notify({
+              message: "Resultados atualizados com sucesso",
+              type: Types.SUCCESS,
+            });
+            this.search(username, this.page);
+          },
+        });
+      },
+      error: () =>
+        this.ns.notify({
           message:
-            "Tamanho máximo: 2 MB, Tipos aceitos: .jpg, .jpeg, .png, ou .gif!",
+            "Tamanho máximo: 2 MB, Tipos aceitos: .jpg, .jpeg, .png, ou .pdf!",
           type: Types.OPOSITY1,
           timer: 4000,
-        });
-        this.preview = "";
-      }
-    );
-
-     */
+        }),
+    });
   }
 
   fmrt(name: string) {
@@ -264,6 +271,40 @@ export class LabEditExamComponent implements OnInit {
     this.getExams(this.activatedRoute.parent.snapshot.params["id"], {
       username: this.client ? this.client.user.username : "",
       page: this.page,
+    });
+  }
+
+  cancel(id: string) {
+    this.ls
+      .changeStatus(id, {
+        status: ExamStatus.CANCELED,
+      })
+      .subscribe({
+        next: () =>
+          this.ns.notify({
+            message: "Execução cancelada",
+            type: Types.WARN,
+          }),
+        error: () =>
+          this.ns.notify({
+            message: "Remova todos os resultados para cancelar o exame",
+            type: Types.ERROR,
+          }),
+      });
+  }
+
+  removeResult(id: string, type: boolean) {
+    this.ls.deleteResult(id, type).subscribe({
+      next: () =>
+        this.ns.notify({
+          message: "Arquivo excluído",
+          type: Types.INFO,
+        }),
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao excluir arquivo",
+          type: Types.ERROR,
+        }),
     });
   }
 }

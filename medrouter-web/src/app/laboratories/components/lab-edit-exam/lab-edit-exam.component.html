@@ -144,20 +144,25 @@
             <div class="results">Resultados</div>
 
             <div class="docs">
-              <div class="doc">
+              <div class="doc" *ngFor="let pdf of exam.docs">
                 <div class="pdf">PDF</div>
-                <fa-icon [icon]="faTrash" class="remove"></fa-icon>
+                <fa-icon
+                  [icon]="faTrash"
+                  class="remove"
+                  (click)="removeResult(pdf.id, true)"
+                ></fa-icon>
               </div>
-              <div class="doc">
-                <div class="pdf">PDF</div>
-                <fa-icon [icon]="faTrash" class="remove"></fa-icon>
-              </div>
-              <div class="doc">
+
+              <div class="doc" *ngFor="let photo of exam.photos">
                 <div class="imag">
                   <fa-icon [icon]="faCameraRetro" size="32px"></fa-icon>
                 </div>
 
-                <fa-icon [icon]="faTrash" class="remove"></fa-icon>
+                <fa-icon
+                  [icon]="faTrash"
+                  class="remove"
+                  (click)="removeResult(photo.id, false)"
+                ></fa-icon>
               </div>
             </div>
           </div>
@@ -175,11 +180,13 @@
                     [style.color]="'rgb(151, 32, 32)'"
                   ></fa-icon>
                   <input
-                    accept="application/pdf, image/*"
+                    accept="application/pdf"
                     type="file"
                     name="file"
                     [id]="exam.id"
-                    (change)="handleChange($event, client.id)"
+                    (change)="
+                      handleChange($event, exam, true, clientname.value)
+                    "
                     value=""
                     class="doc-input"
                   />
@@ -197,11 +204,13 @@
                     [style.color]="'var(--green)'"
                   ></fa-icon>
                   <input
-                    accept="application/pdf, image/*"
+                    accept="image/*"
                     type="file"
                     name="file"
                     [id]="exam.id"
-                    (change)="handleChange($event, client.id)"
+                    (change)="
+                      handleChange($event, exam, false, clientname.value)
+                    "
                     value=""
                     class="doc-input"
                   />
@@ -241,6 +250,7 @@
                 data-toggle="tooltip"
                 data-placement="top"
                 title="Cancelar execução"
+                (click)="cancel(exam.id)"
               ></fa-icon>
             </div>
 
