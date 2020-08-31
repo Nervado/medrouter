@@ -1,5 +1,8 @@
 import { Repository, EntityRepository } from 'typeorm';
-import { BadRequestException } from '@nestjs/common';
+import {
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 import { Photo } from './models/photos.entity';
 
@@ -10,7 +13,12 @@ export class PhotoRepository extends Repository<Photo> {
   async createOne(photoDto: PhotoDto): Promise<PhotoDto> {
     const photo = new Photo();
     this.merge(photo, photoDto);
-    return photo.save();
+
+    try {
+      return await photo.save();
+    } catch (error) {
+      throw new InternalServerErrorException('Fail at save photo metadata');
+    }
   }
 
   async check(filename: string): Promise<any> {

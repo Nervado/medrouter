@@ -1,12 +1,11 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { configService } from 'src/config/config.service';
 import { Exclude, Expose } from 'class-transformer';
-// import { Budget } from 'src/budgets/models/budget.entity';
 
-@Entity({ name: 'Photo' })
+@Entity('photo')
 export class Photo extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  photoid: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   filename: string;
@@ -17,6 +16,6 @@ export class Photo extends BaseEntity {
 
   @Expose()
   get url() {
-    return `${configService.getServerUrl()}/photos/${this.filename}`;
+    return `${configService.getServerUrl()}/images/${this.filename}`;
   }
 }

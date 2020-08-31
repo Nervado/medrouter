@@ -37,8 +37,9 @@ export class ReceptionistsService {
     );
   }
 
+  //alter to photos controller
   uploadDoc(file: any): Observable<DocDto> {
-    return this.http.post<DocDto>(`${MEDROUTER_API}/docs`, file);
+    return this.http.post<DocDto>(`${MEDROUTER_API}/photos`, file);
   }
 
   updateClientDoc(id: string, doc: DocDto): Observable<void> {

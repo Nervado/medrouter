@@ -164,15 +164,49 @@
 
           <div class="info">
             <div class="controls">
-              <fa-icon
-                [icon]="faFileUpload"
-                [style.color]="'rgb(151, 32, 32)'"
-              ></fa-icon>
+              <form [formGroup]="docForm" novalidate>
+                <label htmlFor="result">
+                  <fa-icon
+                    [icon]="faFileUpload"
+                    class="cursor"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Adicionar pdf"
+                    [style.color]="'rgb(151, 32, 32)'"
+                  ></fa-icon>
+                  <input
+                    accept="application/pdf, image/*"
+                    type="file"
+                    name="file"
+                    [id]="exam.id"
+                    (change)="handleChange($event, client.id)"
+                    value=""
+                    class="doc-input"
+                  />
+                </label>
+              </form>
 
-              <fa-icon
-                [icon]="faFileImage"
-                [style.color]="'var(--green)'"
-              ></fa-icon>
+              <form [formGroup]="docForm" novalidate>
+                <label htmlFor="result">
+                  <fa-icon
+                    [icon]="faFileImage"
+                    class="cursor"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Adicionar imagem"
+                    [style.color]="'var(--green)'"
+                  ></fa-icon>
+                  <input
+                    accept="application/pdf, image/*"
+                    type="file"
+                    name="file"
+                    [id]="exam.id"
+                    (change)="handleChange($event, client.id)"
+                    value=""
+                    class="doc-input"
+                  />
+                </label>
+              </form>
 
               <div class="cursor" (click)="unlock(exam)">
                 <ng-container
@@ -186,7 +220,7 @@
                     class="text-warn"
                     data-toggle="tooltip"
                     data-placement="top"
-                    title="Resultado não liberado"
+                    title="Liberar resultado"
                     (click)="unlock(exam.id)"
                   ></fa-icon>
                 </ng-container>
@@ -204,6 +238,9 @@
               <fa-icon
                 [icon]="faTrash"
                 [style.color]="'var(--oposity1)'"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Cancelar execução"
               ></fa-icon>
             </div>
 
@@ -219,27 +256,3 @@
     </div>
   </div>
 </div>
-
-<!--
-   <form
-              [formGroup]="formResult"
-              novalidate
-              (ngSubmit)="handleChange($event)"
-            >
-              <label htmlFor="result">
-                <div class="text-success">
-                  Adicionar Resultados
-                  <fa-icon [icon]="faPlus" class="ml-1"></fa-icon>
-                </div>
-                <input
-                  accept="application/pdf"
-                  type="file"
-                  name="file"
-                  id="result"
-                  (change)="handleChange($event)"
-                  value=""
-                />
-              </label>
-            </form>
-
--->

@@ -109,6 +109,8 @@ export class LabEditExamComponent implements OnInit {
   newAvatar: any = undefined;
   preview: string | ArrayBuffer;
   formFile: FormGroup;
+  docForm: FormGroup;
+
   file: File;
   userId: any;
 
@@ -132,6 +134,10 @@ export class LabEditExamComponent implements OnInit {
     );
 
     this.formResult = this.fb.group({
+      file: [null, Validators.required],
+    });
+
+    this.docForm = this.fb.group({
       file: [null, Validators.required],
     });
   }

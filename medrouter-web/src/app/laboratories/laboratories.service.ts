@@ -23,8 +23,12 @@ export class LaboratoriesService {
     return this.http.delete<void>(this.api + `/docs/${id}`);
   }
 
-  uploadResult(file: Blob): Observable<void> {
+  uploadPdf(file: Blob): Observable<void> {
     return this.http.post<void>(this.api + `/docs`, file);
+  }
+
+  uploadPhoto(file: Blob): Observable<void> {
+    return this.http.post<void>(this.api + `/photos`, file);
   }
 
   getExams(id: string, search: SearchClientDto): Observable<ExamDto[]> {

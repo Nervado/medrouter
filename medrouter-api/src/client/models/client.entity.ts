@@ -22,20 +22,21 @@ export class Client extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Photo)
+  @ManyToOne(() => Photo, { eager: true, cascade: true, nullable: true })
   photos: Photo[];
 
-  @OneToOne(() => Doc, { eager: true, cascade: true })
+  @OneToOne(() => Doc, { eager: true, cascade: true, nullable: true })
   @JoinColumn()
   doc: Doc;
 
-  @OneToOne(() => User, { eager: true, cascade: true })
+  @OneToOne(() => User, { eager: true, cascade: true, nullable: true })
   @JoinColumn()
   user: User;
 
   @OneToMany(
     () => Prescription,
     prescription => prescription.client,
+    { nullable: true },
   )
   @JoinColumn()
   prescription: Prescription[];
@@ -43,6 +44,7 @@ export class Client extends BaseEntity {
   @OneToMany(
     () => Appointment,
     appointment => appointment.client,
+    { nullable: true },
   )
   @JoinColumn()
   appointments: Appointment[];

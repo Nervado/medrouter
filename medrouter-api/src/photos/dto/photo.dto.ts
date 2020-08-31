@@ -1,5 +1,5 @@
 export class PhotoDto {
-  id?: number;
+  id?: string;
   url?: string;
   path?: string;
   filename?: string;
