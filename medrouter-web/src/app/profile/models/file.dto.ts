@@ -1,4 +1,4 @@
 export class PhotoFile {
-  raw: any;
-  preview: string;
+  url?: string;
+  id?: string;
 }

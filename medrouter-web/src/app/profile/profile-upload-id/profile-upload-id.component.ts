@@ -12,6 +12,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NotificationService } from "src/app/messages/notification.service";
 import { Types } from "src/app/messages/toast/enums/types";
 import { Profile } from "../models/user-profile";
+import { PhotoFile } from "../models/file.dto";
+import { AuthService } from "src/app/auth/auth.service";
+import { Role } from "src/app/auth/enums/roles-types";
 
 @Component({
   selector: "app-profile-upload-id",
@@ -25,7 +28,7 @@ export class ProfileUploadIdComponent implements OnInit {
   faTrash = faTrash;
 
   //avatar: Avatar;
-  newAvatar: Avatar = undefined;
+  newAvatar: PhotoFile = undefined;
   preview: string | ArrayBuffer;
   formFile: FormGroup;
   file: File;
@@ -39,7 +42,8 @@ export class ProfileUploadIdComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private activatedRoute: ActivatedRoute,
     private notification: NotificationService,
-    private router: Router
+    private router: Router,
+    private as: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -73,10 +77,18 @@ export class ProfileUploadIdComponent implements OnInit {
 
   upload() {
     let formData: FormData = new FormData();
-    formData.append("avatar", this.file);
+    formData.append("file", this.file);
 
-    this.usersService.uploadAvatar(formData).subscribe(
-      (avatar: Avatar) => (this.newAvatar = avatar),
+    this.usersService.uploadDocumentPhoto(formData).subscribe(
+      (photo: PhotoFile) => {
+        this.newAvatar = photo;
+        console.log(this.as.getRuleId(Role.CLIENT));
+
+        this.notification.notify({
+          message: "Documento enviado",
+          type: Types.SUCCESS,
+        });
+      },
       () => {
         this.notification.notify({
           message:
@@ -89,51 +101,39 @@ export class ProfileUploadIdComponent implements OnInit {
     );
   }
 
-  update() {
-    if (this.newAvatar === undefined) {
-      return;
-    }
-
-    const userProfile: Profile = this.usersService.getUserProfile();
-
-    userProfile.avatar = this.newAvatar;
-
-    this.usersService.update(userProfile, this.userId).subscribe(
-      () => {
-        this.newAvatar = null;
-      },
-      () => {
-        this.notification.notify({
-          message: "Falha ao atualizar foto =(",
-          type: Types.OPOSITY1,
-        });
-      },
-      () => {
-        this.notification.notify({
-          message: "Foto atualizada com sucesso!",
-          type: Types.BASE,
-        });
-        //this.avatar = this.usersService.getUserProfile().avatar;
-        this.preview = "";
-        this.router.navigate(["profile", this.userId]);
-      }
-    );
+  updateClient() {
+    this.usersService
+      .updateClientDoc(this.as.getRuleId(Role.CLIENT), this.newAvatar)
+      .subscribe({
+        error: () =>
+          this.notification.notify({
+            message: "Falha ao atualizar documento",
+            type: Types.ERROR,
+            timer: 2000,
+          }),
+        next: () => {
+          this.notification.notify({
+            message: "Documento salvo",
+            type: Types.SUCCESS,
+          });
+        },
+      });
   }
 
   delete(id: any): void | boolean {
     if (id === null || id === undefined) {
       return false;
     }
-    this.usersService.deleteAvatar(id).subscribe(
+    this.usersService.deleteDocumentPhoto(id).subscribe(
       () => {
-        if (this.newAvatar !== null && id === this.newAvatar.avatarId) {
+        if (this.newAvatar !== null && id === this.newAvatar.id) {
           this.newAvatar = null;
           this.preview = null;
         }
       },
       () => {
         this.notification.notify({
-          message: "Erro ao tentar deletar foto =(",
+          message: "Erro ao tentar deletar documento =(",
           type: Types.OPOSITY1,
         });
       },
@@ -148,7 +148,7 @@ export class ProfileUploadIdComponent implements OnInit {
 
   cancel() {
     if (this.newAvatar !== undefined && this.newAvatar !== null) {
-      this.delete(this.newAvatar.avatarId);
+      this.delete(this.newAvatar.id);
     }
 
     this.router.navigate(["profile", this.userId]);

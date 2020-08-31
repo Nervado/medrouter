@@ -17,12 +17,14 @@ import { DocDto } from 'src/docs/dto/doc.dto';
 import { Role } from 'src/auth/enums/role.enum';
 import { DocsService } from 'src/docs/docs.service';
 import { ClientDto } from './dtos/cliente-dto';
+import { PhotosService } from 'src/photos/photos.service';
 
 @Injectable()
 export class ClientService {
   constructor(
     @Inject(forwardRef(() => UsersService)) private us: UsersService,
     private ds: DocsService,
+    private ps: PhotosService,
   ) {}
 
   async create(client: AuthSingUpDto): Promise<any> {
@@ -69,7 +71,7 @@ export class ClientService {
   async updateStatus(id: string, checked: boolean): Promise<void> {
     const client = await Client.findOne({ where: { id } });
 
-    if (client.doc?.url === undefined || client.doc?.url === null) {
+    if (client.photo?.url === undefined || client.photo?.url === null) {
       throw new BadRequestException('Not allowed');
     }
 
@@ -137,7 +139,7 @@ export class ClientService {
     const founds = await query
       .leftJoinAndSelect('client.user', 'user')
       .leftJoinAndSelect('user.avatar', 'avatar')
-      .leftJoinAndSelect('client.doc', 'doc')
+      .leftJoinAndSelect('client.photo', 'photo')
       .skip(pageNumber)
       .take(10)
       .getMany();
@@ -164,14 +166,14 @@ export class ClientService {
       throw new UnauthorizedException('Action not allowed');
     }
 
-    const document = await this.ds.getOne(doc.id);
+    const photo = await this.ps.getOne(doc.id);
 
-    client.doc = document;
+    client.photo = photo;
 
     try {
       await client.save();
     } catch (error) {
-      throw new InternalServerErrorException('Update client doc failure');
+      throw new InternalServerErrorException('Update client photo-doc failure');
     }
   }
 
@@ -188,8 +190,8 @@ export class ClientService {
   serializeClient(client: Client): SearchResultDto {
     return {
       id: client.id,
-      doc: {
-        url: client.doc?.url,
+      photo: {
+        url: client.photo?.url,
       },
       user: {
         userId: client.user.userId,
@@ -209,7 +211,10 @@ export class ClientService {
   }
 
   async getOne(userId: any, user?: User): Promise<Client> {
-    if (parseInt(userId) !== user.userId) {
+    if (
+      parseInt(userId) !== user.userId &&
+      !user.role.find(rol => rol === Role.RECEPT)
+    ) {
       throw new UnauthorizedException('Not Allowed');
     }
 
@@ -217,6 +222,9 @@ export class ClientService {
 
     query.andWhere('user.userId = :userId', { userId });
 
-    return await query.leftJoinAndSelect('client.user', 'user').getOne();
+    return await query
+      .leftJoinAndSelect('client.user', 'user')
+
+      .getOne();
   }
 }

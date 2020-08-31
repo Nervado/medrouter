@@ -16,7 +16,7 @@ import { configService } from 'src/config/config.service';
 import { cryptoService } from 'src/crypto/crypto.service';
 import { PhotoDto } from './dto/photo.dto';
 import { diskStorage } from 'multer';
-import { Exists } from './decorators/exists.decorator';
+//import { Exists } from './decorators/exists.decorator';
 
 @Controller('photos')
 export class PhotosController {
@@ -34,7 +34,7 @@ export class PhotosController {
       },
       limits: { fileSize: 2000000 },
       storage: diskStorage({
-        destination: configService.getDocsPath(),
+        destination: configService.getImagesPath(),
         filename: (req, file, cb) => {
           cryptoService.generateFileName(req, file, cb);
         },
@@ -51,10 +51,10 @@ export class PhotosController {
   }
 
   @Get(':photoPath')
-  @Exists('photoPath')
+  //@Exists('photoPath')
   @UseInterceptors(ClassSerializerInterceptor)
   dowloadDocment(@Param('photoPath') filename, @Res() res): Promise<any> {
-    return res.sendFile(filename, { root: 'uploads/images' });
+    return res.sendFile(filename, { root: 'uploads/images' }); //controler path
   }
 
   @UseInterceptors(ClassSerializerInterceptor)

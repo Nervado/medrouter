@@ -8,5 +8,6 @@ import { PhotoRepository } from './photos.repository';
   imports: [TypeOrmModule.forFeature([PhotoRepository])],
   controllers: [PhotosController],
   providers: [PhotosService],
+  exports: [PhotosService],
 })
 export class PhotosModule {}

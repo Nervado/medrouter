@@ -1,6 +1,9 @@
 export class ClientDto {
   id: string;
-  doc: {
+  doc?: {
+    url: string;
+  };
+  photo?: {
     url: string;
   };
   user?: {

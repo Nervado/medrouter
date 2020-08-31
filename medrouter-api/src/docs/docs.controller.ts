@@ -28,7 +28,7 @@ export class DocsController {
   @UseInterceptors(
     FileInterceptor('file', {
       fileFilter: (req, file, callback) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|gif|pdf)$/)) {
+        if (!file.originalname.match(/\.(pdf)$/)) {
           return callback(null, false);
         }
         return callback(null, true);

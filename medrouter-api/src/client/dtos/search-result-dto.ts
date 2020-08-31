@@ -5,7 +5,7 @@ export class SearchResultDto {
   @IsString()
   id?: string;
 
-  doc?: {
+  photo?: {
     url: string;
   };
 

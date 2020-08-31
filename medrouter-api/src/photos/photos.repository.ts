@@ -12,6 +12,7 @@ import { PhotoDto } from './dto/photo.dto';
 export class PhotoRepository extends Repository<Photo> {
   async createOne(photoDto: PhotoDto): Promise<PhotoDto> {
     const photo = new Photo();
+
     this.merge(photo, photoDto);
 
     try {

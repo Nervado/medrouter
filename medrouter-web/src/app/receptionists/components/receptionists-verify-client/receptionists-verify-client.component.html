@@ -103,7 +103,7 @@
             (click)="handleCheck(client.id, false)"
           ></fa-icon>
 
-          <a [href]="client.doc?.url" *ngIf="client.doc.url">
+          <a [href]="client.photo?.url" *ngIf="client.photo.url">
             <fa-icon
               [icon]="faFileDownload"
               class="text-success cursor ml-2"
@@ -114,7 +114,7 @@
           </a>
 
           <fa-icon
-            *ngIf="!client.doc.url"
+            *ngIf="!client.photo.url"
             [icon]="faFileDownload"
             class="cursor ml-2"
             [style.color]="'rgba(125,125,125,0.2)'"
@@ -129,7 +129,7 @@
                 [icon]="faIdCard"
                 class="cursor ml-2"
                 [style.color]="
-                  client.doc.url ? 'var(--success)' : 'var(--medium)'
+                  client.photo?.url ? 'var(--success)' : 'var(--medium)'
                 "
                 data-toggle="tooltip"
                 data-placement="top"

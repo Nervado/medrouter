@@ -22,8 +22,9 @@ export class Client extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Photo, { eager: true, cascade: true, nullable: true })
-  photos: Photo[];
+  @OneToOne(() => Photo, { eager: true, cascade: true, nullable: true })
+  @JoinColumn()
+  photo: Photo;
 
   @OneToOne(() => Doc, { eager: true, cascade: true, nullable: true })
   @JoinColumn()

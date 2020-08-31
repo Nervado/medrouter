@@ -16,6 +16,6 @@ export class PhotosService {
   }
 
   async getOne(id: string): Promise<Photo> {
-    return await this.photoRepo.findOne({ where: { id } });
+    return await Photo.findOne({ where: { id } });
   }
 }

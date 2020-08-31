@@ -43,6 +43,18 @@ export class UsersService {
     return this.http.post<any>(`${MEDROUTER_API}/avatars`, any);
   }
 
+  uploadDocumentPhoto(file: any): Observable<any> {
+    return this.http.post<any>(`${MEDROUTER_API}/photos`, file);
+  }
+
+  deleteDocumentPhoto(id: string): Observable<any> {
+    return this.http.delete<any>(`${MEDROUTER_API}/photos/${id}`);
+  }
+
+  updateClientDoc(id: string, doc: any): Observable<void> {
+    return this.http.patch<void>(`${MEDROUTER_API}/clients/${id}`, { ...doc });
+  }
+
   deleteAvatar(avatarId: any): Observable<any> {
     return this.http.delete<any>(`${MEDROUTER_API}/avatars/${avatarId}`);
   }

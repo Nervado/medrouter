@@ -10,7 +10,6 @@ export class CryptoService {
   ) {}
 
   generateFileName(req, file, cb) {
-    console.log(req.headers);
     let s;
     this._randomStringService
       .generate({

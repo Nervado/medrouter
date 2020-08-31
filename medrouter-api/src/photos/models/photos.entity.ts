@@ -16,6 +16,6 @@ export class Photo extends BaseEntity {
 
   @Expose()
   get url() {
-    return `${configService.getServerUrl()}/images/${this.filename}`;
+    return `${configService.getServerUrl()}/photos/${this.filename}`;
   }
 }

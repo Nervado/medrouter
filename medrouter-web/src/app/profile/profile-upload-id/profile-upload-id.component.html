@@ -34,7 +34,7 @@
           <div class="cursor d-flex justify-content-end">
             <fa-icon
               [icon]="faTrash"
-              (click)="delete(newAvatar?.avatarId)"
+              (click)="delete(newAvatar?.id)"
               size="2x"
               class="mx-1"
             ></fa-icon>
@@ -48,7 +48,11 @@
         <div
           class="in-container buttons-container my-4 d-flex justify-content-center align-items-center bg-profile"
         >
-          <button class="bt bt-medium mr-2" id="buttons1" (click)="update()">
+          <button
+            class="bt bt-medium mr-2"
+            id="buttons1"
+            (click)="updateClient()"
+          >
             Enviar
           </button>
 
