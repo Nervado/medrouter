@@ -31,6 +31,7 @@ import {
   faClock,
   faMobileAlt,
   faUserTie,
+  faCameraRetro,
 } from "@fortawesome/free-solid-svg-icons";
 import { ExamDto } from "../../model/exam";
 import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
@@ -74,6 +75,7 @@ export class DoctorsExamsDashboardComponent implements OnInit {
   faSend = faPaperPlane;
   faClock = faClock;
   faUserTie = faUserTie;
+  faCameraRetro = faCameraRetro;
 
   faLock = faLock;
   faLockOpen = faLockOpen;

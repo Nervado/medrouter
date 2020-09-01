@@ -140,6 +140,46 @@
             </div>
           </div>
 
+          <!--results -->
+
+          <div class="info">
+            <div class="results">Resultados</div>
+
+            <div
+              class="no-result"
+              *ngIf="exam.docs.length === 0 && exam.photos.length === 0"
+            >
+              Indisponível
+            </div>
+
+            <div class="docs">
+              <div class="doc" *ngFor="let pdf of exam?.docs">
+                <div
+                  class="pdf"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Baixar documento"
+                >
+                  <a [href]="pdf?.url" *ngIf="pdf.url"> PDF </a>
+                </div>
+              </div>
+
+              <div class="doc" *ngFor="let photo of exam?.photos">
+                <div
+                  class="imag"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Baixar imagem"
+                >
+                  <a [href]="photo?.url" *ngIf="photo.url">
+                    <fa-icon [icon]="faCameraRetro" size="32px"></fa-icon>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--end of results-->
+
           <div class="info">
             <div class="controls">
               <ng-container *ngIf="exam.docs?.length > 0; else elseTemplate">

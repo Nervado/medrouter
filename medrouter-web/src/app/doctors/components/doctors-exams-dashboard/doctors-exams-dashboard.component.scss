@@ -212,6 +212,94 @@
             font-weight: bold;
           }
           .info {
+            .results {
+              background-color: var(--lab);
+              color: var(--oposity);
+              border-radius: 4px;
+              text-align: center;
+              font-weight: bold;
+              font-size: 12px;
+              margin-bottom: 2px;
+              padding: 0px 2px;
+              width: 150px;
+              max-width: 150px;
+            }
+            .no-result {
+              color: var(--oposity1);
+              //@at-root: bold;
+              font-size: 12px;
+              text-align: center;
+              margin-top: 5px;
+            }
+            .docs {
+              display: flex;
+
+              .doc {
+                margin: 2px;
+                display: flex;
+
+                .imag {
+                  background-color: var(--green);
+                  width: 30px;
+                  border-radius: 4px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+
+                  fa-icon {
+                    font-size: 12px;
+                    color: var(--oposity);
+                  }
+                }
+                .pdf {
+                  width: 30px;
+                  color: var(--oposity);
+                  font-weight: bold;
+                  background-color: rgb(151, 32, 32);
+                  border-radius: 4px;
+                  text-align: center;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 0px 2px;
+                  font-size: 10px;
+                  cursor: pointer;
+
+                  &:hover {
+                    transform: scale(1.01);
+                    opacity: 0.8;
+                  }
+                }
+
+                .pdf,
+                .imag {
+                  a {
+                    text-decoration: none;
+                    color: var(--oposity);
+                  }
+                  fa-icon {
+                    color: var(--oposity);
+                  }
+                }
+
+                .remove {
+                  position: relative;
+                  bottom: -10px;
+                }
+
+                fa-icon {
+                  margin-left: 2px;
+                  color: var(--oposity1);
+                  cursor: pointer;
+
+                  &:hover {
+                    transform: scale(1.01);
+                    opacity: 0.8;
+                  }
+                }
+              }
+            }
+
             .controls {
               display: flex;
 
@@ -235,6 +323,8 @@
               font-weight: bold;
               font-size: 12px;
               padding: 1px 3px;
+              width: 100px;
+              max-width: 90px;
             }
           }
 
