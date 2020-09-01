@@ -11,6 +11,7 @@ import {
   Delete,
   Patch,
   UseGuards,
+  Put,
 } from '@nestjs/common';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { ExamsService } from './exams.service';
@@ -69,5 +70,16 @@ export class ExamsController {
     @GetUser() user: User,
   ) {
     return this.examsService.changeStatus(id, body, user);
+  }
+
+  @Put('/:id')
+  @Roles(Role.LAB)
+  @UseInterceptors(ClassSerializerInterceptor)
+  update(
+    @Param('id') id: string,
+    @Body() exam: ExamDto,
+    @GetUser() user: User,
+  ) {
+    return this.examsService.update(id, exam, user);
   }
 }

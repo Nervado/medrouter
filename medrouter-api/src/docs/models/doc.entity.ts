@@ -1,6 +1,14 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  BaseEntity,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { configService } from 'src/config/config.service';
 import { Exclude, Expose } from 'class-transformer';
+import { Exam } from 'src/exams/models/exam.entity';
 
 @Entity('documents')
 export class Doc extends BaseEntity {
@@ -18,4 +26,12 @@ export class Doc extends BaseEntity {
   get url() {
     return `${configService.getServerUrl()}/docs/${this.filename}`;
   }
+
+  @ManyToOne(
+    () => Exam,
+    Exam => Exam.docs,
+    { nullable: true },
+  )
+  @JoinColumn()
+  exam: Exam;
 }

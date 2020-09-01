@@ -11,8 +11,8 @@ export class ExamDto {
   type: ExamsEnum;
   doctor?: DoctorDto;
   status?: ExamStatus;
-  docs?: DocDto;
-  photos?: [{ id?: string; url?: string; path?: string; filename?: string }];
+  docs?: DocDto[];
+  photos?: DocDto[];
   lab?: {
     id: any;
     name: string;

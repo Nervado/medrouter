@@ -10,6 +10,7 @@ import {
   OneToOne,
   JoinColumn,
   Unique,
+  OneToMany,
 } from 'typeorm';
 
 import { ExamsEnum } from '../enums/exams.enum';
@@ -44,10 +45,19 @@ export class Exam extends BaseEntity {
   @Column({ nullable: true })
   deadline: number;
 
-  @ManyToOne(type => Photo, { nullable: true })
+  @OneToMany(
+    type => Photo,
+    photo => photo.exam,
+    { nullable: true, eager: true, cascade: true },
+  )
+  @JoinColumn()
   photos: Photo[];
 
-  @ManyToOne(type => Doc, { nullable: true })
+  @OneToMany(
+    type => Doc,
+    doc => doc.exam,
+    { nullable: true, eager: true, cascade: true },
+  )
   docs: Doc[];
 
   @ManyToOne(() => Lab, { nullable: true, eager: true })

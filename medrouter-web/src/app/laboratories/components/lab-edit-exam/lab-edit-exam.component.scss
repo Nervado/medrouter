@@ -248,6 +248,15 @@
               font-weight: bold;
               font-size: 12px;
               margin-bottom: 2px;
+              padding: 0px 2px;
+              width: 150px;
+            }
+            .no-result {
+              color: var(--oposity1);
+              //@at-root: bold;
+              font-size: 12px;
+              text-align: center;
+              margin-top: 5px;
             }
             .docs {
               display: flex;
@@ -286,6 +295,17 @@
                   &:hover {
                     transform: scale(1.01);
                     opacity: 0.8;
+                  }
+                }
+
+                .pdf,
+                .imag {
+                  a {
+                    text-decoration: none;
+                    color: var(--oposity);
+                  }
+                  fa-icon {
+                    color: var(--oposity);
                   }
                 }
 

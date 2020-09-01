@@ -19,10 +19,17 @@ import { ExamStatusDto } from './dto/exam-status.dto';
 import { LabsService } from 'src/labs/labs.service';
 import { ClientDto } from 'src/client/dtos/cliente-dto';
 import { Client } from 'src/client/models/client.entity';
+import { DocsService } from 'src/docs/docs.service';
+import { PhotosService } from 'src/photos/photos.service';
 
 @Injectable()
 export class ExamsService {
-  constructor(private ps: PrescriptionsService, private ls: LabsService) {}
+  constructor(
+    private ps: PrescriptionsService,
+    private ls: LabsService,
+    private ds: DocsService,
+    private fs: PhotosService,
+  ) {}
 
   async create(examdto: ExamDto, user: User): Promise<void> {
     const prescription = await this.ps.findById(examdto.prescriptionId);
@@ -52,8 +59,6 @@ export class ExamsService {
   }
 
   async delete(id: string): Promise<void> {
-    console.log('Removing', id);
-
     const exam = await Exam.findOne(id);
 
     if (exam.status !== ExamStatus.REQUEST) {
@@ -103,6 +108,8 @@ export class ExamsService {
 
     const founds = await query
       .leftJoinAndSelect('exam.doctor', 'doctor')
+      .leftJoinAndSelect('exam.docs', 'docs')
+      .leftJoinAndSelect('exam.photos', 'photos')
       .leftJoinAndSelect('exam.lab', 'lab')
       .leftJoinAndSelect('doctor.user', 'doctorUser')
       .leftJoinAndSelect('doctorUser.avatar', 'doctorAvatar')
@@ -114,12 +121,20 @@ export class ExamsService {
       .take(10)
       .getMany();
 
-    return founds.map((exam: Exam) =>
-      this.serializeExam(exam, user?.userId === exam.client.user.userId),
-    );
+    return [
+      ...new Set(
+        founds.map((exam: Exam) =>
+          this.serializeExam(
+            exam,
+            user?.userId === exam.client.user.userId,
+            exam.status === ExamStatus.CONCLUDED,
+          ),
+        ),
+      ),
+    ];
   }
 
-  serializeExam(exam: Exam, sendCode?: boolean): ExamDto {
+  serializeExam(exam: Exam, sendCode?: boolean, sendResult?: boolean): ExamDto {
     return {
       id: exam?.id,
       code: sendCode ? exam.code : null,
@@ -127,8 +142,12 @@ export class ExamsService {
       status: exam.status,
       deadline: exam.deadline,
       type: exam.type,
-      docs: exam.docs,
-      photos: exam.photos,
+      docs: exam.docs.map(doc => {
+        return { url: doc.url, id: doc.id };
+      }),
+      photos: exam.photos.map(photo => {
+        return { url: photo.url, id: photo.id };
+      }),
       createdAt: exam.createdAt,
       lab: {
         id: exam.lab?.id,
@@ -216,7 +235,7 @@ export class ExamsService {
 
     const { code, status, labId } = statusDto;
 
-    // console.log(id, statusDto, user, code, status);
+    console.log(exam);
 
     if (!exam) {
       throw new BadRequestException('Exam dont exists');
@@ -243,6 +262,7 @@ export class ExamsService {
       exam.status = ExamStatus.EXECUTION;
       exam.price = statusDto.price;
       exam.deadline = statusDto.deadline;
+      exam.code = null;
 
       // to do notify
     }
@@ -250,7 +270,8 @@ export class ExamsService {
     if (
       status === ExamStatus.CANCELED &&
       exam.status === ExamStatus.EXECUTION &&
-      exam.docs.length === 0
+      exam.docs.length === 0 &&
+      exam.photos.length === 0
     ) {
       exam.status = ExamStatus.REQUEST;
       exam.deadline = null;
@@ -262,15 +283,38 @@ export class ExamsService {
 
     if (
       status === ExamStatus.CONCLUDED &&
-      exam.status === ExamStatus.EXECUTION
+      exam.status === ExamStatus.EXECUTION &&
+      (exam.docs.length > 0 || exam.photos.length > 0)
     ) {
       exam.status = ExamStatus.CONCLUDED;
       exam.code = null;
     }
     //
 
-    if (exam.status !== status) {
-      throw new BadRequestException('Wrong condition to modify exam status');
+    if (
+      status === ExamStatus.CONCLUDED &&
+      exam.status === ExamStatus.EXECUTION &&
+      exam.docs.length === 0 &&
+      exam.photos.length === 0
+    ) {
+      throw new BadRequestException('Exam dot have any result');
+    }
+
+    if (
+      status === ExamStatus.CANCELED &&
+      (exam.status === ExamStatus.CONCLUDED ||
+        exam.status === ExamStatus.AVAILABLE) &&
+      (exam.docs.length > 0 || exam.photos.length > 0)
+    ) {
+      throw new BadRequestException('Exam cannot be deleted anymore');
+    }
+
+    if (
+      status === ExamStatus.CANCELED &&
+      exam.status === ExamStatus.EXECUTION &&
+      (exam.docs.length > 0 || exam.photos.length > 0)
+    ) {
+      throw new BadRequestException('Exam has result');
     }
 
     try {
@@ -290,26 +334,20 @@ export class ExamsService {
     return this.serializeExam(exam);
   }
 
-  serializeLabClient(clients: Client[]): ClientDto[] {
-    return [
-      ...new Set(
-        clients.map((client: Client) => {
-          return {
-            username: client.user.username,
-            email: client.user.email,
-            id: client.id,
-            user: {
-              username: client.user.username,
-              fullname: client.user.fullname,
-              surname: client.user.surname,
-              avatar: {
-                url: client.user.avatar?.url,
-              },
-            },
-          };
-        }),
-      ),
-    ];
+  serializeLabClient(client: Client): ClientDto {
+    return {
+      username: client.user.username,
+      email: client.user.email,
+      id: client.id,
+      user: {
+        username: client.user.username,
+        fullname: client.user.fullname,
+        surname: client.user.surname,
+        avatar: {
+          url: client.user.avatar?.url,
+        },
+      },
+    };
   }
 
   async getClientsWithRelatedExam(
@@ -317,8 +355,6 @@ export class ExamsService {
     search: SearchClientDto,
   ): Promise<ClientDto[]> {
     const { page, username } = search;
-
-    console.log(page, username);
 
     const pageNumber: number = page ? page * 10 - 10 : 0;
 
@@ -341,8 +377,47 @@ export class ExamsService {
       .take(10)
       .getMany();
 
-    console.log(founds.map(exam => exam.client));
+    const ids = founds.map(exam => exam.client.id);
 
-    return this.serializeLabClient(founds.map(exam => exam.client));
+    const uniqIds = [...new Set([...ids])];
+
+    const clients = [
+      ...uniqIds.map(id => founds.find(exam => exam.client.id === id)),
+    ].map(cl => this.serializeLabClient(cl.client));
+
+    return clients;
+  }
+
+  async update(id: string, examDto: ExamDto, user: User): Promise<void> {
+    const { docs, photos } = examDto;
+
+    const exam = await Exam.findOne(id);
+
+    if (!exam) {
+      throw new NotFoundException('Exam dont exist');
+    }
+
+    if (!exam.lab.users.find(_user => _user.userId === user.userId)) {
+      throw new UnauthorizedException('User is not employee');
+    }
+
+    if (docs.length > 0) {
+      const doc = await this.ds.getOne(docs[0].id);
+
+      exam.docs = [...exam.docs, doc];
+    }
+
+    if (photos.length > 0) {
+      const photo = await this.fs.getOne(photos[0].id);
+
+      exam.photos = [...exam.photos, photo];
+    }
+
+    try {
+      await exam.save();
+      console.log(exam);
+    } catch (error) {
+      throw new InternalServerErrorException('Update exam results has fail');
+    }
   }
 }

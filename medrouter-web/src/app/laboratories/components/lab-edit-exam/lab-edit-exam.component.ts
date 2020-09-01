@@ -38,7 +38,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { ExamStatus } from "src/app/doctors/enums/status.enum";
 import { format, parseISO, addDays } from "date-fns";
-import { ExamDto } from "src/app/doctors/model/exam";
+
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Client } from "src/app/clients/models/client";
 import { LaboratoriesService } from "../../laboratories.service";
@@ -48,6 +48,7 @@ import { Types } from "src/app/messages/toast/enums/types";
 import { SearchClientDto } from "../../dtos/search-client.dto";
 import getStatusColor from "src/app/utils/getStatusColor";
 import { DocDto } from "../../dtos/doc-dto";
+import { ExamDto } from "../../dtos/exam";
 
 @Component({
   selector: "app-lab-edit-exam",
@@ -133,10 +134,6 @@ export class LabEditExamComponent implements OnInit {
       this.getExams(params["id"], { page: this.page })
     );
 
-    this.formResult = this.fb.group({
-      file: [null, Validators.required],
-    });
-
     this.docForm = this.fb.group({
       file: [null, Validators.required],
     });
@@ -148,11 +145,17 @@ export class LabEditExamComponent implements OnInit {
         status: ExamStatus.CONCLUDED,
       })
       .subscribe({
-        next: () =>
+        next: () => {
           this.ns.notify({
             message: "Exame enviado",
             type: Types.SUCCESS,
-          }),
+          });
+
+          this.getExams(this.activatedRoute.parent.snapshot.params["id"], {
+            username: this.client ? this.client.user.username : "",
+            page: this.page,
+          });
+        },
         error: () =>
           this.ns.notify({
             message: "Falha ao enviar exame",
@@ -200,17 +203,27 @@ export class LabEditExamComponent implements OnInit {
       next: (file: DocDto) => {
         //update exam
         if (type) {
-          exam.docs = [...exam.docs, file];
+          exam.docs = [file];
         } else {
-          exam.photos = [...exam.photos, file];
+          exam.photos = [file];
         }
+
         this.ls.updateExamDocuments(exam.id, exam).subscribe({
           next: () => {
             this.ns.notify({
               message: "Resultados atualizados com sucesso",
               type: Types.SUCCESS,
             });
-            this.search(username, this.page);
+            this.getExams(this.activatedRoute.parent.snapshot.params["id"], {
+              page: this.page,
+              username: this.client ? this.client.user.username : undefined,
+            });
+          },
+          error: () => {
+            this.ns.notify({
+              message: "Falha ao atualizar exame",
+              type: Types.ERROR,
+            });
           },
         });
       },
@@ -280,11 +293,16 @@ export class LabEditExamComponent implements OnInit {
         status: ExamStatus.CANCELED,
       })
       .subscribe({
-        next: () =>
+        next: () => {
           this.ns.notify({
             message: "Execução cancelada",
             type: Types.WARN,
-          }),
+          });
+          this.getExams(this.activatedRoute.parent.snapshot.params["id"], {
+            username: this.client ? this.client.user.username : "",
+            page: this.page,
+          });
+        },
         error: () =>
           this.ns.notify({
             message: "Remova todos os resultados para cancelar o exame",
@@ -295,11 +313,16 @@ export class LabEditExamComponent implements OnInit {
 
   removeResult(id: string, type: boolean) {
     this.ls.deleteResult(id, type).subscribe({
-      next: () =>
+      next: () => {
         this.ns.notify({
           message: "Arquivo excluído",
           type: Types.INFO,
-        }),
+        });
+        this.getExams(this.activatedRoute.parent.snapshot.params["id"], {
+          page: this.page,
+          username: this.client ? this.client.user.username : undefined,
+        });
+      },
       error: () =>
         this.ns.notify({
           message: "Falha ao excluir arquivo",

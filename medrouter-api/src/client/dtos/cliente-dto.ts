@@ -56,4 +56,6 @@ export class ClientDto {
       url?: string;
     };
   };
+
+  id?: string;
 }

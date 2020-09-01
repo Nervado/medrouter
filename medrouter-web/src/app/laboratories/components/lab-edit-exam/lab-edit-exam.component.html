@@ -143,9 +143,24 @@
           <div class="info">
             <div class="results">Resultados</div>
 
+            <div
+              class="no-result"
+              *ngIf="exam.docs.length === 0 && exam.photos.length === 0"
+            >
+              Indisponível
+            </div>
+
             <div class="docs">
-              <div class="doc" *ngFor="let pdf of exam.docs">
-                <div class="pdf">PDF</div>
+              <div class="doc" *ngFor="let pdf of exam?.docs">
+                <div
+                  class="pdf"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Baixar documento"
+                >
+                  <a [href]="pdf?.url" *ngIf="pdf.url"> PDF </a>
+                </div>
+
                 <fa-icon
                   [icon]="faTrash"
                   class="remove"
@@ -153,9 +168,16 @@
                 ></fa-icon>
               </div>
 
-              <div class="doc" *ngFor="let photo of exam.photos">
-                <div class="imag">
-                  <fa-icon [icon]="faCameraRetro" size="32px"></fa-icon>
+              <div class="doc" *ngFor="let photo of exam?.photos">
+                <div
+                  class="imag"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Baixar imagem"
+                >
+                  <a [href]="photo?.url" *ngIf="photo.url">
+                    <fa-icon [icon]="faCameraRetro" size="32px"></fa-icon>
+                  </a>
                 </div>
 
                 <fa-icon
@@ -183,9 +205,8 @@
                     accept="application/pdf"
                     type="file"
                     name="file"
-                    [id]="exam.id"
                     (change)="
-                      handleChange($event, exam, true, clientname.value)
+                      handleChange($event, exam, true, client?.user.username)
                     "
                     value=""
                     class="doc-input"
@@ -207,9 +228,8 @@
                     accept="image/*"
                     type="file"
                     name="file"
-                    [id]="exam.id"
                     (change)="
-                      handleChange($event, exam, false, clientname.value)
+                      handleChange($event, exam, false, client?.user.username)
                     "
                     value=""
                     class="doc-input"
@@ -217,10 +237,12 @@
                 </label>
               </form>
 
-              <div class="cursor" (click)="unlock(exam)">
+              <div class="cursor">
                 <ng-container
                   *ngIf="
-                    exam.status !== 'disponivel' || exam.status === 'cancelado';
+                    exam.status === 'executando' ||
+                      exam.status === 'cancelado' ||
+                      exam.status === 'solicitado';
                     else tlock
                   "
                 >
