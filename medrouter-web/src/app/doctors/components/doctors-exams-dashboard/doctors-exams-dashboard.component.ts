@@ -32,6 +32,7 @@ import {
   faMobileAlt,
   faUserTie,
   faCameraRetro,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { ExamDto } from "../../model/exam";
 import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
@@ -76,6 +77,7 @@ export class DoctorsExamsDashboardComponent implements OnInit {
   faClock = faClock;
   faUserTie = faUserTie;
   faCameraRetro = faCameraRetro;
+  faTrash = faTrash;
 
   faLock = faLock;
   faLockOpen = faLockOpen;
@@ -197,5 +199,26 @@ export class DoctorsExamsDashboardComponent implements OnInit {
       this.activatedRoute.parent.snapshot.params["id"],
       this.client ? this.client.user.username : ""
     );
+  }
+
+  deleteExam(id: string) {
+    this.ds.deleteExam(id).subscribe({
+      next: () => {
+        this.ns.notify({
+          message: "Exame excluido",
+          type: Types.INFO,
+        });
+        this.getExams(
+          this.activatedRoute.parent.snapshot.params["id"],
+          this.client ? this.client.user.username : ""
+        );
+      },
+      error: () => {
+        this.ns.notify({
+          message: "Falha ao tentar excluir exame",
+          type: Types.ERROR,
+        });
+      },
+    });
   }
 }

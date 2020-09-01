@@ -182,28 +182,6 @@
 
           <div class="info">
             <div class="controls">
-              <ng-container *ngIf="exam.docs?.length > 0; else elseTemplate">
-                <div *ngFor="let doc of exam.docs">
-                  <a [href]="doc.url">
-                    <fa-icon
-                      [icon]="faFileDownload"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Baixar resultado"
-                    ></fa-icon>
-                  </a>
-                </div>
-              </ng-container>
-              <ng-template #elseTemplate>
-                <fa-icon
-                  [icon]="faFileDownload"
-                  class="text-oposity1"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Resultado não disponivel"
-                ></fa-icon>
-              </ng-template>
-
               <div class="cursor" (click)="unlock(exam)">
                 <ng-container
                   *ngIf="
@@ -230,6 +208,9 @@
                   ></fa-icon>
                 </ng-template>
               </div>
+
+              <fa-icon [icon]="faTrash" (click)="deleteExam(exam.id)">
+              </fa-icon>
             </div>
 
             <div
