@@ -1,4 +1,7 @@
-<app-clients-add-appointment #modal></app-clients-add-appointment>
+<app-clients-add-appointment
+  #modal
+  (signOut)="confirm($event)"
+></app-clients-add-appointment>
 
 <div class="main-data text-oposity">
   <div class="month">

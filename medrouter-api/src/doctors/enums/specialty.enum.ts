@@ -46,7 +46,7 @@ export enum Specialty {
   ORT = 'Ortopedia e traumatologia',
   OTR = 'Otorrinolaringologia',
   PAT = 'Patologia',
-  PCL = 'Patologia clinica ou medicina laboratorial',
+  PCL = 'Patologia clinica ou medicina laboratorial', //corrigir
   PED = 'Pediatria',
   PNM = 'Pneumologia',
   PSI = 'Psiquiatria',

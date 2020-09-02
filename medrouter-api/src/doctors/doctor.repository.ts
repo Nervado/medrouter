@@ -13,6 +13,8 @@ import { Role } from 'src/auth/enums/role.enum';
 import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
 import { Schedule } from './models/schedule.entity';
 import { ScheduleDto } from './dto/schedule.dto';
+import { Specialty } from './enums/specialty.enum';
+import { upAndDownCase } from 'src/utils/upAndDowCase';
 
 @EntityRepository(Doctor)
 export class DoctorRepository extends Repository<Doctor>
@@ -32,8 +34,6 @@ export class DoctorRepository extends Repository<Doctor>
     doctor.specialty = [...specialty];
 
     doctor.user = user;
-
-    console.log(doctor.specialty);
 
     this.merge(doctor, doctorDto);
 
@@ -55,7 +55,23 @@ export class DoctorRepository extends Repository<Doctor>
     const query = this.createQueryBuilder('doctor');
 
     if (username) {
-      query.andWhere(`username ILIKE '%${username}%'`);
+      const [up, down] = upAndDownCase(username);
+      const specialtys = Object.values(Specialty).filter(
+        (value, i) => value.indexOf(up) > -1 || value.indexOf(down) > -1,
+      );
+
+      console.log(specialtys);
+
+      if (specialtys.length > 0) {
+        query.andWhere(
+          `user.username  ILIKE '%${username}%' OR user.surname  ILIKE '%${username}%' OR doctor.specialty <@ (:specialtys)`,
+          { specialtys },
+        );
+      } else {
+        query.andWhere(
+          `user.username  ILIKE '%${username}%' OR user.surname  ILIKE '%${username}%'`,
+        );
+      }
     }
 
     const doctors = await query

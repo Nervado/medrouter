@@ -1,8 +1,6 @@
 <ng-template #content let-modal>
   <div class="modal-header bg-client">
-    <h4 class="modal-title text-oposity" id="modal-basic-title">
-      Agendamento
-    </h4>
+    <h4 class="modal-title text-oposity" id="modal-basic-title">Agendamento</h4>
     <button
       type="button"
       class="close text-base"
@@ -66,7 +64,7 @@
             id="include"
             name="hours"
             class="in in-client"
-            style="border: 1px solid var(--client); color: var(--client);"
+            style="border: 1px solid var(--client); color: var(--client)"
           >
             <option value="hour" *ngFor="let hour of hours">{{ hour }}</option>
           </select>
@@ -92,7 +90,7 @@
             placeholder="Senha"
             autocomplete="off"
             class="in in-client"
-            style="border: 1px solid var(--client); color: var(--client);"
+            style="border: 1px solid var(--client); color: var(--client)"
           />
           <div
             class="d-flex mx-2 flex-column justify-content-center align-items-center"

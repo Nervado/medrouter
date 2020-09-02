@@ -103,6 +103,10 @@ export class DoctorsSearchComponent implements OnInit {
     modal.open();
   }
 
+  confirm(e) {
+    console.log(e);
+  }
+
   pageUp(username?: string) {
     this.page += 1;
     this.handleSearch(this.page, username);
