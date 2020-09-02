@@ -51,7 +51,11 @@ export class AppointmentsService {
     const { id, hour, date } = search;
 
     query.andWhere('doctor.id = :id', { id });
-    query.andWhere('hour = :hour', { hour });
+
+    if (hour) {
+      query.andWhere('hour = :hour', { hour });
+    }
+
     query.andWhere('date = :date', { date: getMidnight(date) });
     query.andWhere('status != :status', { status: AppointmentStatus.CANCELED });
 

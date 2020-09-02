@@ -5,6 +5,8 @@ import { Doctor } from "./models/doctor";
 import { MEDROUTER_API } from "../api/app.api";
 import { AuthService } from "../auth/auth.service";
 import { Data } from "./interfaces/data";
+import { SearchDoctorDto } from "./models/search";
+import { isThisHour } from "date-fns";
 
 @Injectable({
   providedIn: "root",
@@ -12,8 +14,20 @@ import { Data } from "./interfaces/data";
 export class ClientsService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  search(string): Observable<Array<Doctor>> {
-    return this.http.get<Array<Doctor>>(`${MEDROUTER_API}/doctors?page=1`);
+  search(search: SearchDoctorDto): Observable<Array<Doctor>> {
+    const { page, username } = search;
+
+    const query = username ? `&username=${username}` : "";
+
+    return this.http.get<Array<Doctor>>(
+      `${MEDROUTER_API}/doctors?page=${page}${query}`
+    );
+  }
+
+  getFreeSchedules(id: string, date: string): Observable<any> {
+    return this.http.get<any>(
+      `${MEDROUTER_API}/doctors/${id}/free-schedules?date=${date}`
+    );
   }
 
   getDataGraph(): Observable<Array<Data>> {

@@ -96,8 +96,6 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
   }
 
   confirm(update: UpdateAppointmentDto) {
-    console.log(update);
-
     if (this.checkPassword(update.password)) {
       this.modifyAppoiment(
         this.appointment.id,

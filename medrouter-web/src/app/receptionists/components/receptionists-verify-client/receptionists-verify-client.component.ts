@@ -27,6 +27,8 @@ import { ReceptionistsService } from "../../receptionists.service";
 import { NotificationService } from "src/app/messages/notification.service";
 import { Types } from "src/app/messages/toast/enums/types";
 import { DocDto } from "../../dtos/doc-dto";
+import { IfStmt } from "@angular/compiler";
+import { parseISO } from "date-fns";
 
 @Component({
   selector: "app-receptionists-verify-client",
@@ -205,5 +207,13 @@ export class ReceptionistsVerifyClientComponent implements OnInit {
             type: Types.ERROR,
           }),
       });
+  }
+
+  age(date: Date): number {
+    if (date === null) {
+      return undefined;
+    } else {
+      return new Date().getFullYear() - parseISO(date.toString()).getFullYear();
+    }
   }
 }

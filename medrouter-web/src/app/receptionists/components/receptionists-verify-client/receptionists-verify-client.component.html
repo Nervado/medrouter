@@ -62,8 +62,8 @@
               Idade:
               <strong
                 >{{
-                  client.user.birthdate
-                    ? date.getFullYear() - client.user.birthdate?.getFullYear()
+                  age(client.user.birthdate)
+                    ? age(client.user.birthdate)
                     : "Não informado"
                 }}
               </strong>

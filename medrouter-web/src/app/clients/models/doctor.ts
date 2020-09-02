@@ -1,10 +1,13 @@
+import { Available } from "./available.enum";
+
 export class Doctor {
-  id: number;
+  id: string;
   salary: string;
   hireddate: Date;
   dismissdate: null;
   ishired: true;
   specialty: Array<string>;
+  count?: number = 0;
   user: {
     userId: number;
     username: string;
@@ -21,5 +24,16 @@ export class Doctor {
     address: any;
     avatar: any;
     fullname: string;
+  };
+
+  schedule?: {
+    id?: string;
+    date?: Date;
+    hours?: [
+      {
+        busy: boolean;
+        hour: Available;
+      }
+    ];
   };
 }

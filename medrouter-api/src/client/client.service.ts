@@ -199,7 +199,7 @@ export class ClientService {
         fullname: client.user.fullname,
         email: client.user.email,
         phoneNumber: client.user.phoneNumber,
-        birthdate: client.user.birthdate,
+        birthdate: client.user?.birthdate,
         sex: client.user.sex,
         checked: client.user.checked,
         avatar: {
@@ -227,4 +227,6 @@ export class ClientService {
 
       .getOne();
   }
+
+  // async getSchedules(id, doctorId, search, user): Promise<>{};
 }

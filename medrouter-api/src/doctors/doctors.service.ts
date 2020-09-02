@@ -34,6 +34,7 @@ import { PrescriptionDto } from 'src/prescriptions/dto/prescription.dto';
 import { PrescriptionsService } from 'src/prescriptions/prescriptions.service';
 import { ExamDto } from 'src/exams/dto/exam.dto';
 import { ExamsService } from 'src/exams/exams.service';
+import { stringify } from 'querystring';
 @Injectable()
 export class DoctorsService extends Service<
   DoctorDto,
@@ -101,8 +102,9 @@ export class DoctorsService extends Service<
             user: {
               username: doctor.user.username,
               surname: doctor.user.surname,
+              fullname: doctor.user.fullname,
               avatar: {
-                avatarId: doctor.user.avatar.avatarId,
+                url: doctor.user.avatar?.url,
               },
             },
           };
@@ -207,6 +209,45 @@ export class DoctorsService extends Service<
       ];
 
       return schedules;
+    } catch (error) {
+      throw new InternalServerErrorException('Fail to retrive schedule');
+    }
+  }
+
+  async getFreeSchedules(
+    id?: string,
+    search?: SearchScheduleDto,
+  ): Promise<ScheduleDto> {
+    try {
+      const founds = await this.searchMany(id, search);
+
+      const searchAppointments = await this.as.searchMany(id, search);
+
+      const schedules = [
+        ...founds.map(sc => {
+          const hours = sc.availablehours
+            .map(hour => {
+              const find = searchAppointments.find(
+                appointment =>
+                  appointment.hour === hour &&
+                  sc.date.toString() === appointment.date.toString(),
+              );
+
+              //console.log(find);
+
+              return { hour: hour, busy: find ? true : false };
+            })
+            .filter(sc => sc.busy === false);
+
+          return {
+            id: sc.id,
+            date: sc.date,
+            hours,
+          };
+        }),
+      ];
+
+      return schedules[0];
     } catch (error) {
       throw new InternalServerErrorException('Fail to retrive schedule');
     }
@@ -471,5 +512,47 @@ export class DoctorsService extends Service<
     this.checkDoctor(doctor, user);
 
     return this.es.change(examId);
+  }
+
+  async getAvailableSchedules(search: SearchClientDto): Promise<ScheduleDto[]> {
+    const { page, username } = search;
+
+    const pageNumber: number = page ? page * 10 - 10 : 0;
+
+    const query = Schedule.getRepository().createQueryBuilder('schedule');
+
+    if (username) {
+      query.andWhere(`user.username ILIKE '%${username}%' OR `);
+    }
+
+    const founds = await query
+      .leftJoinAndSelect('schedule.doctor', 'doctor')
+      .leftJoinAndSelect('doctor.user', 'user')
+      .skip(pageNumber)
+      .take(10)
+      .orderBy('date', 'ASC')
+      .getMany();
+
+    return founds.map(sc => this.serializeSchedules(sc));
+  }
+  serializeSchedules(schedule: Schedule): ScheduleDto {
+    return {
+      id: schedule.id,
+      date: schedule.date,
+      availablehours: schedule.availablehours,
+
+      doctor: {
+        id: schedule.doctor.id,
+        specialty: schedule.doctor.specialty,
+        user: {
+          username: schedule.doctor.user.username,
+          fullname: schedule.doctor.user.fullname,
+          surname: schedule.doctor.user.surname,
+          avatar: {
+            url: schedule.doctor.user.avatar.url,
+          },
+        },
+      },
+    };
   }
 }

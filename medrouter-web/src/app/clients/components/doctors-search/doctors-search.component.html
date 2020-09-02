@@ -3,31 +3,34 @@
 <div class="main-data text-oposity">
   <div class="month">
     <div class="control">
-      <fa-icon [icon]="faChevronLeft"></fa-icon>
+      <fa-icon [icon]="faChevronLeft" (click)="pageDown(name.value)"></fa-icon>
     </div>
 
     <div class="control">Médicos</div>
 
     <div class="control">
-      <fa-icon [icon]="faChevronRight"></fa-icon>
+      <fa-icon [icon]="faChevronRight" (click)="pageUp(name.value)"></fa-icon>
     </div>
     <div class="control">
       <input
         type="text"
-        placeholder="Encontre seu médico"
+        placeholder="Nome ou especialidade"
         class="in in-client"
+        #name
       />
       <fa-icon
         [icon]="faSearch"
         class="ml-2"
-        (click)="handleSearch()"
+        (click)="handleSearch(1, name.value)"
       ></fa-icon>
 
       <!--  <fa-icon [icon]="faFilter" class="ml-2"></fa-icon>-->
     </div>
   </div>
 
-  <div class="text-base ml-1">Resultados {{ searchResult.length }}</div>
+  <div class="text-base ml-1 font-smaller">
+    Resultados {{ searchResult.length }}
+  </div>
 
   <div class="results">
     <div class="doc" *ngFor="let doctor of searchResult">
@@ -38,25 +41,99 @@
         <ng-template #elseTemplate>
           <img src="../../../../assets/avatarmale.png" alt="" />
         </ng-template>
+
+        <div class="info">
+          <div class="name">
+            <strong>{{ doctor?.user.fullname }}</strong>
+          </div>
+
+          <div class="spcly">
+            <div *ngFor="let item of doctor.specialty">{{ fmrt(item) }}</div>
+          </div>
+
+          <div class="ratting">
+            <fa-icon
+              [icon]="faStar"
+              class="mr-1"
+              *ngFor="let star of stars"
+            ></fa-icon>
+          </div>
+        </div>
       </div>
 
-      <div class="name">
-        <strong>{{ doctor.user.fullname }}</strong>
-      </div>
+      <div class="schedule">
+        <div
+          class="disp"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Horários disponíveis"
+        >
+          <fa-icon
+            [icon]="faChevronLeft"
+            (click)="dayUporDown(doctor, false)"
+          ></fa-icon>
 
-      <div class="spcly d-flex flex-wrap">
-        <fa-icon [icon]="faUserMd" class="mr-1"></fa-icon>
-        <div *ngFor="let item of doctor.specialty">{{ item }}</div>
-      </div>
+          Disponibilidade
+          <strong class="count" *ngIf="doctor.schedule?.hours.length > 0">{{
+            doctor.schedule?.hours.length
+          }}</strong>
+          <fa-icon
+            [icon]="faChevronRight"
+            (click)="dayUporDown(doctor, true)"
+          ></fa-icon>
+        </div>
 
-      <div class="ratting">
-        <fa-icon
-          [icon]="faStar"
-          class="mr-1"
-          *ngFor="let star of stars"
-        ></fa-icon>
-      </div>
+        <div
+          *ngIf="doctor?.schedule?.hours.length === 0"
+          [style.color]="'rgba(125,125,125,0.5)'"
+        >
+          Sem agenda para {{ prettyDate(doctor.schedule?.date) }}
+        </div>
 
+        <ng-container *ngIf="doctor.schedule?.hours.length > 3; else list">
+          <div class="hours">
+            <fa-icon
+              [icon]="faChevronCircleLeft"
+              (click)="upOrDown(doctor, false)"
+            ></fa-icon>
+            <div>
+              {{
+                prettyDate(
+                  doctor.schedule?.date,
+                  doctor.schedule?.hours[doctor.count].hour
+                )
+              }}
+            </div>
+            <div>
+              {{
+                prettyDate(
+                  doctor.schedule?.date,
+                  doctor.schedule?.hours[doctor.count + 1].hour
+                )
+              }}
+            </div>
+            <div>
+              {{
+                prettyDate(
+                  doctor.schedule?.date,
+                  doctor.schedule?.hours[doctor.count + 2].hour
+                )
+              }}
+            </div>
+            <fa-icon
+              [icon]="faChevronCircleRight"
+              (click)="upOrDown(doctor, true)"
+            ></fa-icon>
+          </div>
+        </ng-container>
+        <ng-template #list>
+          <div>
+            <div *ngFor="let h of doctor.schedule?.hours">
+              {{ prettyDate(doctor.schedule?.date, h.hour) }}
+            </div>
+          </div>
+        </ng-template>
+      </div>
       <div class="app" (click)="addAppointment(modal)">
         <button>Agendar</button>
       </div>

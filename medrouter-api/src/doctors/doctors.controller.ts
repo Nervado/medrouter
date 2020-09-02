@@ -112,7 +112,15 @@ export class DoctorsController {
   ): Promise<ScheduleDto[]> {
     return this.doctorService.getSchedules(id, search);
   }
-
+  @Get('/:id/free-schedules')
+  @Allow('client')
+  @UseInterceptors(ClassSerializerInterceptor)
+  getFreeSchedule(
+    @Param('id') id: string,
+    @Query() search: SearchScheduleDto,
+  ): Promise<ScheduleDto> {
+    return this.doctorService.getFreeSchedules(id, search);
+  }
   @Get('/:id/appointments')
   @Roles('doctor')
   @UseInterceptors(ClassSerializerInterceptor)
