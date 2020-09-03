@@ -35,6 +35,15 @@ export class ClientsService {
     return this.http.post<void>(`${MEDROUTER_API}/appointments`, app);
   }
 
+  getAppointments(
+    id: string,
+    search: SearchDoctorDto
+  ): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(
+      `${MEDROUTER_API}/clients/${id}/appointments?page=${search.page}`
+    );
+  }
+
   getDataGraph(): Observable<Array<Data>> {
     return this.http.get<Array<Data>>(`${MEDROUTER_API}/client/data-graph`);
   }

@@ -2,34 +2,50 @@
   <div
     class="title d-flex align-items-center justify-content-between px-4 py-2"
   >
-    <h4 class="text-base">
-      Agendamentos
-    </h4>
+    <h4 class="text-base">Agendamentos</h4>
 
     <div class="cursor">
-      <fa-icon [icon]="faChevronLeft" size="1x" class="mr-2"></fa-icon>
-      <fa-icon [icon]="faChevronRight" size="1x" class="ml-2"></fa-icon>
+      <fa-icon
+        [icon]="faChevronLeft"
+        (click)="pageDown()"
+        size="1x"
+        class="mr-2"
+      ></fa-icon>
+      <fa-icon
+        [icon]="faChevronRight"
+        (click)="pageUp()"
+        size="1x"
+        class="ml-2"
+      ></fa-icon>
     </div>
   </div>
 
-  <div class="body d-flex flex-column justify-content-start">
-    <div class="d-flex align-itens-center justify-content-between px-4 my-1">
+  <div class="body d-flex flex-column justify-content-start appointments">
+    <div
+      *ngFor="let app of appointments"
+      class="d-flex align-itens-center justify-content-between px-4 my-1"
+    >
       <div class="avatar-area mx-2">
         <img src="../../../assets/avatarmale.png" alt="avatar" />
-      </div>
-      <div class="info">
-        <span class="text-medium font-weight-bold">Chintya Bellfort</span>
-        <br />
-        <span class="text-base font-weight-bold">Neurologista</span>
-        <br />
-        <div class="d-flex align-items-center">
-          <fa-icon [icon]="faCalendarDay" class="mr-1 text-base1"> </fa-icon>
-          <span class="text-base">25/05/1989</span>
+        <div class="info">
+          <span class="text-medium font-weight-bold">{{
+            app.doctor.user.fullname
+          }}</span>
 
-          <fa-icon [icon]="faClock" class="ml-2 mr-1 text-base1"></fa-icon>
-          <span class="text-base">18:00h</span>
+          <span class="text-base font-weight-bold" [style.font-size]="'12px'">{{
+            app.doctor.specialty[0]
+          }}</span>
+
+          <div class="d-flex align-items-center" [style.font-size]="'12px'">
+            <fa-icon [icon]="faCalendarDay" class="mr-1 text-base1"> </fa-icon>
+            <span class="text-base">{{ prettyDate(app.date) }}</span>
+
+            <fa-icon [icon]="faClock" class="ml-2 mr-1 text-base1"></fa-icon>
+            <span class="text-base">{{ app.hour }}h</span>
+          </div>
         </div>
       </div>
+
       <div class="actions ml-5 d-flex align-items-center">
         <fa-icon
           [icon]="faCheckCircle"
@@ -41,64 +57,6 @@
           [icon]="faTimesCircle"
           size="2x"
           class="mx-1 text-oposity1 cursor"
-        ></fa-icon>
-      </div>
-    </div>
-    <div class="d-flex align-itens-center justify-content-between px-4 my-1">
-      <div class="avatar-area mx-2">
-        <img src="../../../assets/avatarmale.png" alt="avatar" />
-      </div>
-      <div class="info">
-        <span class="text-medium font-weight-bold">Chintya Bellfort</span>
-        <br />
-        <span class="text-base font-weight-bold">Neurologista</span>
-        <br />
-        <div class="d-flex align-items-center">
-          <fa-icon [icon]="faCalendarDay" class="mr-1 text-base1"> </fa-icon>
-          <span class="text-base">25/05/1989</span>
-
-          <fa-icon [icon]="faClock" class="ml-2 mr-1 text-base1"></fa-icon>
-          <span class="text-base"> 18:00h</span>
-        </div>
-      </div>
-      <div class="actions ml-5 d-flex align-items-center">
-        <fa-icon
-          [icon]="faCheckCircle"
-          size="2x"
-          class="mx-1 text-medium uk-icon-i-cursor"
-        >
-        </fa-icon>
-        <fa-icon
-          [icon]="faTimesCircle"
-          size="2x"
-          class="mx-1 text-oposity1"
-        ></fa-icon>
-      </div>
-    </div>
-    <div class="d-flex align-itens-center justify-content-between px-4 my-1">
-      <div class="avatar-area mx-2">
-        <img src="../../../assets/avatarmale.png" alt="avatar" />
-      </div>
-      <div class="info">
-        <span class="text-medium font-weight-bold">Chintya Bellfort</span>
-        <br />
-        <span class="text-base font-weight-bold">Neurologista</span>
-        <br />
-        <div class="d-flex align-items-center">
-          <fa-icon [icon]="faCalendarDay" class="mr-1 text-base1"> </fa-icon>
-          <span class="text-base">25/05/1989</span>
-
-          <fa-icon [icon]="faClock" class="ml-2 mr-1 text-base1"></fa-icon>
-          <span class="text-base"> 18:00h</span>
-        </div>
-      </div>
-      <div class="actions ml-5 d-flex align-items-center">
-        <fa-icon [icon]="faCheckCircle" size="2x" class="mx-1 text-medium">
-        </fa-icon>
-        <fa-icon
-          [icon]="faTimesCircle"
-          size="2x"
-          class="mx-1 text-oposity1"
         ></fa-icon>
       </div>
     </div>

@@ -17,15 +17,19 @@ import { DocDto } from 'src/docs/dto/doc.dto';
 import { Role } from 'src/auth/enums/role.enum';
 import { PhotosService } from 'src/photos/photos.service';
 import { AppointmentDto } from 'src/appointments/dto/appointment.dto';
-//import { AppointmentsService } from 'src/appointments/appointments.service';
+import { ModuleRef } from '@nestjs/core';
+import { Appointment } from 'src/appointments/models/appointment.entity';
+import { AppointmentStatus } from 'src/appointments/enums/appointment.enum';
 
 @Injectable()
 export class ClientService {
+  //private appointmentService: AppointmentsService;
+
   constructor(
     @Inject(forwardRef(() => UsersService)) private us: UsersService,
     private ps: PhotosService, //@Inject(forwardRef(() => AppointmentsService))
-  ) //private as: AppointmentsService,
-  {}
+    private moduleRef: ModuleRef, //private as: AppointmentsService,
+  ) {}
 
   async create(client: AuthSingUpDto): Promise<any> {
     client.password = generatePass();
@@ -228,7 +232,7 @@ export class ClientService {
       .getOne();
   }
 
-  async searchClientAppointments(
+  async searchClientActiveAppointments(
     id: string,
     user: User,
     search: SearchClientDto,
@@ -239,7 +243,56 @@ export class ClientService {
       throw new UnauthorizedException('Acess not allowed at appointments list');
     }
 
-    //return this.us.searchClientAppointments(id, search);
-    return [];
+    return this.searchClientAppointments(id, search);
+  }
+
+  async searchClientAppointments(
+    id: string,
+    search: SearchClientDto,
+  ): Promise<AppointmentDto[]> {
+    const { page } = search;
+
+    const pageNumber: number = page ? page * 10 - 10 : 0;
+
+    const query = Appointment.createQueryBuilder('appointment');
+
+    query.andWhere('client.id = :id ', { id });
+
+    query.andWhere('appointment.status <> :status ', {
+      status: AppointmentStatus.CANCELED,
+    });
+
+    const founds = await query
+      .leftJoinAndSelect('appointment.client', 'client')
+      .leftJoinAndSelect('appointment.doctor', 'doctor')
+      .leftJoinAndSelect('doctor.user', 'doctorUser')
+      .leftJoinAndSelect('doctorUser.avatar', 'avatar')
+      .skip(pageNumber)
+      .orderBy('appointment.date', 'DESC')
+      .take(10)
+      .getMany();
+
+    return founds.map(app => this.serializeClientAppointment(app));
+  }
+
+  serializeClientAppointment(appointment: Appointment): AppointmentDto {
+    return {
+      id: appointment.id,
+      doctor: {
+        id: appointment.doctor.id,
+        specialty: appointment.doctor.specialty,
+        user: {
+          username: appointment.doctor.user.username,
+          fullname: appointment.doctor.user.fullname,
+          surname: appointment.doctor.user.surname,
+          avatar: {
+            url: appointment.doctor.user.avatar?.url,
+          },
+        },
+      },
+      date: appointment.date,
+      hour: appointment.hour,
+      status: appointment.status,
+    };
   }
 }

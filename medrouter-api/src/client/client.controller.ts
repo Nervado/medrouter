@@ -63,7 +63,7 @@ export class ClientController {
     @Param('id') id: any,
     @Query() search: SearchClientDto,
   ): Promise<AppointmentDto[]> {
-    return this.clientService.searchClientAppointments(id, user, search);
+    return this.clientService.searchClientActiveAppointments(id, user, search);
   }
 
   @Patch('/:id')
