@@ -9,8 +9,8 @@ import { DoctorsModule } from 'src/doctors/doctors.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Appointment]),
-    ClientModule,
     forwardRef(() => DoctorsModule),
+    ClientModule,
   ],
   controllers: [AppointmentsController],
   providers: [AppointmentsService],

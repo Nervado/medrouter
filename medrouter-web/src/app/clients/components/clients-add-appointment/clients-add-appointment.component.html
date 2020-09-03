@@ -27,8 +27,7 @@
 
       <div class="infos text-client">
         <fa-icon [icon]="faUserTie"></fa-icon>
-        {{ appointment.client.user.username }}
-        {{ appointment.client.user.surname }}
+        {{ appointment.client.user.fullname }}
       </div>
 
       <div>
@@ -66,7 +65,12 @@
             class="in in-client"
             style="border: 1px solid var(--client); color: var(--client)"
           >
-            <option value="hour" *ngFor="let hour of hours">{{ hour }}</option>
+            <option
+              [value]="hour.hour"
+              *ngFor="let hour of appointment.doctor.schedule.hours"
+            >
+              {{ hour.hour }} h
+            </option>
           </select>
 
           <div

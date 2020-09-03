@@ -21,13 +21,15 @@ import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
 import { AppointmentDto } from './dto/appointment.dto';
 import { SearchAppointment } from './dto/search-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment';
+import { Allow } from 'src/auth/decorators/alow.decorator';
+
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('appointments')
 export class AppointmentsController {
   constructor(private as: AppointmentsService) {}
 
   @Post()
-  @Roles('recept')
+  @Allow('recept', 'client')
   @UseInterceptors(ClassSerializerInterceptor)
   createDoctor(@Body(ValidationPipe) body: AppointmentDto) {
     return this.as.create(body);

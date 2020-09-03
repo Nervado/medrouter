@@ -8,8 +8,8 @@ export class AppointmentDto {
   @IsUUID()
   id?: string;
 
-  @IsNotEmpty()
-  client: {
+  @IsOptional()
+  client?: {
     id: string;
     user: {
       username: string;

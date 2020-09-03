@@ -18,15 +18,13 @@ import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
 import { ScheduleDto, Schedules } from './dto/schedule.dto';
 import { Schedule } from './models/schedule.entity';
 import { SearchScheduleDto } from './dto/searchSchedule.dto';
-import { throwError } from 'rxjs';
+
 import { AppointmentsService } from 'src/appointments/appointments.service';
 import { getMidnight } from 'src/utils/getMidnight';
-import { Appointment } from 'src/appointments/models/appointment.entity';
-import { Available } from './enums/available.enum';
-import { doc } from 'prettier';
+
 import { SearchAppointment } from 'src/appointments/dto/search-appointment.dto';
 import { AppointmentDto } from 'src/appointments/dto/appointment.dto';
-import { threadId } from 'worker_threads';
+
 import { SearchResultDto } from 'src/client/dtos/search-result-dto';
 import { ClientService } from 'src/client/client.service';
 import { SearchClientDto } from 'src/client/dtos/search-client-dto';
@@ -34,7 +32,7 @@ import { PrescriptionDto } from 'src/prescriptions/dto/prescription.dto';
 import { PrescriptionsService } from 'src/prescriptions/prescriptions.service';
 import { ExamDto } from 'src/exams/dto/exam.dto';
 import { ExamsService } from 'src/exams/exams.service';
-import { stringify } from 'querystring';
+
 @Injectable()
 export class DoctorsService extends Service<
   DoctorDto,
@@ -232,8 +230,6 @@ export class DoctorsService extends Service<
                   appointment.hour === hour &&
                   sc.date.toString() === appointment.date.toString(),
               );
-
-              //console.log(find);
 
               return { hour: hour, busy: find ? true : false };
             })

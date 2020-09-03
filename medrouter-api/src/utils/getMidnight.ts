@@ -10,6 +10,8 @@ export function isPast(date: Date, hour: Available): boolean {
   const m: number = parseInt(hour.split(':')[1]);
   const check = new Date(new Date(date).setHours(h, m, 0, 0));
 
+  console.log(now, check);
+
   if (now.getTime() > check.getTime()) {
     return true;
   } else {

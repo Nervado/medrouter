@@ -12,14 +12,25 @@ import {
   faChevronCircleRight,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, FormControl } from "@angular/forms";
 
 import { ClientsService } from "../../clients.service";
 import { Doctor } from "../../models/doctor";
-import { scheduled } from "rxjs";
+import { scheduled, of, pipe } from "rxjs";
 import { NotificationService } from "src/app/messages/notification.service";
 import { Types } from "src/app/messages/toast/enums/types";
 import { parseISO, format, addDays, subDays } from "date-fns";
+import {
+  debounceTime,
+  tap,
+  distinctUntilChanged,
+  switchMap,
+} from "rxjs/operators";
+import { Appointment } from "../../models/appointment";
+import { ActivatedRoute } from "@angular/router";
+import { AuthService } from "src/app/auth/auth.service";
+import { UsersService } from "src/app/profile/users.service";
+import { isPast } from "src/app/utils/ispast";
 
 @Component({
   selector: "app-doctors-search",
@@ -44,15 +55,33 @@ export class DoctorsSearchComponent implements OnInit {
 
   filter: boolean = false;
 
+  isPast = isPast;
+
   page: number = 1;
+
+  searchInput: FormControl;
+
+  appointment: Appointment = new Appointment();
 
   constructor(
     private clientsService: ClientsService,
-    private ns: NotificationService
+    private ns: NotificationService,
+    private fb: FormBuilder,
+    private ar: ActivatedRoute,
+    private us: UsersService
   ) {}
 
   ngOnInit(): void {
+    this.searchInput = this.fb.control("");
     this.handleSearch();
+
+    this.searchInput.valueChanges
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        switchMap(async (value) => this.handleSearch(this.page, value))
+      )
+      .subscribe();
   }
 
   showFilter() {
@@ -99,12 +128,33 @@ export class DoctorsSearchComponent implements OnInit {
       });
   }
 
-  addAppointment(modal) {
+  addAppointment(modal, doctor: Doctor) {
+    this.appointment.doctor = doctor;
+    this.appointment.client = {
+      id: this.ar.parent.snapshot.params["id"],
+      user: this.us.getUserProfile(),
+    };
+
+    this.appointment.date = doctor.schedule.date;
+
     modal.open();
   }
 
-  confirm(e) {
-    console.log(e);
+  confirm(e: Appointment) {
+    this.clientsService.requestAppointment(e).subscribe({
+      next: () => {
+        this.ns.notify({
+          message: "Solicitação enviada com sucesso",
+          type: Types.SUCCESS,
+        });
+        this.handleSearch(this.page, this.searchInput.value);
+      },
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao solicitar agendamento",
+          type: Types.ERROR,
+        }),
+    });
   }
 
   pageUp(username?: string) {
@@ -160,7 +210,6 @@ export class DoctorsSearchComponent implements OnInit {
     const sc = newSentece.split(" ");
     const sw = sc[1] ? ` ${sc[1][0].toUpperCase()}${sc[1].slice(1)}` : "";
     return sc[0][0].toUpperCase() + sc[0].slice(1) + sw;
-    //return newSentece[0].toUpperCase() + newSentece.slice(1);
   }
 
   prettyDate(date: string, h?: string): string {
@@ -183,7 +232,5 @@ export class DoctorsSearchComponent implements OnInit {
     } else {
       doctor.count = doctor.count === 0 ? 0 : doctor.count - 1;
     }
-
-    console.log(doctor.count);
   }
 }

@@ -7,6 +7,7 @@ import { AuthService } from "../auth/auth.service";
 import { Data } from "./interfaces/data";
 import { SearchDoctorDto } from "./models/search";
 import { isThisHour } from "date-fns";
+import { Appointment } from "./models/appointment";
 
 @Injectable({
   providedIn: "root",
@@ -28,6 +29,10 @@ export class ClientsService {
     return this.http.get<any>(
       `${MEDROUTER_API}/doctors/${id}/free-schedules?date=${date}`
     );
+  }
+
+  requestAppointment(app: Appointment): Observable<void> {
+    return this.http.post<void>(`${MEDROUTER_API}/appointments`, app);
   }
 
   getDataGraph(): Observable<Array<Data>> {

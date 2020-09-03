@@ -1,12 +1,14 @@
 import { AppointmentStatus } from "../enums/appontment-status";
 import { Client } from "./client";
-import { DoctorDto } from "./doctor-dto";
+import { Available } from "./available.enum";
+import { Doctor } from "./doctor";
 
 export class Appointment {
   id: any;
   date: Date;
   hour: string;
   status: AppointmentStatus;
-  client: Client;
-  doctor?: DoctorDto;
+  client?: Client;
+  doctor?: Doctor;
+  hours?: Available[];
 }

@@ -5,6 +5,7 @@ import {
   EventEmitter,
   ViewChild,
   Output,
+  Input,
 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Appointment } from "../../models/appointment";
@@ -53,50 +54,30 @@ export class ClientsAddAppointmentComponent implements OnInit {
 
   hours: Array<string> = Hour.map((hour) => `${hour}h`);
 
-  appointment: Appointment;
+  @Input() appointment: Appointment;
   @ViewChild("content") elementRef: ElementRef;
   @Output() signOut: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: NgbModal, private fb: FormBuilder) {}
 
-  search() {
-    console.log("procurando");
-  }
-
   ngOnInit(): void {
-    this.appointment = {
-      id: 45,
-      status: AppointmentStatus.REQUESTED,
-      date: new Date(),
-      hour: "18:00",
-      doctor: {
-        id: 467575,
-        user: {
-          fullname: "Pedro Paulo II",
-        },
-      },
-      client: {
-        id: 2324,
-        user: {
-          username: "Pedro",
-          surname: "Rangel",
-          avatar: { url: "" },
-        },
-      },
-    };
-
     this.actionsForm = this.fb.group({
       password: this.fb.control("", [
         Validators.required,
         Validators.minLength(6),
       ]),
+      doctor: this.fb.control({}, [Validators.required]),
+      client: this.fb.control({}, [Validators.required]),
       hour: this.fb.control("", [Validators.required]),
+      date: this.fb.control("", [Validators.required]),
     });
   }
 
   selectUser(user: string) {}
   open(_content?) {
     const content = _content ? _content : this.elementRef;
+
+    this.date = this.appointment.doctor.schedule.date;
 
     this.modalService
       .open(content, { ariaLabelledBy: "modal-basic-title" })
@@ -107,6 +88,9 @@ export class ClientsAddAppointmentComponent implements OnInit {
             result === "confirm" &&
             this.actionsForm.value.password !== undefined
           ) {
+            this.actionsForm.patchValue({
+              ...this.appointment,
+            });
             this.signOut.emit(this.actionsForm.value);
           }
 

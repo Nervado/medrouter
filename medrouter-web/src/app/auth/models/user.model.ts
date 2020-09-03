@@ -4,6 +4,8 @@ export class User {
   token: string;
   user: {
     username: string;
+    surname?: string;
+    fullname?: string;
     userId: any;
     email: string;
     client: boolean;

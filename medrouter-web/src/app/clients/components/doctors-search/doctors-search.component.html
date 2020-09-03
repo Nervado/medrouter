@@ -1,6 +1,7 @@
 <app-clients-add-appointment
   #modal
   (signOut)="confirm($event)"
+  [appointment]="appointment"
 ></app-clients-add-appointment>
 
 <div class="main-data text-oposity">
@@ -19,6 +20,7 @@
         type="text"
         placeholder="Nome ou especialidade"
         class="in in-client"
+        [formControl]="searchInput"
         #name
       />
       <fa-icon
@@ -27,7 +29,7 @@
         (click)="handleSearch(1, name.value)"
       ></fa-icon>
 
-      <!--  <fa-icon [icon]="faFilter" class="ml-2"></fa-icon>-->
+      <!-- (keyup)="valueChanges(name.value)" <fa-icon [icon]="faFilter" class="ml-2"></fa-icon>-->
     </div>
   </div>
 
@@ -99,7 +101,16 @@
               [icon]="faChevronCircleLeft"
               (click)="upOrDown(doctor, false)"
             ></fa-icon>
-            <div>
+            <div
+              [style.background-color]="
+                isPast(
+                  doctor.schedule?.date,
+                  doctor.schedule?.hours[doctor.count].hour
+                )
+                  ? 'rgba(125,125,125,0.5)'
+                  : 'var(--medium)'
+              "
+            >
               {{
                 prettyDate(
                   doctor.schedule?.date,
@@ -107,7 +118,16 @@
                 )
               }}
             </div>
-            <div>
+            <div
+              [style.background-color]="
+                isPast(
+                  doctor.schedule?.date,
+                  doctor.schedule?.hours[doctor.count + 1].hour
+                )
+                  ? 'rgba(125,125,125,0.5)'
+                  : 'var(--medium)'
+              "
+            >
               {{
                 prettyDate(
                   doctor.schedule?.date,
@@ -115,7 +135,16 @@
                 )
               }}
             </div>
-            <div>
+            <div
+              [style.background-color]="
+                isPast(
+                  doctor.schedule?.date,
+                  doctor.schedule?.hours[doctor.count + 2].hour
+                )
+                  ? 'rgba(125,125,125,0.5)'
+                  : 'var(--medium)'
+              "
+            >
               {{
                 prettyDate(
                   doctor.schedule?.date,
@@ -131,13 +160,20 @@
         </ng-container>
         <ng-template #list>
           <div>
-            <div *ngFor="let h of doctor.schedule?.hours">
+            <div
+              *ngFor="let h of doctor.schedule?.hours"
+              [style.background-color]="
+                isPast(doctor.schedule?.date, h.hour)
+                  ? 'rgba(125,125,125,0.5)'
+                  : 'var(--medium)'
+              "
+            >
               {{ prettyDate(doctor.schedule?.date, h.hour) }}
             </div>
           </div>
         </ng-template>
       </div>
-      <div class="app" (click)="addAppointment(modal)">
+      <div class="app" (click)="addAppointment(modal, doctor)">
         <button>Agendar</button>
       </div>
     </div>

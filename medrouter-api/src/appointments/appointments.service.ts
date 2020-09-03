@@ -15,12 +15,16 @@ import { ClientService } from 'src/client/client.service';
 import { AppointmentStatus } from './enums/appointment.enum';
 import { UpdateAppointmentDto } from './dto/update-appointment';
 import { Available } from 'src/doctors/enums/available.enum';
+import { SearchClientDto } from 'src/client/dtos/search-client-dto';
+import { ExamStatus } from 'src/exams/enums/status.enum';
 
 @Injectable()
 export class AppointmentsService {
   constructor(
+    // @Inject(forwardRef(() => ClientService))
     private cs: ClientService,
-    @Inject(forwardRef(() => DoctorsService)) private ds: DoctorsService,
+    //ß@Inject(forwardRef(() => DoctorsService))
+    private ds: DoctorsService,
   ) {}
 
   async getOne(id: string): Promise<AppointmentDto> {
@@ -93,6 +97,10 @@ export class AppointmentsService {
   async create(app: AppointmentDto): Promise<void> {
     const doctor = await this.ds.findOne(app.doctor.id);
     const client = await this.cs.findOne(app.client.id);
+
+    if (isPast(app.date, app.hour)) {
+      throw new BadRequestException('Time travel is forbiden');
+    }
 
     const find = await this.checkIfClientHasAppointment(
       client.id,
@@ -393,5 +401,53 @@ export class AppointmentsService {
         error,
       );
     }
+  }
+  async searchClientAppointments(
+    id: string,
+    search: SearchClientDto,
+  ): Promise<AppointmentDto[]> {
+    const { page } = search;
+
+    const pageNumber: number = page ? page * 10 - 10 : 0;
+
+    const query = Appointment.createQueryBuilder('appointment');
+
+    query.andWhere('appointment.id = :id ', { id });
+
+    query.andWhere('appointment.status <> :status ', {
+      status: AppointmentStatus.CANCELED,
+    });
+
+    const founds = await query
+      .leftJoinAndSelect('appointment.client', 'client')
+      .leftJoinAndSelect('appointment.doctor', 'doctor')
+      .leftJoinAndSelect('doctor.user', 'doctorUser')
+      .leftJoinAndSelect('doctor.user.avatar', 'avataer')
+      .skip(pageNumber)
+      .take(10)
+      .getMany();
+
+    return founds.map(app => this.serializeClientAppointment(app));
+  }
+
+  serializeClientAppointment(appointment: Appointment): AppointmentDto {
+    return {
+      id: appointment.id,
+      doctor: {
+        id: appointment.doctor.id,
+        specialty: appointment.doctor.specialty,
+        user: {
+          username: appointment.doctor.user.username,
+          fullname: appointment.doctor.user.fullname,
+          surname: appointment.doctor.user.surname,
+          avatar: {
+            url: appointment.doctor.user.avatar?.url,
+          },
+        },
+      },
+      date: appointment.date,
+      hour: appointment.hour,
+      status: appointment.status,
+    };
   }
 }

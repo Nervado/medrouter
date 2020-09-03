@@ -15,17 +15,17 @@ import { SearchResultDto } from './dtos/search-result-dto';
 import { User } from 'src/users/models/user.entity';
 import { DocDto } from 'src/docs/dto/doc.dto';
 import { Role } from 'src/auth/enums/role.enum';
-import { DocsService } from 'src/docs/docs.service';
-import { ClientDto } from './dtos/cliente-dto';
 import { PhotosService } from 'src/photos/photos.service';
+import { AppointmentDto } from 'src/appointments/dto/appointment.dto';
+//import { AppointmentsService } from 'src/appointments/appointments.service';
 
 @Injectable()
 export class ClientService {
   constructor(
     @Inject(forwardRef(() => UsersService)) private us: UsersService,
-    private ds: DocsService,
-    private ps: PhotosService,
-  ) {}
+    private ps: PhotosService, //@Inject(forwardRef(() => AppointmentsService))
+  ) //private as: AppointmentsService,
+  {}
 
   async create(client: AuthSingUpDto): Promise<any> {
     client.password = generatePass();
@@ -228,5 +228,18 @@ export class ClientService {
       .getOne();
   }
 
-  // async getSchedules(id, doctorId, search, user): Promise<>{};
+  async searchClientAppointments(
+    id: string,
+    user: User,
+    search: SearchClientDto,
+  ): Promise<AppointmentDto[]> {
+    const client = await Client.findOne(id);
+
+    if (!client || client.user.userId !== user.userId) {
+      throw new UnauthorizedException('Acess not allowed at appointments list');
+    }
+
+    //return this.us.searchClientAppointments(id, search);
+    return [];
+  }
 }

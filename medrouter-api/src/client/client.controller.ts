@@ -28,6 +28,7 @@ import { Allow } from 'src/auth/decorators/alow.decorator';
 import { DocDto } from 'src/docs/dto/doc.dto';
 import { Role } from 'src/auth/enums/role.enum';
 import { Client } from './models/client.entity';
+import { AppointmentDto } from 'src/appointments/dto/appointment.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('clients')
@@ -52,6 +53,17 @@ export class ClientController {
   @UseInterceptors(ClassSerializerInterceptor)
   get(@GetUser() user: User, @Param('id') id: any): Promise<Client> {
     return this.clientService.getOne(id, user);
+  }
+
+  @Get('/:id/appointments')
+  @Allow(Role.CLIENT)
+  @UseInterceptors(ClassSerializerInterceptor)
+  getClientAppointments(
+    @GetUser() user: User,
+    @Param('id') id: any,
+    @Query() search: SearchClientDto,
+  ): Promise<AppointmentDto[]> {
+    return this.clientService.searchClientAppointments(id, user, search);
   }
 
   @Patch('/:id')
