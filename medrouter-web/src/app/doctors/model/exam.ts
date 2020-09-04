@@ -4,7 +4,7 @@ import { ExamsEnum } from "../enums/exams-types";
 import { DocDto } from "../dtos/doc-dto";
 
 export class ExamDto {
-  id?: any;
+  id?: string;
   prescriptionId?: string;
   price?: number;
   type: ExamsEnum;

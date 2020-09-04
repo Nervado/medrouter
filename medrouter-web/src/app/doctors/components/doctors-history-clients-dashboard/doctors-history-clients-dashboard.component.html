@@ -88,7 +88,7 @@
 
     <div class="wrapper-results" *ngIf="prescriptions?.length > 0">
       <div *ngFor="let prescription of prescriptions" class="prescriptions">
-        <header>
+        <header (click)="prescription.visible = !prescription.visible">
           <div class="info user">
             <ng-container
               *ngIf="prescription.doctor.user.avatar?.url; else avatar"
@@ -136,27 +136,29 @@
         <div
           class="resume"
           *ngIf="
-            prescription?.recommendations !== {} ||
-            prescription.medicines?.length > 0 ||
-            prescription.exams?.length > 0
+            (prescription?.recomendations !== {} ||
+              prescription.medicines?.length > 0 ||
+              prescription.exams?.length > 0) &&
+            prescription.visible
           "
         >
           <div class="title"><strong> Resumo</strong></div>
 
           <div class="itens">
-            <div *ngIf="prescription?.recommendations" class="my-1">
-              <div>
+            <div *ngIf="prescription?.recomendations" class="my-1 recom">
+              <div class="title">
                 <fa-icon [icon]="faExclamationCircle"></fa-icon>
                 <strong> Recomendações</strong>
               </div>
               <div
-                *ngFor="let r of arrayFromObject(prescription.recommendations)"
+                *ngFor="let r of arrayFromObject(prescription.recomendations)"
               >
                 <div>{{ r }}</div>
               </div>
             </div>
-            <div *ngIf="prescription.medicines.length > 0" class="my-1">
-              <div>
+
+            <div *ngIf="prescription.medicines.length > 0" class="my-1 medc">
+              <div class="title">
                 <fa-icon [icon]="faCapsules"></fa-icon>
 
                 <strong> Medicamentos</strong>
@@ -164,6 +166,7 @@
               <div *ngFor="let medicine of prescription.medicines">
                 <ng-container *ngIf="medicine.formula === ''; else formula">
                   {{ fmrt(medicine.substance) }}
+                  {{ medicine }}
                 </ng-container>
                 <ng-template #formula>
                   Formula: {{ medicine.formula }}
@@ -171,14 +174,16 @@
               </div>
             </div>
 
-            <div *ngIf="prescription.exams?.length > 0" class="my-1">
-              <div>
+            <div *ngIf="prescription.exams?.length > 0" class="my-1 exam">
+              <div class="title">
                 <fa-icon [icon]="faVial"></fa-icon>
 
                 <strong> Exames</strong>
               </div>
               <div *ngFor="let exam of prescription.exams">
                 {{ fmrt(exam.type) }}
+
+                <strong>{{ exam.lab?.name }}</strong>
               </div>
             </div>
           </div>

@@ -20,6 +20,10 @@ import { AppointmentDto } from 'src/appointments/dto/appointment.dto';
 import { ModuleRef } from '@nestjs/core';
 import { Appointment } from 'src/appointments/models/appointment.entity';
 import { AppointmentStatus } from 'src/appointments/enums/appointment.enum';
+import { ExamDto } from 'src/exams/dto/exam.dto';
+import { Exam } from 'src/exams/models/exam.entity';
+import { ExamStatus } from 'src/exams/enums/status.enum';
+import { getMidnight } from 'src/utils/getMidnight';
 
 @Injectable()
 export class ClientService {
@@ -258,10 +262,6 @@ export class ClientService {
 
     query.andWhere('client.id = :id ', { id });
 
-    query.andWhere('appointment.status <> :status ', {
-      status: AppointmentStatus.CANCELED,
-    });
-
     const founds = await query
       .leftJoinAndSelect('appointment.client', 'client')
       .leftJoinAndSelect('appointment.doctor', 'doctor')
@@ -293,6 +293,156 @@ export class ClientService {
       date: appointment.date,
       hour: appointment.hour,
       status: appointment.status,
+    };
+  }
+
+  async cancelAppointment(
+    id: string,
+    appId: string,
+    user: User,
+  ): Promise<void> {
+    const client = await Client.findOne(id);
+
+    const app = await Appointment.findOne(appId);
+
+    const today = new Date();
+
+    console.log(app);
+
+    if (!client || !app) {
+      throw new BadRequestException('Informations dont match');
+    }
+
+    if (user.userId !== client.user.userId) {
+      throw new UnauthorizedException('Operation not allowed');
+    }
+
+    if (getMidnight(app.date) <= getMidnight(today)) {
+      throw new BadRequestException('Appointment date is to close');
+    }
+
+    if (
+      app.status !== AppointmentStatus.CANCELED &&
+      app.status !== AppointmentStatus.ATTENDED
+    ) {
+      app.status = AppointmentStatus.CANCELED;
+      console.log(app);
+    }
+
+    try {
+      await app.save();
+    } catch (error) {
+      throw new InternalServerErrorException('Cancel appointment has fail');
+    }
+  }
+
+  async searchClientExams(
+    id: string,
+    user: User,
+    search: SearchClientDto,
+  ): Promise<ExamDto[]> {
+    const { page, username } = search;
+
+    const pageNumber: number = page ? page * 10 - 10 : 0;
+
+    const client = await Client.findOne(id);
+
+    if (!client || client.user.userId !== user.userId) {
+      throw new BadRequestException('Informations dont match');
+    }
+
+    const query = Exam.createQueryBuilder('exam');
+
+    query.andWhere('client.id = :id', { id: id });
+
+    if (username) {
+      query.andWhere(
+        `doctorUser.username ILIKE '%${username}%' OR  doctorUser.surname ILIKE '%${username}%' `,
+      );
+    }
+
+    const founds = await query
+      .leftJoinAndSelect('exam.doctor', 'doctor')
+      .leftJoinAndSelect('exam.docs', 'docs')
+      .leftJoinAndSelect('exam.photos', 'photos')
+      .leftJoinAndSelect('exam.lab', 'lab')
+      .leftJoinAndSelect('doctor.user', 'doctorUser')
+      .leftJoinAndSelect('doctorUser.avatar', 'doctorAvatar')
+      .leftJoinAndSelect('exam.client', 'client')
+      .leftJoinAndSelect('client.user', 'clientUser')
+      .leftJoinAndSelect('clientUser.avatar', 'clientAvatar')
+      .orderBy('exam.createdAt', 'DESC')
+      .skip(pageNumber)
+      .take(10)
+      .getMany();
+
+    return [
+      ...new Set(
+        founds.map((exam: Exam) =>
+          this.serializeClientExam(
+            exam,
+            user?.userId === exam.client.user.userId,
+            exam.status === ExamStatus.AVAILABLE,
+          ),
+        ),
+      ),
+    ];
+  }
+
+  serializeClientExam(
+    exam: Exam,
+    sendCode?: boolean,
+    sendResult?: boolean,
+  ): ExamDto {
+    return {
+      id: exam?.id,
+      code: sendCode ? exam.code : null,
+      price: exam.price,
+      status: exam.status,
+      deadline: exam.deadline,
+      type: exam.type,
+      docs: sendResult
+        ? exam.docs.map(doc => {
+            return { url: doc.url, id: doc.id };
+          })
+        : [],
+      photos: sendResult
+        ? exam.photos.map(photo => {
+            return { url: photo.url, id: photo.id };
+          })
+        : [],
+      createdAt: exam.createdAt,
+      lab: {
+        id: exam.lab?.id,
+        name: exam.lab?.name,
+        cnpj: exam.lab?.cnpj,
+        available: exam.lab?.available,
+        labcategory: exam.lab?.labcategory,
+        exams: exam.lab?.exams,
+      },
+
+      client: {
+        id: exam.client.id,
+        user: {
+          username: exam.client.user.username,
+          fullname: exam.client.user.fullname,
+          surname: exam.client.user.surname,
+          avatar: {
+            url: exam.client.user.avatar?.url,
+          },
+        },
+      },
+      doctor: {
+        id: exam.doctor.id,
+        user: {
+          username: exam.doctor.user.username,
+          fullname: exam.doctor.user.fullname,
+          surname: exam.doctor.user.surname,
+          avatar: {
+            url: exam.doctor.user.avatar?.url,
+          },
+        },
+      },
     };
   }
 }

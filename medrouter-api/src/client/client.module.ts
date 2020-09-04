@@ -7,19 +7,13 @@ import { UsersModule } from 'src/users/users.module';
 import { PhotosModule } from 'src/photos/photos.module';
 import { PrescriptionsModule } from 'src/prescriptions/prescriptions.module';
 import { Appointment } from 'src/appointments/models/appointment.entity';
-
-//import { ExamsModule } from 'src/exams/exams.module';
-//import { DoctorsModule } from 'src/doctors/doctors.module';
-//import { AppointmentsModule } from 'src/appointments/appointments.module';
-//import { DoctorsModule } from 'src/doctors/doctors.module';
+import { Exam } from 'src/exams/models/exam.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Client, Appointment]),
+    TypeOrmModule.forFeature([Client, Appointment, Exam]),
     forwardRef(() => UsersModule),
     PhotosModule,
-
-    //AppointmentsModule,
     PrescriptionsModule,
   ],
   controllers: [ClientController],

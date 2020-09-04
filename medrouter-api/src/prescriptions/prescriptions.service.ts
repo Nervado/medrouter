@@ -10,6 +10,8 @@ import { Prescription } from './models/prescription.entity';
 import { PrescriptionDto } from './dto/prescription.dto';
 import { SearchClientDto } from 'src/client/dtos/search-client-dto';
 import { ExamStatus } from 'src/exams/enums/status.enum';
+import { LabChangesDto } from 'src/labs/dto/labStatus-dto';
+import { Lab } from 'src/labs/models/lab.entity';
 
 @Injectable()
 export class PrescriptionsService {
@@ -78,6 +80,7 @@ export class PrescriptionsService {
       .leftJoinAndSelect('prescription.doctor', 'doctor')
       .leftJoinAndSelect('prescription.medicines', 'medicines')
       .leftJoinAndSelect('prescription.exams', 'exams')
+      .leftJoinAndSelect('exams.lab', 'lab')
       .leftJoinAndSelect('doctor.user', 'doctorUser')
       .leftJoinAndSelect('doctorUser.avatar', 'doctorAvatar')
       .leftJoinAndSelect('prescription.client', 'client')
@@ -97,13 +100,28 @@ export class PrescriptionsService {
     return {
       id: prescription?.id,
       code: prescription?.code,
-      recommendations: prescription.recommendations,
+      recomendations: prescription.recomendations,
       waist: prescription.waist,
       weight: prescription.weight,
       height: prescription.height,
       pressure: prescription.pressure,
       bpm: prescription.bpm,
-      exams: prescription.exams,
+      exams: prescription.exams.map(exam => {
+        return {
+          id: exam.id,
+          price: exam.price,
+          deadline: exam.deadline,
+          status: exam.status,
+          type: exam.type,
+          createdAt: exam.createdAt,
+          lab: {
+            id: exam.lab?.id,
+            name: exam.lab?.name,
+            available: exam.lab?.available,
+            labcategory: exam.lab?.labcategory,
+          },
+        };
+      }),
       medicines: prescription.medicines,
       createdAt: prescription.createdAt,
       client: {
@@ -112,6 +130,7 @@ export class PrescriptionsService {
           username: prescription.client.user.username,
           fullname: prescription.client.user.fullname,
           surname: prescription.client.user.surname,
+          birthdate: prescription.client.user.birthdate,
           avatar: {
             url: prescription.client.user.avatar?.url,
           },

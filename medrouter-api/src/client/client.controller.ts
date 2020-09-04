@@ -10,6 +10,7 @@ import {
   Query,
   Patch,
   Param,
+  Delete,
 } from '@nestjs/common';
 
 import { ClientDto } from './dtos/cliente-dto';
@@ -29,6 +30,7 @@ import { DocDto } from 'src/docs/dto/doc.dto';
 import { Role } from 'src/auth/enums/role.enum';
 import { Client } from './models/client.entity';
 import { AppointmentDto } from 'src/appointments/dto/appointment.dto';
+import { ExamDto } from 'src/exams/dto/exam.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('clients')
@@ -64,6 +66,28 @@ export class ClientController {
     @Query() search: SearchClientDto,
   ): Promise<AppointmentDto[]> {
     return this.clientService.searchClientActiveAppointments(id, user, search);
+  }
+
+  @Get('/:id/exams')
+  @Allow(Role.CLIENT)
+  @UseInterceptors(ClassSerializerInterceptor)
+  getClientExams(
+    @GetUser() user: User,
+    @Param('id') id: any,
+    @Query() search: SearchClientDto,
+  ): Promise<ExamDto[]> {
+    return this.clientService.searchClientExams(id, user, search);
+  }
+
+  @Delete('/:id/appointments/:appId')
+  @Allow(Role.CLIENT)
+  @UseInterceptors(ClassSerializerInterceptor)
+  cancelAppointment(
+    @GetUser() user: User,
+    @Param('id') id: string,
+    @Param('appId') appId: string,
+  ): Promise<void> {
+    return this.clientService.cancelAppointment(id, appId, user);
   }
 
   @Patch('/:id')

@@ -16,11 +16,12 @@ export class LabDto {
   id: string;
 
   @IsString()
-  name: string;
+  name?: string;
 
+  @IsOptional()
   @IsString()
   @Matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/)
-  cnpj: string;
+  cnpj?: string;
 
   @IsOptional()
   @IsBoolean()
@@ -32,5 +33,5 @@ export class LabDto {
 
   @IsOptional()
   @IsEnum(ExamsEnum, { each: true })
-  exams: ExamsEnum[];
+  exams?: ExamsEnum[];
 }

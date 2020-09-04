@@ -8,6 +8,7 @@ import { Data } from "./interfaces/data";
 import { SearchDoctorDto } from "./models/search";
 import { isThisHour } from "date-fns";
 import { Appointment } from "./models/appointment";
+import { ExamDto } from "./models/exam";
 
 @Injectable({
   providedIn: "root",
@@ -41,6 +42,21 @@ export class ClientsService {
   ): Observable<Appointment[]> {
     return this.http.get<Appointment[]>(
       `${MEDROUTER_API}/clients/${id}/appointments?page=${search.page}`
+    );
+  }
+
+  deleteAppointment(id: string, appId: string): Observable<void> {
+    return this.http.delete<void>(
+      `${MEDROUTER_API}/clients/${id}/appointments/${appId}`
+    );
+  }
+
+  getExams(id: string, search: SearchDoctorDto): Observable<ExamDto[]> {
+    const { page, username } = search;
+    const query = username ? `&username=${username}` : "";
+
+    return this.http.get<ExamDto[]>(
+      `${MEDROUTER_API}/clients/${id}/exams?page=${page}${query}`
     );
   }
 

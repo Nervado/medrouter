@@ -1,6 +1,6 @@
 <div class="main-data">
   <div
-    class="title d-flex align-items-center justify-content-between px-4 py-2"
+    class="title d-flex align-items-center justify-content-between px-2 py-1"
   >
     <h4 class="text-base">Agendamentos</h4>
 
@@ -26,7 +26,13 @@
       class="d-flex align-itens-center justify-content-between px-4 my-1"
     >
       <div class="avatar-area mx-2">
-        <img src="../../../assets/avatarmale.png" alt="avatar" />
+        <ng-container *ngIf="app.doctor.user.avatar?.url; else avatar">
+          <img [src]="app.doctor.user.avatar.url" alt="avatar" />
+        </ng-container>
+        <ng-template #avatar>
+          <img src="../../../../assets/avatarmale.png" alt="avatar"
+        /></ng-template>
+
         <div class="info">
           <span class="text-medium font-weight-bold">{{
             app.doctor.user.fullname
@@ -46,18 +52,30 @@
         </div>
       </div>
 
-      <div class="actions ml-5 d-flex align-items-center">
-        <fa-icon
-          [icon]="faCheckCircle"
-          size="2x"
-          class="mx-1 text-medium cursor"
-        >
-        </fa-icon>
+      <div class="actions ml-5">
         <fa-icon
           [icon]="faTimesCircle"
-          size="2x"
-          class="mx-1 text-oposity1 cursor"
+          (click)="cancel(app)"
+          size="1x"
+          class="mx-1 cursor"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Cancelar agendamento"
+          [style.color]="
+            isPast(app.date) ||
+            app.status === 'cancelado' ||
+            app.status === 'concluido'
+              ? 'rgba(125,125,125,0.4)'
+              : 'var(--oposity1)'
+          "
         ></fa-icon>
+
+        <div
+          class="status"
+          [style.background-color]="getStatusColor(app.status)"
+        >
+          {{ app.status }}
+        </div>
       </div>
     </div>
   </div>

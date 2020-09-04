@@ -54,32 +54,68 @@
           flex-direction: column;
           justify-content: flex-start;
           align-items: center;
+          font-size: 11px;
 
-          .label {
+          .cliente {
             width: 100%;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             font-size: 12px;
-
             padding: 0px 10px 0px 10px;
           }
 
           .wrapper {
-            padding: 5px 20px 5px 20px;
-            overflow-y: scroll;
+            padding: 5px 10px 5px 10px;
+            overflow-y: auto;
             width: 100%;
+
+            &::-webkit-scrollbar {
+              height: 4px;
+              width: 4px;
+              background: rgba(0, 0, 0, 0.1);
+              cursor: pointer;
+            }
+
+            &::-webkit-scrollbar-thumb:vertical {
+              background-color: var(--client);
+              border-radius: 10px;
+            }
 
             .result {
               width: 100%;
               display: flex;
               align-items: center;
-              justify-content: space-between;
+              justify-content: flex-start;
               font-size: 14px;
               margin: 2px 0px;
+              color: var(--client);
+              padding: 2px;
+              border-radius: 4px;
+
+              &:hover {
+                background-color: rgba(114, 85, 192, 0.1);
+              }
+
+              cursor: pointer;
+
+              div div {
+                font-size: 12px;
+              }
+
+              img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                border: 1px solid var(--client);
+                margin-right: 10px;
+                object-fit: cover;
+                margin-right: 4px;
+              }
             }
           }
         }
+
         .input {
           margin-top: 10px;
           height: 40px;
@@ -91,12 +127,13 @@
           display: flex;
           justify-content: center;
           align-items: center;
+
           input {
             width: 150px;
             border-radius: 4px;
             background-color: var(--oposity);
             color: var(--client);
-            padding: 2px;
+            padding: 4px;
             font-size: 14px;
             &::placeholder {
               color: var(--client);
@@ -118,56 +155,267 @@
     }
 
     .wrapper-results {
-      overflow-y: scroll;
+      overflow-y: auto;
       padding: 10px;
       height: 600px;
-
       border-radius: 4px;
+
+      &::-webkit-scrollbar {
+        height: 4px;
+        width: 4px;
+        background: rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+      }
+
+      &::-webkit-scrollbar-thumb:vertical {
+        background-color: var(--client);
+        border-radius: 10px;
+      }
 
       .exam {
         font-size: 14px;
-        margin: 15px;
+        margin: 10px;
+        padding: 2px 5px 2px 2px;
         border-radius: 4px;
-        padding: 5px;
-
-        //border: 1px solid rgba(0, 0, 0, 0.1);
 
         border-top: none;
         box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.1);
         background-color: var(--oposity);
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
-        flex-wrap: wrap;
 
-        .user {
+        .body {
+          width: 100%;
           display: flex;
-          justify-content: flex-start;
           align-items: center;
-          img {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 1px solid var(--success);
-            object-fit: cover;
-            margin-right: 10px;
+          justify-content: space-between;
+
+          .input {
+            margin-top: 10px;
+            height: 40px;
+            width: 220px;
+            background-color: var(--client);
+            color: var(--oposity);
+            border: 2px solid var(--client);
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            input {
+              width: 150px;
+              border-radius: 4px;
+              background-color: var(--oposity);
+              color: var(--client);
+              padding: 2px;
+              font-size: 14px;
+              &::placeholder {
+                color: var(--client);
+                opacity: 0.6;
+              }
+            }
           }
-        }
 
-        .info {
-          margin: 15px;
-          width: 130px;
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-        }
+          .user {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            overflow: hidden;
+            flex-wrap: nowrap;
 
-        .result {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          fa-icon {
-            margin-left: 5px;
+            width: 200px;
+
+            .data {
+              display: flex;
+              flex-direction: column;
+
+              .client-name {
+                font-weight: bold;
+                font-size: 14px;
+              }
+
+              .client,
+              .doctor,
+              .info-date {
+                font-size: 10px;
+              }
+            }
+            img {
+              width: 60px;
+              height: 60px;
+              border-radius: 50%;
+              border: 1px solid var(--client);
+              object-fit: cover;
+              margin-right: 10px;
+            }
+          }
+
+          .lab-data {
+            width: 150px;
+            overflow: hidden;
+
+            .cost,
+            .name {
+              font-size: 11px;
+            }
+            .type {
+              font-weight: bold;
+              color: var(--client);
+              font-size: 10px;
+            }
+          }
+
+          .code-div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+          }
+
+          .info {
+            small {
+              font-weight: bold;
+            }
+
+            .code {
+              background-color: var(--profile);
+              color: var(--oposity);
+              font-weight: bold;
+              font-size: 12px;
+
+              border-radius: 4px;
+
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              padding: 1px 3px;
+
+              width: 90px;
+              max-width: 90px;
+            }
+            .results {
+              background-color: var(--client);
+              color: var(--oposity);
+              border-radius: 4px;
+              text-align: center;
+              font-weight: bold;
+              font-size: 12px;
+              margin-bottom: 2px;
+              padding: 0px 2px;
+              width: 150px;
+            }
+            .no-result {
+              color: var(--oposity1);
+              font-size: 12px;
+              text-align: center;
+              margin-top: 5px;
+            }
+            .docs {
+              display: flex;
+
+              .doc {
+                margin: 2px;
+                display: flex;
+
+                .imag {
+                  background-color: var(--green);
+                  width: 30px;
+                  border-radius: 4px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+
+                  fa-icon {
+                    font-size: 12px;
+                    color: var(--oposity);
+                  }
+                }
+                .pdf {
+                  width: 30px;
+                  color: var(--oposity);
+                  font-weight: bold;
+                  background-color: rgb(151, 32, 32);
+                  border-radius: 4px;
+                  text-align: center;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 0px 2px;
+                  font-size: 10px;
+                  cursor: pointer;
+
+                  &:hover {
+                    transform: scale(1.01);
+                    opacity: 0.8;
+                  }
+                }
+
+                .pdf,
+                .imag {
+                  a {
+                    text-decoration: none;
+                    color: var(--oposity);
+                  }
+                  fa-icon {
+                    color: var(--oposity);
+                  }
+                }
+
+                .remove {
+                  position: relative;
+                  bottom: -10px;
+                }
+
+                fa-icon {
+                  margin-left: 2px;
+                  color: var(--oposity1);
+                  cursor: pointer;
+
+                  &:hover {
+                    transform: scale(1.01);
+                    opacity: 0.8;
+                  }
+                }
+              }
+            }
+
+            .controls {
+              display: flex;
+
+              div,
+              fa-icon {
+                margin-right: 5px;
+                cursor: pointer;
+                &:hover {
+                  transform: scale(1.05);
+                  opacity: 0.6;
+                }
+              }
+            }
+
+            .status {
+              color: var(--oposity);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 4px;
+              font-weight: bold;
+              font-size: 12px;
+              padding: 1px 3px;
+              width: 90px;
+              max-width: 90px;
+            }
+          }
+
+          .result {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            fa-icon {
+              margin-left: 5px;
+            }
           }
         }
       }
@@ -177,8 +425,17 @@
 
 .cursor {
   cursor: pointer;
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-end;
+
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1);
     opacity: 0.6;
   }
+}
+
+.doc-input {
+  display: none;
 }

@@ -8,11 +8,15 @@ import {
 } from 'class-validator';
 import { ParseIntPipe } from '@nestjs/common';
 import { Transform } from 'class-transformer';
+import { ExamDto } from 'src/exams/dto/exam.dto';
+import { MedicineDto } from 'src/medicines/dto/medicine.dto';
 
 export class PrescriptionDto {
   id?: string;
-  recommendations?: string[];
-  exams?: Exam[];
+  recomendations?: string[];
+
+  @IsOptional()
+  exams?: ExamDto[];
   medicines?: Medicine[];
   createdAt?: Date;
 
@@ -42,6 +46,7 @@ export class PrescriptionDto {
       username?: string;
       fullname?: string;
       surname?: string;
+      birthdate?: Date;
       avatar?: {
         url: string;
       };

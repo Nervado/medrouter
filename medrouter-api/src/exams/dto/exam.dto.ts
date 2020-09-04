@@ -12,9 +12,7 @@ export class ExamDto {
   @IsUUID()
   id: string;
 
-  @IsOptional()
-  @IsString()
-  code: string;
+  code?: string;
 
   @IsOptional()
   @IsUUID()
@@ -23,21 +21,21 @@ export class ExamDto {
   @IsOptional()
   price: number;
 
-  type: ExamsEnum;
+  type?: ExamsEnum;
 
-  status: ExamStatus;
+  status?: ExamStatus;
 
-  deadline: number;
+  deadline?: number;
 
-  docs: DocDto[];
+  docs?: DocDto[];
 
-  photos: PhotoDto[];
+  photos?: PhotoDto[];
 
-  lab: LabDto;
+  lab?: LabDto;
 
-  createdAt: Date;
+  createdAt?: Date;
 
-  client: {
+  client?: {
     id: string;
     user: {
       username: string;
@@ -49,7 +47,7 @@ export class ExamDto {
     };
   };
 
-  doctor: {
+  doctor?: {
     id: string;
     user: {
       username: string;

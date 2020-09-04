@@ -1,14 +1,15 @@
-import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
 import { DoctorDto } from "./doctor-dto";
 import { ExamStatus } from "../enums/status.enum";
+import { ExamsEnum } from "../enums/exams.enum";
 
 export class ExamDto {
-  id: any;
+  id: string;
   price: number;
   type: ExamsEnum;
   doctor: DoctorDto;
   status: ExamStatus;
   docs?: [{ id: any; url: string }];
+  photos?: [{ id: any; url: string }];
   lab?: {
     id: any;
     name: string;
@@ -23,4 +24,5 @@ export class ExamDto {
   };
   createdAt: Date;
   code?: string;
+  deadline?: number;
 }

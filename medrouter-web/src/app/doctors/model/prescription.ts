@@ -22,11 +22,15 @@ export class PrescriptionDto {
       };
     };
   };
-  recommendations?: Array<string>;
+  recomendations?: Array<string>;
   exams?: Array<{
     id: any;
     type: ExamsEnum;
     status?: ExamStatus;
+    lab?: {
+      id?: string;
+      name?: string;
+    };
   }>;
   medicines?: Array<{
     id: any;
@@ -41,4 +45,5 @@ export class PrescriptionDto {
   weight?: number;
   height?: number;
   bpm?: number;
+  visible?: boolean = false;
 }

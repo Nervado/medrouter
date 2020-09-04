@@ -378,11 +378,14 @@ export class DoctorsService extends Service<
       throw new UnauthorizedException('Not allowed!');
     }
 
-    return await this.as.getAll({
-      id: doctor.id,
-      date: search.date,
-      clientname: search.clientname,
-    });
+    return await this.as.getAll(
+      {
+        id: doctor.id,
+        date: search.date,
+        clientname: search.clientname,
+      },
+      Role.DOCTOR,
+    );
   }
 
   async getClients(

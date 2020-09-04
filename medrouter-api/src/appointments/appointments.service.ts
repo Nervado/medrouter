@@ -17,6 +17,8 @@ import { UpdateAppointmentDto } from './dto/update-appointment';
 import { Available } from 'src/doctors/enums/available.enum';
 import { SearchClientDto } from 'src/client/dtos/search-client-dto';
 import { ExamStatus } from 'src/exams/enums/status.enum';
+import { Role } from 'src/auth/enums/role.enum';
+import { QueryBuilder } from 'typeorm';
 
 @Injectable()
 export class AppointmentsService {
@@ -91,6 +93,7 @@ export class AppointmentsService {
     return await query
       .leftJoinAndSelect('appointment.doctor', 'doctor')
       .orderBy('date', 'ASC')
+      .orderBy('hour', 'ASC')
       .getMany();
   }
 
@@ -199,7 +202,10 @@ export class AppointmentsService {
     return results;
   }
 
-  async getAll(search: SearchAppointment): Promise<AppointmentDto[]> {
+  async getAll(
+    search: SearchAppointment,
+    role?: Role,
+  ): Promise<AppointmentDto[]> {
     const query = Appointment.createQueryBuilder('appointment');
 
     if (search.date) {
@@ -222,7 +228,11 @@ export class AppointmentsService {
       query.andWhere('hour = :hour', { hour: search.hour });
     }
 
-    //query.andWhere('status != :status', { status: AppointmentStatus.CANCELED });
+    if (role === Role.DOCTOR) {
+      query.andWhere('status != :status', {
+        status: AppointmentStatus.REQUESTED,
+      });
+    }
 
     try {
       const resuts = await query

@@ -1,17 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 
 import {
-  faPlus,
-  faPowerOff,
-  faHome,
-  faUser,
-  faFileMedical,
-  faFileInvoiceDollar,
-  faBookMedical,
-  faCalendarCheck,
-  faPoll,
-  faBell,
-  faCommentAlt,
   faEllipsisH,
   faClock,
   faCalendarDay,
@@ -30,6 +19,9 @@ import { ClientsService } from "../../clients.service";
 import { isThisMinute, format } from "date-fns";
 import { Types } from "src/app/messages/toast/enums/types";
 import { SearchDoctorDto } from "../../models/search";
+import { AppointmentStatus } from "../../enums/appontment-status";
+import { Colors } from "src/app/messages/toast/enums/colors";
+import { isPast } from "src/app/utils/ispast";
 @Component({
   selector: "app-appointments-summary",
   templateUrl: "./appointments-summary.component.html",
@@ -47,6 +39,8 @@ export class AppointmentsSummaryComponent implements OnInit {
   page: number = 1;
 
   appointments: Appointment[] = [];
+
+  isPast = isPast;
 
   constructor(
     private activateRoute: ActivatedRoute,
@@ -81,9 +75,53 @@ export class AppointmentsSummaryComponent implements OnInit {
     this.getAppointments(this.activateRoute.parent.snapshot.params["id"]);
   }
 
-  cancel(id: string) {}
+  cancel(app: Appointment) {
+    if (
+      app.status !== AppointmentStatus.CANCELED &&
+      app.status !== AppointmentStatus.ATTENDED
+    ) {
+      this.cs
+        .deleteAppointment(
+          this.activateRoute.parent.snapshot.params["id"],
+          app.id
+        )
+        .subscribe({
+          next: () => {
+            this.ns.notify({
+              message: "Agendamento cancelado",
+              type: Types.INFO,
+            });
+            this.getAppointments(
+              this.activateRoute.parent.snapshot.params["id"]
+            );
+          },
+          error: () =>
+            this.ns.notify({
+              message: "Falha ao cancelar agendamento",
+              type: Types.ERROR,
+            }),
+        });
+    }
+  }
 
   prettyDate(date) {
     return format(new Date(date), "dd/MM/yyyy");
+  }
+
+  getStatusColor(status: AppointmentStatus): Colors {
+    switch (status) {
+      case AppointmentStatus.ATTENDED:
+        return Colors.SUCCESS;
+      case AppointmentStatus.CANCELED:
+        return Colors.ERROR;
+      case AppointmentStatus.REQUESTED:
+        return Colors.WARN;
+      case AppointmentStatus.RESCHEDULED:
+        return Colors.INFO;
+      case AppointmentStatus.ONESCHEDULE:
+        return Colors.RECEPT;
+      default:
+        return Colors.BASE;
+    }
   }
 }

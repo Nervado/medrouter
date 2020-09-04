@@ -112,8 +112,12 @@ export class DoctorsHistoryClientsDashboardComponent implements OnInit {
             type: Types.ERROR,
           }),
         next: (prescriptions: PrescriptionDto[]) => {
-          this.prescriptions = prescriptions;
-          console.log(prescriptions);
+          this.prescriptions = [
+            ...prescriptions.map((pres) => {
+              pres.visible = true;
+              return pres;
+            }),
+          ];
         },
       });
   }

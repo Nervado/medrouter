@@ -40,7 +40,7 @@ export class Prescription extends BaseEntity {
   doctor: Doctor;
 
   @Column('text', { nullable: true, array: true })
-  recommendations: string[];
+  recomendations: string[];
 
   @Generated('increment')
   @Column()
