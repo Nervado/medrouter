@@ -24,6 +24,9 @@ import { CepMaskDirective } from "./directives/cep-mask.directive";
 import { MultiListViewComponent } from "./components/multi-list-view/multi-list-view.component";
 import { CnpjMaskDirective } from "./directives/cnpj-mask.directive";
 import { PressureMaskDirective } from "./directives/pressure-mask.directive";
+import { ExamViewComponent } from "./components/exam-view/exam-view.component";
+import { RecomViewComponent } from "./components/recom-view/recom-view.component";
+import { MedicineViewComponent } from "./components/medicine-view/medicine-view.component";
 @NgModule({
   declarations: [
     InputComponent,
@@ -45,6 +48,9 @@ import { PressureMaskDirective } from "./directives/pressure-mask.directive";
     MultiListViewComponent,
     CnpjMaskDirective,
     PressureMaskDirective,
+    ExamViewComponent,
+    RecomViewComponent,
+    MedicineViewComponent,
   ],
   imports: [
     CommonModule,
@@ -80,6 +86,9 @@ import { PressureMaskDirective } from "./directives/pressure-mask.directive";
     CnpjMaskDirective,
     PressureMaskDirective,
     MultiListViewComponent,
+    RecomViewComponent,
+    MedicineViewComponent,
+    ExamViewComponent,
   ],
 })
 export class SharedModule {}

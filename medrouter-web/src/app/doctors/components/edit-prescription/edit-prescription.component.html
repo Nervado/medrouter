@@ -24,6 +24,13 @@
           Doutor:
           <strong>{{ prescription?.doctor?.user.fullname }}</strong>
         </div>
+
+        <div class="field">
+          <div class="icon">
+            <fa-icon [icon]="faMedKit"></fa-icon>
+          </div>
+          <strong>{{ prescription?.doctor.specialty[0] }}</strong>
+        </div>
         <div class="field">
           <div class="icon">
             <fa-icon [icon]="faHeartbeat" class="mr-1"></fa-icon>
@@ -371,7 +378,7 @@
           cols="30"
           rows="10"
           placeholder="Escreva aqui recomendações ao paciente"
-          value="R{{ recommendations.length + 1 }}: "
+          value="R{{ prescription.recomendations.length + 1 }}: "
           (keyup.enter)="saveR(reconm.value)"
         >
         </textarea>
@@ -380,69 +387,54 @@
       <div
         class="resume"
         *ngIf="
-          recommendations?.length > 0 ||
+          prescription?.recomendations.length > 0 ||
           prescription?.medicines.length > 0 ||
           prescription?.exams.length > 0
         "
       >
-        <strong> Resumo</strong>
+        <strong>Resumo</strong>
 
-        <div *ngIf="recommendations.length > 0" class="my-1">
+        <div *ngIf="prescription?.recomendations.length > 0" class="my-1">
           <div>
             <fa-icon [icon]="faExclamationCircle"></fa-icon>
             <strong> Recomendações</strong>
           </div>
-          <div *ngFor="let r of recommendations">
-            <div>
-              {{ r }}
-              <fa-icon
-                [icon]="faTimes"
-                class="text-oposity1"
-                (click)="deleteRecomendation(r)"
-              ></fa-icon>
-            </div>
-          </div>
+
+          <app-recom-view
+            *ngFor="let recom of prescription?.recomendations; let i = index"
+            [recomendation]="recom"
+            [del]="true"
+            [indice]="i + 1"
+            (delete)="deleteRecomendation($event)"
+          ></app-recom-view>
         </div>
-        <div *ngIf="prescription.medicines.length > 0" class="my-1">
+        <div *ngIf="prescription?.medicines.length > 0" class="my-1">
           <div>
             <fa-icon [icon]="faCapsules"></fa-icon>
 
             <strong> Medicamentos</strong>
           </div>
-          <div *ngFor="let medicine of prescription.medicines">
-            <ng-container *ngIf="medicine.formula === ''; else formula">
-              {{ fmrt(medicine.substance) }} &nbsp;
-              {{ fmrt(medicine.presentantion) }}
-            </ng-container>
-            <ng-template #formula>
-              <strong>Formula: </strong>{{ medicine.formula }}
-            </ng-template>
-            >
-
-            <fa-icon
-              [icon]="faTimes"
-              class="text-oposity1"
-              (click)="deleteMedicine(medicine.id)"
-            ></fa-icon>
-          </div>
+          <app-medicine-view
+            [del]="true"
+            [medicine]="medicine"
+            (delete)="deleteMedicine($event)"
+            *ngFor="let medicine of prescription.medicines"
+          ></app-medicine-view>
         </div>
 
-        <div *ngIf="prescription.exams.length > 0" class="my-1">
+        <div *ngIf="prescription?.exams.length > 0" class="my-1">
           <div>
             <fa-icon [icon]="faVial"></fa-icon>
 
             <strong> Exames</strong>
           </div>
-          <div *ngFor="let exam of prescription.exams">
-            <div *ngIf="exam.status !== 'cancelado'">
-              {{ exam.type }}
-              <fa-icon
-                [icon]="faTimes"
-                class="text-oposity1"
-                (click)="deleteExam(exam.id)"
-              ></fa-icon>
-            </div>
-          </div>
+
+          <app-exam-view
+            *ngFor="let exam of prescription.exams"
+            [exam]="exam"
+            [del]="true"
+            (delete)="deleteExam($event)"
+          ></app-exam-view>
         </div>
       </div>
     </div>

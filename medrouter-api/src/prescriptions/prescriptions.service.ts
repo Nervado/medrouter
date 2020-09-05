@@ -12,6 +12,7 @@ import { SearchClientDto } from 'src/client/dtos/search-client-dto';
 import { ExamStatus } from 'src/exams/enums/status.enum';
 import { LabChangesDto } from 'src/labs/dto/labStatus-dto';
 import { Lab } from 'src/labs/models/lab.entity';
+import { arrayFromObject } from 'src/utils/arrayFromObject';
 
 @Injectable()
 export class PrescriptionsService {
@@ -50,8 +51,6 @@ export class PrescriptionsService {
       .leftJoinAndSelect('client.user', 'clientUser')
       .leftJoinAndSelect('clientUser.avatar', 'clientAvatar')
       .getOne();
-
-    console.log(founds.exams, founds.medicines);
 
     return this.serializePrescription(founds);
   }
@@ -97,10 +96,16 @@ export class PrescriptionsService {
   }
 
   serializePrescription(prescription: Prescription): PrescriptionDto {
+    const checks = arrayFromObject(prescription.recomendations);
+    const recoms = checks
+      ? checks.map(p => {
+          return p.trim().replace(/\"/g, '');
+        })
+      : [];
     return {
       id: prescription?.id,
       code: prescription?.code,
-      recomendations: prescription.recomendations,
+      recomendations: recoms[0] === '' ? [] : recoms,
       waist: prescription.waist,
       weight: prescription.weight,
       height: prescription.height,
@@ -138,6 +143,7 @@ export class PrescriptionsService {
       },
       doctor: {
         id: prescription.doctor.id,
+        specialty: prescription.doctor.specialty,
         user: {
           username: prescription.doctor.user.username,
           fullname: prescription.doctor.user.fullname,

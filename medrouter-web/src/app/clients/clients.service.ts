@@ -45,6 +45,15 @@ export class ClientsService {
     );
   }
 
+  getPrescriptions(
+    id: string,
+    search: SearchDoctorDto
+  ): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(
+      `${MEDROUTER_API}/clients/${id}/prescriptions?page=${search.page}`
+    );
+  }
+
   deleteAppointment(id: string, appId: string): Observable<void> {
     return this.http.delete<void>(
       `${MEDROUTER_API}/clients/${id}/appointments/${appId}`

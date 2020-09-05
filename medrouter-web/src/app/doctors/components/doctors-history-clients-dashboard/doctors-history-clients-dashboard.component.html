@@ -89,7 +89,7 @@
     <div class="wrapper-results" *ngIf="prescriptions?.length > 0">
       <div *ngFor="let prescription of prescriptions" class="prescriptions">
         <header (click)="prescription.visible = !prescription.visible">
-          <div class="info user">
+          <div class="user">
             <ng-container
               *ngIf="prescription.doctor.user.avatar?.url; else avatar"
             >
@@ -98,15 +98,23 @@
             <ng-template #avatar>
               <img src="../../../../assets/avatarmale.png" alt="avatar"
             /></ng-template>
-            Doutor: {{ prescription.doctor.user.fullname }}
+
+            <div>
+              <strong>{{ prescription.doctor.user.fullname }}</strong>
+
+              <div class="d-flex align-items-center info">
+                <div class="icon">
+                  <fa-icon [icon]="faMedkit" class="mr-1"></fa-icon>
+                </div>
+                {{ prescription?.doctor.specialty[0] }}
+
+                <fa-icon [icon]="faFileMedical" class="mx-1"></fa-icon>
+                {{ prescription?.code }}
+              </div>
+            </div>
           </div>
 
-          <div class="info">
-            <fa-icon [icon]="faFileMedical"></fa-icon>
-            {{ prescription?.code }}
-          </div>
-
-          <div class="user info">
+          <div class="user">
             <ng-container
               *ngIf="prescription.client.user.avatar?.url; else avatar"
             >
@@ -115,18 +123,20 @@
             <ng-template #avatar>
               <img src="../../../../assets/avatarmale.png" alt="avatar"
             /></ng-template>
-            <div class="">
-              Paciente:
-              {{ prescription.client.user.fullname }}
+
+            <div>
+              <div class="">
+                <strong> {{ prescription.client.user.fullname }}</strong>
+              </div>
+
+              <div class="info">
+                <fa-icon [icon]="faCalendarDay"></fa-icon>
+                {{ pretty(prescription.createdAt) }}
+              </div>
             </div>
           </div>
 
-          <div class="info">
-            <fa-icon [icon]="faCalendarDay"></fa-icon>
-            {{ pretty(prescription.createdAt) }}
-          </div>
-
-          <div class="info">
+          <div>
             <a [routerLink]="['.', prescription.id]"
               ><fa-icon [icon]="faEdit" class="text-oposity1"></fa-icon>
             </a>
@@ -136,55 +146,124 @@
         <div
           class="resume"
           *ngIf="
-            (prescription?.recomendations !== {} ||
+            (prescription.recomendations?.length !== 0 ||
               prescription.medicines?.length > 0 ||
               prescription.exams?.length > 0) &&
             prescription.visible
           "
         >
-          <div class="title"><strong> Resumo</strong></div>
+          <div class="mt-2 mb-1">
+            <strong>
+              <fa-icon [icon]="faClipBoard" class="mr-1"></fa-icon>
+
+              Anamnese</strong
+            >
+          </div>
+
+          <div class="anamnese prescription-header">
+            <div class="field">
+              <div class="icon">
+                <fa-icon [icon]="faTachometerAlt" class="mr-1"></fa-icon>
+              </div>
+              Pressão arterial:
+              <strong>
+                {{ prescription?.pressure || "_ _" }}
+
+                mmHg</strong
+              >
+            </div>
+
+            <div class="field">
+              <div class="icon">
+                <fa-icon [icon]="faWeight" class="mr-1"></fa-icon>
+              </div>
+
+              Peso:
+              <strong>
+                {{ prescription?.weight || "_ _" }}
+
+                kg</strong
+              >
+            </div>
+
+            <div class="field">
+              <div class="icon">
+                <fa-icon [icon]="faHeart" class="mr-1"></fa-icon>
+              </div>
+              Batimentos:
+              <strong>
+                {{ prescription?.bpm || "_ _" }}
+
+                bpm</strong
+              >
+            </div>
+
+            <div class="field">
+              <div class="icon">
+                <fa-icon [icon]="faRulerVertical"></fa-icon>
+              </div>
+              Altura:<strong>
+                {{ prescription?.height || "_ _" }}
+
+                cm</strong
+              >
+            </div>
+
+            <div class="field">
+              <div class="icon">
+                <fa-icon [icon]="faRulerHorizontal"></fa-icon>
+              </div>
+              Cintura:<strong>
+                {{ prescription?.waist || "_ _" }}
+
+                cm</strong
+              >
+            </div>
+          </div>
 
           <div class="itens">
-            <div *ngIf="prescription?.recomendations" class="my-1 recom">
+            <div
+              *ngIf="prescription.recomendations.length > 0"
+              class="my-1 recoms"
+            >
               <div class="title">
-                <fa-icon [icon]="faExclamationCircle"></fa-icon>
-                <strong> Recomendações</strong>
+                <fa-icon [icon]="faExclamationCircle" class="mr-1"></fa-icon>
+                <strong>Recomendações</strong>
               </div>
-              <div
-                *ngFor="let r of arrayFromObject(prescription.recomendations)"
-              >
-                <div>{{ r }}</div>
-              </div>
+
+              <app-recom-view
+                *ngFor="let recom of prescription.recomendations; let i = index"
+                [recomendation]="recom"
+                [del]="false"
+                [indice]="i + 1"
+              ></app-recom-view>
             </div>
 
             <div *ngIf="prescription.medicines.length > 0" class="my-1 medc">
               <div class="title">
-                <fa-icon [icon]="faCapsules"></fa-icon>
+                <fa-icon [icon]="faCapsules" class="mr-1"></fa-icon>
 
-                <strong> Medicamentos</strong>
+                <strong>Medicamentos</strong>
               </div>
-              <div *ngFor="let medicine of prescription.medicines">
-                <ng-container *ngIf="medicine.formula === ''; else formula">
-                  {{ fmrt(medicine.substance) }}
-                  {{ medicine }}
-                </ng-container>
-                <ng-template #formula>
-                  Formula: {{ medicine.formula }}
-                </ng-template>
-              </div>
+
+              <app-medicine-view
+                [del]="false"
+                [medicine]="medicine"
+                *ngFor="let medicine of prescription.medicines"
+              ></app-medicine-view>
             </div>
 
-            <div *ngIf="prescription.exams?.length > 0" class="my-1 exam">
+            <div *ngIf="prescription.exams?.length > 0" class="my-1 exams">
               <div class="title">
-                <fa-icon [icon]="faVial"></fa-icon>
-
-                <strong> Exames</strong>
+                <fa-icon [icon]="faVial" class="icon mr-1"></fa-icon>
+                <strong>Exames</strong>
               </div>
-              <div *ngFor="let exam of prescription.exams">
-                {{ fmrt(exam.type) }}
 
-                <strong>{{ exam.lab?.name }}</strong>
-              </div>
+              <app-exam-view
+                *ngFor="let exam of prescription.exams"
+                [exam]="exam"
+                [del]="false"
+              ></app-exam-view>
             </div>
           </div>
         </div>

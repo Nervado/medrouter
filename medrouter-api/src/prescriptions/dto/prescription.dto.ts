@@ -10,10 +10,11 @@ import { ParseIntPipe } from '@nestjs/common';
 import { Transform } from 'class-transformer';
 import { ExamDto } from 'src/exams/dto/exam.dto';
 import { MedicineDto } from 'src/medicines/dto/medicine.dto';
+import { Specialty } from 'src/doctors/enums/specialty.enum';
 
 export class PrescriptionDto {
   id?: string;
-  recomendations?: string[];
+  recomendations?: any[];
 
   @IsOptional()
   exams?: ExamDto[];
@@ -54,6 +55,7 @@ export class PrescriptionDto {
   };
 
   doctor?: {
+    specialty?: Specialty[];
     id: string;
     user: {
       username: string;

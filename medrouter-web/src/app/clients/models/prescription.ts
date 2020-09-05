@@ -1,8 +1,11 @@
-import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
+import { ExamStatus } from "../enums/status.enum";
+import { ExamsEnum } from "../enums/exams.enum";
 
 export class PrescriptionDto {
-  id: any;
-  doctor: {
+  id?: any;
+  code?: number;
+  doctor?: {
+    specialty?: string[];
     id: any;
     user: {
       fullname: string;
@@ -11,24 +14,40 @@ export class PrescriptionDto {
       };
     };
   };
-  client: {
-    id: any;
-    user: {
-      fullname: string;
-      avatar: {
-        url: string;
+  client?: {
+    id?: any;
+    user?: {
+      fullname?: string;
+      avatar?: {
+        url?: string;
       };
     };
   };
-  recomendations: Array<string>;
-  exams: Array<{
+  recomendations?: Array<string>;
+  exams?: Array<{
     id: any;
     type: ExamsEnum;
+    status?: ExamStatus;
+    deadline?: number;
+    createdAt?: Date;
+    price?: number;
+    lab?: {
+      id?: string;
+      name?: string;
+    };
   }>;
-  medicines: Array<{
+  medicines?: Array<{
     id: any;
     substance: string;
+    presentantion?: string;
+    formula?: string;
   }>;
 
-  createdAt: Date;
+  createdAt?: Date;
+  pressure?: string;
+  waist?: number;
+  weight?: number;
+  height?: number;
+  bpm?: number;
+  visible?: boolean = false;
 }

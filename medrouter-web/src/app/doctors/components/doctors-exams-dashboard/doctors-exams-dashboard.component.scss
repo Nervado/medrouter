@@ -70,6 +70,18 @@
             overflow-y: scroll;
             width: 100%;
 
+            &::-webkit-scrollbar {
+              height: 4px;
+              width: 4px;
+              background: rgba(0, 0, 0, 0.1);
+              cursor: pointer;
+            }
+
+            &::-webkit-scrollbar-thumb:vertical {
+              background-color: var(--doctor);
+              border-radius: 10px;
+            }
+
             .result {
               width: 100%;
               display: flex;
@@ -142,6 +154,19 @@
 
     .wrapper-results {
       overflow-y: scroll;
+
+      &::-webkit-scrollbar {
+        height: 4px;
+        width: 4px;
+        background: rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+      }
+
+      &::-webkit-scrollbar-thumb:vertical {
+        background-color: var(--doctor);
+        border-radius: 10px;
+      }
+
       padding: 10px;
       height: 600px;
 

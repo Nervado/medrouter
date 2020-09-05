@@ -22,6 +22,7 @@ import {
   faMobileAlt,
   faTrash,
   faRulerHorizontal,
+  faMedkit,
 } from "@fortawesome/free-solid-svg-icons";
 import { Medicine } from "../../model/medicine";
 import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
@@ -51,6 +52,7 @@ export class EditPrescriptionComponent implements OnInit {
   faTachometerAlt = faTachometerAlt;
   faWeight = faWeight;
   faHeart = faHeart;
+  faMedKit = faMedkit;
 
   faEdit = faEdit;
   faTimes = faTimes;
@@ -81,7 +83,7 @@ export class EditPrescriptionComponent implements OnInit {
   annaminese: boolean = true;
 
   searchMedicines: Array<any> = [];
-  recommendations: Array<string> = [];
+  recomendations: Array<string> = [];
   medicines: Array<Medicine> = [];
   exams: Array<ExamsEnum> = [];
 
@@ -116,10 +118,8 @@ export class EditPrescriptionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.recommendations.length;
     this.date = new Date();
     this.prettyDate = format(new Date(), "dd/MM/yyyy");
-
     this.prescriptionForm = this.fb.group({
       id: this.fb.control("", [Validators.required]),
       waist: this.fb.control(0, [Validators.required]),
@@ -160,7 +160,7 @@ export class EditPrescriptionComponent implements OnInit {
     this.ds
       .updatePrescription(this.doctorId, this.prescriptionForm.value.id, {
         ...this.prescriptionForm.value,
-        recommendations: this.recommendations,
+        recomendations: this.recomendations,
         waist: this.prescriptionForm.value.waist,
       })
       .subscribe({
@@ -273,7 +273,9 @@ export class EditPrescriptionComponent implements OnInit {
   }
 
   saveR(r: string) {
-    this.recommendations.push(r);
+    this.addR = false;
+    this.recomendations = [...this.recomendations, r.trim()];
+    this.update();
   }
 
   showAddNF() {
@@ -311,7 +313,9 @@ export class EditPrescriptionComponent implements OnInit {
       .subscribe({
         next: (prescription: PrescriptionDto) => {
           this.prescription = prescription; // only update the representation
-          console.log(this.prescription);
+
+          this.recomendations = this.prescription.recomendations;
+
           this.prescriptionForm.patchValue({
             ...prescription,
           });
@@ -319,8 +323,8 @@ export class EditPrescriptionComponent implements OnInit {
       });
   }
 
-  deleteExam(id: string) {
-    this.ds.deleteExam(id).subscribe({
+  deleteExam(e) {
+    this.ds.deleteExam(e).subscribe({
       next: () => {
         this.ns.notify({
           message: "Exame excluído",
@@ -353,10 +357,9 @@ export class EditPrescriptionComponent implements OnInit {
     });
   }
 
-  deleteRecomendation(recom: string) {
-    this.recommendations = this.recommendations.filter(
-      (rec) => !rec.match(recom)
-    );
+  deleteRecomendation(e: number) {
+    this.recomendations.splice(e - 1, 1);
+
     this.update();
   }
 
@@ -381,6 +384,12 @@ export class EditPrescriptionComponent implements OnInit {
   }
 
   back() {
-    this.router.navigate(["doctors", this.prescription.doctor.id, "history"]);
+    this.router.navigate(["doctors", this.prescription?.doctor.id, "history"]);
+  }
+
+  arrayFromObject(data: any): String[] {
+    if (data !== {}) {
+      return data.replace("{", "").replace("}", "").split(",");
+    }
   }
 }

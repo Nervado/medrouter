@@ -5,6 +5,7 @@ export class PrescriptionDto {
   id?: any;
   code?: number;
   doctor?: {
+    specialty?: string[];
     id: any;
     user: {
       fullname: string;
@@ -27,6 +28,9 @@ export class PrescriptionDto {
     id: any;
     type: ExamsEnum;
     status?: ExamStatus;
+    deadline?: number;
+    createdAt?: Date;
+    price?: number;
     lab?: {
       id?: string;
       name?: string;

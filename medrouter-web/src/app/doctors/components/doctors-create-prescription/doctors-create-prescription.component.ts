@@ -22,6 +22,7 @@ import {
   faMobileAlt,
   faTrash,
   faRulerHorizontal,
+  faMedkit,
 } from "@fortawesome/free-solid-svg-icons";
 import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
 import { Medicine } from "../../model/medicine";
@@ -72,6 +73,7 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
   faMobileAlt = faMobileAlt;
   faTrash = faTrash;
   faRulerHorizontal = faRulerHorizontal;
+  faMedKit = faMedkit;
 
   isEditing: boolean = false;
   showSearch: boolean = false;
@@ -83,7 +85,7 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
   annaminese: boolean = true;
 
   searchMedicines: Array<any> = [];
-  recommendations: Array<string> = [];
+  recomendations: Array<string> = [];
   medicines: Array<Medicine> = [];
   exams: Array<ExamsEnum> = [];
 
@@ -120,7 +122,7 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.recommendations.length;
+    this.recomendations.length;
     this.date = new Date();
     this.prettyDate = format(new Date(), "dd/MM/yyyy");
 
@@ -169,7 +171,7 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
       this.ds
         .updatePrescription(this.doctorId, this.prescriptionForm.value.id, {
           ...this.prescriptionForm.value,
-          recommendations: this.recommendations,
+          recomendations: this.recomendations,
           waist: this.prescriptionForm.value.waist,
         })
         .subscribe({
@@ -320,7 +322,7 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
   }
 
   saveR(r: string) {
-    this.recommendations.push(r);
+    this.recomendations.push(r);
   }
 
   showAddNF() {
@@ -382,7 +384,8 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
       .subscribe({
         next: (prescription: PrescriptionDto) => {
           this.prescription = prescription; // only update the representation
-          console.log(this.prescription);
+          this.recomendations = this.prescription.recomendations;
+
           this.prescriptionForm.patchValue({
             ...prescription,
           });
@@ -424,10 +427,8 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
     });
   }
 
-  deleteRecomendation(recom: string) {
-    this.recommendations = this.recommendations.filter(
-      (rec) => !rec.match(recom)
-    );
+  deleteRecomendation(e: number) {
+    this.recomendations.splice(e - 1, 1);
     this.update();
   }
 

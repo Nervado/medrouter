@@ -28,19 +28,26 @@ import {
   faFileMedicalAlt,
   faMobileAlt,
   faUserTie,
+  faMedkit,
+  faTachometerAlt,
+  faWeight,
+  faHeart,
+  faRulerVertical,
+  faRulerHorizontal,
+  faClipboard,
 } from "@fortawesome/free-solid-svg-icons";
 import { ExamDto } from "../../model/exam";
-import { ExamsEnum } from "src/app/managers/components/add-lab-modal/enums/exams-types";
-import { ExamStatus } from "../../enums/status.enum";
+
 import { format } from "date-fns";
 import { PrescriptionDto } from "../../model/prescription";
-import { Medicine } from "../../model/medicine";
+
 import { DoctorsService } from "../../doctors.service";
 import { NotificationService } from "src/app/messages/notification.service";
-import { FormBuilder } from "@angular/forms";
+
 import { ActivatedRoute } from "@angular/router";
 import { Types } from "src/app/messages/toast/enums/types";
 import { Client } from "../../model/client";
+import getStatusColor from "src/app/utils/getStatusColor";
 
 @Component({
   selector: "app-doctors-history-clients-dashboard",
@@ -74,6 +81,14 @@ export class DoctorsHistoryClientsDashboardComponent implements OnInit {
   faFileMedicalAlt = faFileMedicalAlt;
   faMobileAlt = faMobileAlt;
   faUserTie = faUserTie;
+  faMedkit = faMedkit;
+  faClipBoard = faClipboard;
+
+  faTachometerAlt = faTachometerAlt;
+  faWeight = faWeight;
+  faHeart = faHeart;
+  faRulerVertical = faRulerVertical;
+  faRulerHorizontal = faRulerHorizontal;
 
   showSearch: boolean = false;
 
@@ -86,6 +101,8 @@ export class DoctorsHistoryClientsDashboardComponent implements OnInit {
   clients: Client[] = [];
 
   client: Client;
+
+  count: number = 0;
 
   constructor(
     private ds: DoctorsService,
@@ -114,7 +131,8 @@ export class DoctorsHistoryClientsDashboardComponent implements OnInit {
         next: (prescriptions: PrescriptionDto[]) => {
           this.prescriptions = [
             ...prescriptions.map((pres) => {
-              pres.visible = true;
+              pres.visible = false;
+              pres.recomendations = pres.recomendations;
               return pres;
             }),
           ];
@@ -152,8 +170,12 @@ export class DoctorsHistoryClientsDashboardComponent implements OnInit {
     this.getPrescriptions(this.activatedRoute.parent.snapshot.params["id"]);
   }
 
-  arrayFromObject(data: string): String[] {
-    return data.replace("{", "").replace("}", "").split(",");
+  arrayFromObject(data: any): String[] {
+    if (Object.values(data).length === 0) {
+      return undefined;
+    } else {
+      return data.replace("{", "").replace("}", "").split(",");
+    }
   }
 
   save(client: Client) {
@@ -172,4 +194,6 @@ export class DoctorsHistoryClientsDashboardComponent implements OnInit {
     this.page = 1;
     this.getPrescriptions(this.activatedRoute.parent.snapshot.params["id"]);
   }
+
+  getStatusColors = getStatusColor;
 }

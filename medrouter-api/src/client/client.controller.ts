@@ -31,6 +31,7 @@ import { Role } from 'src/auth/enums/role.enum';
 import { Client } from './models/client.entity';
 import { AppointmentDto } from 'src/appointments/dto/appointment.dto';
 import { ExamDto } from 'src/exams/dto/exam.dto';
+import { PrescriptionDto } from 'src/prescriptions/dto/prescription.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('clients')
@@ -77,6 +78,17 @@ export class ClientController {
     @Query() search: SearchClientDto,
   ): Promise<ExamDto[]> {
     return this.clientService.searchClientExams(id, user, search);
+  }
+
+  @Get('/:id/prescriptions')
+  @Allow(Role.CLIENT)
+  @UseInterceptors(ClassSerializerInterceptor)
+  getClientPrescriptions(
+    @GetUser() user: User,
+    @Param('id') id: any,
+    @Query() search: SearchClientDto,
+  ): Promise<PrescriptionDto[]> {
+    return this.clientService.searchClientPrescriptions(id, user, search);
   }
 
   @Delete('/:id/appointments/:appId')

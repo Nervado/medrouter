@@ -24,6 +24,9 @@ import { ExamDto } from 'src/exams/dto/exam.dto';
 import { Exam } from 'src/exams/models/exam.entity';
 import { ExamStatus } from 'src/exams/enums/status.enum';
 import { getMidnight } from 'src/utils/getMidnight';
+import { PrescriptionDto } from 'src/prescriptions/dto/prescription.dto';
+import { Prescription } from 'src/prescriptions/models/prescription.entity';
+import { arrayFromObject } from 'src/utils/arrayFromObject';
 
 @Injectable()
 export class ClientService {
@@ -440,6 +443,111 @@ export class ClientService {
           surname: exam.doctor.user.surname,
           avatar: {
             url: exam.doctor.user.avatar?.url,
+          },
+        },
+      },
+    };
+  }
+
+  async searchClientPrescriptions(
+    id: string,
+    user: User,
+    search: SearchClientDto,
+  ): Promise<PrescriptionDto[]> {
+    const { page, username } = search;
+
+    const pageNumber: number = page ? page * 10 - 10 : 0;
+
+    const client = await Client.findOne(id);
+
+    if (!client || client.user.userId !== user.userId) {
+      throw new BadRequestException('Informations dont match');
+    }
+    const query = Prescription.createQueryBuilder('prescription');
+
+    query.andWhere('client.id = :id', { id: id });
+
+    if (username) {
+      query.andWhere(
+        `doctorUser.username ILIKE '%${username}%' OR  doctorUser.surname ILIKE '%${username}%' `,
+      );
+    }
+
+    const founds = await query
+      .leftJoinAndSelect('prescription.doctor', 'doctor')
+      .leftJoinAndSelect('prescription.medicines', 'medicines')
+      .leftJoinAndSelect('prescription.exams', 'exams')
+      .leftJoinAndSelect('exams.lab', 'lab')
+      .leftJoinAndSelect('doctor.user', 'doctorUser')
+      .leftJoinAndSelect('doctorUser.avatar', 'doctorAvatar')
+      .leftJoinAndSelect('prescription.client', 'client')
+      .leftJoinAndSelect('client.user', 'clientUser')
+      .leftJoinAndSelect('clientUser.avatar', 'clientAvatar')
+      .orderBy('prescription.code', 'DESC')
+      .skip(pageNumber)
+      .take(10)
+      .getMany();
+
+    return founds.map((prescription: Prescription) =>
+      this.serializePrescription(prescription),
+    );
+  }
+
+  serializePrescription(prescription: Prescription): PrescriptionDto {
+    const checks = arrayFromObject(prescription.recomendations);
+    const recoms = checks
+      ? checks.map(p => {
+          return p.trim().replace(/\"/g, '');
+        })
+      : [];
+    return {
+      id: prescription?.id,
+      code: prescription?.code,
+      recomendations: recoms[0] === '' ? [] : recoms,
+      waist: prescription.waist,
+      weight: prescription.weight,
+      height: prescription.height,
+      pressure: prescription.pressure,
+      bpm: prescription.bpm,
+      exams: prescription.exams.map(exam => {
+        return {
+          id: exam.id,
+          price: exam.price,
+          deadline: exam.deadline,
+          status: exam.status,
+          type: exam.type,
+          createdAt: exam.createdAt,
+          lab: {
+            id: exam.lab?.id,
+            name: exam.lab?.name,
+            available: exam.lab?.available,
+            labcategory: exam.lab?.labcategory,
+          },
+        };
+      }),
+      medicines: prescription.medicines,
+      createdAt: prescription.createdAt,
+      client: {
+        id: prescription.client.id,
+        user: {
+          username: prescription.client.user.username,
+          fullname: prescription.client.user.fullname,
+          surname: prescription.client.user.surname,
+          birthdate: prescription.client.user.birthdate,
+          avatar: {
+            url: prescription.client.user.avatar?.url,
+          },
+        },
+      },
+      doctor: {
+        id: prescription.doctor.id,
+        specialty: prescription.doctor.specialty,
+        user: {
+          username: prescription.doctor.user.username,
+          fullname: prescription.doctor.user.fullname,
+          surname: prescription.doctor.user.surname,
+          avatar: {
+            url: prescription.doctor.user.avatar?.url,
           },
         },
       },
