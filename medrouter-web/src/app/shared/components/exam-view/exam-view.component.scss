@@ -1,0 +1,85 @@
+.exam {
+  margin: 5px 0px;
+  display: flex;
+  width: 100%;
+
+  align-items: center;
+  justify-content: space-between;
+
+  border: 1px solid rgba(114, 85, 192, 0.1);
+  padding: 2px 4px;
+  border-radius: 2px;
+
+  .info {
+    width: 220px;
+    display: flex;
+    align-items: flex-start;
+
+    .icon {
+      font-size: 20px;
+      margin-right: 5px;
+    }
+
+    .basic {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .tipo {
+        font-size: 10px;
+      }
+
+      .lab-info {
+        font-size: 10px;
+        display: flex;
+
+        .name {
+          font-weight: bold;
+        }
+      }
+
+      .date {
+        display: flex;
+        align-items: center;
+        font-size: 10px;
+
+        fa-icon {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+
+  .details {
+    width: 80px;
+    font-size: 10px;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .remove {
+    color: rgba(125, 125, 125, 0.3);
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.1);
+      color: var(--oposity1);
+    }
+  }
+
+  .status {
+    width: 60px;
+    color: var(--oposity);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    font-size: 10px;
+    font-weight: bold;
+  }
+}

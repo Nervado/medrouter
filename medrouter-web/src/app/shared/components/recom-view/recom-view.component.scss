@@ -1,0 +1,53 @@
+.recom {
+  margin: 5px 0px;
+  display: flex;
+  width: 100%;
+
+  align-items: center;
+  justify-content: space-between;
+
+  border: 1px solid rgba(114, 85, 192, 0.1);
+  padding: 2px 4px;
+  border-radius: 2px;
+
+  .info {
+    width: 220px;
+    display: flex;
+
+    align-items: center;
+
+    .indice {
+      background-color: var(--medium);
+      color: var(--oposity);
+      border-radius: 50%;
+      width: 15px;
+      height: 15px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 12px;
+    }
+
+    .value {
+      margin-left: 3px;
+    }
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+
+    .remove {
+      color: rgba(125, 125, 125, 0.3);
+      cursor: pointer;
+      &:hover {
+        transform: scale(1.1);
+        color: var(--oposity1);
+      }
+    }
+  }
+}

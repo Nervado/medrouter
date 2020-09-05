@@ -1,0 +1,44 @@
+<div class="exam">
+  <div class="info">
+    <div class="basic">
+      <div class="lab-info">
+        Laboratório:
+        <ng-container *ngIf="exam.lab?.name; else noLab">
+          <div class="name">{{ exam.lab.name }}</div>
+        </ng-container>
+        <ng-template #noLab>
+          <div>-</div>
+        </ng-template>
+      </div>
+
+      <div class="tipo">{{ fmrt(exam.type) }}</div>
+
+      <div class="date">
+        <fa-icon [icon]="faCalendarDay"></fa-icon>
+        <div>{{ pretty(exam.createdAt) }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="details">
+    <div>
+      <fa-icon [icon]="faCoins"></fa-icon>
+      Preço: {{ exam.price | currency: "R$" }}
+    </div>
+    <div>
+      <fa-icon [icon]="faClock"></fa-icon>
+      Prazo: {{ exam.deadline || 0 }} dias
+    </div>
+  </div>
+  <div class="controls">
+    <fa-icon
+      [icon]="faTrash"
+      (click)="remove(exam.id)"
+      class="remove"
+      *ngIf="del"
+    ></fa-icon>
+    <div class="status" [style.background-color]="getStatusColor(exam.status)">
+      {{ exam.status }}
+    </div>
+  </div>
+</div>

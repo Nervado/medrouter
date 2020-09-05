@@ -1,0 +1,15 @@
+<div class="recom">
+  <div class="info">
+    <div class="indice">{{ indice }}</div>
+    <div class="value">{{ recomendation }}</div>
+  </div>
+
+  <div class="controls">
+    <fa-icon
+      [icon]="faTrash"
+      class="remove"
+      *ngIf="del"
+      (click)="remove(recomendation)"
+    ></fa-icon>
+  </div>
+</div>
