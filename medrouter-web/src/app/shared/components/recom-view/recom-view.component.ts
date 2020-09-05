@@ -12,7 +12,7 @@ export class RecomViewComponent implements OnInit {
   @Input() recomendation: string;
   @Input() del: boolean = true;
   @Input() indice: number = 1;
-  @Output() delete: EventEmitter<string> = new EventEmitter();
+  @Output() delete: EventEmitter<number> = new EventEmitter();
 
   constructor() {}
 
@@ -25,7 +25,7 @@ export class RecomViewComponent implements OnInit {
     }
   }
 
-  remove(value: string) {
+  remove(value: number) {
     if (this.del === true) {
       this.delete.emit(value);
     }
