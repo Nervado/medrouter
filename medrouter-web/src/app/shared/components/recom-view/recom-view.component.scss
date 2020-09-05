@@ -11,17 +11,16 @@
   border-radius: 2px;
 
   .info {
-    width: 220px;
     display: flex;
-
     align-items: center;
 
     .indice {
       background-color: var(--medium);
       color: var(--oposity);
-      border-radius: 50%;
+
       width: 15px;
       height: 15px;
+      border-radius: 50%;
 
       display: flex;
       align-items: center;

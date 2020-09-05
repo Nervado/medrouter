@@ -27,6 +27,7 @@
 
       .tipo {
         font-size: 10px;
+        font-weight: bold;
       }
 
       .lab-info {
@@ -72,7 +73,7 @@
   }
 
   .status {
-    width: 60px;
+    width: 64px;
     color: var(--oposity);
     border-radius: 4px;
     display: flex;

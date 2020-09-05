@@ -1,0 +1,117 @@
+.med {
+  margin: 5px 0px;
+  display: flex;
+  width: 100%;
+
+  align-items: center;
+  justify-content: space-between;
+
+  border: 1px solid rgba(114, 85, 192, 0.1);
+  padding: 2px 4px;
+  border-radius: 2px;
+
+  .info {
+    display: flex;
+    align-items: center;
+    width: 220px;
+    height: 60px;
+
+    .medicine {
+      width: 25px;
+      height: 35px;
+      background-color: rgba(125, 125, 125, 0.1);
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+
+      margin-right: 5px;
+      .stripe {
+        width: 100%;
+        height: 10px;
+        margin-bottom: 10px;
+      }
+    }
+
+    .icon {
+      font-size: 20px;
+      margin-right: 5px;
+    }
+
+    .basic {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .tipo {
+        font-size: 10px;
+        font-weight: bold;
+      }
+
+      .lab-info {
+        font-size: 10px;
+        display: flex;
+
+        .name {
+          //font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .details {
+    width: 90px;
+    font-size: 10px;
+
+    .category,
+    .subcategory {
+      padding: 0px 4px;
+      background-color: var(--medium);
+      width: 90px;
+      color: var(--oposity);
+      border-radius: 4px;
+      margin: 2px 2px 2px 0px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .date {
+      display: flex;
+      align-items: center;
+      font-size: 10px;
+
+      fa-icon {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .remove {
+    color: rgba(125, 125, 125, 0.3);
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.1);
+      color: var(--oposity1);
+    }
+  }
+
+  .status {
+    width: 64px;
+    color: var(--oposity);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    font-size: 10px;
+    font-weight: bold;
+  }
+}
