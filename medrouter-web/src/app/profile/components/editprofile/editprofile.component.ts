@@ -76,7 +76,6 @@ export class EditprofileComponent implements OnInit {
       ]),
     });
 
-    console.log(this.profile.birthdate);
     if (
       this.profile.birthdate !== null &&
       this.profile.birthdate !== undefined

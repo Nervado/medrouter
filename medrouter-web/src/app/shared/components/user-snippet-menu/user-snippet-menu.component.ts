@@ -51,7 +51,6 @@ export class UserSnippetMenuComponent implements OnInit {
       this.roles.forEach((role) => {
         MenuLinks[role].id = this.as.getRuleId(role);
       });
-      console.log(MenuLinks);
     } else {
       this.roles = [];
     }

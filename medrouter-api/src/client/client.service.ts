@@ -29,14 +29,15 @@ import { Prescription } from 'src/prescriptions/models/prescription.entity';
 import { arrayFromObject } from 'src/utils/arrayFromObject';
 import { DataGraph, DataMonth } from './dtos/data-graph';
 
+import { subMonths, endOfDay } from 'date-fns';
+import { Months } from './dtos/data-graph';
 @Injectable()
 export class ClientService {
-  //private appointmentService: AppointmentsService;
+  private months = Months;
 
   constructor(
     @Inject(forwardRef(() => UsersService)) private us: UsersService,
-    private ps: PhotosService, //@Inject(forwardRef(() => AppointmentsService))
-    private moduleRef: ModuleRef, //private as: AppointmentsService,
+    private ps: PhotosService,
   ) {}
 
   async create(client: AuthSingUpDto): Promise<any> {
@@ -72,8 +73,6 @@ export class ClientService {
     try {
       await client.save();
     } catch (error) {
-      console.log(error);
-
       throw new InternalServerErrorException('Fail at create client');
     }
 
@@ -311,8 +310,6 @@ export class ClientService {
 
     const today = new Date();
 
-    console.log(app);
-
     if (!client || !app) {
       throw new BadRequestException('Informations dont match');
     }
@@ -330,7 +327,6 @@ export class ClientService {
       app.status !== AppointmentStatus.ATTENDED
     ) {
       app.status = AppointmentStatus.CANCELED;
-      console.log(app);
     }
 
     try {
@@ -556,42 +552,99 @@ export class ClientService {
   }
 
   async getPressureReport(id: string, user: User): Promise<DataGraph> {
+    const date = new Date();
+
     const client = await Client.findOne(id);
 
     if (!client || client.user.userId !== user.userId) {
       throw new UnauthorizedException('Not allowed get this information');
     }
 
-    const PressureS = [
-      { month: 'jan', value: 12.6 },
-      { month: 'fev', value: 11.6 },
-      { month: 'mar', value: 10.6 },
-      { month: 'abr', value: 12.6 },
-      { month: 'mai', value: 14.6 },
-      { month: 'jun', value: 12.6 },
-      { month: 'jul', value: 12.6 },
-      { month: 'ago', value: 14.6 },
-      { month: 'set', value: 11.6 },
-      { month: 'out', value: 10.6 },
-      { month: 'nov', value: 15.6 },
-      { month: 'dez', value: 16.6 },
-    ];
+    const dates = new Array(12).fill([date, date]).map((_, i) => {
+      return [subMonths(date, i + 1), subMonths(date, i)];
+    });
 
-    const PressureD = [
-      { month: 'jan', value: 7.6 },
-      { month: 'fev', value: 6.6 },
-      { month: 'mar', value: 8.6 },
-      { month: 'abr', value: 9.6 },
-      { month: 'mai', value: 7.6 },
-      { month: 'jun', value: 6.6 },
-      { month: 'jul', value: 7.6 },
-      { month: 'ago', value: 6.6 },
-      { month: 'set', value: 8.6 },
-      { month: 'out', value: 8.6 },
-      { month: 'nov', value: 8.6 },
-      { month: 'dez', value: 5.6 },
-    ];
+    return await this.readAverageData(id, dates);
+  }
 
-    return { PressureD: PressureD, PressureS: PressureS };
+  async readAverageData(id: string, dates: any[]): Promise<DataGraph> {
+    const results = [];
+    for (const lims of dates) {
+      results.push(await this.getPressureMonthAverage(id, lims[0], lims[1]));
+    }
+
+    const s: DataMonth[] = results.map(s => s[0]).reverse();
+    const d: DataMonth[] = results.map(d => d[1]).reverse();
+
+    return { PressureS: s, PressureD: d };
+  }
+
+  async getPressureMonthAverage(
+    id: string,
+    start: Date,
+    end: Date,
+  ): Promise<DataMonth[]> {
+    const ranges = await this.getPrescriptionsInRange(id, {
+      start,
+      end,
+    });
+
+    if (ranges[1] > 0) {
+      const raw = ranges[0]
+        .filter(pre => pre.pressure !== null)
+        .map(pre => pre.pressure.split('/'));
+
+      const s =
+        raw.map(s => parseFloat(s[0])).reduce((pv, cv) => pv + cv, 0) /
+        raw.length;
+
+      const d =
+        raw.map(d => parseFloat(d[1])).reduce((pv, cv) => pv + cv, 0) /
+        raw.length;
+
+      return [
+        {
+          month: this.months[end.getMonth()],
+          value: s,
+        },
+        {
+          month: this.months[end.getMonth()],
+          value: d,
+        },
+      ];
+    } else {
+      return [
+        {
+          month: this.months[end.getMonth()],
+          value: 0,
+        },
+        {
+          month: this.months[end.getMonth()],
+          value: 0,
+        },
+      ];
+    }
+  }
+
+  async getPrescriptionsInRange(
+    id: string,
+    rangeDate: { start: Date; end: Date },
+  ): Promise<[Prescription[], number]> {
+    const { start, end } = rangeDate;
+
+    const query = Prescription.createQueryBuilder('prescription');
+
+    query.andWhere(
+      'client.id = :id AND  prescription.createdAt > :start AND prescription.createdAt <= :end',
+      {
+        id,
+        start,
+        end,
+      },
+    );
+
+    return await query
+      .leftJoinAndSelect('prescription.client', 'client')
+      .getManyAndCount();
   }
 }

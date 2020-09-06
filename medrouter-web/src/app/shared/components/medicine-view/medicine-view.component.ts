@@ -42,8 +42,6 @@ export class MedicineViewComponent implements OnInit {
 
     const check = yellow || red || black || blue;
 
-    console.log(check);
-
     switch (check) {
       case "amarela":
         return Colors.WARN;

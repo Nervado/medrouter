@@ -8,7 +8,7 @@ export class DataMonth {
   value: number;
 }
 
-export const months = [
+export const Months = [
   'jan',
   'fev',
   'mar',

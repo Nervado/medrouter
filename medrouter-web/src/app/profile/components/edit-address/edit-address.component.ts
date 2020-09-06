@@ -51,7 +51,6 @@ export class EditAddressComponent implements OnInit {
   ngOnInit(): void {
     this.address = this.usersService.getUserProfile()?.address;
     this.userId = this.activeRoute.parent.snapshot.params["id"];
-    console.log(this.userId);
 
     this.addressForm = this.fb.group({
       cep: this.fb.control(this.address?.cep, [
@@ -80,7 +79,6 @@ export class EditAddressComponent implements OnInit {
 
     const updatedUserWithAddress = this.usersService.getUserProfile();
     updatedUserWithAddress.address = this.addressForm.value;
-    console.log(updatedUserWithAddress);
 
     this.usersService.update(updatedUserWithAddress, this.userId).subscribe(
       () =>

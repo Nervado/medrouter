@@ -120,8 +120,6 @@ export class DoctorsSearchComponent implements OnInit {
                               : doctor.schedule?.date.toISOString(),
                           hours: [],
                         };
-
-                  console.log(schedule, doctor.schedule);
                 },
                 error: () =>
                   this.ns.notify({
@@ -197,8 +195,6 @@ export class DoctorsSearchComponent implements OnInit {
       )
       .subscribe({
         next: (schedule) => {
-          console.log(schedule);
-
           doctor.count = 0;
           doctor.schedule =
             schedule !== null
@@ -225,8 +221,6 @@ export class DoctorsSearchComponent implements OnInit {
 
   prettyDate(date: string, h?: string): string {
     const _date = date ? date : new Date();
-
-    console.log(_date);
 
     if (h) {
       const hour = h.split(":")[0] + "h";

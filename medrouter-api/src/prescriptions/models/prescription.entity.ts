@@ -84,7 +84,6 @@ export class Prescription extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', nullable: true })
   updatedAt: Date;
 
-  @Exclude()
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
   deletedAt: Date;
 }

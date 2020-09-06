@@ -100,7 +100,7 @@ export class ExamsService {
       query.andWhere('lab.id = :labId', { labId });
     }
 
-    query.andWhere('status <> :status', { status: ExamStatus.CANCELED });
+    // query.andWhere('status <> :status', { status: ExamStatus.CANCELED });
 
     if (username) {
       query.andWhere(
