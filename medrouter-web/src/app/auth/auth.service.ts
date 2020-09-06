@@ -25,7 +25,9 @@ export class AuthService {
   rolesIds: RolesIds[] = [];
 
   constructor(private http: HttpClient, private router: Router) {
-    const usersaved: User = JSON.parse(localStorage.getItem("user"));
+    const usersaved: User = JSON.parse(
+      localStorage.getItem(`${this.user?.user.userId}`)
+    );
     const loginsaved: User = JSON.parse(localStorage.getItem("login"));
     if (usersaved) {
       this.user = usersaved;
@@ -51,11 +53,14 @@ export class AuthService {
             this.defaultRoute = DefaultRoutes[User.user.role[0]]; // setup default route
           },
           () => {
-            localStorage.setItem("user", null); // on error clear user from local storage
+            localStorage.setItem(`${this.user.user.userId}`, null); // on error clear user from local storage
           },
           () => {
             if (login.rememberme) {
-              localStorage.setItem("user", JSON.stringify(this.user));
+              localStorage.setItem(
+                `${this.user.user.userId}`,
+                JSON.stringify(this.user)
+              );
               localStorage.setItem("login", JSON.stringify(this.loginDto));
             }
 
@@ -89,7 +94,7 @@ export class AuthService {
 
   logout() {
     this.user = undefined;
-    localStorage.removeItem("user");
+    localStorage.removeItem(`${this.user?.user.userId}`);
     localStorage.removeItem("login");
     this.router.navigate(["/"]);
   }
@@ -109,6 +114,7 @@ export class AuthService {
     );
 
     const allow = allowableRoutes.find((route) => route === `${path}`);
+
     return allow;
   }
 

@@ -28,7 +28,7 @@ export class ClientBarChartComponent implements OnInit, OnChanges {
   @Input() data: DataMonth[];
   d: DataMonth[] = [];
 
-  columHeight = 100;
+  columHeight = 90;
 
   min: number = 0;
   max: number = 0;

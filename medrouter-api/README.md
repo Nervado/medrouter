@@ -90,14 +90,14 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 
 # LAB
 
-[ ] Add Exam
-[ ] Add Result
-[ ] Remove Result
-[ ] Cancel Exam
-[ ] Release Exam
+[X] Add Exam
+[X] Add Result
+[X] Remove Result
+[X] Cancel Exam
+[X] Release Exam
 
-[ ] List Exams
-[ ] Search Exams by UserName
+[X] List Exams
+[X] Search Exams by UserName
 
 # Doctor
 
@@ -166,21 +166,21 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 
 ## Dashboard
 
-[ ] Data graph
-[ ] List appoinments
-[ ] List Notifications
+[X] Data graph
+[X] List appoinments
+[X] List Notifications
 [X] List Doctors
-[ ] Search Doctor by Name
-[ ] Create Appointment
+[X] Search Doctor by Name
+[X] Create Appointment
 
 ## Exams
 
-[ ] List Exams
-[ ] Search Exam by doctor name
-[ ] Download Exame Result
+[X] List Exams
+[X] Search Exam by doctor name
+[X] Download Exame Result
 
 ## History
 
-[ ] List Prescriptions
+[X] List Prescriptions
 [ ] Donwload Prescriptions
-[ ] Search prescription by doctor name
+[X] Search prescription by doctor name
