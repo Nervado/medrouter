@@ -92,7 +92,8 @@
           *ngIf="doctor?.schedule?.hours.length === 0"
           [style.color]="'rgba(125,125,125,0.5)'"
         >
-          Sem agenda para {{ prettyDate(doctor.schedule?.date) }}
+          Sem agenda para
+          {{ doctor.schedule && prettyDate(doctor.schedule?.date) }}
         </div>
 
         <ng-container *ngIf="doctor.schedule?.hours.length > 3; else list">

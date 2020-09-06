@@ -9,6 +9,7 @@ import { SearchDoctorDto } from "./models/search";
 import { isThisHour } from "date-fns";
 import { Appointment } from "./models/appointment";
 import { ExamDto } from "./models/exam";
+import { DataGraph } from "./models/data-graph";
 
 @Injectable({
   providedIn: "root",
@@ -49,8 +50,12 @@ export class ClientsService {
     id: string,
     search: SearchDoctorDto
   ): Observable<Appointment[]> {
+    const { page, username } = search;
+
+    const query = username ? `&username=${username}` : "";
+
     return this.http.get<Appointment[]>(
-      `${MEDROUTER_API}/clients/${id}/prescriptions?page=${search.page}`
+      `${MEDROUTER_API}/clients/${id}/prescriptions?page=${page}${query}`
     );
   }
 
@@ -69,7 +74,7 @@ export class ClientsService {
     );
   }
 
-  getDataGraph(): Observable<Array<Data>> {
-    return this.http.get<Array<Data>>(`${MEDROUTER_API}/client/data-graph`);
+  getDataGraph(id: string): Observable<DataGraph> {
+    return this.http.get<DataGraph>(`${MEDROUTER_API}/clients/${id}/reports`);
   }
 }

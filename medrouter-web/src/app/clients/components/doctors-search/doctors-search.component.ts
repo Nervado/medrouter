@@ -97,20 +97,31 @@ export class DoctorsSearchComponent implements OnInit {
       .subscribe({
         next: (doctors) => {
           this.searchResult = doctors;
+
           this.searchResult.forEach((doctor) =>
             this.clientsService
               .getFreeSchedules(
                 doctor.id,
-                doctor.schedule?.date === undefined
+                doctor.schedule === undefined
                   ? new Date().toISOString()
-                  : doctor.schedule?.date.toISOString()
+                  : new Date(doctor.schedule?.date).toISOString()
               )
               .subscribe({
                 next: (schedule) => {
                   doctor.count = 0;
-                  doctor.schedule = schedule
-                    ? schedule
-                    : { date: doctor.schedule?.date.toISOString(), hours: [] };
+
+                  doctor.schedule =
+                    schedule !== null
+                      ? schedule
+                      : {
+                          date:
+                            doctor.schedule?.date === undefined
+                              ? new Date().toISOString()
+                              : doctor.schedule?.date.toISOString(),
+                          hours: [],
+                        };
+
+                  console.log(schedule, doctor.schedule);
                 },
                 error: () =>
                   this.ns.notify({
@@ -214,6 +225,8 @@ export class DoctorsSearchComponent implements OnInit {
 
   prettyDate(date: string, h?: string): string {
     const _date = date ? date : new Date();
+
+    console.log(_date);
 
     if (h) {
       const hour = h.split(":")[0] + "h";

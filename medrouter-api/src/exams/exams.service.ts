@@ -66,6 +66,8 @@ export class ExamsService {
     }
 
     exam.status = ExamStatus.CANCELED;
+    exam.code = null;
+    exam.deadline = 0;
 
     try {
       await exam.save();

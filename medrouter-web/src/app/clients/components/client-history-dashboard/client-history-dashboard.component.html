@@ -1,130 +1,271 @@
 <div class="dashboard d-flex flex-wrap justify-content-between">
   <div class="main-data aside text-client">
     <div class="header">
+      <div class="control filter" *ngIf="doctor?.user.username">
+        <fa-icon [icon]="faUserMd"></fa-icon>
+        &nbsp;<strong>{{ doctor.user.username }}</strong>
+        <fa-icon
+          [icon]="faTimes"
+          class="cursor"
+          class="text-oposity1"
+          (click)="clear()"
+        ></fa-icon>
+      </div>
       <div class="control">
-        <fa-icon [icon]="faChevronLeft"></fa-icon>
+        <fa-icon [icon]="faChevronLeft" (click)="pageDown()"></fa-icon>
       </div>
-      <div class="mx-2">
-        Receituário
-      </div>
+      <div class="mx-2">Receituário</div>
 
       <div class="control">
         <fa-icon [icon]="faSearch" (click)="toogle()"></fa-icon>
       </div>
 
-      <div class="control">
+      <div class="control" (click)="pageUp()">
         <fa-icon [icon]="faChevronRight"></fa-icon>
       </div>
     </div>
 
-    <div class="search" *ngIf="showSearch" (mouseleave)="toogle()">
+    <div class="search" *ngIf="showSearch" (mouseleave)="showSearch = false">
       <div class="form">
         <div class="input">
-          <input type="text" name="search" placeholder="Nome do médico" />
-          <fa-icon [icon]="faSearch" (click)="search()"></fa-icon>
+          <input
+            type="text"
+            name="search"
+            placeholder="Nome do médico"
+            #clientname
+          />
+          <fa-icon
+            [icon]="faSearch"
+            (click)="search(clientname.value)"
+          ></fa-icon>
         </div>
 
         <div class="results">
           <div class="label">
             Resultados
-            <strong class="ml-1"> 4</strong>
+
+            <strong class="ml-1"> {{ doctors?.length }}</strong>
           </div>
 
           <div class="wrapper">
-            <div class="result">
-              <div>João das Colves</div>
-              <fa-icon
-                [icon]="faUserMd"
-                class="text-client cursor ml-2"
-              ></fa-icon>
+            <div
+              class="result"
+              *ngFor="let doctor of doctors"
+              (click)="save(doctor)"
+            >
+              <ng-container *ngIf="doctor.user.avatar?.url; else avatar">
+                <img [src]="doctor.user.avatar?.url" alt="avatar" />
+              </ng-container>
+
+              <ng-template #avatar>
+                <img src="../../../assets/avatarmale.png" alt="avatar" />
+              </ng-template>
+              <div>
+                <strong>
+                  {{
+                    doctor.user.surname
+                      ? doctor.user.fullname
+                      : doctor.user.username
+                  }}</strong
+                >
+                <div>
+                  <fa-icon
+                    [icon]="faMobileAlt"
+                    *ngIf="doctor.user?.phoneNumber"
+                  ></fa-icon>
+                  {{ doctor.user?.phoneNumber }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="founds">Encontrados {{ prescriptions.length }}</div>
 
-    <div class="wrapper-results" *ngIf="prescriptions.length > 0">
+    <div class="founds">
+      Encontrados <strong>{{ prescriptions?.length }}</strong>
+    </div>
+
+    <div class="wrapper-results" *ngIf="prescriptions?.length > 0">
       <div *ngFor="let prescription of prescriptions" class="prescriptions">
-        <header>
-          <div class="info user">
+        <header (click)="prescription.visible = !prescription.visible">
+          <div class="user">
             <ng-container
-              *ngIf="prescription.client.user.avatar?.url; else avatar"
+              *ngIf="prescription.doctor.user.avatar?.url; else avatar"
             >
-              <img [src]="prescription.client.user.avatar.url" alt="avatar" />
+              <img [src]="prescription.doctor.user.avatar.url" alt="avatar" />
             </ng-container>
             <ng-template #avatar>
               <img src="../../../../assets/avatarmale.png" alt="avatar"
             /></ng-template>
-            Doutor: {{ prescription.doctor.user.fullname }}
-          </div>
 
-          <div class="info">
-            <fa-icon [icon]="faFileMedical"></fa-icon>
-            Receita 456
-          </div>
+            <div>
+              <strong>{{ prescription.doctor.user.fullname }}</strong>
 
-          <div class="user info">
-            <ng-container
-              *ngIf="prescription.client.user.avatar?.url; else avatar"
-            >
-              <img [src]="prescription.client.user.avatar.url" alt="avatar" />
-            </ng-container>
-            <ng-template #avatar>
-              <img src="../../../../assets/avatarmale.png" alt="avatar"
-            /></ng-template>
-            <div class="">
-              Paciente:
-              {{ prescription.client.user.fullname }}
+              <div class="d-flex align-items-center info">
+                <div class="icon">
+                  <fa-icon [icon]="faMedkit" class="mr-1"></fa-icon>
+                </div>
+                {{ prescription?.doctor.specialty[0] }}
+
+                <fa-icon [icon]="faFileMedical" class="mx-1"></fa-icon>
+                {{ prescription?.code }}
+              </div>
             </div>
           </div>
 
-          <div class="info">
-            <fa-icon [icon]="faCalendarDay"></fa-icon>
-            {{ pretty(prescription.createdAt) }}
+          <div class="user">
+            <ng-container
+              *ngIf="prescription.client.user.avatar?.url; else avatar"
+            >
+              <img [src]="prescription.client.user.avatar.url" alt="avatar" />
+            </ng-container>
+            <ng-template #avatar>
+              <img src="../../../../assets/avatarmale.png" alt="avatar"
+            /></ng-template>
+
+            <div>
+              <div class="">
+                <strong> {{ prescription.client.user.fullname }}</strong>
+              </div>
+
+              <div class="info">
+                <fa-icon [icon]="faCalendarDay"></fa-icon>
+                {{ pretty(prescription.createdAt) }}
+              </div>
+            </div>
+          </div>
+
+          <div class="control">
+            <fa-icon
+              [icon]="faEye"
+              class="text-oposity1"
+              (click)="prescription.visible = true"
+            ></fa-icon>
           </div>
         </header>
 
         <div
           class="resume"
           *ngIf="
-            prescription.recomendations.length > 0 ||
-            prescription.medicines.length > 0 ||
-            prescription.exams.length > 0
+            (prescription.recomendations?.length !== 0 ||
+              prescription.medicines?.length > 0 ||
+              prescription.exams?.length > 0) &&
+            prescription.visible
           "
         >
-          <div class="title"><strong> Resumo</strong></div>
+          <div class="mt-2 mb-1">
+            <strong>
+              <fa-icon [icon]="faClipBoard" class="mr-1"></fa-icon>
+
+              Anamnese</strong
+            >
+          </div>
+
+          <div class="anamnese prescription-header">
+            <div class="field">
+              <div class="icon">
+                <fa-icon [icon]="faTachometerAlt" class="mr-1"></fa-icon>
+              </div>
+              Pressão arterial:
+              <strong>
+                {{ prescription?.pressure || "_ _" }}
+
+                mmHg</strong
+              >
+            </div>
+
+            <div class="field">
+              <div class="icon">
+                <fa-icon [icon]="faWeight" class="mr-1"></fa-icon>
+              </div>
+
+              Peso:
+              <strong>
+                {{ prescription?.weight || "_ _" }}
+
+                kg</strong
+              >
+            </div>
+
+            <div class="field">
+              <div class="icon">
+                <fa-icon [icon]="faHeart" class="mr-1"></fa-icon>
+              </div>
+              Batimentos:
+              <strong>
+                {{ prescription?.bpm || "_ _" }}
+
+                bpm</strong
+              >
+            </div>
+
+            <div class="field">
+              <div class="icon">
+                <fa-icon [icon]="faRulerVertical"></fa-icon>
+              </div>
+              Altura:<strong>
+                {{ prescription?.height || "_ _" }}
+
+                cm</strong
+              >
+            </div>
+
+            <div class="field">
+              <div class="icon">
+                <fa-icon [icon]="faRulerHorizontal"></fa-icon>
+              </div>
+              Cintura:<strong>
+                {{ prescription?.waist || "_ _" }}
+
+                cm</strong
+              >
+            </div>
+          </div>
 
           <div class="itens">
-            <div *ngIf="prescription.recomendations.length > 0" class="my-1">
-              <div>
-                <fa-icon [icon]="faExclamationCircle"></fa-icon>
-                <strong> Recomendações</strong>
+            <div
+              *ngIf="prescription.recomendations.length > 0"
+              class="my-1 recoms"
+            >
+              <div class="title">
+                <fa-icon [icon]="faExclamationCircle" class="mr-1"></fa-icon>
+                <strong>Recomendações</strong>
               </div>
-              <div *ngFor="let r of prescription.recomendations">
-                <div>{{ r }}</div>
-              </div>
-            </div>
-            <div *ngIf="prescription.medicines.length > 0" class="my-1">
-              <div>
-                <fa-icon [icon]="faCapsules"></fa-icon>
 
-                <strong> Medicamentos</strong>
-              </div>
-              <div *ngFor="let medicine of prescription.medicines">
-                {{ fmrt(medicine.substance) }}
-              </div>
+              <app-recom-view
+                *ngFor="let recom of prescription.recomendations; let i = index"
+                [recomendation]="recom"
+                [del]="false"
+                [indice]="i + 1"
+              ></app-recom-view>
             </div>
 
-            <div *ngIf="prescription.exams.length > 0" class="my-1">
-              <div>
-                <fa-icon [icon]="faVial"></fa-icon>
+            <div *ngIf="prescription.medicines.length > 0" class="my-1 medc">
+              <div class="title">
+                <fa-icon [icon]="faCapsules" class="mr-1"></fa-icon>
 
-                <strong> Exames</strong>
+                <strong>Medicamentos</strong>
               </div>
-              <div *ngFor="let exam of prescription.exams">
-                {{ exam.type }}
+
+              <app-medicine-view
+                [del]="false"
+                [medicine]="medicine"
+                *ngFor="let medicine of prescription.medicines"
+              ></app-medicine-view>
+            </div>
+
+            <div *ngIf="prescription.exams?.length > 0" class="my-1 exams">
+              <div class="title">
+                <fa-icon [icon]="faVial" class="icon mr-1"></fa-icon>
+                <strong>Exames</strong>
               </div>
+
+              <app-exam-view
+                *ngFor="let exam of prescription.exams"
+                [exam]="exam"
+                [del]="false"
+              ></app-exam-view>
             </div>
           </div>
         </div>

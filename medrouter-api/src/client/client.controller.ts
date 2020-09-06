@@ -32,6 +32,7 @@ import { Client } from './models/client.entity';
 import { AppointmentDto } from 'src/appointments/dto/appointment.dto';
 import { ExamDto } from 'src/exams/dto/exam.dto';
 import { PrescriptionDto } from 'src/prescriptions/dto/prescription.dto';
+import { DataGraph } from './dtos/data-graph';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('clients')
@@ -56,6 +57,13 @@ export class ClientController {
   @UseInterceptors(ClassSerializerInterceptor)
   get(@GetUser() user: User, @Param('id') id: any): Promise<Client> {
     return this.clientService.getOne(id, user);
+  }
+
+  @Get('/:id/reports')
+  @Allow(Role.CLIENT)
+  @UseInterceptors(ClassSerializerInterceptor)
+  getReports(@GetUser() user: User, @Param('id') id: any): Promise<DataGraph> {
+    return this.clientService.getPressureReport(id, user);
   }
 
   @Get('/:id/appointments')

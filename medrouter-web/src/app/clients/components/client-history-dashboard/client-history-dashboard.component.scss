@@ -1,4 +1,5 @@
 // @media query here
+
 .dashboard {
   margin: 80px;
   padding-left: 80px;
@@ -66,17 +67,52 @@
           }
 
           .wrapper {
-            padding: 5px 20px 5px 20px;
+            padding: 5px 10px 5px 10px;
             overflow-y: scroll;
+
+            &::-webkit-scrollbar {
+              height: 4px;
+              width: 4px;
+              background: rgba(0, 0, 0, 0.1);
+              cursor: pointer;
+            }
+
+            &::-webkit-scrollbar-thumb:vertical {
+              background-color: var(--client);
+              border-radius: 10px;
+            }
             width: 100%;
 
             .result {
               width: 100%;
               display: flex;
               align-items: center;
-              justify-content: space-between;
+              justify-content: flex-start;
               font-size: 14px;
               margin: 2px 0px;
+              color: var(--client);
+              padding: 2px;
+              border-radius: 4px;
+
+              &:hover {
+                background-color: rgba(114, 85, 192, 0.1);
+              }
+
+              cursor: pointer;
+
+              div div {
+                font-size: 12px;
+              }
+
+              img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                border: 1px solid var(--client);
+                margin-right: 10px;
+                object-fit: cover;
+                margin-right: 4px;
+              }
             }
           }
         }
@@ -121,8 +157,19 @@
       overflow-y: scroll;
       padding: 10px;
       height: 600px;
-
       border-radius: 4px;
+
+      &::-webkit-scrollbar {
+        height: 4px;
+        width: 4px;
+        background: rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+      }
+
+      &::-webkit-scrollbar-thumb:vertical {
+        background-color: var(--client);
+        border-radius: 10px;
+      }
 
       .prescriptions {
         font-size: 14px;
@@ -146,17 +193,37 @@
           padding: 0px 10px;
           padding-bottom: 2px;
           margin-bottom: 2px;
-          border-bottom: 1px solid var(--client);
+          //border-bottom: 1px solid var(--client);
+          cursor: pointer;
 
           .user {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            width: 220px;
+
+            .info {
+              font-size: 10px;
+              color: var(--medium);
+            }
             img {
-              width: 25px;
-              height: 25px;
-              border-radius: 50%;
               margin-right: 10px;
+
+              height: 50px;
+              width: 50px;
+              border-radius: 50%;
+              border: 1px solid var(--medium);
+              object-fit: cover;
+            }
+          }
+
+          .control {
+            fa-icon {
+              &:hover {
+                transform: scale(1.1);
+                opacity: 0.6;
+                color: var(--medium);
+              }
             }
           }
         }
@@ -167,18 +234,61 @@
           display: flex;
           flex-direction: column;
 
-          .title {
-            width: 100%;
+          .anamnese {
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(114, 85, 192, 0.1);
+
+            border-radius: 4px;
+            padding: 5px;
+
+            .field {
+              display: flex;
+              font-size: 11px;
+
+              fa-icon {
+                margin-right: 5px;
+              }
+            }
           }
 
           .itens {
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
             align-items: flex-start;
-            flex-wrap: wrap;
+            width: 100%;
+
+            .recoms,
+            .medc,
+            .exams {
+              width: 100%;
+
+              .title {
+                display: flex;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+
+                font-size: 14px;
+
+                fa-icon {
+                  margin-right: 3px;
+                }
+              }
+            }
+
+            .exams {
+              width: 100%;
+
+              .title {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+              }
+            }
           }
         }
       }
@@ -192,4 +302,10 @@
     transform: scale(1.1);
     opacity: 0.6;
   }
+}
+
+a,
+a:link {
+  text-decoration: none;
+  color: var(--client);
 }
