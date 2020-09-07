@@ -41,6 +41,7 @@ import { NotificationService } from "src/app/messages/notification.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { format } from "date-fns";
 import { Types } from "src/app/messages/toast/enums/types";
+import { fmrt } from "src/app/utils/fmrt";
 
 @Component({
   selector: "app-edit-prescription",
@@ -235,10 +236,7 @@ export class EditPrescriptionComponent implements OnInit {
     });
   }
 
-  fmrt(name: string) {
-    const newSentece = name.replace(/_/g, " ").toLowerCase();
-    return newSentece[0].toUpperCase() + newSentece.slice(1);
-  }
+  fmrt = fmrt;
 
   addMedicine(med: any) {
     this.addNF = false;

@@ -49,7 +49,9 @@
 
         <div class="info">
           <div class="name">
-            <strong>{{ doctor?.user.fullname }}</strong>
+            <strong>{{
+              doctor.user.surname ? doctor.user.fullname : doctor.user.username
+            }}</strong>
           </div>
 
           <div class="spcly">

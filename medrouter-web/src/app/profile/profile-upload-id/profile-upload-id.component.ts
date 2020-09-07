@@ -32,7 +32,7 @@ export class ProfileUploadIdComponent implements OnInit {
   preview: string | ArrayBuffer;
   formFile: FormGroup;
   file: File;
-  userId: any;
+  userId: string;
 
   faIdCard = faIdCard;
 

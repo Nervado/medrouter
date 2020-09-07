@@ -9,7 +9,7 @@ export class Doctor {
   specialty: Array<string>;
   count?: number = 0;
   user: {
-    userId: number;
+    userId: string;
     username: string;
     surname: string;
     cpf: string;

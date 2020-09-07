@@ -35,11 +35,13 @@
 
         <div class="info">
           <span class="text-medium font-weight-bold">{{
-            app.doctor.user.fullname
+            app.doctor.user.surname
+              ? app.doctor.user.fullname
+              : app.doctor.user.username
           }}</span>
 
           <span class="text-base font-weight-bold" [style.font-size]="'12px'">{{
-            app.doctor.specialty[0]
+            fmrt(app.doctor.specialty[0])
           }}</span>
 
           <div class="d-flex align-items-center" [style.font-size]="'12px'">

@@ -1,12 +1,10 @@
-import { AnyNaptrRecord } from 'dns';
-
-export function arrayFromObject(data: string | any): String[] {
-  if (data === {} || data === null || data === undefined) {
-    return undefined;
+export function arrayFromObject(data: string[] | any): string[] {
+  if (data === null || data === undefined || data[0] === undefined) {
+    return [];
   } else {
-    return data
-      .replace('{', '')
-      .replace('}', '')
-      .split(',');
+    return data;
+    //.replace('{', '')
+    //.replace('}', '')
+    //.split(',')
   }
 }

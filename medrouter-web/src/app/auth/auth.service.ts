@@ -54,7 +54,7 @@ export class AuthService {
             this.loginDto = login;
           },
           (error) => {
-            localStorage.setItem("MEDROUTER_CONFIG", null); // on error clear user from local storage
+            localStorage.removeItem("MEDROUTER_CONFIG"); // on error clear user from local storage
           },
           () => {
             if (login.rememberme) {

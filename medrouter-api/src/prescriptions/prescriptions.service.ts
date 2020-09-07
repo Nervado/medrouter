@@ -13,6 +13,7 @@ import { ExamStatus } from 'src/exams/enums/status.enum';
 import { LabChangesDto } from 'src/labs/dto/labStatus-dto';
 import { Lab } from 'src/labs/models/lab.entity';
 import { arrayFromObject } from 'src/utils/arrayFromObject';
+import { he } from 'date-fns/locale';
 
 @Injectable()
 export class PrescriptionsService {
@@ -97,6 +98,8 @@ export class PrescriptionsService {
 
   serializePrescription(prescription: Prescription): PrescriptionDto {
     const checks = arrayFromObject(prescription.recomendations);
+    console.log(checks);
+
     const recoms = checks
       ? checks.map(p => {
           return p.trim().replace(/\"/g, '');
@@ -161,6 +164,8 @@ export class PrescriptionsService {
     prescriptionId: string,
     body: PrescriptionDto,
   ): Promise<void> {
+    const { recomendations, waist, pressure, height, bpm, weight } = body;
+
     const prescription = await this.getOne(id, prescriptionId);
 
     if (prescription.doctor.id !== id) {
@@ -169,7 +174,13 @@ export class PrescriptionsService {
 
     const prescriptionUpdated = await Prescription.findOne(prescriptionId);
 
-    Prescription.merge(prescriptionUpdated, body);
+    prescriptionUpdated.recomendations = [...recomendations];
+
+    prescriptionUpdated.waist = waist;
+    prescriptionUpdated.bpm = bpm;
+    prescriptionUpdated.height = height;
+    prescriptionUpdated.weight = weight;
+    prescriptionUpdated.pressure = pressure;
 
     try {
       await prescriptionUpdated.save();

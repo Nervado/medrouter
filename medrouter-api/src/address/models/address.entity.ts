@@ -9,8 +9,8 @@ import { Exclude } from 'class-transformer';
 
 @Entity('address')
 export class Address extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   cep: string;

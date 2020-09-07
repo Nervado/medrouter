@@ -62,21 +62,21 @@ export class ClientService {
       .leftJoinAndSelect('client.user', 'user')
       .getOne();
 
-    if (founds) {
-      throw new BadRequestException('User already have a client rule');
+    if (!founds) {
+      const client = new Client();
+
+      client.user = user;
+
+      try {
+        await client.save();
+      } catch (error) {
+        throw new InternalServerErrorException('Fail at create client');
+      }
+
+      return client;
+    } else {
+      return founds;
     }
-
-    const client = new Client();
-
-    client.user = user;
-
-    try {
-      await client.save();
-    } catch (error) {
-      throw new InternalServerErrorException('Fail at create client');
-    }
-
-    return client;
   }
 
   async updateStatus(id: string, checked: boolean): Promise<void> {
@@ -221,11 +221,8 @@ export class ClientService {
     };
   }
 
-  async getOne(userId: any, user?: User): Promise<Client> {
-    if (
-      parseInt(userId) !== user.userId &&
-      !user.role.find(rol => rol === Role.RECEPT)
-    ) {
+  async getOne(userId: string, user?: User): Promise<Client> {
+    if (userId !== user.userId && !user.role.find(rol => rol === Role.RECEPT)) {
       throw new UnauthorizedException('Not Allowed');
     }
 
@@ -272,6 +269,7 @@ export class ClientService {
       .leftJoinAndSelect('doctorUser.avatar', 'avatar')
       .skip(pageNumber)
       .orderBy('appointment.date', 'DESC')
+      .orderBy('appointment.hour', 'DESC')
       .take(10)
       .getMany();
 
@@ -634,17 +632,23 @@ export class ClientService {
 
     const query = Prescription.createQueryBuilder('prescription');
 
+    //'[2011-01-01,2011-03-01)'::tsrange @> '2011-01-10'::timestamp
+
+    //  prescription.createdAt > :start AND  prescription.createdAt <= :end
     query.andWhere(
-      'client.id = :id AND  prescription.createdAt > :start AND prescription.createdAt <= :end',
+      'client.id = :id AND prescription.createdAt > :start  AND  prescription.createdAt <= :end ',
       {
         id,
         start,
         end,
       },
     );
-
-    return await query
-      .leftJoinAndSelect('prescription.client', 'client')
-      .getManyAndCount();
+    try {
+      return await query
+        .leftJoinAndSelect('prescription.client', 'client')
+        .getManyAndCount();
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

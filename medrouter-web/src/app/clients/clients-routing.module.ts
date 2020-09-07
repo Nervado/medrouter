@@ -4,13 +4,9 @@ import { ClientPageComponent } from "./views/client-page/client-page.component";
 import { ClientDashboardComponent } from "./components/client-dashboard/client-dashboard.component";
 import { ClientExamsDashboardComponent } from "./components/client-exams-dashboard/client-exams-dashboard.component";
 import { ClientHistoryDashboardComponent } from "./components/client-history-dashboard/client-history-dashboard.component";
+import { NotFoundComponent } from "../home/views/not-found/not-found.component";
 
 const routes: Routes = [
-  {
-    path: "",
-    redirectTo: "/",
-    pathMatch: "full",
-  },
   {
     path: ":id",
     component: ClientPageComponent,
@@ -33,6 +29,11 @@ const routes: Routes = [
         component: ClientHistoryDashboardComponent,
       },
     ],
+  },
+  {
+    path: "**",
+    redirectTo: "/",
+    pathMatch: "full",
   },
 ];
 

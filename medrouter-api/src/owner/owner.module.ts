@@ -9,5 +9,6 @@ import { OwnerRepository } from './owner.repository';
   imports: [UsersModule, TypeOrmModule.forFeature([OwnerRepository])],
   controllers: [OwnerController],
   providers: [OwnerService],
+  exports: [OwnerService],
 })
 export class OwnerModule {}

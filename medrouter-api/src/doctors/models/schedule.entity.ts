@@ -20,7 +20,6 @@ export class Schedule extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: Available,
     default: [
       Available.H09,
       Available.H10,
@@ -29,6 +28,7 @@ export class Schedule extends BaseEntity {
       Available.H15,
       Available.H16,
     ],
+    enum: Available,
     array: true,
   })
   availablehours: Available[];

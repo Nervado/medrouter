@@ -28,7 +28,7 @@ export class EditAvatarComponent implements OnInit {
   preview: string | ArrayBuffer;
   formFile: FormGroup;
   file: File;
-  userId: any;
+  userId: string;
 
   constructor(
     private fb: FormBuilder,

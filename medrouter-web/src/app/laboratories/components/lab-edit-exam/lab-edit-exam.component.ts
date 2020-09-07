@@ -113,7 +113,7 @@ export class LabEditExamComponent implements OnInit {
   docForm: FormGroup;
 
   file: File;
-  userId: any;
+  userId: string;
 
   toogle() {
     this.showSearch = !this.showSearch;

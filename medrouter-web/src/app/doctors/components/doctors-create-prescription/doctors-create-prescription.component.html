@@ -108,7 +108,7 @@
           </div>
           Doutor:
           <strong>{{
-            prescription?.doctor?.user.fullname ||
+            prescription?.doctor?.user.username ||
               latestAppointment?.doctor?.user.username
           }}</strong>
         </div>
@@ -117,7 +117,7 @@
           <div class="icon">
             <fa-icon [icon]="faMedKit"></fa-icon>
           </div>
-          <strong>{{ prescription?.doctor.specialty[0] }}</strong>
+          <strong>{{ fmrt(prescription?.doctor.specialty[0]) }}</strong>
         </div>
         <div class="field">
           <div class="icon">
@@ -126,7 +126,7 @@
           Paciente:
           <strong>
             {{
-              prescriptionForm.value?.client?.user.username ||
+              prescription?.client?.user.username ||
                 latestAppointment?.client?.user.username
             }}</strong
           >

@@ -49,6 +49,7 @@ export class SignInComponent implements OnInit {
       (user) => {
         this.loading = false;
         this.loginMessage(user);
+        this.AuthService.getUserPermissions();
       },
       (error) => {
         this.loading = false;
@@ -58,7 +59,7 @@ export class SignInComponent implements OnInit {
         });
       },
       () => {
-        this.router.navigate([this.AuthService.defaultRoute]);
+        //this.router.navigate([this.AuthService.defaultRoute]);
       }
     );
   }
@@ -72,7 +73,6 @@ export class SignInComponent implements OnInit {
 
       return null;
     }
-    console.log(user);
 
     this.notificationService.notify({
       message: `Bem vindo ${user.user.username} !`,

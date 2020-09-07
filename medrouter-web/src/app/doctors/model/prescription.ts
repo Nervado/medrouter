@@ -8,7 +8,9 @@ export class PrescriptionDto {
     specialty?: string[];
     id: any;
     user: {
-      fullname: string;
+      surname?: string;
+      fullname?: string;
+      username?: string;
       avatar: {
         url: string;
       };
@@ -17,7 +19,9 @@ export class PrescriptionDto {
   client?: {
     id?: any;
     user?: {
+      surname?: string;
       fullname?: string;
+      username?: string;
       avatar?: {
         url?: string;
       };

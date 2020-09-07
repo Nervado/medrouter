@@ -1,4 +1,10 @@
-import { Component, OnInit, Input } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  SimpleChanges,
+  OnChanges,
+} from "@angular/core";
 
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 
@@ -37,20 +43,22 @@ export class UserSnippetMenuComponent implements OnInit {
 
   hoverStyle: string = "hover-base : true";
 
-  constructor(
-    private activeRoute: ActivatedRoute,
-    private as: AuthService,
-    private ns: NotificationService
-  ) {}
+  constructor(private activeRoute: ActivatedRoute, private as: AuthService) {}
 
   ngOnInit(): void {
-    if (this.roles[0] !== Role.USER) {
+    this.setNavigationPermissions();
+  }
+
+  setNavigationPermissions() {
+    const role = this.as.user.user.role;
+    if (role[0] !== Role.USER) {
       this.isVerify = true;
       this.setHoverClass();
       this.roles = this.user.role;
-      this.roles.forEach((role) => {
+      role.forEach((role) => {
         MenuLinks[role].id = this.as.getRuleId(role);
       });
+      console.log(MenuLinks);
     } else {
       this.roles = [];
     }

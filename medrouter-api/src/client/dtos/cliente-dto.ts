@@ -44,7 +44,7 @@ export class ClientDto {
   passwordConfirmation?: string;
 
   user?: {
-    userId?: string | number;
+    userId?: string;
     username?: string;
     surname?: string;
     fullname?: string;

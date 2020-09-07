@@ -55,8 +55,8 @@ export class ReceptionistService extends Service<
     }
   }
 
-  async getOne(userId: any, user?: User): Promise<Receptionist> {
-    if (parseInt(userId) !== user.userId) {
+  async getOne(userId: string, user?: User): Promise<Receptionist> {
+    if (userId !== user.userId) {
       throw new UnauthorizedException('Not Allowed');
     }
 

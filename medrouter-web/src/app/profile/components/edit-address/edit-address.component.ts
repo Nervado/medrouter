@@ -37,7 +37,7 @@ export class EditAddressComponent implements OnInit {
 
   address: Address = null;
 
-  userId: any;
+  userId: string;
 
   constructor(
     private fb: FormBuilder,

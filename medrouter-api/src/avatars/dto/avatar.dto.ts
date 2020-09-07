@@ -1,5 +1,5 @@
 export class AvatarDto {
-  avatarId?: number;
+  avatarId?: string;
   url?: string;
   path?: string;
   filename?: string;

@@ -55,8 +55,8 @@ export class OwnerService extends Service<
     }
   }
 
-  async getOne(userId: any, user?: User): Promise<Owner> {
-    if (parseInt(userId) !== user.userId) {
+  async getOne(userId: string, user?: User): Promise<Owner> {
+    if (userId !== user.userId) {
       throw new UnauthorizedException('Not Allowed');
     }
 
@@ -66,4 +66,6 @@ export class OwnerService extends Service<
 
     return await query.leftJoinAndSelect('owner.user', 'user').getOne();
   }
+
+  async createOwner(): Promise<void> {}
 }

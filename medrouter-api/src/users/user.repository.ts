@@ -12,7 +12,6 @@ import { UserUpdateDto } from './dto/user-update.dto';
 import { Address } from 'src/address/models/address.entity';
 import { Role } from 'src/auth/enums/role.enum';
 import { AuthPasswordChange } from 'src/auth/dto/auth-password-change.dto';
-import { SearchFilterDto } from './dto/search-filter.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -27,7 +26,6 @@ export class UserRepository extends Repository<User> {
     user.password = await this.hashPassword(newPassword, user.salt);
 
     try {
-      console.log(user.salt, user.password);
       return await user.save();
     } catch (error) {
       throw new InternalServerErrorException('Uknow error!');
@@ -139,7 +137,7 @@ export class UserRepository extends Repository<User> {
   }
 
   async updateOne(
-    id: number,
+    id: string,
     updateUserDto: UserUpdateDto,
     address?: Address,
   ): Promise<User> {

@@ -59,7 +59,7 @@ export class AuthSingUpDto {
   cpf?: string;
 
   avatar?: {
-    avatarId: number;
+    avatarId: string;
     url: string;
     path: string;
   };

@@ -32,8 +32,8 @@ export class Appointment extends BaseEntity {
   @IsNotEmpty()
   @Column({
     type: 'enum',
-    enum: AppointmentStatus,
     default: AppointmentStatus.REQUESTED,
+    enum: AppointmentStatus,
   })
   status: AppointmentStatus;
 

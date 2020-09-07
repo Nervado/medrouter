@@ -1,8 +1,8 @@
 export class DoctorDto {
-  id: any;
+  id: string;
 
   user: {
-    userId?: any;
+    userId?: string;
     username?: string;
     fullname?: string;
     avatar?: {

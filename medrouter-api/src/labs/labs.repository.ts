@@ -65,7 +65,7 @@ export class LabsRepository extends Repository<Lab> {
     try {
       await lab.save();
     } catch (error) {
-      throw new InternalServerErrorException('Fail to update lab');
+      throw new InternalServerErrorException('Fail to update lab', error);
     }
     return lab;
   }

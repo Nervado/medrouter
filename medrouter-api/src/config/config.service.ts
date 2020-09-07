@@ -26,6 +26,7 @@ export class ConfigService {
       ceo: this.envConfig.MAIL_CEO,
       cfo: this.envConfig.MAIL_CFO,
       coo: this.envConfig.MAIL_COO,
+      sys: this.envConfig.MAIL_SYS,
     };
   }
 

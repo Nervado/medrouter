@@ -30,8 +30,8 @@ export class ManagerService
   async getAll(search: SearchFilterDto): Promise<Manager[]> {
     return this.managerRepository.getAll(search);
   }
-  async getOne(userId: any, user?: User): Promise<Manager> {
-    if (parseInt(userId) !== user.userId) {
+  async getOne(userId: string, user?: User): Promise<Manager> {
+    if (userId !== user.userId) {
       throw new UnauthorizedException('Not Allowed');
     }
 

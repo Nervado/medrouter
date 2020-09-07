@@ -36,7 +36,7 @@ export class EditprofileComponent implements OnInit {
   loading: boolean = false;
 
   profile: Profile;
-  userId: any;
+  userId: string;
 
   profileForm: FormGroup;
 

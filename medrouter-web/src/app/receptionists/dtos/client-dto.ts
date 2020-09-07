@@ -7,7 +7,7 @@ export class ClientDto {
     url: string;
   };
   user?: {
-    userId: string | number;
+    userId: string;
     username: string;
     surname: string;
     fullname: string;

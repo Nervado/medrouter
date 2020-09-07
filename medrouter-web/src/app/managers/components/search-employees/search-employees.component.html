@@ -172,7 +172,7 @@
             <div class="card-content">
               <div class="card-body-info">
                 <div class="info name">
-                  {{ user.fullname }}
+                  {{ user.surname ? user.fullname : user.username }}
                 </div>
 
                 <div class="roles">

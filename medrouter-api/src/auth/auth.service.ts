@@ -63,17 +63,13 @@ export class AuthService {
 
       this.logger.warn(`${userId} ${token}`);
 
-      const { username } = await this.userService.setRole(
-        // set rule to client
-        parseInt(userId),
-        'client',
-      );
+      const { username } = await this.userService.setRole(userId, 'client');
 
       const data = { username }; // retrive username
 
       return { data };
     } catch (error) {
-      throw new InternalServerErrorException('Uknow user');
+      throw new InternalServerErrorException('Uknow user', error);
     }
   }
 

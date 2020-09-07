@@ -14,7 +14,7 @@ export class AvatarsService {
     return this.avatarsRepo.createOne(avatarDto);
   }
 
-  async delete(id: number, user?: User): Promise<any> {
+  async delete(id: string, user?: User): Promise<any> {
     if (user && user.avatar !== null) {
       //user.avatar = null;
       try {

@@ -21,14 +21,15 @@ import { Address } from '../../address/models/address.entity';
 import { Role } from '../../auth/enums/role.enum';
 import { Sex } from '../enuns/sex.enum';
 import { Lab } from 'src/labs/models/lab.entity';
+import { IsUUID } from 'class-validator';
 
 @Entity('user')
 @Unique(['email'])
 @Unique(['cpf'])
 @Unique(['phoneNumber'])
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  userId: number;
+  @PrimaryGeneratedColumn('uuid')
+  userId: string;
 
   @Column()
   username: string;
@@ -45,12 +46,12 @@ export class User extends BaseEntity {
   @Column({ type: 'timestamp', nullable: true })
   birthdate: Date;
 
-  @Column({ type: 'enum', enum: Sex, default: Sex.UNDEF })
+  @Column({ type: 'enum', default: Sex.UNDEF, enum: Sex })
   sex: Sex;
 
   @Column()
   email: string;
-  @Column({ type: 'enum', enum: Role, default: [Role.CLIENT], array: true })
+  @Column({ type: 'enum', default: [Role.CLIENT], array: true, enum: Role })
   role: Role[];
 
   @Exclude()
@@ -99,6 +100,7 @@ export class User extends BaseEntity {
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
+
     return hash === this.password;
   }
 }

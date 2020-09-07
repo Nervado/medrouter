@@ -6,15 +6,17 @@ import { AppModule } from './app.module';
 import { configService } from './config/config.service';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { ClientService } from './client/client.service';
+import { ClientModule } from './client/client.module';
 
 async function bootstrap() {
   const logger = new Logger('bootstrap');
 
   const options = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
-    .setVersion('1.0')
-    .addTag('cats')
+    .setTitle('MedRouter')
+    .setDescription('MedRouter API description')
+    .setVersion('1.0.1')
+    .addTag('medrouter')
     .build();
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);

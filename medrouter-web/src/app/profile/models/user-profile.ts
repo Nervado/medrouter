@@ -2,7 +2,7 @@ import { Role } from "src/app/auth/enums/roles-types";
 import { Address } from "./address";
 
 export class Profile {
-  userId: any;
+  userId: string;
   username: string;
   surname: string;
   cpf: string;

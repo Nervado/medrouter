@@ -285,8 +285,10 @@ export class DoctorsCreatePrescriptionComponent implements OnInit {
   }
 
   fmrt(name: string) {
-    const newSentece = name.replace(/_/g, " ").toLowerCase();
-    return newSentece[0].toUpperCase() + newSentece.slice(1);
+    if (name !== null && name !== undefined) {
+      const newSentece = name.replace(/_/g, " ").toLowerCase();
+      return newSentece[0].toUpperCase() + newSentece.slice(1);
+    }
   }
 
   addMedicine(med: any) {

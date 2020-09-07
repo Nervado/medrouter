@@ -207,6 +207,8 @@ export class DoctorsService extends Service<
       ];
 
       return schedules;
+
+      //{ id: string; date: Date; hours: { hour: Available; busy: boolean; }[]; }[]
     } catch (error) {
       throw new InternalServerErrorException('Fail to retrive schedule');
     }
@@ -345,8 +347,8 @@ export class DoctorsService extends Service<
       .getMany();
   }
 
-  async getOne(userId: any, user?: User): Promise<Doctor> {
-    if (parseInt(userId) !== user.userId) {
+  async getOne(userId: string, user?: User): Promise<Doctor> {
+    if (userId !== user.userId) {
       throw new UnauthorizedException('Not Allowed');
     }
 

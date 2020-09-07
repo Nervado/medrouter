@@ -39,17 +39,17 @@ export class Lab extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: LabCategory,
     default: [LabCategory.LABEXM],
     array: true,
+    enum: LabCategory,
   })
   labcategory: LabCategory[];
 
   @Column({
     type: 'enum',
-    enum: ExamsEnum,
     default: [ExamsEnum.ABREU],
     array: true,
+    enum: ExamsEnum,
   })
   exams: ExamsEnum[];
 

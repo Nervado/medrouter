@@ -3,7 +3,7 @@ export class DoctorDto {
   salary?: string;
 
   user: {
-    userId?: any;
+    userId?: string;
     username?: string;
     fullname?: string;
   };

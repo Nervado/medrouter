@@ -11,7 +11,7 @@ export class SearchResultDto {
 
   @ValidateNested()
   user?: {
-    userId?: number | string;
+    userId?: string;
     username?: string;
     surname?: string;
     fullname?: string;
@@ -22,7 +22,7 @@ export class SearchResultDto {
     checked?: boolean;
 
     avatar?: {
-      avatarId?: number | string;
+      avatarId?: string;
       url?: string;
     };
   };

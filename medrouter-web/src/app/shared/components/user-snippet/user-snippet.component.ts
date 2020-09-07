@@ -13,7 +13,8 @@ import { Types } from "src/app/messages/toast/enums/types";
 import { User } from "src/app/auth/models/user.model";
 import { Gretting } from "./enums/gretting";
 import { Colors } from "src/app/messages/toast/enums/colors";
-import { Role } from "src/app/auth/enums/roles-types";
+
+import { UsersService } from "src/app/profile/users.service";
 
 @Component({
   selector: "app-user-snippet",
@@ -33,7 +34,8 @@ export class UserSnippetComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private usersService: UsersService
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +48,8 @@ export class UserSnippetComponent implements OnInit {
       message: `Até a próxima ${this.user.user.username}`,
       type: Types.INFO,
     });
+
+    this.usersService.clearProfile();
 
     this.user = undefined;
   }

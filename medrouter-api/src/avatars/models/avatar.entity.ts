@@ -12,8 +12,8 @@ import { Exclude } from 'class-transformer';
 
 @Entity('avatar')
 export class Avatar extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  avatarId: number;
+  @PrimaryGeneratedColumn('uuid')
+  avatarId: string;
 
   @Column()
   filename: string;

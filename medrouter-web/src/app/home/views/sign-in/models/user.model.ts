@@ -2,7 +2,7 @@ export class User {
   token: string;
   user: {
     username: string;
-    userId: number;
+    userId: string;
     email: string;
     client: boolean;
     admin: boolean;

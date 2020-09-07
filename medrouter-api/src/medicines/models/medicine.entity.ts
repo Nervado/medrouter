@@ -50,15 +50,15 @@ export class Medicine extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: MedicineSubcategory,
     default: MedicineSubcategory.GEN,
+    enum: MedicineSubcategory,
   })
   subcategory: MedicineSubcategory;
 
   @Column({
     type: 'enum',
-    enum: MedicineCategory,
     default: MedicineCategory.NONCONTROLED,
+    enum: MedicineCategory,
   })
   category: MedicineCategory;
 

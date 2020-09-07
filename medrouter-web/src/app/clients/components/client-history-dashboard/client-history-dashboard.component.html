@@ -63,9 +63,9 @@
               <div>
                 <strong>
                   {{
-                    doctor.user.surname
-                      ? doctor.user.fullname
-                      : doctor.user.username
+                    doctor?.user.surname
+                      ? doctor?.user.fullname
+                      : doctor?.user.username
                   }}</strong
                 >
                 <div>
@@ -100,13 +100,17 @@
             /></ng-template>
 
             <div>
-              <strong>{{ prescription.doctor.user.fullname }}</strong>
+              <strong>{{
+                prescription?.doctor.user.surname
+                  ? prescription?.doctor.user.fullname
+                  : prescription?.doctor.user.username
+              }}</strong>
 
               <div class="d-flex align-items-center info">
                 <div class="icon">
                   <fa-icon [icon]="faMedkit" class="mr-1"></fa-icon>
                 </div>
-                {{ prescription?.doctor.specialty[0] }}
+                {{ fmrt(prescription?.doctor.specialty[0]) }}
 
                 <fa-icon [icon]="faFileMedical" class="mx-1"></fa-icon>
                 {{ prescription?.code }}
@@ -126,7 +130,13 @@
 
             <div>
               <div class="">
-                <strong> {{ prescription.client.user.fullname }}</strong>
+                <strong>
+                  {{
+                    prescription?.client.user.surname
+                      ? prescription?.client.user.fullname
+                      : prescription.client.user.username
+                  }}</strong
+                >
               </div>
 
               <div class="info">
@@ -150,7 +160,8 @@
           *ngIf="
             (prescription.recomendations?.length !== 0 ||
               prescription.medicines?.length > 0 ||
-              prescription.exams?.length > 0) &&
+              prescription.exams?.length > 0 ||
+              prescription.pressure) &&
             prescription.visible
           "
         >

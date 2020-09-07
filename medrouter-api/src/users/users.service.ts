@@ -52,23 +52,23 @@ export class UsersService {
     return this.userRepository.index(pageFilterDto);
   }
 
-  async get(id, user: User): Promise<User> {
+  async get(id: string, user: User): Promise<User> {
     if (id !== user.userId && user.role.length === 1) {
       //remove after testes
-      // throw new UnauthorizedException('User has not privileges here');
+      throw new UnauthorizedException('User has not privileges here');
     }
 
     if (id !== user.userId && user.role.length > 1) {
       return this.userRepository.findOne(id);
     }
     //**testes */
-    return this.userRepository.findOne(id);
+    //return this.userRepository.findOne(id);
 
     return this.userRepository.findOne(user.userId);
   }
 
   async update(
-    id: number,
+    id: string,
     userUpdateDto: UserUpdateDto,
     logged?: User,
   ): Promise<User> {
@@ -76,7 +76,7 @@ export class UsersService {
 
     if (logged.userId !== id && logged.role.length === 1) {
       //Uncommnent after tests
-      //throw new UnauthorizedException('Not authorized');
+      throw new UnauthorizedException('Not authorized');
     }
     if (logged.userId === id) {
       // logged user whant update self data
@@ -163,11 +163,10 @@ export class UsersService {
     return user;
   }
 
-  async deleteOne(id: number, user: User): Promise<any> {
+  async deleteOne(id: string, user: User): Promise<any> {
     const usertoBeDeleted = await this.userRepository.findOne({
       where: { userId: id },
     });
-    console.log(user);
 
     if (usertoBeDeleted.role.length > 1) {
       throw new ForbiddenException('Fail to exec');
@@ -207,7 +206,7 @@ export class UsersService {
     return this.userRepository.softDelete({ userId: id });
   }
 
-  async resetRole(id: number): Promise<User> {
+  async resetRole(id: string): Promise<User> {
     const user = await this.userRepository.findOne({ userId: id });
     user.role = [Role.CLIENT];
     try {
@@ -217,13 +216,13 @@ export class UsersService {
     }
   }
 
-  async setRole(id: number, role: string): Promise<User> {
+  async setRole(id: string, role: string): Promise<User> {
     const user = await this.userRepository.findOne({ userId: id });
 
     if (role === Role.CLIENT) {
-      await this.clientsService.addClient(user);
       user.role = user.role.filter(role => role !== Role.USER);
       user.role = [...user.role, Role.CLIENT];
+      await this.clientsService.addClient(user);
     }
 
     if (role !== Role.CLIENT) {

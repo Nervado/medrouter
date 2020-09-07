@@ -91,8 +91,8 @@ export class LabsService {
     return lab;
   }
 
-  async findOne(userId: any, user?: User): Promise<Lab> {
-    if (parseInt(userId) !== user?.userId) {
+  async findOne(userId: string, user?: User): Promise<Lab> {
+    if (userId !== user?.userId) {
       throw new UnauthorizedException('Not Allowed');
     }
 
@@ -115,7 +115,7 @@ export class LabsService {
     if (!lab) {
       throw new NotFoundException('Lab not found');
     }
-    console.log(lab, search);
+
     if (!lab.users.find(_user => _user.userId === user.userId)) {
       throw new UnauthorizedException('Search Not Allowed');
     }

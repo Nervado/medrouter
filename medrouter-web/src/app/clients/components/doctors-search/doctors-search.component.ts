@@ -68,7 +68,8 @@ export class DoctorsSearchComponent implements OnInit {
     private ns: NotificationService,
     private fb: FormBuilder,
     private ar: ActivatedRoute,
-    private us: UsersService
+    private us: UsersService,
+    private as: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -141,7 +142,7 @@ export class DoctorsSearchComponent implements OnInit {
     this.appointment.doctor = doctor;
     this.appointment.client = {
       id: this.ar.parent.snapshot.params["id"],
-      user: this.us.getUserProfile(),
+      user: this.as.getUser().user,
     };
 
     this.appointment.date = doctor.schedule.date;

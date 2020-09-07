@@ -33,15 +33,10 @@ export class AddressService {
   async update(addressDto: AddressDto, id: any): Promise<Address> {
     const current = await this.addressRepo.findOne({ where: { id } });
 
-    console.log('updating address', addressDto, id);
-
     if (!current) {
-      console.log(current);
-
       throw new NotFoundException('Address not found');
     }
 
-    console.log(current, addressDto);
     Address.merge(current, addressDto);
 
     try {
@@ -51,7 +46,7 @@ export class AddressService {
     }
   }
 
-  async delete(id: number, user?: User): Promise<any> {
+  async delete(id: string, user?: User): Promise<any> {
     if (user && user.address !== null) {
       //user.address = null;
       try {

@@ -1,11 +1,12 @@
 import { AddressDto } from 'src/address/dto/adress.dto';
 import { AvatarDto } from 'src/avatars/dto/avatar.dto';
 
-import { IsEmail, IsOptional } from 'class-validator';
+import { IsEmail, IsOptional, IsUUID } from 'class-validator';
 
 export class UserDto {
   @IsOptional()
-  userId?: number;
+  @IsUUID()
+  userId?: string;
 
   @IsOptional()
   @IsEmail()

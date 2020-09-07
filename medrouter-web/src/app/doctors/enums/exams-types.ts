@@ -25,7 +25,7 @@ export enum ExamsEnum {
   DORMI = "Doenca_residual_minima",
   DOPTC = "Doppler_transcraniano",
   ECCVR = "Ecodoppler_carotideo_e_vertebral",
-  ECVMI = "Ecodoppler venoso dos membros inferiores",
+  ECVMI = "Ecodoppler_venoso_dos_membros_inferiores",
   ELAST = "Elastografia",
   ELEMG = "Eletronistagmografia",
   ELISA = "Elisa",

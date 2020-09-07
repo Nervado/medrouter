@@ -2,6 +2,10 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "compilerOptions": {
-    "assets": ["**/*.hbs", "**/*.pug", "**/*.css", "**/*.svg", "**/*.png"]
+    "assets": ["**/*.hbs", "**/*.pug", "**/*.css", "**/*.svg", "**/*.png"],
+    "plugins": ["@nestjs/swagger/plugin"],
+    "options": {
+      "classValidatorShim": true
+    }
   }
 }

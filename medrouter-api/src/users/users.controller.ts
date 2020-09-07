@@ -5,7 +5,6 @@ import {
   ParseIntPipe,
   Query,
   ValidationPipe,
-  Logger,
   UseInterceptors,
   ClassSerializerInterceptor,
   Put,
@@ -18,21 +17,16 @@ import { PageFilterDto } from './dto/page-filter.dto';
 import { User } from './models/user.entity';
 import { UserUpdateDto } from './dto/user-update.dto';
 import { GetUser } from '../users/decorators/get-user.decorator';
-
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Allow } from '../auth/decorators/alow.decorator';
-
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles-auth.guard';
 import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
-
 import { SearchFilterDto } from './dto/search-filter.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('users')
 export class UsersController {
-  private logger = new Logger('UsersController');
-
   constructor(private usersService: UsersService) {}
 
   @Get()
@@ -42,7 +36,6 @@ export class UsersController {
     @Query(ValidationPipe) pageFilterDto: PageFilterDto,
     @GetUser() user: User,
   ): Promise<User[]> {
-    console.log('logged User', user);
     return this.usersService.index(pageFilterDto);
   }
 
@@ -52,15 +45,13 @@ export class UsersController {
   getUserByName(
     @Query(ValidationPipe) searchFilterDto: SearchFilterDto,
   ): Promise<User[]> {
-    console.log(searchFilterDto);
-
     return this.usersService.find(searchFilterDto);
   }
 
   @Get('/:id')
   @Roles('client')
   @UseInterceptors(ClassSerializerInterceptor)
-  getUser(@Param('id', ParseIntPipe) id: number, @GetUser() user: User) {
+  getUser(@Param('id') id: string, @GetUser() user: User) {
     return this.usersService.get(id, user);
   }
 
@@ -68,18 +59,16 @@ export class UsersController {
   @Allow('recept', 'admin', 'owner', 'client')
   @UseInterceptors(ClassSerializerInterceptor)
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body() body: UserUpdateDto,
     @GetUser() loggedUser: User,
   ): Promise<User> {
-    console.log('try to updatte', body, loggedUser);
-
     return this.usersService.update(id, body, loggedUser);
   }
 
   @Delete('/:id')
   @Allow('recept', 'admin', 'owner', 'client')
-  deleteUser(@Param('id') id: number, @GetUser() loggedUser: User) {
+  deleteUser(@Param('id') id: string, @GetUser() loggedUser: User) {
     return this.usersService.deleteOne(id, loggedUser);
   }
 }

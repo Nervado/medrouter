@@ -55,7 +55,7 @@ export class ClientController {
   @Get('/:id')
   @Allow(Role.RECEPT, Role.CLIENT)
   @UseInterceptors(ClassSerializerInterceptor)
-  get(@GetUser() user: User, @Param('id') id: any): Promise<Client> {
+  get(@GetUser() user: User, @Param('id') id: string): Promise<Client> {
     return this.clientService.getOne(id, user);
   }
 

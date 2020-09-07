@@ -8,6 +8,7 @@ import { tap } from "rxjs/operators";
 import { Avatar } from "./models/avatar.dto";
 import { AuthService } from "../auth/auth.service";
 import { SearchFilterDto } from "../owners/components/search-employees/dtos/search-filter.dto";
+import { CriptoService } from "../auth/cripto.service";
 
 @Injectable({
   providedIn: "root",
@@ -16,20 +17,27 @@ export class UsersService {
   profile: Profile = null;
   avatar: Avatar = null;
 
-  constructor(private http: HttpClient, private authService: AuthService) {
-    const profile: Profile = JSON.parse(sessionStorage.getItem("profile"));
+  constructor(
+    private http: HttpClient,
+    private cryptoService: CriptoService,
+    private authService: AuthService
+  ) {
+    const profile: Profile = this.cryptoService.decryptData(
+      sessionStorage.getItem("MEDROUTER_DATA")
+    );
     if (profile) {
       this.profile = profile;
+    } else {
     }
   }
 
-  getUserById(userId: any): Observable<Profile> {
+  getUserById(userId: string): Observable<Profile> {
     return this.http
       .get<Profile>(`${MEDROUTER_API}/users/${userId}`)
       .pipe(this.setProfile());
   }
 
-  update(profile: Profile, userId: any): Observable<Profile> {
+  update(profile: Profile, userId: string): Observable<Profile> {
     return this.http
       .put<Profile>(`${MEDROUTER_API}/users/${userId}`, { ...profile })
       .pipe(this.setProfile());
@@ -59,24 +67,32 @@ export class UsersService {
     return this.http.delete<any>(`${MEDROUTER_API}/avatars/${avatarId}`);
   }
 
+  clearProfile() {
+    sessionStorage.removeItem("MEDROUTER_DATA");
+  }
   setProfile() {
     return tap(
       (profile: Profile) => {
         this.profile = profile;
       },
       () => {
-        sessionStorage.setItem("profile", null);
+        sessionStorage.removeItem("MEDROUTER_DATA");
       },
       () => {
-        sessionStorage.setItem("profile", JSON.stringify(this.profile));
+        if (this.authService.loginDto.rememberme) {
+          sessionStorage.setItem(
+            "MEDROUTER_DATA",
+            this.cryptoService.encryptData(this.profile)
+          );
+        }
       }
     );
   }
 
-  delete(userId: any): Observable<void> {
+  delete(userId: string): Observable<void> {
     return this.http.delete<void>(`${MEDROUTER_API}/users/${userId}`).pipe(
       tap({
-        complete: () => sessionStorage.removeItem("profile"),
+        complete: () => sessionStorage.removeItem("MEDROUTER_DATA"),
       })
     );
   }

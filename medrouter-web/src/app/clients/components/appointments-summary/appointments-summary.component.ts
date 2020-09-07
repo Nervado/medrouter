@@ -22,6 +22,7 @@ import { SearchDoctorDto } from "../../models/search";
 import { AppointmentStatus } from "../../enums/appontment-status";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { isPast } from "src/app/utils/ispast";
+import { fmrt } from "src/app/utils/fmrt";
 @Component({
   selector: "app-appointments-summary",
   templateUrl: "./appointments-summary.component.html",
@@ -41,6 +42,8 @@ export class AppointmentsSummaryComponent implements OnInit {
   appointments: Appointment[] = [];
 
   isPast = isPast;
+
+  fmrt = fmrt;
 
   constructor(
     private activateRoute: ActivatedRoute,

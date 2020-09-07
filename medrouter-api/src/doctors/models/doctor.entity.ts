@@ -46,9 +46,9 @@ export class Doctor extends BaseEntity {
   @Column()
   @Column({
     type: 'enum',
-    enum: Specialty,
     default: [Specialty.CMD],
     array: true,
+    enum: Specialty,
   })
   specialty: Specialty[];
 

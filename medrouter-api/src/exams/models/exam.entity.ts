@@ -35,11 +35,12 @@ export class Exam extends BaseEntity {
 
   @Column({
     type: 'enum',
+    nullable: true,
     enum: ExamsEnum,
   })
   type: ExamsEnum;
 
-  @Column({ type: 'enum', enum: ExamStatus, default: ExamStatus.REQUEST })
+  @Column({ type: 'enum', default: ExamStatus.REQUEST, enum: ExamStatus })
   status: ExamStatus;
 
   @Column({ nullable: true })

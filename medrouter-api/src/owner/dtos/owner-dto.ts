@@ -31,12 +31,12 @@ export class OwnerDto {
 
   @IsOptional()
   @IsString()
-  status: string;
+  status?: string;
 
   @IsOptional()
   @IsNumber()
   @Max(100000)
   @Min(-100000)
   @IsDecimal()
-  diff: number;
+  diff?: number;
 }
