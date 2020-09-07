@@ -79,7 +79,7 @@ export class UsersService {
         sessionStorage.removeItem("MEDROUTER_DATA");
       },
       () => {
-        if (this.authService.loginDto.rememberme) {
+        if (this.authService.loginDto?.rememberme) {
           sessionStorage.setItem(
             "MEDROUTER_DATA",
             this.cryptoService.encryptData(this.profile)

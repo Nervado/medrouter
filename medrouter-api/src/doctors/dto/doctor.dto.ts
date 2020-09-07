@@ -44,4 +44,7 @@ export class DoctorDto {
   @Min(-100000)
   @IsDecimal()
   diff?: number;
+
+  @IsOptional()
+  mh?: number;
 }

@@ -84,19 +84,20 @@ export class DoctorsService extends Service<
 
   async getAll(user: User, search: SearchFilterDto): Promise<DoctorDto[]> {
     if (this.checkRole(user, Role.OWNER)) {
-      return await this.repo.getAll(search);
+      return await this.repo.getAll(search, user);
     }
 
     if (
       this.checkRole(user, Role.RECEPT) ||
       this.checkRole(user, Role.CLIENT)
     ) {
-      const results = await this.repo.getAll(search);
+      const results = await this.repo.getAll(search, user);
       const doctors: DoctorDto[] = [
         ...results.map((doctor: Doctor) => {
           return {
             id: doctor.id,
             specialty: doctor.specialty,
+            mh: doctor.mh,
             user: {
               username: doctor.user.username,
               surname: doctor.user.surname,

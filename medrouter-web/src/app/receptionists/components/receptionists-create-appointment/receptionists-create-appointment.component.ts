@@ -236,7 +236,7 @@ export class ReceptionistsCreateAppointmentComponent implements OnInit {
   }
 
   checkPassword(password: string): boolean {
-    if (password === this.as.loginDto.password) {
+    if (password === this.as.loginDto?.password) {
       return true;
     } else {
       this.ns.notify({

@@ -14,9 +14,18 @@
         {{ (medicine.product && fmrt(medicine.product)) || medicine.formula }}
       </div>
 
-      <div class="lab-info" *ngIf="medicine?.presentantion">
-        <ng-container *ngIf="medicine?.presentantion; else noLab">
-          <div class="name">{{ medicine.presentantion }}</div>
+      <div class="lab-info" *ngIf="medicine?.substance">
+        <ng-container *ngIf="medicine?.substance; else noPre">
+          <div class="name">{{ medicine.substance }}</div>
+        </ng-container>
+        <ng-template #noPre>
+          <div>-</div>
+        </ng-template>
+      </div>
+
+      <div class="lab-info" *ngIf="medicine?.laboratory">
+        <ng-container *ngIf="medicine?.laboratory; else noLab">
+          <div class="lab">{{ medicine.laboratory }}</div>
         </ng-container>
         <ng-template #noLab>
           <div>-</div>
@@ -26,8 +35,8 @@
   </div>
 
   <div class="details">
-    <div class="category">{{ fmrt(medicine.category) }}</div>
-    <div class="subcategory">{{ fmrt(medicine.subcategory) }}</div>
+    <div class="category">{{ fmrt(medicine.stripe) }}</div>
+    <div class="subcategory">{{ fmrt(medicine.product_type) }}</div>
 
     <div class="date">
       <fa-icon [icon]="faCalendarDay"></fa-icon>

@@ -177,6 +177,9 @@
         </ng-template>
       </div>
       <div class="app" (click)="addAppointment(modal, doctor)">
+        <div *ngIf="doctor?.mh" class="price">
+          {{ doctor.mh | currency: "BRL" }}
+        </div>
         <button>Agendar</button>
       </div>
     </div>

@@ -43,6 +43,15 @@ export class Doctor extends BaseEntity {
   @JoinColumn()
   user: User;
 
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 2,
+    nullable: true,
+    default: 150,
+  })
+  mh: number;
+
   @Column()
   @Column({
     type: 'enum',

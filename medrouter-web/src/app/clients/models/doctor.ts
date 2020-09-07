@@ -8,6 +8,7 @@ export class Doctor {
   ishired: true;
   specialty: Array<string>;
   count?: number = 0;
+  mh?: number = 0;
   user: {
     userId: string;
     username: string;

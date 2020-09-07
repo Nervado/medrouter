@@ -29,7 +29,7 @@ import { Prescription } from 'src/prescriptions/models/prescription.entity';
 import { arrayFromObject } from 'src/utils/arrayFromObject';
 import { DataGraph, DataMonth } from './dtos/data-graph';
 
-import { subMonths, endOfDay } from 'date-fns';
+import { subMonths, endOfDay, addDays } from 'date-fns';
 import { Months } from './dtos/data-graph';
 @Injectable()
 export class ClientService {
@@ -550,7 +550,7 @@ export class ClientService {
   }
 
   async getPressureReport(id: string, user: User): Promise<DataGraph> {
-    const date = new Date();
+    const date = addDays(new Date(), 1);
 
     const client = await Client.findOne(id);
 
@@ -636,7 +636,7 @@ export class ClientService {
 
     //  prescription.createdAt > :start AND  prescription.createdAt <= :end
     query.andWhere(
-      'client.id = :id AND prescription.createdAt > :start  AND  prescription.createdAt <= :end ',
+      'client.id = :id AND prescription.createdAt >= :start  AND  prescription.createdAt < :end ',
       {
         id,
         start,

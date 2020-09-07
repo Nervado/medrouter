@@ -148,8 +148,6 @@ export class DoctorsCreateScheduleComponent implements OnInit {
 
   save() {
     this.schedules = this.days.map((el: EscheduleView) => {
-      console.log(el);
-
       return {
         id: el.id,
         date: el.date,
@@ -202,6 +200,7 @@ export class DoctorsCreateScheduleComponent implements OnInit {
       ])
       .subscribe({
         next: () => {
+          this.isEditing = false;
           this.updateSchedule();
         },
         error: () =>

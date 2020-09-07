@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import {
   faEllipsisH,
   faSearch,
@@ -62,6 +62,8 @@ export class DoctorsSearchComponent implements OnInit {
   searchInput: FormControl;
 
   appointment: Appointment = new Appointment();
+
+  @Output() updateAppointment: EventEmitter<boolean> = new EventEmitter();
 
   constructor(
     private clientsService: ClientsService,
@@ -158,6 +160,8 @@ export class DoctorsSearchComponent implements OnInit {
           type: Types.SUCCESS,
         });
         this.handleSearch(this.page, this.searchInput.value);
+
+        this.updateAppointment.emit(true);
       },
       error: () =>
         this.ns.notify({

@@ -150,6 +150,7 @@ export class AppointmentsService {
       client,
       date: getMidnight(app.date),
       hour: app.hour,
+      price: doctor.mh,
     });
 
     try {

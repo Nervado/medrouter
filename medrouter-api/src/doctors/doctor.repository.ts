@@ -49,7 +49,7 @@ export class DoctorRepository extends Repository<Doctor>
     }
   }
 
-  async getAll(search: SearchFilterDto): Promise<Doctor[]> {
+  async getAll(search: SearchFilterDto, user?: User): Promise<Doctor[]> {
     const { page, username } = search;
     const pageNumber = page ? page * 10 - 10 : 0;
     const query = this.createQueryBuilder('doctor');
@@ -106,6 +106,18 @@ export class DoctorRepository extends Repository<Doctor>
 
   async updateOne(id: any, body: any, operation?: string): Promise<Doctor> {
     const doctor = await this.findOne({ id });
+
+    if (operation === 'consultant') {
+      console.log(body);
+
+      doctor.mh = body.mh;
+
+      try {
+        return await this.save(doctor);
+      } catch (error) {
+        throw new BadRequestException('Operation consultant fail');
+      }
+    }
 
     if (operation === 'status' && body === 're-hired' && !doctor.ishired) {
       doctor.ishired = true;

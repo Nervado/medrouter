@@ -31,6 +31,15 @@ export class OwnersService {
     });
   }
 
+  patchPrice(id: string, mh: number): Observable<EmployeeDto> {
+    return this.h.patch<EmployeeDto>(
+      `${MEDROUTER_API}/doctors/${id}/consultant`,
+      {
+        mh,
+      }
+    );
+  }
+
   diff(role: Role, id: string, diff: number): Observable<EmployeeDto> {
     return this.h.patch<EmployeeDto>(`${MEDROUTER_API}/${role}s/${id}/diff`, {
       diff,

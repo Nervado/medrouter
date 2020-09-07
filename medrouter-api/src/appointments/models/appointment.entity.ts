@@ -44,6 +44,15 @@ export class Appointment extends BaseEntity {
   @JoinColumn()
   client: Client;
 
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 2,
+    nullable: true,
+    default: 200,
+  })
+  price: number;
+
   @ManyToOne(
     () => Doctor,
     doctor => doctor.appointments,

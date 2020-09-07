@@ -68,6 +68,11 @@ export class AppointmentsSummaryComponent implements OnInit {
     });
   }
 
+  update(e: boolean) {
+    this.page = 1;
+    this.getAppointments(this.activateRoute.parent.snapshot.params["id"]);
+  }
+
   pageUp() {
     this.page += 1;
     this.getAppointments(this.activateRoute.parent.snapshot.params["id"]);

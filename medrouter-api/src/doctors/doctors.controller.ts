@@ -86,6 +86,16 @@ export class DoctorsController {
     return this.doctorService.modifyOne(id, body, 'status');
   }
 
+  @Patch('/:id/consultant')
+  @Roles('owner')
+  @UseInterceptors(ClassSerializerInterceptor)
+  changeMh(
+    @Param('id') id: string,
+    @Body() body: { mh: number },
+  ): Promise<Doctor> {
+    return this.doctorService.modifyOne(id, body, 'consultant');
+  }
+
   @Patch('/:id/diff')
   @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)

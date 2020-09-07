@@ -30,7 +30,7 @@ export class OwnerController {
   constructor(private readonly os: OwnerService) {}
 
   @Post()
-  //@Roles('owner')
+  @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
   create(@Body(ValidationPipe) body: OwnerDto): Promise<Owner> {
     return this.os.create(body);

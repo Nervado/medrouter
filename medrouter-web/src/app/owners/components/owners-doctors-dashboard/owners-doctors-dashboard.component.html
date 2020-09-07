@@ -47,6 +47,10 @@
           Salário
           <fa-icon [icon]="faCoins" class="ml-1"> </fa-icon>
         </div>
+        <div>
+          Consulta
+          <fa-icon [icon]="faMoneyBill" class="ml-1"> </fa-icon>
+        </div>
         <div>Especialidade</div>
         <div>Editar</div>
       </div>
@@ -75,10 +79,41 @@
           <div class="item">
             {{ doctor.salary | currency: "BRL" }}
           </div>
+          <form [formGroup]="specialtyForm" class="d-flex">
+            <div class="d-flex align-items-center item mx-2">
+              <ng-container
+                *ngIf="doctor.edit && doctor.ishired; else editPrice"
+              >
+                <input
+                  class="mh"
+                  currencyMask
+                  [options]="{
+                    prefix: 'R$ ',
+                    thousands: '.',
+                    decimal: ',',
+                    align: 'left'
+                  }"
+                  formControlName="mh"
+                  #mh
+                  placeholder="Preço"
+                  autocomplete="off"
+                  class="in in-onwer"
+                  style="border: 1px solid var(--owner); color: var(--owner)"
+                />
+                <fa-icon
+                  [icon]="faSave"
+                  class="cursor text-success mx-1"
+                  (click)="patchStatus(doctor, mh.value)"
+                ></fa-icon>
+              </ng-container>
+              <ng-template #editPrice>
+                {{ doctor?.mh | currency: "BRL" }}
+              </ng-template>
+              <!-- {{ doctor.mh | currency: "BRL" }}-->
+            </div>
 
-          <div class="d-flex align-items-center sp">
-            <ng-container *ngIf="doctor.edit && doctor.ishired; else editSM">
-              <form [formGroup]="specialtyForm">
+            <div class="d-flex align-items-center sp">
+              <ng-container *ngIf="doctor.edit && doctor.ishired; else editSM">
                 <app-mult-selector-drop-drown
                   [width]="'150px'"
                   [height]="'30px'"
@@ -86,29 +121,29 @@
                   [mainColor]="mainColor"
                   formControlName="specialty"
                 ></app-mult-selector-drop-drown>
-              </form>
-            </ng-container>
-            <ng-template #editSM>
-              <app-multi-list-view
-                [tags]="doctor.specialty"
-                [mainColor]="mainColor"
-                [w]="'150px'"
-                [h]="'30px'"
-              >
-              </app-multi-list-view>
-            </ng-template>
+                <fa-icon
+                  [icon]="faSave"
+                  class="cursor text-success mx-1"
+                  (click)="putSpecialty(doctor)"
+                ></fa-icon>
+              </ng-container>
+              <ng-template #editSM>
+                <app-multi-list-view
+                  [tags]="doctor.specialty"
+                  [mainColor]="mainColor"
+                  [w]="'150px'"
+                  [h]="'30px'"
+                >
+                </app-multi-list-view>
+              </ng-template>
 
-            <fa-icon
-              [icon]="faEdit"
-              class="cursor text-medium mx-2"
-              (click)="editMode(doctor)"
-            ></fa-icon>
-            <fa-icon
-              [icon]="faSave"
-              class="cursor text-success"
-              (click)="putSpecialty(doctor)"
-            ></fa-icon>
-          </div>
+              <fa-icon
+                [icon]="faEdit"
+                class="cursor text-medium mx-2"
+                (click)="editMode(doctor)"
+              ></fa-icon>
+            </div>
+          </form>
           <div class="actions item">
             <ng-container *ngIf="doctor.ishired; else editMenu">
               <fa-icon

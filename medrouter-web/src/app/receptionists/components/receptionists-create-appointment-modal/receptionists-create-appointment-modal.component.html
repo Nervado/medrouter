@@ -42,6 +42,11 @@
         {{ appointment.hour }}h
       </div>
 
+      <div class="infos text-recept">
+        <fa-icon [icon]="faCoins" *ngIf="appointment.doctor?.mh"></fa-icon>
+        {{ appointment.doctor.mh | currency: "BRL" }}
+      </div>
+
       <div class="search">
         <div class="form">
           <div class="input">
@@ -112,7 +117,7 @@
             placeholder="Senha"
             autocomplete="off"
             class="in in-lab"
-            style="border: 1px solid var(--lab); color: var(--lab);"
+            style="border: 1px solid var(--lab); color: var(--lab)"
           />
           <div
             class="d-flex mx-2 flex-column justify-content-center align-items-center"

@@ -24,6 +24,7 @@ import {
   faChevronLeft,
   faChevronRight,
   faTrash,
+  faMoneyBill,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup, FormBuilder } from "@angular/forms";
 
@@ -59,9 +60,11 @@ export class OwnersDoctorsDashboardComponent implements OnInit {
   faChevronLeft = faChevronLeft;
   faChevronRight = faChevronRight;
   faTrash = faTrash;
+  faMoneyBill = faMoneyBill;
 
   medicalSp: Array<any> = getArrayFromEnum(Specialty);
   isedit: boolean = false;
+  mhEdit: boolean = false;
 
   page: number = 1;
 
@@ -91,6 +94,7 @@ export class OwnersDoctorsDashboardComponent implements OnInit {
 
     this.specialtyForm = this.fb.group({
       specialty: this.fb.control([]),
+      mh: this.fb.control(0),
     });
 
     this.find(this.page);
@@ -175,6 +179,27 @@ export class OwnersDoctorsDashboardComponent implements OnInit {
         });
       },
     });
+  }
+
+  patchStatus(doctor: EmployeeDto, mh: number) {
+    doctor.edit = false;
+    this.ownerService
+      .patchPrice(doctor.id, this.specialtyForm.value.mh)
+      .subscribe({
+        next: () => {
+          this.find(this.page);
+          this.ns.notify({
+            message: "Valor da consulta atualizado",
+            type: Types.SUCCESS,
+          });
+        },
+        error: () => {
+          this.ns.notify({
+            message: "Falha ao tentar atualizar",
+            type: Types.ERROR,
+          });
+        },
+      });
   }
 
   putSpecialty(doctor: EmployeeDto) {

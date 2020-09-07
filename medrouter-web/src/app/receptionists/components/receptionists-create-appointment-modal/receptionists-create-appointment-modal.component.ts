@@ -19,6 +19,7 @@ import {
   faChevronLeft,
   faChevronRight,
   faMobileAlt,
+  faCoins,
 } from "@fortawesome/free-solid-svg-icons";
 import { Colors } from "src/app/messages/toast/enums/colors";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
@@ -50,6 +51,7 @@ export class ReceptionistsCreateAppointmentModalComponent implements OnInit {
   faChevronLeft = faChevronLeft;
   faChevronRight = faChevronRight;
   faMobileAlt = faMobileAlt;
+  faCoins = faCoins;
 
   closeResult = "";
   actionsForm: FormGroup;
@@ -129,7 +131,6 @@ export class ReceptionistsCreateAppointmentModalComponent implements OnInit {
               appointment: this.appointment,
             });
           }
-
           this.actionsForm.reset();
         },
         (reason) => {

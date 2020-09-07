@@ -14,7 +14,7 @@
     display: flex;
     align-items: center;
     width: 220px;
-    height: 60px;
+    height: 70px;
 
     .medicine {
       width: 25px;
@@ -45,7 +45,7 @@
       flex-direction: column;
 
       .tipo {
-        font-size: 10px;
+        font-size: 9px;
         font-weight: bold;
       }
 
@@ -53,8 +53,15 @@
         font-size: 10px;
         display: flex;
 
-        .name {
+        .name,
+        .lab {
           //font-weight: bold;
+          font-size: 8px;
+        }
+
+        .lab {
+          color: var(--medium);
+          opacity: 0.6;
         }
       }
     }
@@ -68,7 +75,7 @@
     .subcategory {
       padding: 0px 4px;
       background-color: var(--medium);
-      width: 90px;
+      width: 100px;
       color: var(--oposity);
       border-radius: 4px;
       margin: 2px 2px 2px 0px;

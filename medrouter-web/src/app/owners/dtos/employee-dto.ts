@@ -8,6 +8,7 @@ export class EmployeeDto {
   dismissdate: Date;
   status?: string;
   diff?: number;
+  mh?: number;
   user: {
     username: string;
     fullname: string;
