@@ -14,6 +14,7 @@ import { DefaultRoutes } from "./enums/default-routes";
 import { Role } from "./enums/roles-types";
 import { NewAuth } from "./interfaces/newauth.dto";
 import { RolesIds } from "./dto/roles-ids.dto";
+import { CriptoService } from "./cripto.service";
 
 @Injectable({
   providedIn: "root",
@@ -24,16 +25,17 @@ export class AuthService {
   loginDto: Login;
   rolesIds: RolesIds[] = [];
 
-  constructor(private http: HttpClient, private router: Router) {
-    const usersaved: User = JSON.parse(
-      localStorage.getItem(`${this.user?.user.userId}`)
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private cryptoService: CriptoService
+  ) {
+    const usersaved = this.cryptoService.decryptData(
+      localStorage.getItem("MEDROUTER_CONFIG")
     );
-    const loginsaved: User = JSON.parse(localStorage.getItem("login"));
+
     if (usersaved) {
       this.user = usersaved;
-    }
-    if (loginsaved) {
-      this.loginDto = JSON.parse(localStorage.getItem("login"));
     }
   }
 
@@ -42,6 +44,7 @@ export class AuthService {
   }
 
   login(login: Login): Observable<User> {
+    this.clearUserData();
     return this.http
       .post<User>(`${MEDROUTER_API}/auth/signin`, { ...login })
       .pipe(
@@ -49,33 +52,48 @@ export class AuthService {
           (User) => {
             this.user = User;
             this.loginDto = login;
-
-            this.defaultRoute = DefaultRoutes[User.user.role[0]]; // setup default route
           },
-          () => {
-            localStorage.setItem(`${this.user.user.userId}`, null); // on error clear user from local storage
+          (error) => {
+            localStorage.setItem("MEDROUTER_CONFIG", null); // on error clear user from local storage
           },
           () => {
             if (login.rememberme) {
               localStorage.setItem(
-                `${this.user.user.userId}`,
-                JSON.stringify(this.user)
+                "MEDROUTER_CONFIG",
+                this.cryptoService.encryptData(this.user)
               );
-              localStorage.setItem("login", JSON.stringify(this.loginDto));
             }
-
-            this.user.user.role.forEach((rol) =>
-              this.getRulesId(rol).subscribe({
-                complete: () =>
-                  localStorage.setItem(
-                    "rulesIds",
-                    JSON.stringify(this.rolesIds)
-                  ),
-              })
-            );
           }
         )
       );
+  }
+
+  getUserPermissions() {
+    this.user.user.role.forEach(
+      async (rol, i) =>
+        await this.getRulesId(rol).subscribe({
+          next: (resp) => {
+            if (resp !== null) {
+              this.rolesIds.push({ role: rol, id: resp.id });
+            }
+
+            if (i === this.user.user.role.length - 1) {
+              if (this.loginDto.rememberme) {
+                localStorage.setItem(
+                  "MEDROUTER_ROLES",
+                  this.cryptoService.encryptData(this.rolesIds)
+                );
+              }
+
+              this.defaultRoute = DefaultRoutes[this.user.user.role[0]]; // setup default route
+              this.router.navigate([
+                this.defaultRoute,
+                this.getRuleId(this.user.user.role[0]),
+              ]);
+            }
+          },
+        })
+    );
   }
 
   signUp(signUp: SignUp): Observable<void> {
@@ -93,10 +111,15 @@ export class AuthService {
   }
 
   logout() {
-    this.user = undefined;
-    localStorage.removeItem(`${this.user?.user.userId}`);
-    localStorage.removeItem("login");
+    this.clearUserData();
     this.router.navigate(["/"]);
+  }
+
+  clearUserData() {
+    localStorage.removeItem("MEDROUTER_CONFIG");
+    localStorage.removeItem("MEDROUTER_ROLES");
+    this.user = undefined;
+    this.rolesIds = [];
   }
 
   subscribe() {
@@ -126,29 +149,30 @@ export class AuthService {
       .pipe(
         tap((User) => {
           this.user = User;
-          console.log("Update user", User);
         })
       );
   }
 
   getRulesId(rol: Role): Observable<any> {
     const query = rol === Role.RECEPT ? `receptionist` : rol;
-    return this.http
-      .get<any>(`${MEDROUTER_API}/${query}s/${this.user.user.userId}`)
-      .pipe(
-        tap((profile: any) => {
-          this.rolesIds.push({ role: rol, id: profile.id });
-        })
-      );
+    return this.http.get<any>(
+      `${MEDROUTER_API}/${query}s/${this.user?.user.userId}`
+    );
   }
 
   public getRuleId(role: Role): any {
     if (this.rolesIds.length > 0) {
       return this.rolesIds.filter((rol) => rol.role === role)[0]?.id;
     } else {
-      return JSON.parse(localStorage.getItem("rulesIds")).filter(
-        (rol) => rol.role === role
-      )[0]?.id;
+      const rules = this.cryptoService.decryptData(
+        localStorage.getItem("MEDROUTER_ROLES")
+      );
+
+      if (rules) {
+        return rules.filter((rol) => rol.role === role)[0]?.id;
+      } else {
+        return undefined;
+      }
     }
   }
 }

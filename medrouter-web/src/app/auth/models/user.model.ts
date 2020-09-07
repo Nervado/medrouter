@@ -6,7 +6,7 @@ export class User {
     username: string;
     surname?: string;
     fullname?: string;
-    userId: any;
+    userId: string;
     email: string;
     client: boolean;
     admin: boolean;
