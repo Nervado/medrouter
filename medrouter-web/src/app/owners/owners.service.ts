@@ -7,6 +7,7 @@ import { IncludeRule } from "./components/search-employees/enums/actions-type";
 import { Role } from "../auth/enums/roles-types";
 import { EmployeeDto } from "./dtos/employee-dto";
 import { Specialty } from "./enums/specialtys";
+import { TotalDto } from "../messages/toast/dto/total.dto";
 
 @Injectable({
   providedIn: "root",
@@ -50,5 +51,9 @@ export class OwnersService {
     return this.h.put<EmployeeDto>(`${MEDROUTER_API}/doctors/${id}`, {
       specialty,
     });
+  }
+
+  getTotals(id: string): Observable<TotalDto> {
+    return this.h.get<TotalDto>(`${MEDROUTER_API}/owners/${id}/totals`);
   }
 }

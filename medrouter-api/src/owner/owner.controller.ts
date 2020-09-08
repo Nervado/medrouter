@@ -23,6 +23,7 @@ import { RolesGuard } from 'src/auth/guards/roles-auth.guard';
 import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
 import { GetUser } from 'src/users/decorators/get-user.decorator';
 import { User } from 'src/users/models/user.entity';
+import { TotalDto } from './dtos/total.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('owners')
@@ -73,7 +74,13 @@ export class OwnerController {
   @Delete('/:id')
   @Roles('owner')
   @UseInterceptors(ClassSerializerInterceptor)
-  dismiss(@Param('id') id: string): void {
-    this.os.deleteOne(id);
+  dismiss(@Param('id') id: string): Promise<void> {
+    return this.os.deleteOne(id);
+  }
+
+  @Get('/:id/totals')
+  @Roles('owner')
+  getTotals(@Param('id') id: string, @GetUser() user: User): Promise<TotalDto> {
+    return this.os.getTotalizers(id, user);
   }
 }

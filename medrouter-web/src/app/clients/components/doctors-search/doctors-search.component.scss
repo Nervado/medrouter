@@ -33,6 +33,21 @@
     }
   }
 
+  .loading {
+    height: 220px;
+
+    padding: 5px;
+    margin: 5px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 2px;
+  }
+
   .results {
     height: 220px;
     display: flex;

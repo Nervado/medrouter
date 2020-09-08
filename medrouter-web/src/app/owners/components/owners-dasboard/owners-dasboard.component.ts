@@ -14,6 +14,11 @@ import {
   faUserMd,
   faCoins,
 } from "@fortawesome/free-solid-svg-icons";
+import { OwnersService } from "../../owners.service";
+import { ActivatedRoute } from "@angular/router";
+import { TotalDto } from "src/app/messages/toast/dto/total.dto";
+import { NotificationService } from "src/app/messages/notification.service";
+import { Types } from "src/app/messages/toast/enums/types";
 
 @Component({
   selector: "app-owners-dasboard",
@@ -50,7 +55,26 @@ export class OwnersDasboardComponent implements OnInit {
   faUsersCog = faUsersCog;
   faCoins = faCoins;
 
-  constructor() {}
+  constructor(
+    private os: OwnersService,
+    private ar: ActivatedRoute,
+    private ns: NotificationService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.ar.parent.params.subscribe({
+      next: (params) => this.getTotals(params["id"]),
+    });
+  }
+
+  getTotals(id: string) {
+    this.os.getTotals(id).subscribe({
+      next: (total: TotalDto) => (this.total = total),
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao obter dados",
+          type: Types.WARN,
+        }),
+    });
+  }
 }

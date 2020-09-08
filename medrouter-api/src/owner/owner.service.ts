@@ -13,6 +13,13 @@ import { User } from 'src/users/models/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { Role } from 'src/auth/enums/role.enum';
 import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
+import { TotalDto } from './dtos/total.dto';
+import { Client } from 'src/client/models/client.entity';
+import { Doctor } from 'src/doctors/models/doctor.entity';
+import { Manager } from 'src/manager/models/manager.entity';
+import { Receptionist } from 'src/receptionist/models/receptionist.entity';
+import { Appointment } from 'src/appointments/models/appointment.entity';
+import { AppointmentStatus } from 'src/appointments/enums/appointment.enum';
 
 @Injectable()
 export class OwnerService extends Service<
@@ -67,5 +74,39 @@ export class OwnerService extends Service<
     return await query.leftJoinAndSelect('owner.user', 'user').getOne();
   }
 
-  async createOwner(): Promise<void> {}
+  async getTotalizers(id: string, user: User): Promise<TotalDto> {
+    const owner = await Owner.findOne(id);
+
+    if (!owner || owner.user.userId !== user.userId) {
+      throw new BadRequestException('Operation not allowed for current user');
+    }
+
+    try {
+      const clients = await Client.count();
+
+      const doctors = await Doctor.count();
+
+      const managers = await Manager.count();
+
+      const owners = await this.repo.count();
+
+      const staff = await Receptionist.count();
+
+      let { budget } = await Appointment.createQueryBuilder('appointment')
+        .andWhere(' status = :status', { status: AppointmentStatus.ATTENDED })
+        .select('SUM(appointment.price)', 'budget')
+        .getRawOne();
+
+      console.log(budget);
+
+      return {
+        clients,
+        staff: managers + owners + staff,
+        doctors,
+        budget: budget || 0,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException('Fail at colect data');
+    }
+  }
 }

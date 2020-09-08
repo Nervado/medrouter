@@ -59,6 +59,8 @@ export class DoctorsSearchComponent implements OnInit {
 
   page: number = 1;
 
+  loading = false;
+
   searchInput: FormControl;
 
   appointment: Appointment = new Appointment();
@@ -92,6 +94,7 @@ export class DoctorsSearchComponent implements OnInit {
   }
 
   handleSearch(page?: number, username?: string) {
+    this.loading = true;
     this.clientsService
       .search({
         page: page ? page : 1,
@@ -100,7 +103,7 @@ export class DoctorsSearchComponent implements OnInit {
       .subscribe({
         next: (doctors) => {
           this.searchResult = doctors;
-
+          this.loading = true;
           this.searchResult.forEach((doctor) =>
             this.clientsService
               .getFreeSchedules(
@@ -113,6 +116,8 @@ export class DoctorsSearchComponent implements OnInit {
                 next: (schedule) => {
                   doctor.count = 0;
 
+                  this.loading = false;
+
                   doctor.schedule =
                     schedule !== null
                       ? schedule
@@ -124,11 +129,13 @@ export class DoctorsSearchComponent implements OnInit {
                           hours: [],
                         };
                 },
-                error: () =>
+                error: () => {
+                  this.loading = false;
                   this.ns.notify({
                     message: "Falha ao obter agenda",
                     type: Types.ERROR,
-                  }),
+                  });
+                },
               })
           );
         },
@@ -191,6 +198,7 @@ export class DoctorsSearchComponent implements OnInit {
     } else {
       doctor.schedule.date = subDays(date, 1);
     }
+    this.loading = true;
     this.clientsService
       .getFreeSchedules(
         doctor.id,
@@ -200,6 +208,7 @@ export class DoctorsSearchComponent implements OnInit {
       )
       .subscribe({
         next: (schedule) => {
+          this.loading = false;
           doctor.count = 0;
           doctor.schedule =
             schedule !== null
@@ -209,11 +218,13 @@ export class DoctorsSearchComponent implements OnInit {
                   hours: [],
                 };
         },
-        error: () =>
+        error: () => {
+          this.loading = false;
           this.ns.notify({
             message: "Falha ao obter agenda",
             type: Types.ERROR,
-          }),
+          });
+        },
       });
   }
 

@@ -30,7 +30,7 @@
       <div><strong>Faturamento</strong></div>
       <div class="value" [style.color]="color4">
         <fa-icon [icon]="faCoins"></fa-icon>
-        R$ {{ total.budget }},00
+        {{ total.budget | currency: "BRL" }}
       </div>
     </div>
   </div>
