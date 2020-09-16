@@ -20,6 +20,10 @@ export class ClientBarChartComponent implements OnInit {
       return Math.max(a, b.value);
     }, 0);
 
+    if (this.max === 0) {
+      this.max = 1;
+    }
+
     this.data = this.data.map((col) => {
       col["h"] = `${(this.columHeight * col.value) / this.max}px`;
       return col;

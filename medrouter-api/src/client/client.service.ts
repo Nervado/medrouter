@@ -632,9 +632,6 @@ export class ClientService {
 
     const query = Prescription.createQueryBuilder('prescription');
 
-    //'[2011-01-01,2011-03-01)'::tsrange @> '2011-01-10'::timestamp
-
-    //  prescription.createdAt > :start AND  prescription.createdAt <= :end
     query.andWhere(
       'client.id = :id AND prescription.createdAt >= :start  AND  prescription.createdAt < :end ',
       {
@@ -648,7 +645,7 @@ export class ClientService {
         .leftJoinAndSelect('prescription.client', 'client')
         .getManyAndCount();
     } catch (error) {
-      console.log(error);
+      throw new InternalServerErrorException('Fail at get prescriptions data');
     }
   }
 }

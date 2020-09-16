@@ -1,13 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Colors } from "src/app/messages/toast/enums/colors";
-import {
-  Total,
-  Misc,
-  Canceled,
-  Reschedule,
-  Returned,
-  Finished,
-} from "../../models/graph-data";
+
 import {
   faUserTie,
   faUsersCog,
@@ -19,6 +12,7 @@ import { ActivatedRoute } from "@angular/router";
 import { TotalDto } from "src/app/messages/toast/dto/total.dto";
 import { NotificationService } from "src/app/messages/notification.service";
 import { Types } from "src/app/messages/toast/enums/types";
+import { StatsDto } from "../../dtos/stats.dto";
 
 @Component({
   selector: "app-owners-dasboard",
@@ -30,25 +24,23 @@ export class OwnersDasboardComponent implements OnInit {
   color2: Colors = Colors.ERROR;
   color3: Colors = Colors.PROFILE;
   color4: Colors = Colors.INFO;
+  color5: Colors = Colors.WARN;
 
   title: string = "Atendimentos";
   title2: string = "Cancelamentos";
-  title3: string = "Retornos";
+  title3: string = "Solicitações";
   title4: string = "Reagendamentos";
 
   title5: string = "Atendimentos";
   title6: string = "Cancelamentos";
-  title7: string = "Retornos";
+  title7: string = "Solicitaçoes";
   title8: string = "Reagendamentos";
 
-  finished = Finished;
-  canceled = Canceled;
-  reschedule = Reschedule;
-  returned = Returned;
+  title9: string = "Agendados";
 
-  total = Total;
+  total: TotalDto = new TotalDto();
 
-  misc = Misc;
+  stats: StatsDto = new StatsDto();
 
   faUserTie = faUserTie;
   faUserMd = faUserMd;
@@ -63,7 +55,10 @@ export class OwnersDasboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.ar.parent.params.subscribe({
-      next: (params) => this.getTotals(params["id"]),
+      next: (params) => {
+        this.getTotals(params["id"]);
+        this.getStats(params["id"]);
+      },
     });
   }
 
@@ -73,6 +68,17 @@ export class OwnersDasboardComponent implements OnInit {
       error: () =>
         this.ns.notify({
           message: "Falha ao obter dados",
+          type: Types.WARN,
+        }),
+    });
+  }
+
+  getStats(id: string) {
+    this.os.getStats(id).subscribe({
+      next: (stats: StatsDto) => (this.stats = stats),
+      error: () =>
+        this.ns.notify({
+          message: "Falha ao obter dados gráficos",
           type: Types.WARN,
         }),
     });

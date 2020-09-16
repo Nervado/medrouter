@@ -8,6 +8,7 @@ import { Role } from "../auth/enums/roles-types";
 import { EmployeeDto } from "./dtos/employee-dto";
 import { Specialty } from "./enums/specialtys";
 import { TotalDto } from "../messages/toast/dto/total.dto";
+import { StatsDto } from "./dtos/stats.dto";
 
 @Injectable({
   providedIn: "root",
@@ -55,5 +56,9 @@ export class OwnersService {
 
   getTotals(id: string): Observable<TotalDto> {
     return this.h.get<TotalDto>(`${MEDROUTER_API}/owners/${id}/totals`);
+  }
+
+  getStats(id: string): Observable<StatsDto> {
+    return this.h.get<StatsDto>(`${MEDROUTER_API}/owners/${id}/stats`);
   }
 }

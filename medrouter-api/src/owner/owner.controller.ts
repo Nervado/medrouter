@@ -24,6 +24,7 @@ import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
 import { GetUser } from 'src/users/decorators/get-user.decorator';
 import { User } from 'src/users/models/user.entity';
 import { TotalDto } from './dtos/total.dto';
+import { StatsDto } from './dtos/stats.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
 @Controller('owners')
@@ -82,5 +83,11 @@ export class OwnerController {
   @Roles('owner')
   getTotals(@Param('id') id: string, @GetUser() user: User): Promise<TotalDto> {
     return this.os.getTotalizers(id, user);
+  }
+
+  @Get('/:id/stats')
+  @Roles('owner')
+  getStats(@Param('id') id: string, @GetUser() user: User): Promise<StatsDto> {
+    return this.os.getStats(id, user);
   }
 }

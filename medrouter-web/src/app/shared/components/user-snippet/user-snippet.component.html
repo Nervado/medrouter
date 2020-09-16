@@ -6,7 +6,9 @@
           [icon]="faCommentAlt"
           class="fa-lg badge-icon"
           [style.color]="mainColor"
+          (click)="showChat = !showChat"
         ></fa-icon>
+        <app-chat *ngIf="showChat"></app-chat>
       </div>
       <div class="m-2">
         <fa-icon

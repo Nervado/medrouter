@@ -107,7 +107,7 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
   }
 
   checkPassword(password: string): boolean {
-    if (!(this.as.loginDto.password === password) && password !== undefined) {
+    if (!(this.as.loginDto?.password === password) && password !== undefined) {
       this.ns.notify({
         message: "Refaça o login para realizar a operação!",
         type: Types.WARN,

@@ -44,6 +44,10 @@ export class ClientBarChartComponent implements OnInit, OnChanges {
         return Math.max(a, b.value);
       }, 0);
 
+      if (this.max === 0) {
+        this.max = 1;
+      }
+
       this.d = this.d.map((col) => {
         col["h"] = `${(this.columHeight * col.value) / this.max}px`;
         return col;

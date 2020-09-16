@@ -27,6 +27,7 @@ import { PressureMaskDirective } from "./directives/pressure-mask.directive";
 import { ExamViewComponent } from "./components/exam-view/exam-view.component";
 import { RecomViewComponent } from "./components/recom-view/recom-view.component";
 import { MedicineViewComponent } from "./components/medicine-view/medicine-view.component";
+import { MessagesModule } from "../messages/messages.module";
 @NgModule({
   declarations: [
     InputComponent,
@@ -60,6 +61,7 @@ import { MedicineViewComponent } from "./components/medicine-view/medicine-view.
     ReactiveFormsModule,
     RouterModule,
     CurrencyMaskModule,
+    MessagesModule,
   ],
   exports: [
     InputComponent,

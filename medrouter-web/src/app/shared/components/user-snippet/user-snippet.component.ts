@@ -28,6 +28,8 @@ export class UserSnippetComponent implements OnInit {
   faSignOutAlt = faSignOutAlt;
   faBars = faBars;
 
+  showChat = true;
+
   user: User;
 
   @Input() mainColor: Colors = Colors.BASE;
