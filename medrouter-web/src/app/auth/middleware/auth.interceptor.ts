@@ -53,6 +53,8 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(req);
   }
 
+  wsintercept(req: WebSocket) {}
+
   private addAuthenticationToken(request: HttpRequest<any>): HttpRequest<any> {
     if (!this.token) {
       return request;

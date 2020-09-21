@@ -7,6 +7,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { configService } from '../config/config.service';
 import { LocalStrategy } from './local.strategy';
 import { UsersModule } from '../users/users.module';
+import { WsJwtStrategy } from './jws-ws.strategy';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { UsersModule } from '../users/users.module';
     JwtModule.register(configService.getJwtConfig()),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, WsJwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

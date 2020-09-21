@@ -22,7 +22,6 @@ export class RolesGuard implements CanActivate {
     }
 
     if (!this.matchRoles(roles, user.role)) {
-      console.log(roles, user.role);
       throw new UnauthorizedException('Not authorized by RolesGuard!');
     }
 

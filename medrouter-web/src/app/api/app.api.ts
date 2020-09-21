@@ -14,5 +14,5 @@ export const KEY = "7b8455455df70f47c49d377e9957cef1";
 
 export const SOCKET_IO_CONFIG: SocketIoConfig = {
   url: "http://localhost:3001",
-  options: {},
+  options: { query: "?wsJwtToken=98274972948" },
 };

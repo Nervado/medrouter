@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
+import { FormControl } from "@angular/forms";
 import {
   faChevronLeft,
   faEdit,
@@ -6,6 +7,7 @@ import {
   faSearch,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import { ChatService } from "../chat.service";
 
 @Component({
   selector: "app-chat",
@@ -25,11 +27,35 @@ export class ChatComponent implements OnInit {
 
   state: State = State.MSG;
 
-  constructor() {}
+  msgs: String[] = [];
 
-  ngOnInit(): void {}
+  messages: Message[] = [];
 
-  selectChat(id: string) {}
+  @Input() message = new FormControl("");
+
+  constructor(private chatService: ChatService) {}
+
+  ngOnInit(): void {
+    // some method to load users messagens
+    this.chatService.receiveChat().subscribe({
+      next: (message: string) =>
+        this.messages.push({
+          message,
+          left: true,
+        }),
+    });
+  }
+
+  send(message: string) {
+    if (message !== "") {
+      this.message.setValue("");
+      this.chatService.sendChat(message);
+      this.messages.push({
+        message,
+        left: false,
+      });
+    }
+  }
 }
 
 enum State {
@@ -48,4 +74,11 @@ class UserDto {
     url: string;
   };
   new: number = 4;
+}
+
+class Message {
+  sender?: string;
+  receiver?: string;
+  message?: string;
+  left?: boolean;
 }

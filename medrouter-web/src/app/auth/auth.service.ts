@@ -43,6 +43,10 @@ export class AuthService {
     return this.user !== undefined;
   }
 
+  getAccessToken() {
+    return this.user.token;
+  }
+
   login(login: Login): Observable<User> {
     this.clearUserData();
     return this.http

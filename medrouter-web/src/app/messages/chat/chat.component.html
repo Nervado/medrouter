@@ -160,26 +160,24 @@
   </div>
 
   <div class="msg-area" *ngIf="state === 1">
-    <div class="left">
+    <div *ngFor="let msg of messages" [ngClass]="msg.left ? 'left' : 'right'">
       <div class="msg">
-        Alguma coisa em mais de uma linha, varias coisas em mais de uma linha
-      </div>
-    </div>
-    <div class="right"><div class="msg">Ola mundo</div></div>
-
-    <div class="left">
-      <div class="msg">
-        Alguma coisa em mais de uma linha, varias coisas em mais de uma linha,
-        bla bla bla bla bla bla
+        {{ msg.message }}
       </div>
     </div>
   </div>
 
   <footer *ngIf="state === 1">
     <div>
-      <input type="text" placeholder="Digite sua mensagem" />
+      <textarea
+        #msg
+        type="text"
+        placeholder="Digite sua mensagem"
+        [formControl]="message"
+      >
+      </textarea>
     </div>
 
-    <fa-icon [icon]="faSend"></fa-icon>
+    <fa-icon [icon]="faSend" (click)="send(message.value)"></fa-icon>
   </footer>
 </div>

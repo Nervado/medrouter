@@ -1,18 +1,19 @@
 import { Injectable } from "@angular/core";
-import { Socket } from "ngx-socket-io";
+import { AuthService } from "../auth/auth.service";
+import { CustomSocket } from "./custom-socket";
 
 @Injectable({
   providedIn: "root",
 })
 export class ChatService {
-  constructor(private socket: Socket) {}
+  constructor(private socket: CustomSocket, private authService: AuthService) {}
 
   sendChat(message) {
-    this.socket.emit("chat", message);
+    this.socket.emit("events", { message });
   }
 
   receiveChat() {
-    return this.socket.fromEvent("chat");
+    return this.socket.fromEvent("events");
   }
 
   getUsers() {

@@ -7,15 +7,18 @@ import { SocketIoModule } from "ngx-socket-io";
 import { ChatService } from "./chat.service";
 import { SOCKET_IO_CONFIG } from "../api/app.api";
 import { ChatComponent } from "./chat/chat.component";
+import { ReactiveFormsModule } from "@angular/forms";
+import { CustomSocket } from "./custom-socket";
 
 @NgModule({
   declarations: [ToastComponent, ChatComponent],
   imports: [
     CommonModule,
     FontAwesomeModule,
-    SocketIoModule.forRoot(SOCKET_IO_CONFIG),
+    SocketIoModule,
+    ReactiveFormsModule,
   ],
-  providers: [NotificationService],
+  providers: [NotificationService, CustomSocket],
   exports: [ToastComponent, ChatComponent],
 })
 export class MessagesModule {
