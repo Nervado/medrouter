@@ -26,6 +26,8 @@
   .avatar-area {
     position: relative;
 
+    cursor: pointer;
+
     img {
       height: 70px;
       width: 70px;
@@ -34,6 +36,8 @@
       object-fit: cover;
     }
 
+    /*
+  
     &::before {
       z-index: 1;
       position: absolute;
@@ -47,6 +51,7 @@
       border: 2px solid green;
       content: "";
     }
+  */
   }
 }
 
@@ -78,7 +83,7 @@
     background: var(--oposity1);
     background: var(--success);
     background: var(--error);
-    border: 2px solid var(--error);
+    border: 2px solid red;
     content: "";
   }
 }

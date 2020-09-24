@@ -8,7 +8,11 @@
           [style.color]="mainColor"
           (click)="showChat = !showChat"
         ></fa-icon>
-        <app-chat *ngIf="showChat"></app-chat>
+        <app-chat
+          [users]="users"
+          *ngIf="showChat"
+          (newMessage)="newMessage($event)"
+        ></app-chat>
       </div>
       <div class="m-2">
         <fa-icon
@@ -19,7 +23,12 @@
       </div>
     </div>
 
-    <div class="avatar-area">
+    <div
+      *ngIf="isLogged()"
+      class="avatar-area"
+      [ngClass]="{ 'online-marker': online, 'offline-marker': !online }"
+      (click)="changeStatus()"
+    >
       <ng-container *ngIf="user.user.avatar?.url; else avatarTemplate">
         <img
           [src]="user.user.avatar.url"

@@ -44,7 +44,7 @@ export class AuthService {
   }
 
   getAccessToken() {
-    return this.user.token;
+    return this.user?.token || undefined;
   }
 
   login(login: Login): Observable<User> {
@@ -175,7 +175,7 @@ export class AuthService {
       if (rules) {
         return rules.filter((rol) => rol.role === role)[0]?.id;
       } else {
-        return undefined;
+        return "";
       }
     }
   }
