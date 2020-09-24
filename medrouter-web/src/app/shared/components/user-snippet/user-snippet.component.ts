@@ -38,7 +38,6 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
   faCommentAlt = faCommentAlt;
   faSignOutAlt = faSignOutAlt;
   faBars = faBars;
-
   showChat = false;
 
   user: User;
@@ -66,7 +65,9 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.user = this.authService.user;
+  }
 
   ngOnDestroy(): void {
     if (this.messages !== undefined) {

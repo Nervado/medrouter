@@ -1,8 +1,16 @@
-import * as mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
-export const NotificationSchema = new mongoose.Schema({
-  name: String,
-  type: String,
-  userId: String,
-  budgetId: Number,
-});
+@Schema()
+export class Notification extends Document {
+  @Prop()
+  name: string;
+
+  @Prop()
+  type: string;
+
+  @Prop()
+  userId: string;
+}
+
+export const NotificationSchema = SchemaFactory.createForClass(Notification);

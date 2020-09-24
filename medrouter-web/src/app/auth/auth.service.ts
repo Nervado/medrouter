@@ -166,7 +166,7 @@ export class AuthService {
 
   public getRuleId(role: Role): any {
     if (this.rolesIds.length > 0) {
-      return this.rolesIds.filter((rol) => rol.role === role)[0]?.id;
+      return this.rolesIds.filter((rol) => rol.role === role)[0]?.id || "";
     } else {
       const rules = this.cryptoService.decryptData(
         localStorage.getItem("MEDROUTER_ROLES")

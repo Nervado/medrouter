@@ -76,6 +76,10 @@ export class ConfigService {
     return _path;
   }
 
+  public getMaxSocketsByUser(): number {
+    return parseInt(this.envConfig.MAX_USER_SOCKETS);
+  }
+
   public getImagesPath(): string {
     const baseDir = path.join(__dirname, '../../');
     const _path = `${baseDir}${this.envConfig.IMAGES_DIR}`;

@@ -2,8 +2,10 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 
 import { InjectModel } from '@nestjs/mongoose';
-import { Notification } from './interfaces/notification.interface';
+
 import { CreateNotificationDto } from './dto/create-notification.dto';
+
+import { Notification } from './schemas/notification.schema';
 
 @Injectable()
 export class NotificationsService {

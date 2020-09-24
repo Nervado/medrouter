@@ -61,7 +61,7 @@ export class AuthService {
 
       this.redis.del(token);
 
-      this.logger.warn(`${userId} ${token}`);
+      //this.logger.warn(`${userId} ${token}`);
 
       const { username } = await this.userService.setRole(userId, 'client');
 
@@ -79,7 +79,7 @@ export class AuthService {
   ): Promise<CredentailsDto> {
     const login = new LoginDto();
 
-    console.log(user);
+    //console.log(user);
 
     login.password = body.password;
     login.username = user.email;
@@ -109,9 +109,9 @@ export class AuthService {
 
     const accessToken = await this.jwtService.sign(payload);
 
-    this.logger.debug(
-      `Generated JWT Token with payload ${JSON.stringify(payload)}`,
-    );
+    // this.logger.debug(
+    // `Generated JWT Token with payload ${JSON.stringify(payload)}`,
+    //);
 
     const authCredentailsDto = new CredentailsDto();
 
