@@ -1,4 +1,12 @@
-import { Component, Input, OnInit } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from "@angular/core";
 import { FormControl } from "@angular/forms";
 import {
   faChevronLeft,
@@ -7,54 +15,69 @@ import {
   faSearch,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { ChatService } from "../chat.service";
+
+import { AuthService } from "src/app/auth/auth.service";
+import { ClientWs } from "./dtos/user-chat.dto";
 
 @Component({
   selector: "app-chat",
   templateUrl: "./chat.component.html",
   styleUrls: ["./chat.component.scss"],
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnChanges {
   faSend = faPaperPlane;
   faSearch = faSearch;
   faEdit = faEdit;
   faTrash = faTrash;
   faChevronLeft = faChevronLeft;
 
-  user: UserDto = new UserDto();
+  sender: ClientWs;
 
-  chats: UserDto[];
+  receiver: ClientWs;
 
-  state: State = State.MSG;
+  state: State = State.CHT;
 
-  msgs: String[] = [];
-
-  messages: Message[] = [];
+  @Input() users: ClientWs[] = [];
 
   @Input() message = new FormControl("");
 
-  constructor(private chatService: ChatService) {}
+  @Output() newMessage: EventEmitter<Message> = new EventEmitter();
 
-  ngOnInit(): void {
-    // some method to load users messagens
-    this.chatService.receiveChat().subscribe({
-      next: (message: string) =>
-        this.messages.push({
-          message,
-          left: true,
-        }),
-    });
+  constructor(private authService: AuthService) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["users"]) {
+      this.sender = this.users.find(
+        (user) => user.id === this.authService.user?.user.userId
+      );
+      this.users = this.users.filter((user) => user.id !== this.sender?.id);
+    }
   }
 
   send(message: string) {
     if (message !== "") {
-      this.message.setValue("");
-      this.chatService.sendChat(message);
-      this.messages.push({
+      const newmsg = {
+        sender: this.sender?.id,
+        receiver: this.receiver?.id,
         message,
         left: false,
-      });
+        date: new Date(),
+      };
+
+      this.message.setValue("");
+
+      this.newMessage.emit(newmsg);
     }
+  }
+
+  selectChat(user: ClientWs) {
+    this.state = State.MSG;
+    this.receiver = user;
+  }
+
+  return() {
+    this.state = State.CHT;
+    this.receiver = undefined;
   }
 }
 
@@ -66,19 +89,12 @@ enum State {
   CHT,
 }
 
-class UserDto {
-  username: string;
-  fullname: string;
-  surname: string;
-  avatar: {
-    url: string;
-  };
-  new: number = 4;
-}
-
-class Message {
+export class Message {
+  id?: string;
   sender?: string;
   receiver?: string;
   message?: string;
   left?: boolean;
+  date?: Date;
+  read?: boolean = false;
 }

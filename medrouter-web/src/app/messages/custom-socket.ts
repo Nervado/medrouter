@@ -17,13 +17,5 @@ export class CustomSocket extends Socket {
         }`,
       options: {},
     });
-
-    // Set token as part of the query object
-    //this.ioSocket.query = {
-    // wsJwtToken: (async () =>
-    // this.authService.getAccessToken()
-    // ? this.authService.getAccessToken()
-    //: "")(),
-    //};
   }
 }

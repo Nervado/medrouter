@@ -1,12 +1,15 @@
 <div class="chat">
   <header *ngIf="state !== 1 && state !== 2">
     <div class="controls">
+      <!--
       <ng-container *ngIf="state === 0; else ended">
         <div class="control" (click)="state = 4">Pronto</div>
       </ng-container>
       <ng-template #ended>
         <div class="control" (click)="state = 0">Editar</div>
       </ng-template>
+
+      -->
 
       <div class="control" (click)="state = 4">Chats</div>
 
@@ -29,7 +32,7 @@
 
   <header *ngIf="state === 2">
     <div class="controls">
-      <div class="control" (click)="state = 0">Cancelar</div>
+      <div class="control" (click)="state = 4">Cancelar</div>
     </div>
 
     <div class="search">
@@ -42,19 +45,21 @@
 
   <div *ngIf="state === 1" class="msgs">
     <div class="controls">
-      <div class="control" (click)="state = 4">
+      <div class="control" (click)="return()">
         <fa-icon [icon]="faChevronLeft"></fa-icon>
       </div>
     </div>
 
     <div class="controls">
-      <div class="control">Fulana da Silva</div>
+      <div class="control">
+        {{ receiver?.surname ? receiver.fullname : receiver.username }}
+      </div>
     </div>
 
     <div class="controls">
       <div class="img">
-        <ng-container *ngIf="user.avatar?.url; else avatar">
-          <img [src]="user.avatar?.url" alt="avatar" />
+        <ng-container *ngIf="receiver?.avatar; else avatar">
+          <img [src]="receiver?.avatar" alt="avatar" />
         </ng-container>
 
         <ng-template #avatar>
@@ -68,8 +73,8 @@
     <div class="result">
       <div class="lead">
         <div class="img">
-          <ng-container *ngIf="user.avatar?.url; else avatar">
-            <img [src]="user.avatar?.url" alt="avatar" />
+          <ng-container *ngIf="sender?.avatar; else avatar">
+            <img [src]="sender.avatar" alt="avatar" />
           </ng-container>
 
           <ng-template #avatar>
@@ -85,14 +90,14 @@
   </div>
 
   <div class="results" *ngIf="state !== 1 && state !== 2">
-    <div class="result" (click)="state = 1">
+    <div class="result" (click)="selectChat(user)" *ngFor="let user of users">
       <div class="remove" *ngIf="state === 0">
         <fa-icon [icon]="faTrash"></fa-icon>
       </div>
       <div class="lead">
         <div class="img">
-          <ng-container *ngIf="user.avatar?.url; else avatar">
-            <img [src]="user.avatar?.url" alt="avatar" />
+          <ng-container *ngIf="user?.avatar; else avatar">
+            <img [src]="user?.avatar" alt="avatar" />
           </ng-container>
 
           <ng-template #avatar>
@@ -100,67 +105,24 @@
           </ng-template>
         </div>
         <div class="info">
-          <div class="username">Fulano Gostosão</div>
+          <div class="username">
+            {{ user?.surname ? user.fullname : user.username }}
+          </div>
           <div class="short-msg">Fulano entrou no chat...</div>
         </div>
       </div>
       <div class="tail">
         <div class="date">sex</div>
         <div class="new-msg">4</div>
-      </div>
-    </div>
-    <div class="result">
-      <div class="remove" *ngIf="state === 0">
-        <fa-icon [icon]="faTrash"></fa-icon>
-      </div>
-      <div class="lead">
-        <div class="img">
-          <ng-container *ngIf="user.avatar?.url; else avatar">
-            <img [src]="user.avatar?.url" alt="avatar" />
-          </ng-container>
-
-          <ng-template #avatar>
-            <img src="../../../assets/avatarmale.png" alt="avatar" />
-          </ng-template>
-        </div>
-        <div class="info">
-          <div class="username">Fulano Gostosão</div>
-          <div class="short-msg">Fulano entrou no chat...</div>
-        </div>
-      </div>
-      <div class="tail">
-        <div class="date">sex</div>
-        <div class="new-msg">4</div>
-      </div>
-    </div>
-    <div class="result">
-      <div class="remove" *ngIf="state === 0">
-        <fa-icon [icon]="faTrash"></fa-icon>
-      </div>
-      <div class="lead">
-        <div class="img">
-          <ng-container *ngIf="user.avatar?.url; else avatar">
-            <img [src]="user.avatar?.url" alt="avatar" />
-          </ng-container>
-
-          <ng-template #avatar>
-            <img src="../../../assets/avatarmale.png" alt="avatar" />
-          </ng-template>
-        </div>
-        <div class="info">
-          <div class="username">Fulano Gostosão</div>
-          <div class="short-msg">Fulano entrou no chat...</div>
-        </div>
-      </div>
-      <div class="tail">
-        <div class="date">sex</div>
-        <div class="new-msg">40</div>
       </div>
     </div>
   </div>
 
   <div class="msg-area" *ngIf="state === 1">
-    <div *ngFor="let msg of messages" [ngClass]="msg.left ? 'left' : 'right'">
+    <div
+      *ngFor="let msg of receiver.messages"
+      [ngClass]="msg.left ? 'left' : 'right'"
+    >
       <div class="msg">
         {{ msg.message }}
       </div>
@@ -178,6 +140,6 @@
       </textarea>
     </div>
 
-    <fa-icon [icon]="faSend" (click)="send(message.value)"></fa-icon>
+    <fa-icon [icon]="faSend" (click)="send(msg.value)"></fa-icon>
   </footer>
 </div>

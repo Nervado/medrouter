@@ -18,14 +18,14 @@ import { CustomSocket } from "./custom-socket";
     SocketIoModule,
     ReactiveFormsModule,
   ],
-  providers: [NotificationService, CustomSocket],
+  providers: [CustomSocket, ChatService],
   exports: [ToastComponent, ChatComponent],
 })
 export class MessagesModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<MessagesModule> {
     return {
       ngModule: MessagesModule,
-      providers: [NotificationService, ChatService],
+      providers: [NotificationService, ChatService], //  {provide: SomeConfig, useValue: config }
     };
   }
 }
