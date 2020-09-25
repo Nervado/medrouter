@@ -1,22 +1,6 @@
 .action-menu {
-  .badge-icon {
-    cursor: pointer;
+  app-badge {
     position: relative;
-
-    &:hover {
-      opacity: 0.8;
-    }
-    &::before {
-      z-index: 10;
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--oposity1);
-      content: "";
-    }
   }
 
   .cursor {
@@ -35,23 +19,6 @@
       border: 2px solid var(--base1);
       object-fit: cover;
     }
-
-    /*
-  
-    &::before {
-      z-index: 1;
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--oposity1);
-      background: var(--success);
-      border: 2px solid green;
-      content: "";
-    }
-  */
   }
 }
 
@@ -86,4 +53,8 @@
     border: 2px solid red;
     content: "";
   }
+}
+
+.hide {
+  visibility: hidden;
 }

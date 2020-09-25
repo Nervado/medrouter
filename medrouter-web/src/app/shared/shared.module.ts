@@ -28,6 +28,7 @@ import { ExamViewComponent } from "./components/exam-view/exam-view.component";
 import { RecomViewComponent } from "./components/recom-view/recom-view.component";
 import { MedicineViewComponent } from "./components/medicine-view/medicine-view.component";
 import { MessagesModule } from "../messages/messages.module";
+import { BadgeComponent } from "./components/badge/badge.component";
 @NgModule({
   declarations: [
     InputComponent,
@@ -52,6 +53,7 @@ import { MessagesModule } from "../messages/messages.module";
     ExamViewComponent,
     RecomViewComponent,
     MedicineViewComponent,
+    BadgeComponent,
   ],
   imports: [
     CommonModule,
@@ -91,6 +93,7 @@ import { MessagesModule } from "../messages/messages.module";
     RecomViewComponent,
     MedicineViewComponent,
     ExamViewComponent,
+    BadgeComponent,
   ],
 })
 export class SharedModule {}

@@ -44,11 +44,18 @@ export class ChatComponent implements OnChanges {
 
   state: State = State.CHT;
 
+  results: ClientWs[] = [];
+  oldResults: ClientWs[] = [];
+
   @Input() users: ClientWs[] = [];
+
+  noFilteredUsers: ClientWs[] = [];
 
   @Input() message = new FormControl("");
 
   @Output() newMessage: EventEmitter<Message> = new EventEmitter();
+
+  @Output() newUser: EventEmitter<ClientWs> = new EventEmitter();
 
   format = format;
 
@@ -59,12 +66,11 @@ export class ChatComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["users"] && this.users.length > 0) {
-      console.log(this.users);
-
       this.sender = this.users?.find(
         (user) => user.id === this.authService.user?.user.userId
       );
       this.users = this.users.filter((user) => user.id !== this.sender?.id);
+      this.noFilteredUsers = this.users;
     }
   }
 
@@ -103,15 +109,24 @@ export class ChatComponent implements OnChanges {
         next: (messages: Message[]) => {
           const oldMessages = this.receiver.messages;
 
+          let ids = [];
+
           this.receiver.messages = messages.map((msg) => {
             if (msg.sender === this.receiver.id) {
               msg.left = true;
+              if (!msg.read) {
+                ids.push(msg._id);
+              }
             }
 
             msg.read = true;
 
             return msg;
           });
+
+          this.chatService
+            .markAsRead(this.authService.getUser().user.userId, ids)
+            .subscribe();
 
           this.receiver.messages = [...this.receiver.messages, ...oldMessages];
 
@@ -123,6 +138,15 @@ export class ChatComponent implements OnChanges {
 
   return() {
     this.state = State.CHT;
+
+    const ids = this.receiver.messages
+      .filter((msg) => msg.sender === this.receiver.id && !msg.read)
+      .map((msg) => msg._id);
+
+    this.chatService
+      .markAsRead(this.authService.getUser().user.userId, ids)
+      .subscribe();
+
     this.receiver.messages.forEach((msg) => (msg.read = true));
     this.receiver = undefined;
   }
@@ -153,7 +177,11 @@ export class ChatComponent implements OnChanges {
 
   countUnread(messages: Message[]): number {
     if (messages.length > 0)
-      return messages.filter((msg) => msg.read === false).length;
+      return messages.filter(
+        (msg) =>
+          msg.read === false &&
+          msg.sender !== this.authService.getUser().user.userId
+      ).length;
     else return 0;
   }
 
@@ -164,6 +192,56 @@ export class ChatComponent implements OnChanges {
       this.page = this.page + 1;
       this.getMessages();
     }
+  }
+
+  newChat() {
+    this.state = State.SRC;
+    this.chatService.findAll().subscribe({
+      next: (results: ClientWs[]) => {
+        this.results = results;
+        this.oldResults = results;
+      },
+    });
+  }
+
+  searchResults(therm) {
+    if (therm.target.value === "") {
+      this.results = this.oldResults;
+    } else {
+      this.results = this.oldResults.filter(
+        (r) =>
+          r.username.toLowerCase().indexOf(therm.target.value.toLowerCase()) >
+          -1
+      );
+    }
+  }
+
+  searchUsersOrMessages(therm) {
+    if (therm.target.value === "") {
+      this.users = this.noFilteredUsers;
+    } else {
+      this.users = this.noFilteredUsers.filter(
+        (r) =>
+          r.username.toLowerCase().indexOf(therm.target.value.toLowerCase()) >
+            -1 ||
+          r.messages.find(
+            (msg) =>
+              msg.message
+                .toLowerCase()
+                .indexOf(therm.target.value.toLowerCase()) > -1
+          )
+      );
+    }
+  }
+
+  selectResult(result: ClientWs) {
+    result.messages = [];
+
+    if (!this.users.find((_user) => _user.id === result.id)) {
+      this.users.push(result);
+      this.newUser.emit(result);
+    }
+    this.state = State.CHT;
   }
 }
 
@@ -176,7 +254,7 @@ enum State {
 }
 
 export class Message {
-  id?: string;
+  _id?: string;
   sender?: string;
   receiver?: string;
   message?: string;

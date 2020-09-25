@@ -2,24 +2,37 @@
   <div class="action-menu d-flex h-100 align-items-center">
     <div class="buttons d-flex mx-2 h-100 align-items-center">
       <div class="m-2">
-        <fa-icon
-          [icon]="faCommentAlt"
-          class="fa-lg badge-icon"
-          [style.color]="mainColor"
-          (click)="showChat = !showChat && online"
-        ></fa-icon>
+        <div>
+          <!-- [ngClass]="{ 'badge-icon': allUnread() > 0 }"-->
+          <fa-icon
+            [icon]="faCommentAlt"
+            class="fa-lg cursor"
+            [style.color]="mainColor"
+            (click)="showChat = !showChat && online"
+          >
+          </fa-icon>
+          <app-badge
+            [numberOfEvents]="allUnread()"
+            [ngClass]="allUnread() === 0 ? 'hide' : ''"
+          ></app-badge>
+        </div>
+
         <app-chat
           [users]="users"
           *ngIf="showChat"
           (newMessage)="newMessage($event)"
+          (newUser)="newUser($event)"
         ></app-chat>
       </div>
       <div class="m-2">
-        <fa-icon
-          [icon]="faBell"
-          class="fa-lg badge-icon"
-          [style.color]="mainColor"
-        ></fa-icon>
+        <div>
+          <fa-icon
+            [icon]="faBell"
+            class="fa-lg cursor"
+            [style.color]="mainColor"
+          ></fa-icon>
+          <app-badge [numberOfEvents]="allUnread()"></app-badge>
+        </div>
       </div>
     </div>
 

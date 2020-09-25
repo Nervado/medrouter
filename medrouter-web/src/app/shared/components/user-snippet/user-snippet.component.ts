@@ -89,7 +89,11 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
     this.chatService.connect();
 
     this.chatService.getUserContacts(this.user?.user.userId).subscribe({
-      next: (clients: ClientWs[]) => (this.users = clients),
+      next: (clients: ClientWs[]) => {
+        this.users = clients;
+        // get users online list
+        this.chatService.requestUsersList();
+      },
     });
 
     this.clients = this.chatService.receiveUsers().subscribe({
@@ -97,9 +101,6 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
         this.users = this.updateUsers(clients);
       },
     });
-
-    // get users online list
-    this.chatService.requestUsersList();
 
     this.messages = this.chatService.receiveChat().subscribe({
       next: (message: Message) => {
@@ -182,14 +183,18 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   newMessage(message: Message) {
-    console.log(message);
-
     const receiver = this.users.find((user) => user.id === message.receiver);
 
     message.left = false;
     message.sender = this.authService.getUser().user.userId;
+
     receiver.messages.push(message);
+
     this.chatService.sendChat(message);
+  }
+
+  newUser(event) {
+    this.users.push(event);
   }
 
   updateUsers(news: ClientWs[]): ClientWs[] {
@@ -215,5 +220,23 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     return _clients;
+  }
+
+  allUnread(): number {
+    return (
+      this.users
+        .map((user) => this.countUnread(user.messages))
+        .reduce((pv, cv) => cv + pv, 0) || 0
+    );
+  }
+
+  countUnread(messages: Message[]): number {
+    if (messages.length > 0)
+      return messages.filter(
+        (msg) =>
+          msg.read === false &&
+          msg.sender !== this.authService.getUser().user.userId
+      ).length;
+    else return 0;
   }
 }

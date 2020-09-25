@@ -101,7 +101,13 @@ export class ChatService {
   }
 
   markAsRead(id: string, ids: string[]): Observable<void> {
-    return this.http.patch<void>(`${MEDROUTER_API}/chat/${id}/messages/`, ids);
+    return this.http.patch<void>(`${MEDROUTER_API}/chat/${id}/messages/`, {
+      ids,
+    });
+  }
+
+  findAll(): Observable<ClientWs[]> {
+    return this.http.get<ClientWs[]>(`${MEDROUTER_API}/chat`);
   }
 }
 

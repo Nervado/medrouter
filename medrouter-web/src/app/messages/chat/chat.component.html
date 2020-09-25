@@ -14,7 +14,7 @@
       <div class="control" (click)="state = 4">Chats</div>
 
       <div class="control edit">
-        <fa-icon [icon]="faEdit" (click)="state = 2"> </fa-icon>
+        <fa-icon [icon]="faEdit" (click)="newChat()"> </fa-icon>
       </div>
     </div>
 
@@ -25,6 +25,7 @@
           type="text"
           placeholder="Messagens ou usuários"
           [disabled]="state === 0"
+          (keyup)="searchUsersOrMessages($event)"
         />
       </div>
     </div>
@@ -38,7 +39,12 @@
     <div class="search">
       <fa-icon [icon]="faSearch"></fa-icon>
       <div class="search-input">
-        <input type="text" placeholder="Buscar" [disabled]="state === 0" />
+        <input
+          type="text"
+          placeholder="Buscar"
+          [disabled]="state === 0"
+          (keyup)="searchResults($event)"
+        />
       </div>
     </div>
   </header>
@@ -76,11 +82,15 @@
   </div>
 
   <div class="results" *ngIf="state === 2">
-    <div class="result">
+    <div
+      class="result"
+      *ngFor="let result of results"
+      (click)="selectResult(result)"
+    >
       <div class="lead">
         <div class="img avatar-area">
-          <ng-container *ngIf="sender?.avatar; else avatar">
-            <img [src]="sender.avatar" alt="avatar" />
+          <ng-container *ngIf="result?.avatar; else avatar">
+            <img [src]="result.avatar" alt="avatar" />
           </ng-container>
 
           <ng-template #avatar>
@@ -88,8 +98,10 @@
           </ng-template>
         </div>
         <div class="info">
-          <div class="username">Fulano Gostosão</div>
-          <div class="short-msg">Nunca entrou...</div>
+          <div class="username">
+            {{ result?.surname ? result.fullname : result.username }}
+          </div>
+          <!--  <div class="short-msg">Nunca entrou...</div>-->
         </div>
       </div>
     </div>
@@ -120,8 +132,13 @@
           <div class="username">
             {{ user?.surname ? user.fullname : user.username }}
           </div>
-          <div class="short-msg">
-            {{ lastMessage(user?.messages) }}
+          <div
+            class="short-msg"
+            [ngClass]="user.messages?.length === 0 ? 'hide' : ''"
+          >
+            {{
+              user.messages?.length === 0 ? "oi" : lastMessage(user?.messages)
+            }}
           </div>
         </div>
       </div>

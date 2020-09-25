@@ -78,11 +78,13 @@ export class ChatService {
   }
 
   async markAsRead(id: string, ids: string[], user: User): Promise<void> {
+    console.log(ids);
+
     if (id !== user.userId) {
       throw new BadRequestException('Not allowed');
     }
 
-    ids.forEach(async _id => {
+    for (const _id of ids) {
       const message = await this.messageModel
         .findOne({ _id, receiver: id })
         .exec();
@@ -94,7 +96,7 @@ export class ChatService {
       } catch (error) {
         throw new InternalServerErrorException('Fail at update status message');
       }
-    });
+    }
   }
 
   async AddMessage(message: MessageDto): Promise<Message> {
@@ -123,8 +125,15 @@ export class ChatService {
     }
   }
 
-  async findAllMessages(): Promise<Message[]> {
-    return this.messageModel.find().exec();
+  async findAllUsers(user: User): Promise<ClientWsDto[]> {
+    const results = await this.chatUserModel.find().exec();
+
+    return results
+      .map((cli: ClientWsDto) => {
+        cli.messages = [];
+        return cli;
+      })
+      .filter(cli => cli.id !== user.userId);
   }
 
   async getAllUserContacts(id: string, user: User): Promise<ClientWsDto[]> {
@@ -156,15 +165,21 @@ export class ChatService {
       results.push(await this.chatUserModel.findOne({ id: userId }).exec());
     }
 
-    return results.map((user: ChatUser) => {
+    for (const result of results) {
+      const messages = await this.searchMessages(id, result.id, 1, user);
+
+      result.messages = messages;
+    }
+
+    return results.map((_user: ChatUser) => {
       return {
-        id: user.id,
-        avatar: user.avatar,
-        username: user.username,
-        fullname: user.fullname,
-        surname: user.surname,
+        id: _user.id,
+        avatar: _user.avatar,
+        username: _user.username,
+        fullname: _user.fullname,
+        surname: _user.surname,
         online: false,
-        messages: [],
+        messages: _user.messages,
       };
     });
   }

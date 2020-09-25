@@ -33,6 +33,11 @@ export class ChatController {
     //return this.chatService.create(body);
   }
 
+  @Get()
+  retriveAllUsers(@GetUser() user: User): Promise<ClientWsDto[]> {
+    return this.chatService.findAllUsers(user);
+  }
+
   @Get('/:id')
   retriveContacts(
     @Param('id') id: string,
