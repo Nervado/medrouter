@@ -117,6 +117,8 @@ export class ChatComponent implements OnChanges {
               if (!msg.read) {
                 ids.push(msg._id);
               }
+            } else {
+              msg.left = false;
             }
 
             msg.read = true;

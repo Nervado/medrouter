@@ -91,6 +91,20 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
     this.chatService.getUserContacts(this.user?.user.userId).subscribe({
       next: (clients: ClientWs[]) => {
         this.users = clients;
+
+        this.users.map((user) => {
+          user.messages.map((message) => {
+            if (message.sender === this.user.user.userId) {
+              message.left = false;
+            } else {
+              message.left = true;
+            }
+            return message;
+          });
+
+          return user;
+        });
+
         // get users online list
         this.chatService.requestUsersList();
       },
