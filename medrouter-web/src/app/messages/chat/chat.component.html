@@ -139,7 +139,7 @@
     </div>
   </div>
 
-  <div class="msg-area" *ngIf="state === 1">
+  <div class="msg-area" *ngIf="state === 1" (scroll)="captureScroll($event)">
     <div
       *ngFor="let msg of receiver.messages"
       [ngClass]="msg.left ? 'left' : 'right'"

@@ -69,6 +69,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       surname: user?.surname,
       fullname: user?.fullname,
       socket: client,
+      online: true,
     });
 
     this.updateUsersList(user.userId, client);

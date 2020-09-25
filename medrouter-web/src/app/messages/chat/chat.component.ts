@@ -8,6 +8,7 @@ import {
   SimpleChanges,
 } from "@angular/core";
 import { FormControl } from "@angular/forms";
+
 import {
   faChevronLeft,
   faEdit,
@@ -15,7 +16,7 @@ import {
   faSearch,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { format, parseISO } from "date-fns";
+import { format, isThursday, parseISO } from "date-fns";
 
 import { AuthService } from "src/app/auth/auth.service";
 import { ChatService } from "../chat.service";
@@ -32,6 +33,10 @@ export class ChatComponent implements OnChanges {
   faEdit = faEdit;
   faTrash = faTrash;
   faChevronLeft = faChevronLeft;
+
+  page: number = 1;
+
+  loading: boolean = false;
 
   sender: ClientWs;
 
@@ -83,10 +88,21 @@ export class ChatComponent implements OnChanges {
   selectChat(user: ClientWs) {
     this.state = State.MSG;
     this.receiver = user;
+    this.getMessages();
+  }
+
+  getMessages() {
+    this.loading = true;
     this.chatService
-      .getUserChat(this.authService.getUser().user.userId, this.receiver.id, 1)
+      .getUserChat(
+        this.authService.getUser().user.userId,
+        this.receiver.id,
+        this.page
+      )
       .subscribe({
         next: (messages: Message[]) => {
+          const oldMessages = this.receiver.messages;
+
           this.receiver.messages = messages.map((msg) => {
             if (msg.sender === this.receiver.id) {
               msg.left = true;
@@ -96,7 +112,12 @@ export class ChatComponent implements OnChanges {
 
             return msg;
           });
+
+          this.receiver.messages = [...this.receiver.messages, ...oldMessages];
+
+          this.loading = false;
         },
+        error: () => (this.loading = false),
       });
   }
 
@@ -134,6 +155,15 @@ export class ChatComponent implements OnChanges {
     if (messages.length > 0)
       return messages.filter((msg) => msg.read === false).length;
     else return 0;
+  }
+
+  captureScroll(event) {
+    const scrollTop = event.srcElement.scrollTop;
+
+    if (scrollTop === 0) {
+      this.page = this.page + 1;
+      this.getMessages();
+    }
   }
 }
 
