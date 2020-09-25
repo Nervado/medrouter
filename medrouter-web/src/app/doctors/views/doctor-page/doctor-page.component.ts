@@ -18,9 +18,12 @@ export class DoctorPageComponent implements OnInit {
 
   link: any = ["/doctors", null];
 
+  user;
+
   constructor(private as: AuthService) {}
 
   ngOnInit(): void {
     this.link[1] = this.as.getRuleId(Role.DOCTOR);
+    this.user = this.as.getUser();
   }
 }

@@ -25,7 +25,6 @@ import { UsersService } from "src/app/profile/users.service";
 import { ChatService } from "src/app/messages/chat.service";
 import { ClientWs } from "src/app/messages/chat/dtos/user-chat.dto";
 import { Message } from "src/app/messages/chat/chat.component";
-import { Observable } from "rxjs";
 
 @Component({
   selector: "app-user-snippet",
@@ -40,7 +39,7 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
   faBars = faBars;
   showChat = false;
 
-  user: User;
+  @Input() user: User;
 
   users: ClientWs[] = [];
 
@@ -58,15 +57,25 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
     private chatService: ChatService
   ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnInit(): void {
     this.user = this.authService.user;
-    if (changes["mainColor"] && this.isLogged()) {
+    this.online = this.chatService.getStatus();
+
+    this.chatService.status.subscribe({
+      next: (state: boolean) => (this.online = state),
+    });
+
+    if (this.user !== undefined && this.online) {
       this.goOnline();
     }
   }
 
-  ngOnInit(): void {
-    this.user = this.authService.user;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["user"]) {
+      if (this.online) {
+        this.goOnline();
+      }
+    }
   }
 
   ngOnDestroy(): void {
@@ -79,19 +88,18 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
   goOnline() {
     this.chatService.connect();
 
-    this.chatService.status.subscribe({
-      next: (state: boolean) => (this.online = state),
-    });
-
     this.chatService.getUserContacts(this.user?.user.userId).subscribe({
-      next: (clients: ClientWs[]) => console.log(clients),
+      next: (clients: ClientWs[]) => (this.users = clients),
     });
 
     this.clients = this.chatService.receiveUsers().subscribe({
-      next: (users) => {
-        this.users = users;
+      next: (clients: ClientWs[]) => {
+        this.users = this.updateUsers(clients);
       },
     });
+
+    // get users online list
+    this.chatService.requestUsersList();
 
     this.messages = this.chatService.receiveChat().subscribe({
       next: (message: Message) => {
@@ -109,15 +117,14 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
         }
       },
     });
-
-    // get users online list
-    this.chatService.requestUsersList();
   }
 
   changeStatus() {
     if (this.online) {
-      this.messages.unsubscribe();
-      this.clients.unsubscribe();
+      if (this.messages !== undefined) {
+        this.messages.unsubscribe();
+        this.clients.unsubscribe();
+      }
       this.chatService.desconnect();
       this.notificationService.notify({
         message: "Offline",
@@ -131,6 +138,7 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
         type: Types.SUCCESS,
       });
     }
+    this.chatService.toogleStatus();
   }
 
   logout() {
@@ -174,9 +182,38 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   newMessage(message: Message) {
+    console.log(message);
+
     const receiver = this.users.find((user) => user.id === message.receiver);
+
     message.left = false;
+    message.sender = this.authService.getUser().user.userId;
     receiver.messages.push(message);
     this.chatService.sendChat(message);
+  }
+
+  updateUsers(news: ClientWs[]): ClientWs[] {
+    let _clients = this.users.map((_user) => {
+      const updatedUser = news.find((newUser) => newUser.id === _user.id);
+
+      if (updatedUser) {
+        _user.avatar = updatedUser.avatar;
+        _user.online = updatedUser.online;
+      } else {
+        _user.online = false;
+      }
+
+      return _user;
+    });
+
+    const unknownClients = news.filter(
+      (newUser) => !this.users.find((_user) => _user.id === newUser.id)
+    );
+
+    if (unknownClients !== undefined) {
+      _clients = [..._clients, ...unknownClients];
+    }
+
+    return _clients;
   }
 }

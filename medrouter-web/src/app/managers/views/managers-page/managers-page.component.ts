@@ -14,9 +14,12 @@ export class ManagersPageComponent implements OnInit {
 
   link: any = ["/managers", null];
 
+  user;
+
   constructor(private as: AuthService) {}
 
   ngOnInit(): void {
     this.link[1] = this.as.getRuleId(Role.MANAGER);
+    this.user = this.as.getUser();
   }
 }

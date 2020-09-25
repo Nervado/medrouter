@@ -8,10 +8,9 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { isThursday } from 'date-fns';
+
 import { Socket } from 'socket.io';
 import { WsJwtAuthGuard } from 'src/auth/guards/ws-jwt.auth.guard';
-import { GetUser } from 'src/users/decorators/get-user.decorator';
 import { GetWsUser } from 'src/users/decorators/get-ws-user.decorator';
 import { User } from 'src/users/models/user.entity';
 import { ChatService } from './chat.service';
@@ -28,47 +27,42 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @UseGuards(WsJwtAuthGuard)
   @SubscribeMessage('desconect')
-  async handleDesconection(
-    @ConnectedSocket() client: Socket,
-    @GetWsUser() user: User,
-  ) {
+  async handleDesconection(@ConnectedSocket() client: Socket) {
     client.disconnect(true);
     this.handleDisconnect(client);
   }
 
   @UseGuards(WsJwtAuthGuard)
   @SubscribeMessage('messages')
-  async handleMessages(
-    @MessageBody() message: MessageDto,
-    @ConnectedSocket() client: Socket,
-    @GetWsUser() user: User,
-  ) {
+  handleMessages(@MessageBody() message: MessageDto, @GetWsUser() user: User) {
     this.logger.verbose(message);
 
     if (user.userId !== message.sender) {
-      throw new BadGatewayException('Not allowed');
+      console.log(user.userId, message.sender);
+
+      //throw new BadGatewayException('Not allowed id');
     }
 
     const receivers: ClientWsDto[] = this.chatService.get(message.receiver);
+
+    message.read = false;
 
     receivers.forEach(connect => {
       connect.socket.emit('messages', message);
       this.logger.verbose(message, connect.username);
     });
 
-    message.read = false;
-
-    await this.chatService.AddMessage(message);
+    this.chatService.AddMessage(message);
   }
 
   @UseGuards(WsJwtAuthGuard)
   @SubscribeMessage('users')
-  async handleUsers(
+  handleUsers(
     @MessageBody() data: any,
     @ConnectedSocket() client: Socket,
     @GetWsUser() user: User,
   ) {
-    await this.chatService.add({
+    this.chatService.add({
       id: user.userId,
       avatar: user.avatar?.url,
       username: user?.username,
@@ -77,7 +71,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       socket: client,
     });
 
-    await this.updateUsersList(user.userId, client);
+    this.updateUsersList(user.userId, client);
   }
 
   private updateUsersList(id?: string, client?: Socket) {
@@ -91,6 +85,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
           surname: client.surname,
           fullname: client.fullname,
           messages: [],
+          online: true,
         };
       }),
     );
@@ -103,7 +98,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleDisconnect(@ConnectedSocket() client: Socket) {
     // Remove client by socket id
-
     this.chatService.remove(client.id);
 
     try {

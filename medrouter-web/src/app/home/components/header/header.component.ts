@@ -6,6 +6,7 @@ import {
   faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: "app-header",
@@ -21,9 +22,13 @@ export class HeaderComponent implements OnInit {
 
   snipettState: boolean = false;
 
-  constructor() {}
+  user;
 
-  ngOnInit(): void {}
+  constructor(private as: AuthService) {}
+
+  ngOnInit(): void {
+    this.user = this.as.getUser();
+  }
 
   reciverFeedback(e) {
     this.snipettState = e;

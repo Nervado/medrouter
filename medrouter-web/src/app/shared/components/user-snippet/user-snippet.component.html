@@ -6,7 +6,7 @@
           [icon]="faCommentAlt"
           class="fa-lg badge-icon"
           [style.color]="mainColor"
-          (click)="showChat = !showChat"
+          (click)="showChat = !showChat && online"
         ></fa-icon>
         <app-chat
           [users]="users"

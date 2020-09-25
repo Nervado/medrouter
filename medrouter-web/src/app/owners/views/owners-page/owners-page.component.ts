@@ -15,9 +15,12 @@ export class OwnersPageComponent implements OnInit {
 
   link = ["/owners", null];
 
+  user;
+
   constructor(private as: AuthService) {}
 
   ngOnInit(): void {
     this.link[1] = this.as.getRuleId(Role.OWNER);
+    this.user = this.as.getUser();
   }
 }

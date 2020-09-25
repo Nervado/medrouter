@@ -57,13 +57,13 @@ export class ClientPageComponent implements OnInit {
   mainColor: Colors = Colors.CLIENT;
   role: Role = Role.CLIENT;
   link: any = ["/clients", null];
+  user: User;
 
   constructor(
     private authService: AuthService,
     private notificationService: NotificationService
   ) {}
 
-  user: User;
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.link[1] = this.authService.getRuleId(Role.CLIENT);

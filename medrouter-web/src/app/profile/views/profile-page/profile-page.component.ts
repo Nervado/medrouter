@@ -15,9 +15,12 @@ export class ProfilePageComponent implements OnInit {
 
   link: any = ["/profile", null];
 
+  user;
+
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.link[1] = this.authService.getUser().user.userId;
+    this.user = this.authService.getUser();
   }
 }

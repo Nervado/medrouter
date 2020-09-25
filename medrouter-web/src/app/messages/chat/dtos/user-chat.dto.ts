@@ -8,4 +8,5 @@ export class ClientWs {
   surname?: string;
   new?: number;
   messages?: Message[] = [];
+  online?: boolean = false;
 }

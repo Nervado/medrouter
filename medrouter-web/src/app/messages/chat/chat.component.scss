@@ -94,7 +94,7 @@
           height: 30px;
           border-radius: 50%;
           object-fit: cover;
-          border: 1px solid var(--medium);
+          border: 2px solid var(--medium);
         }
       }
     }
@@ -211,6 +211,25 @@
         padding: 5px;
         display: flex;
         flex-wrap: wrap;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        height: 100%;
+        .msg-hour {
+          font-size: 6px;
+          color: var(--oposity);
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-end;
+
+          div {
+            margin-left: 10px;
+          }
+        }
       }
     }
 
@@ -218,6 +237,7 @@
       align-self: flex-end;
       padding: 5px;
       max-width: 80%;
+
       .msg {
         font-size: 10px;
         border-radius: 10px;
@@ -226,6 +246,26 @@
         padding: 5px;
         display: flex;
         flex-wrap: wrap;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        height: 100%;
+
+        .msg-hour {
+          font-size: 6px;
+          color: var(--oposity);
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-end;
+
+          div {
+            margin-left: 10px;
+          }
+        }
       }
     }
   }
@@ -254,4 +294,45 @@
       margin-right: 10px;
     }
   }
+}
+
+.avatar-area {
+  position: relative;
+}
+
+.online-marker {
+  &::before {
+    z-index: 1;
+    position: absolute;
+    top: 3px;
+    right: 1px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--oposity1);
+    background: var(--success);
+    border: 1px solid green;
+    content: "";
+  }
+}
+
+.offline-marker {
+  &::before {
+    z-index: 1;
+    position: absolute;
+    top: 3px;
+    right: 1px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--oposity1);
+    background: var(--success);
+    background: var(--error);
+    border: 1px solid red;
+    content: "";
+  }
+}
+
+.hide {
+  visibility: hidden;
 }

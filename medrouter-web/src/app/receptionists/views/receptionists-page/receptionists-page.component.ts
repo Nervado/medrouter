@@ -15,9 +15,12 @@ export class ReceptionistsPageComponent implements OnInit {
 
   role: Role = Role.RECEPT;
 
+  user;
+
   constructor(private as: AuthService) {}
 
   ngOnInit(): void {
     this.link[1] = this.as.getRuleId(Role.RECEPT);
+    this.user = this.as.getUser();
   }
 }

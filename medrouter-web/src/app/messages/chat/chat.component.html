@@ -57,7 +57,13 @@
     </div>
 
     <div class="controls">
-      <div class="img">
+      <div
+        class="img avatar-area"
+        [ngClass]="{
+          'online-marker': receiver.online,
+          'offline-marker': !receiver.online
+        }"
+      >
         <ng-container *ngIf="receiver?.avatar; else avatar">
           <img [src]="receiver?.avatar" alt="avatar" />
         </ng-container>
@@ -72,7 +78,7 @@
   <div class="results" *ngIf="state === 2">
     <div class="result">
       <div class="lead">
-        <div class="img">
+        <div class="img avatar-area">
           <ng-container *ngIf="sender?.avatar; else avatar">
             <img [src]="sender.avatar" alt="avatar" />
           </ng-container>
@@ -95,7 +101,13 @@
         <fa-icon [icon]="faTrash"></fa-icon>
       </div>
       <div class="lead">
-        <div class="img">
+        <div
+          class="img avatar-area"
+          [ngClass]="{
+            'online-marker': user.online,
+            'offline-marker': !user.online
+          }"
+        >
           <ng-container *ngIf="user?.avatar; else avatar">
             <img [src]="user?.avatar" alt="avatar" />
           </ng-container>
@@ -108,12 +120,21 @@
           <div class="username">
             {{ user?.surname ? user.fullname : user.username }}
           </div>
-          <div class="short-msg">Fulano entrou no chat...</div>
+          <div class="short-msg">
+            {{ lastMessage(user?.messages) }}
+          </div>
         </div>
       </div>
       <div class="tail">
-        <div class="date">sex</div>
-        <div class="new-msg">4</div>
+        <div class="date">
+          {{ formatDay(user?.messages[user.messages.length - 1]?.date) }}
+        </div>
+        <div
+          class="new-msg"
+          [ngClass]="countUnread(user.messages) == 0 ? 'hide' : ''"
+        >
+          {{ countUnread(user.messages) }}
+        </div>
       </div>
     </div>
   </div>
@@ -125,6 +146,9 @@
     >
       <div class="msg">
         {{ msg.message }}
+        <div class="msg-hour">
+          <div>{{ formatDay(msg.date) }}</div>
+        </div>
       </div>
     </div>
   </div>

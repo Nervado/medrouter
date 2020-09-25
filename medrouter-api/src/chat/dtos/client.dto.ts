@@ -10,4 +10,5 @@ export interface ClientWsDto {
   fullname?: string;
   surname?: string;
   messages?: MessageDto[];
+  online?: boolean;
 }

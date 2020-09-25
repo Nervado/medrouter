@@ -133,49 +133,70 @@ export class ChatService {
     }
 
     const messagesWithUser = await this.messageModel
-      .find({ receiver: id })
+      .find({ $or: [{ sender: id }, { receiver: id }] })
       .exec();
 
     if (!messagesWithUser) {
       return [];
     }
 
-    const ids: string[] = messagesWithUser.map(msg => msg.sender);
+    const ids: string[] = messagesWithUser.map(msg => {
+      if (msg.sender === id) {
+        return msg.receiver;
+      } else {
+        return msg.sender;
+      }
+    });
 
     const setIds = [...new Set(ids)];
 
-    console.log(setIds);
+    let results = [];
 
-    let contacts: ClientWsDto[] = [];
+    for (const userId of setIds) {
+      results.push(await this.chatUserModel.findOne({ id: userId }).exec());
+    }
 
-    setIds.forEach(async id => {
-      const user = await this.chatUserModel.findOne({ id }).exec();
-      contacts.push(user);
+    return results.map((user: ChatUser) => {
+      return {
+        id: user.id,
+        avatar: user.avatar,
+        username: user.username,
+        fullname: user.fullname,
+        surname: user.surname,
+        online: false,
+        messages: [],
+      };
     });
-
-    return contacts;
   }
 
   async searchMessages(
     id: string,
+    id_receiver: string,
     page: number,
     user: User,
   ): Promise<MessageDto[]> {
-    const pageNumber: number = page ? page * 5 - 5 : 0;
+    const limit = 10;
+    const pageNumber: number = page ? page * limit - limit : 0;
 
     if (id !== user.userId) {
-      throw new UnauthorizedException('Not allowe retrive messages');
+      throw new UnauthorizedException('Not allow retrive this messages');
     }
 
     const messages = await this.messageModel
-      .find({ sender: id })
-      .limit(5)
+
+      .find({
+        $or: [
+          { sender: id, receiver: id_receiver },
+          { sender: id_receiver, receiver: id },
+        ],
+      })
+      .limit(limit)
       .skip(pageNumber)
       .sort({
-        date: 'asc',
+        date: 'desc',
       })
       .exec();
 
-    return messages;
+    return messages.reverse();
   }
 }

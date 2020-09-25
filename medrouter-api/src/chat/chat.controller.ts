@@ -50,12 +50,13 @@ export class ChatController {
     return this.chatService.markAsRead(id, ids, user);
   }
 
-  @Get('/:id/messages')
+  @Get('/:id/messages/:id_receiver')
   getMessages(
     @Param('id') id: string,
+    @Param('id_receiver') id_receiver: string,
     @GetUser() user: User,
     @Query('page') page: number,
   ): Promise<MessageDto[]> {
-    return this.chatService.searchMessages(id, page, user);
+    return this.chatService.searchMessages(id, id_receiver, page, user);
   }
 }

@@ -15,9 +15,12 @@ export class LaboratoryPageComponent implements OnInit {
 
   link: any = ["/laboratories", null];
 
+  user;
+
   constructor(private as: AuthService) {}
 
   ngOnInit(): void {
     this.link[1] = this.as.getRuleId(Role.LAB);
+    this.user = this.as.getUser();
   }
 }
