@@ -21,6 +21,9 @@ import { ClientDto } from 'src/client/dtos/cliente-dto';
 import { Client } from 'src/client/models/client.entity';
 import { DocsService } from 'src/docs/docs.service';
 import { PhotosService } from 'src/photos/photos.service';
+import { NotificationsService } from 'src/notifications/notifications.service';
+import { NotificationTopics } from 'src/notifications/enums/notificaiton-topic.enum';
+import fmrt from 'src/utils/format-text';
 
 @Injectable()
 export class ExamsService {
@@ -29,6 +32,7 @@ export class ExamsService {
     private ls: LabsService,
     private ds: DocsService,
     private fs: PhotosService,
+    private ns: NotificationsService,
   ) {}
 
   async create(examdto: ExamDto, user: User): Promise<void> {
@@ -56,6 +60,17 @@ export class ExamsService {
     } catch (error) {
       throw new InternalServerErrorException('Creation of exam has fail');
     }
+
+    //notify exam request
+    await this.ns.create({
+      receiver: exam.client.user.userId,
+      date: new Date(),
+      read: false,
+      topic: NotificationTopics.EXAMS,
+      message: `O doutor ${
+        exam.doctor.user.username
+      } solictou um exame de ${fmrt(exam.type)}`,
+    });
   }
 
   async delete(id: string): Promise<void> {
@@ -237,8 +252,6 @@ export class ExamsService {
 
     const { code, status, labId } = statusDto;
 
-    console.log(exam);
-
     if (!exam) {
       throw new BadRequestException('Exam dont exists');
     }
@@ -417,7 +430,6 @@ export class ExamsService {
 
     try {
       await exam.save();
-      console.log(exam);
     } catch (error) {
       throw new InternalServerErrorException('Update exam results has fail');
     }

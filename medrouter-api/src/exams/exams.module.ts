@@ -7,6 +7,7 @@ import { PrescriptionsModule } from 'src/prescriptions/prescriptions.module';
 import { LabsModule } from 'src/labs/labs.module';
 import { PhotosModule } from 'src/photos/photos.module';
 import { DocsModule } from 'src/docs/docs.module';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { DocsModule } from 'src/docs/docs.module';
     LabsModule,
     PhotosModule,
     DocsModule,
+    NotificationsModule,
   ],
   controllers: [ExamsController],
   providers: [ExamsService],

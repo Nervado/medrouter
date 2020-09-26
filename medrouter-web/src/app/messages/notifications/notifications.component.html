@@ -1,0 +1,54 @@
+<div class="notifications">
+  <div class="px-1 py-2 d-flex justify-content-between align-itens-center">
+    <div class="notifications-title">
+      <fa-icon [icon]="faBell" class="mr-1"></fa-icon>
+      <strong> Notificações </strong>
+      <span *ngIf="unread > 0">({{ unread }})</span>
+    </div>
+    <div class="d-flex notifications-title">
+      <fa-icon
+        [icon]="faChevronLeft"
+        size="1x"
+        class="mr-2 cursor"
+        (click)="pageDown()"
+      ></fa-icon>
+      <div>{{ this.page }}</div>
+      <fa-icon
+        [icon]="faChevronRight"
+        size="1x"
+        class="ml-2 cursor"
+        (click)="pageUp()"
+      ></fa-icon>
+    </div>
+  </div>
+  <div class="d-flex flex-column px-1 justify-content-between">
+    <div
+      class="py-3 notification cursor"
+      (click)="markAsRead(notification)"
+      *ngFor="let notification of notifications"
+    >
+      <div class="wrapper-message">
+        <div class="mr-2">
+          <div
+            class="marker"
+            [style.background-color]="
+              notification.read ? 'var(--success)' : 'var(--error)'
+            "
+          ></div>
+        </div>
+        <div class="message">
+          <div>
+            <strong [style.color]="getTopicColor(notification.topic)">{{
+              notification.topic
+            }}</strong>
+          </div>
+          <div>{{ notification.message }}</div>
+        </div>
+      </div>
+
+      <div class="time">
+        {{ formatRelative(notification.date) }}
+      </div>
+    </div>
+  </div>
+</div>

@@ -3,7 +3,6 @@
     <div class="buttons d-flex mx-2 h-100 align-items-center">
       <div class="m-2">
         <div>
-          <!-- [ngClass]="{ 'badge-icon': allUnread() > 0 }"-->
           <fa-icon
             [icon]="faCommentAlt"
             class="fa-lg cursor"
@@ -30,9 +29,20 @@
             [icon]="faBell"
             class="fa-lg cursor"
             [style.color]="mainColor"
+            (click)="showNotifications = !showNotifications && online"
           ></fa-icon>
-          <app-badge [numberOfEvents]="allUnread()"></app-badge>
+          <app-badge
+            [numberOfEvents]="unread"
+            [ngClass]="unread === 0 ? 'hide' : ''"
+          ></app-badge>
         </div>
+
+        <app-notifications
+          *ngIf="showNotifications && online"
+          [notifications]="notifications"
+          (updateNotifications)="upadatedNotifications($event)"
+          [unread]="unread"
+        ></app-notifications>
       </div>
     </div>
 

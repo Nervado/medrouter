@@ -1,7 +1,7 @@
-import { NotificationTopics } from '../enums/notificaiton-topic.enum';
+import { NotificationTopics } from "../enums/notification-topics.dto";
 
 export class NotificationDto {
-  _id?: string;
+  _id: string;
   receiver: string;
   message: string;
   topic: NotificationTopics;

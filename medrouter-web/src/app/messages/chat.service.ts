@@ -8,6 +8,7 @@ import { AuthService } from "../auth/auth.service";
 import { Message } from "./chat/chat.component";
 import { ClientWs } from "./chat/dtos/user-chat.dto";
 import { CustomSocket } from "./custom-socket";
+import { NotificationDto } from "./notifications/dtos/notification.dto";
 
 @Injectable({
   providedIn: "root",
@@ -20,6 +21,10 @@ export class ChatService {
     private http: HttpClient,
     private authService: AuthService
   ) {}
+
+  getSocket(): CustomSocket {
+    return this.socket;
+  }
 
   getStatus(): boolean {
     const status =
@@ -67,9 +72,13 @@ export class ChatService {
   desconnect() {
     this.status.emit(false);
 
-    console.log("emit false");
+    console.log(this.socket.emptyConfig);
 
     this.socket.emit("desconect");
+
+    this.socket.disconnect();
+
+    delete this.socket;
   }
 
   receiveChat(): Observable<Message> {
@@ -81,7 +90,7 @@ export class ChatService {
   }
 
   connect() {
-    console.log("emit true");
+    this.socket = new CustomSocket(this.authService);
     this.status.emit(true);
     this.socket.connect();
   }
@@ -108,6 +117,31 @@ export class ChatService {
 
   findAll(): Observable<ClientWs[]> {
     return this.http.get<ClientWs[]>(`${MEDROUTER_API}/chat`);
+  }
+
+  receiveNotifications(): Observable<NotificationDto> {
+    return this.socket.fromEvent("notifications_user");
+  }
+
+  requestUnreadNotifications() {
+    this.socket.emit("notifications_unread");
+  }
+
+  receiveUnreadNotifications(): Observable<number> {
+    return this.socket.fromEvent("notifications_unread");
+  }
+
+  getNotifications(page: number = 1): Observable<NotificationDto[]> {
+    const id = this.authService.getUser().user.userId;
+    return this.http.get<NotificationDto[]>(
+      `${MEDROUTER_API}/notifications/${id}?page=${page}`
+    );
+  }
+
+  markAsReadNotification(id: string): Observable<void> {
+    return this.http.patch<void>(`${MEDROUTER_API}/notifications/${id}`, {
+      read: true,
+    });
   }
 }
 

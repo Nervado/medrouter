@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Role } from 'src/auth/enums/role.enum';
 import { MessageDto } from '../dtos/message.dto';
 
 @Schema()
 export class ChatUser extends Document {
-  @Prop({ required: true })
+  @Prop()
   id: string;
 
   @Prop()
@@ -21,6 +22,9 @@ export class ChatUser extends Document {
 
   @Prop()
   messages: MessageDto[];
+
+  @Prop()
+  role: Role[];
 }
 
 export const ChatUserSchema = SchemaFactory.createForClass(ChatUser);

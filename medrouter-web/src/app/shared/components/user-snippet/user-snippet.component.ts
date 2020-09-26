@@ -25,6 +25,7 @@ import { UsersService } from "src/app/profile/users.service";
 import { ChatService } from "src/app/messages/chat.service";
 import { ClientWs } from "src/app/messages/chat/dtos/user-chat.dto";
 import { Message } from "src/app/messages/chat/chat.component";
+import { NotificationDto } from "src/app/messages/notifications/dtos/notification.dto";
 
 @Component({
   selector: "app-user-snippet",
@@ -39,22 +40,32 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
   faBars = faBars;
   showChat = false;
 
+  showNotifications = false;
+
   @Input() user: User;
 
   users: ClientWs[] = [];
 
+  notifications: NotificationDto[] = [];
+
   online: boolean = false;
+
+  unread: number = 0;
 
   @Input() mainColor: Colors = Colors.BASE;
 
   clients;
   messages;
+  notify;
+  unreadObserver;
 
   constructor(
     private authService: AuthService,
+    private chatService: ChatService,
+
     private notificationService: NotificationService,
-    private usersService: UsersService,
-    private chatService: ChatService
+
+    private usersService: UsersService
   ) {}
 
   ngOnInit(): void {
@@ -71,22 +82,65 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes["user"]) {
+    if (changes["user"] || changes["notifications"]) {
       if (this.online) {
         this.goOnline();
       }
     }
   }
 
+  upadatedNotifications(notifications: NotificationDto[]) {
+    this.notifications = notifications;
+  }
+
   ngOnDestroy(): void {
     if (this.messages !== undefined) {
-      this.messages.unsubscribe();
-      this.clients.unsubscribe();
+      this.removeAllListerners();
     }
+  }
+
+  removeAllListerners() {
+    this.messages.unsubscribe();
+    this.clients.unsubscribe();
+    this.notify.unsubscribe();
+    this.unreadObserver.unsubscribe();
   }
 
   goOnline() {
     this.chatService.connect();
+
+    this.clients = this.chatService.receiveUsers().subscribe({
+      next: (clients: ClientWs[]) => {
+        this.users = this.updateUsers(clients);
+      },
+    });
+
+    this.notify = this.chatService.receiveNotifications().subscribe({
+      next: (notification: NotificationDto) => {
+        this.notifications.unshift(notification);
+
+        if (!this.showNotifications) {
+          this.notificationService.notify({
+            message: `${notification.message}`,
+            type: Types.INFO,
+          });
+        }
+      },
+    });
+
+    this.unreadObserver = this.chatService
+      .receiveUnreadNotifications()
+      .subscribe({
+        next: (unread: number) => {
+          this.unread = unread;
+        },
+      });
+
+    this.chatService.getNotifications(1).subscribe({
+      next: (notifications: NotificationDto[]) => {
+        this.notifications = notifications;
+      },
+    });
 
     this.chatService.getUserContacts(this.user?.user.userId).subscribe({
       next: (clients: ClientWs[]) => {
@@ -107,12 +161,8 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
 
         // get users online list
         this.chatService.requestUsersList();
-      },
-    });
 
-    this.clients = this.chatService.receiveUsers().subscribe({
-      next: (clients: ClientWs[]) => {
-        this.users = this.updateUsers(clients);
+        this.chatService.requestUnreadNotifications();
       },
     });
 
@@ -139,6 +189,8 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
       if (this.messages !== undefined) {
         this.messages.unsubscribe();
         this.clients.unsubscribe();
+        this.notify.unsubscribe();
+        this.unreadObserver.unsubscribe();
       }
       this.chatService.desconnect();
       this.notificationService.notify({
@@ -157,6 +209,8 @@ export class UserSnippetComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   logout() {
+    this.removeAllListerners();
+
     this.chatService.desconnect();
 
     this.authService.logout();

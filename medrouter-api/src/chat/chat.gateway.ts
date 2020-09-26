@@ -1,4 +1,4 @@
-import { BadGatewayException, Logger, UseGuards } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -7,9 +7,11 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
+  WsException,
 } from '@nestjs/websockets';
 
 import { Socket } from 'socket.io';
+import { Role } from 'src/auth/enums/role.enum';
 import { WsJwtAuthGuard } from 'src/auth/guards/ws-jwt.auth.guard';
 import { GetWsUser } from 'src/users/decorators/get-ws-user.decorator';
 import { User } from 'src/users/models/user.entity';
@@ -37,12 +39,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleMessages(@MessageBody() message: MessageDto, @GetWsUser() user: User) {
     this.logger.verbose(message);
 
-    if (user.userId !== message.sender) {
-      console.log(user.userId, message.sender);
-
-      //throw new BadGatewayException('Not allowed id');
-    }
-
     const receivers: ClientWsDto[] = this.chatService.get(message.receiver);
 
     message.read = false;
@@ -56,18 +52,27 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @UseGuards(WsJwtAuthGuard)
+  @SubscribeMessage('notifications_user')
+  handleNotifications() {}
+
+  @UseGuards(WsJwtAuthGuard)
+  @SubscribeMessage('notifications_unread')
+  handleNumberNotifications(@GetWsUser() user: User) {
+    console.log(user.username);
+
+    this.chatService.emitNumberOfUnread(user.userId);
+  }
+
+  @UseGuards(WsJwtAuthGuard)
   @SubscribeMessage('users')
-  handleUsers(
-    @MessageBody() data: any,
-    @ConnectedSocket() client: Socket,
-    @GetWsUser() user: User,
-  ) {
+  handleUsers(@ConnectedSocket() client: Socket, @GetWsUser() user: User) {
     this.chatService.add({
       id: user.userId,
       avatar: user.avatar?.url,
       username: user?.username,
       surname: user?.surname,
       fullname: user?.fullname,
+      role: user?.role,
       socket: client,
       online: true,
     });
@@ -85,6 +90,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
           avatar: client.avatar,
           surname: client.surname,
           fullname: client.fullname,
+          role: client.role,
           messages: [],
           online: true,
         };

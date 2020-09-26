@@ -9,9 +9,10 @@ import { SOCKET_IO_CONFIG } from "../api/app.api";
 import { ChatComponent } from "./chat/chat.component";
 import { ReactiveFormsModule } from "@angular/forms";
 import { CustomSocket } from "./custom-socket";
+import { NotificationsComponent } from "./notifications/notifications.component";
 
 @NgModule({
-  declarations: [ToastComponent, ChatComponent],
+  declarations: [ToastComponent, ChatComponent, NotificationsComponent],
   imports: [
     CommonModule,
     FontAwesomeModule,
@@ -19,13 +20,13 @@ import { CustomSocket } from "./custom-socket";
     ReactiveFormsModule,
   ],
   providers: [CustomSocket, ChatService],
-  exports: [ToastComponent, ChatComponent],
+  exports: [ToastComponent, ChatComponent, NotificationsComponent],
 })
 export class MessagesModule {
   static forRoot(): ModuleWithProviders<MessagesModule> {
     return {
       ngModule: MessagesModule,
-      providers: [NotificationService, ChatService], //  {provide: SomeConfig, useValue: config }
+      providers: [NotificationService], //  {provide: SomeConfig, useValue: config }
     };
   }
 }

@@ -27,12 +27,6 @@ import { MessageDto } from './dtos/message.dto';
 export class ChatController {
   constructor(private chatService: ChatService) {}
 
-  @Post()
-  @Allow('recept', 'client')
-  createDoctor(@Body() body: ChatRequestDto) {
-    //return this.chatService.create(body);
-  }
-
   @Get()
   retriveAllUsers(@GetUser() user: User): Promise<ClientWsDto[]> {
     return this.chatService.findAllUsers(user);

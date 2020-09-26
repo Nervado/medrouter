@@ -14,6 +14,8 @@ import { Message } from './schemas/notification.schema';
 import { ChatUser } from './schemas/chat-user.schema';
 import { MessageDto } from './dtos/message.dto';
 
+import { Notification } from 'src/notifications/schemas/notification.schema';
+
 @Injectable()
 export class ChatService {
   private clients: ClientWsDto[] = [];
@@ -21,6 +23,7 @@ export class ChatService {
   constructor(
     @InjectModel('Message') private messageModel: Model<Message>,
     @InjectModel('ChatUser') private chatUserModel: Model<ChatUser>,
+    @InjectModel('Notification') private notificationModel: Model<Notification>,
   ) {}
 
   async add(client: ClientWsDto): Promise<void> {
@@ -78,8 +81,6 @@ export class ChatService {
   }
 
   async markAsRead(id: string, ids: string[], user: User): Promise<void> {
-    console.log(ids);
-
     if (id !== user.userId) {
       throw new BadRequestException('Not allowed');
     }
@@ -116,6 +117,7 @@ export class ChatService {
       username: client.username,
       fullname: client.fullname,
       surname: client.surname,
+      role: client.role,
     });
 
     try {
@@ -141,6 +143,20 @@ export class ChatService {
       throw new BadGatewayException('Not allowed');
     }
 
+    const currenUser = await this.chatUserModel.findOne({ id: user.userId });
+
+    if (!currenUser) {
+      await this.AddChatUser({
+        id: user.userId,
+        avatar: user.avatar?.url,
+        username: user?.username,
+        surname: user?.surname,
+        fullname: user?.fullname,
+        role: user?.role,
+        online: true,
+      });
+    }
+
     const messagesWithUser = await this.messageModel
       .find({ $or: [{ sender: id }, { receiver: id }] })
       .exec();
@@ -148,6 +164,8 @@ export class ChatService {
     if (!messagesWithUser) {
       return [];
     }
+
+    //console.log(messagesWithUser);
 
     const ids: string[] = messagesWithUser.map(msg => {
       if (msg.sender === id) {
@@ -162,26 +180,35 @@ export class ChatService {
     let results = [];
 
     for (const userId of setIds) {
-      results.push(await this.chatUserModel.findOne({ id: userId }).exec());
+      if (userId) {
+        results.push(await this.chatUserModel.findOne({ id: userId }).exec());
+      }
     }
 
     for (const result of results) {
-      const messages = await this.searchMessages(id, result.id, 1, user);
+      if (result) {
+        console.log(result);
+        const messages = await this.searchMessages(id, result.id, 1, user);
 
-      result.messages = messages;
+        result.messages = messages;
+      }
     }
 
-    return results.map((_user: ChatUser) => {
-      return {
-        id: _user.id,
-        avatar: _user.avatar,
-        username: _user.username,
-        fullname: _user.fullname,
-        surname: _user.surname,
-        online: false,
-        messages: _user.messages,
-      };
-    });
+    console.log(results);
+
+    return results
+      .filter(r => r !== null)
+      .map((_user: ChatUser) => {
+        return {
+          id: _user.id,
+          avatar: _user.avatar,
+          username: _user.username,
+          fullname: _user.fullname,
+          surname: _user.surname,
+          online: false,
+          messages: _user.messages,
+        };
+      });
   }
 
   async searchMessages(
@@ -213,5 +240,28 @@ export class ChatService {
       .exec();
 
     return messages.reverse();
+  }
+
+  getClientSocket(id: string): ClientWsDto[] {
+    return this.clients.filter(cli => cli.id === id);
+  }
+
+  async emitNumberOfUnread(id: string) {
+    const clientWithScokets = this.getClientSocket(id);
+
+    console.log('clients sockets unread', clientWithScokets);
+
+    if (!clientWithScokets || clientWithScokets.length === 0) {
+      return;
+    }
+
+    const unread = await this.notificationModel
+      .find({ receiver: id, read: false })
+      .countDocuments()
+      .exec();
+
+    for (const client of clientWithScokets) {
+      client.socket.emit('notifications_unread', unread);
+    }
   }
 }
