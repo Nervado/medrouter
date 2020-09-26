@@ -1,11 +1,12 @@
 .main-data {
-  font-size: 12px;
   width: 450px;
   height: 300px;
   border-radius: 8px;
   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
 
   margin: 20px;
+
+  color: var(--oposity);
 }
 
 .cursor {
@@ -16,4 +17,90 @@
   height: 8px;
   width: 8px;
   border-radius: 50%;
+}
+
+.notifications {
+  //z-index: 2;
+  //top: 90px;
+  //right: 120px;
+  //position: absolute;
+
+  //width: 300px;
+
+  //background-color: rgba(22, 46, 79, 0.8);
+  //border-radius: 2px;
+  //padding: 5px;
+
+  //box-shadow: 4px 5px 6px rgba(0, 0, 0, 0.2);
+
+  //color: var(--oposity);
+
+  font-size: 8px;
+
+  //overflow-y: auto;
+
+  .notifications-area {
+    height: 80%;
+    overflow-y: scroll;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    &::-webkit-scrollbar {
+      height: 4px;
+      width: 4px;
+      background: rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    &::-webkit-scrollbar-thumb:vertical {
+      background-color: var(--oposity);
+      border-radius: 10px;
+    }
+  }
+
+  .notification {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .wrapper-message {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      //width: 70%;
+
+      .message {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        flex-direction: column;
+      }
+    }
+
+    .time {
+      width: 25%;
+      margin-left: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      text-align: right;
+    }
+  }
+
+  .notifications-title {
+    font-size: 12px;
+  }
+
+  .marker {
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+  }
+}
+
+.cursor {
+  cursor: pointer;
 }

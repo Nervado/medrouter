@@ -268,12 +268,12 @@ export class ClientService {
       .leftJoinAndSelect('doctor.user', 'doctorUser')
       .leftJoinAndSelect('doctorUser.avatar', 'avatar')
       .skip(pageNumber)
-      .orderBy('appointment.date', 'DESC')
-      .orderBy('appointment.hour', 'DESC')
+      .orderBy('appointment.date', 'ASC')
+      //.orderBy('appointment.hour', 'DESC')
       .take(10)
       .getMany();
 
-    return founds.map(app => this.serializeClientAppointment(app));
+    return founds.map(app => this.serializeClientAppointment(app)).reverse();
   }
 
   serializeClientAppointment(appointment: Appointment): AppointmentDto {
