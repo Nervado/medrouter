@@ -9,11 +9,19 @@
     width: 198px;
     margin-left: 1px;
 
+    font-size: 12px;
+
     border-radius: 4px;
 
     &::placeholder {
       color: var(--base1);
       opacity: 0.6;
     }
+  }
+
+  .calendar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

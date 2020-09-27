@@ -10,17 +10,23 @@
         [(ngModel)]="values"
         (dateSelect)="setValue($event)"
         [ngStyle]="{ color: btColor }"
+        [minDate]="{ year: 2010, month: 1, day: 1 }"
+        [maxDate]="{ year: 2048, month: 12, day: 31 }"
+        [markDisabled]="isDisabled"
+        (navigate)="navigate($event)"
+        [style.height]="height"
+        [style.width]="width"
       />
 
-      <div class="input-group-append">
-        <button
+      <div class="input-group-append" [style.height]="height">
+        <div
           class="bt calendar"
           (click)="d.toggle()"
           type="button"
           [ngStyle]="{ 'background-color': btColor }"
         >
           <fa-icon [icon]="faCalendarAlt" class="text-oposity"></fa-icon>
-        </button>
+        </div>
         <div
           class="d-flex flex-column justify-content-center align-itens-center"
         >

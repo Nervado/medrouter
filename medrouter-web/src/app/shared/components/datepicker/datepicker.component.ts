@@ -4,12 +4,16 @@ import {
   Injectable,
   Input,
   forwardRef,
+  Output,
+  EventEmitter,
 } from "@angular/core";
 
 import {
   NgbDateStruct,
   NgbDatepickerI18n,
   NgbDateParserFormatter,
+  NgbDate,
+  NgbDatepickerNavigateEvent,
 } from "@ng-bootstrap/ng-bootstrap";
 
 import {
@@ -126,6 +130,10 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
   @Input() btColor: Colors = Colors.OPOSITY1;
   @Input() tick: boolean = false;
 
+  @Input() height;
+
+  @Input() width;
+
   value: any;
   faCalendarAlt = faCalendarAlt;
   faTimes = faTimes;
@@ -133,11 +141,15 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
   @Input() values: Data;
   @Input() defaut: any = "Data";
 
+  @Output() selectedDate: EventEmitter<any> = new EventEmitter();
+
   onChange: any;
 
   constructor() {}
 
   ngOnInit(): void {
+    console.log(this.availableDays);
+
     if (
       this.defaut !== "Data" &&
       this.defaut !== undefined &&
@@ -164,6 +176,7 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
     const newdate = new Date(value.year, value.month - 1, value.day, 0, 0, 0);
     this.value = newdate;
     this.onChange(this.value);
+    this.selectedDate.emit(this.value);
   }
 
   writeValue(obj: any): void {
@@ -173,7 +186,7 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
 
     this.values = {
       year: newdate.getFullYear(),
-      month: newdate.getMonth(),
+      month: newdate.getMonth() + 1,
       day: newdate.getDate(),
     };
   }
@@ -183,4 +196,19 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
   }
 
   registerOnTouched() {}
+
+  @Input() availableDays: number[] = Array(31)
+    .fill(0)
+    .map((_, i) => {
+      return i + 1;
+    });
+
+  @Output() navigatation: EventEmitter<
+    NgbDatepickerNavigateEvent
+  > = new EventEmitter();
+
+  isDisabled = (date: NgbDate, current: { month: number }) =>
+    !this.availableDays.find((d) => date.day === d);
+
+  navigate = (event) => this.navigatation.emit(event);
 }

@@ -1,11 +1,16 @@
 <div class="home d-flex flex-column justify-content-between h-100 w-100">
   <app-header></app-header>
   <a name="top"></a>
-  <app-appointment-confirm-modal #modal></app-appointment-confirm-modal>
+  <app-appointment-confirm-modal
+    [appointmentResume]="appRequest"
+    #modal
+    (send)="appForm.send($event)"
+  ></app-appointment-confirm-modal>
 
   <div class="main">
     <!--Appointment form-->
     <app-appointment-form
+      #appForm
       [isOpen]="showForm"
       (openModal)="showModalConfirmation($event, modal)"
     ></app-appointment-form>
@@ -22,11 +27,9 @@
             </span>
           </div>
           <div class="d-flex my-2">
-            <a href="#top">
-              <button class="btn btn-oposity1 text-white" (click)="show()">
-                Quero marcar uma consulta
-              </button>
-            </a>
+            <button class="btn btn-oposity1 text-white" (click)="show()">
+              Quero marcar uma consulta
+            </button>
           </div>
         </div>
       </div>

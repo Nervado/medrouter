@@ -42,6 +42,9 @@ export class EditprofileComponent implements OnInit {
 
   birthdate: string;
 
+  width = "'198px'";
+  heigth = "'40px'";
+
   parser: CustomDateParserFormatter = new CustomDateParserFormatter();
 
   constructor(

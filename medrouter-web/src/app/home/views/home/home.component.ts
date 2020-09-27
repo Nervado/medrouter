@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 
 import {
   faFileMedical,
@@ -11,6 +12,10 @@ import {
   faArrowLeft,
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { MEDICINES_API } from "src/app/api/app.api";
+import { AuthService } from "src/app/auth/auth.service";
+import { Role } from "src/app/auth/enums/roles-types";
+import { NonClientAppointmentRequest } from "../../components/appointment-form/dtos/appointment-nonclient-request.dto";
 
 @Component({
   selector: "app-home",
@@ -53,17 +58,27 @@ export class HomeComponent implements OnInit {
   faArrowLeft = faArrowLeft;
   faArrowRight = faArrowRight;
 
-  constructor() {}
+  appRequest: NonClientAppointmentRequest;
+
+  constructor(private authService: AuthService, private router: Router) {}
 
   showForm = false;
 
   ngOnInit(): void {}
 
   show() {
-    this.showForm = true;
+    if (this.authService.isloggedIn()) {
+      this.router.navigate([
+        `clients/`,
+        this.authService.getRuleId(Role.CLIENT),
+      ]);
+    } else {
+      this.showForm = true;
+    }
   }
 
   showModalConfirmation(e, modal) {
-    modal.open(modal.content);
+    modal.open(modal.content, e);
+    this.appRequest = e;
   }
 }

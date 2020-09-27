@@ -1,19 +1,70 @@
 <div
-  class="container bg-medium b-shadow consultant my-2"
+  class="container b-shadow consultant my-2"
   [@openClose]="isOpen ? 'open' : 'closed'"
 >
-  <div class="text-white mb-1 pt-2 mx-2 consultant-title">
-    Sua consulta
-  </div>
-  <div class="form d-flex justify-content-between">
-    <input type="text" placeholder="Nome" class="m-2 flex-shrink-1" />
-    <input type="text" placeholder="Email" class="m-2 flex-shrink-1" />
-    <input type="text" placeholder="Telefone" class="m-2 flex-shrink-1" />
-    <input type="text" placeholder="Especialista" class="m-2 flex-shrink-1" />
-    <input type="text" placeholder="Horário" class="m-2 flex-shrink-1" />
-    <app-datepicker class="m-2 flex-shrink-1"></app-datepicker>
+  <div class="text-white mb-1 pt-2 mx-2 consultant-title">Sua consulta</div>
+  <div
+    class="form d-flex justify-content-between align-items-center"
+    [formGroup]="requestAppointmentForm"
+  >
+    <input
+      type="text"
+      placeholder="Nome"
+      class="m-2 flex-shrink-1"
+      formControlName="fullname"
+    />
+    <input
+      type="email"
+      placeholder="Email"
+      class="m-2 flex-shrink-1"
+      formControlName="email"
+    />
+    <input
+      type="text"
+      placeholder="Telefone"
+      appCelMask
+      class="m-2 flex-shrink-1"
+      formControlName="phoneNumber"
+    />
+
+    <select
+      class="in m-2 flex-shrink-1"
+      formControlName="specialty"
+      style="border: 1px solid var(--oposity); color: var(--oposity1)"
+      ngDefaultControl="oi"
+      (change)="select($event)"
+    >
+      <option value="" disabled selected hidden>Especialidade</option>
+      <option [value]="cat.value" *ngFor="let cat of options">
+        {{ cat.label }}
+      </option>
+    </select>
+
+    <app-datepicker
+      [height]="'25px'"
+      [width]="'130px'"
+      class="m-2 flex-shrink-1"
+      [defaut]="'Data'"
+      formControlName="date"
+      (selectedDate)="selecteDate($event)"
+      (navigatation)="navigation($event)"
+      [availableDays]="availablesDays"
+    ></app-datepicker>
+
+    <select
+      formControlName="hour"
+      id="include"
+      name="hours"
+      class="in-oposity1 in m-2 flex-shrink-1 cursor"
+      style="border: 1px solid var(--oposity); color: var(--oposity1)"
+    >
+      <option value="" disabled selected hidden>Horário</option>
+      <option [value]="hour" *ngFor="let hour of hours">{{ hour }} h</option>
+    </select>
+    <div class="hour-select"><fa-icon [icon]="faClock"></fa-icon></div>
+
     <button
-      class="btn btn-oposity1 text-white my-2 mx-2 flex-shrink-1"
+      class="btn-oposity1 text-white my-2 mx-2 flex-shrink-1 send"
       (click)="confirm()"
     >
       Agendar

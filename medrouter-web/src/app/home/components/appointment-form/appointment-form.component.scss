@@ -1,25 +1,62 @@
+.container {
+  background-color: var(--medium);
+}
+
 .consultant {
   border-radius: 4px;
 
   .consultant-title {
-    font-size: 1.5em;
+    font-size: 1.2em;
   }
 }
 .form {
   border-radius: 4px;
 
-  input {
+  input,
+  select {
+    height: 25px;
     border-radius: 4px;
     border: none;
 
-    color: var(--base1);
+    font-size: 10px;
+
+    color: var(--oposity1);
     padding-left: 10px;
 
     width: 120px;
 
     &::placeholder {
-      color: var(--base1);
+      color: var(--oposity1);
       opacity: 0.6;
     }
   }
+
+  select {
+    font-size: 10px;
+  }
+}
+
+.hour-select {
+  height: 25px;
+  background-color: var(--oposity1);
+  border-radius: 0px 4px 4px 0px;
+  padding: 0px 8px 0px 8px;
+  margin-left: -32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  fa-icon {
+    color: var(--oposity);
+  }
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.send {
+  height: 25px;
+  border-radius: 4px;
+  font-size: 12px;
 }

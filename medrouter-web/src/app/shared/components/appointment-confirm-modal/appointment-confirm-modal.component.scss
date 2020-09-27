@@ -1,0 +1,16 @@
+.modal-body {
+  color: rgba(125, 125, 125, 0.6);
+  color: var(--medium);
+  font-size: 14px;
+  .info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    margin: 5px 0 5px 0px;
+
+    fa-icon {
+      margin-right: 4px;
+    }
+  }
+}

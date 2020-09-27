@@ -1,8 +1,9 @@
 <div class="dashboard d-flex flex-wrap justify-content-between">
-  <app-reports></app-reports>
-  <app-appointments-summary #apps> </app-appointments-summary>
   <app-doctors-search
     (updateAppointment)="apps.update($event)"
   ></app-doctors-search>
+  <app-appointments-summary #apps> </app-appointments-summary>
+  <app-reports></app-reports>
+
   <app-notifications-sumary></app-notifications-sumary>
 </div>

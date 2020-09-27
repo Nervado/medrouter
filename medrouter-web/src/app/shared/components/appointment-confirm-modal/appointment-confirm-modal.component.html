@@ -13,19 +13,40 @@
     </button>
   </div>
   <div class="modal-body">
-    <form>
-      <div class="form-group">
-        <input type="text" placeholder="Nome" />
-        <input type="text" placeholder="Nome" />
-        <input type="text" placeholder="Nome" />
-      </div>
-    </form>
+    <div class="info">
+      <fa-icon [icon]="faUserTie"></fa-icon>
+      {{ appointmentResume?.fullname }}
+    </div>
+    <div class="info">
+      <fa-icon [icon]="faEmail"></fa-icon>
+      {{ appointmentResume?.email }}
+    </div>
+
+    <div class="info">
+      <fa-icon [icon]="faPhone"></fa-icon>
+      {{ appointmentResume?.phoneNumber }}
+    </div>
+
+    <div class="info">
+      <fa-icon [icon]="faBriefCase"></fa-icon>
+
+      {{ appointmentResume?.specialty }}
+    </div>
+    <div class="info">
+      <fa-icon [icon]="faCalendarday"></fa-icon>
+      {{ appointmentResume?.date && prettyDate(appointmentResume.date) }}
+    </div>
+
+    <div class="info">
+      <fa-icon [icon]="faClock"></fa-icon>
+      {{ appointmentResume?.hour }}h
+    </div>
   </div>
   <div class="modal-footer">
     <button
       type="button"
       class="bt bt-oposity1"
-      (click)="modal.close('Save click')"
+      (click)="modal.close('confirm')"
     >
       Enviar
     </button>
