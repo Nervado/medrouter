@@ -7,7 +7,7 @@
     (send)="appForm.send($event)"
   ></app-appointment-confirm-modal>
 
-  <div class="main">
+  <div class="main w-100">
     <!--Appointment form-->
     <app-appointment-form
       #appForm
@@ -36,9 +36,16 @@
     </div>
 
     <!--Home Cards-->
-    <div class="d-flex flex-row justify-content-around m-5">
-      <app-homecards *ngFor="let card of cards" [data]="card"></app-homecards>
+    <div
+      class="py-1 d-sm-flex flex-sm-column align-items-sm-center px-sm-5 mx-lg-2 px-md-5 mx-md-5 justify-content-lg-between flex-md-wrap d-md-flex flex-md-row d-lg-flex"
+    >
+      <app-homecards
+        *ngFor="let card of cards"
+        [data]="card"
+        class="p-1 m-1"
+      ></app-homecards>
     </div>
+
     <!--Home Cards-->
 
     <!--Professionals -->
