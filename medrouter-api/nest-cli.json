@@ -5,7 +5,7 @@
     "assets": ["**/*.hbs", "**/*.pug", "**/*.css", "**/*.svg", "**/*.png"],
     "plugins": ["@nestjs/swagger/plugin"],
     "options": {
-      "classValidatorShim": true
+      "classValidatorShim": false
     }
   }
 }

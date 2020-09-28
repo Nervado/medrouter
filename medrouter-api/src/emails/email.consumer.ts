@@ -23,14 +23,14 @@ export class EmailConsumer {
 
     const config = new EmailConfigDto();
 
-    config.from = '<no-reply> system@cv.reformas.com.br';
+    config.from = '<no-reply> system@medrouter.com.br';
 
     config.to = `${configService.getEmailReceivers().coo},${
       configService.getEmailReceivers().cfo
     },${configService.getEmailReceivers().ceo},${
       configService.getEmailReceivers().general
     }`; // list of receivers
-    config.subject = 'Cliente C&V Reformas e Construções'; // Subject line
+    config.subject = 'MedRouter Clinic'; // Subject line
     config.template = data.data.type; // The `.pug` or `.hbs` extension is appended automatically.
     config.replyTo = configService.getEmailReceivers().coo;
 
@@ -43,9 +43,9 @@ export class EmailConsumer {
 
     const config = new EmailConfigDto();
 
-    config.from = '<no-reply> system@cv.reformas.com.br';
+    config.from = '<no-reply> system@medrouter.com.br';
     config.to = data.data.email; // list of receivers
-    config.subject = 'Cliente C&V Reformas e Construções'; // Subject line
+    config.subject = 'Paciente MedRouter'; // Subject line
     config.template = data.data.type; // The `.pug` or `.hbs` extension is appended automatically.
     config.replyTo = configService.getEmailReceivers().coo;
     this.sendEmail(job, config);
@@ -57,10 +57,10 @@ export class EmailConsumer {
 
     const config = new EmailConfigDto();
 
-    config.from = '<no-reply> system@cv.reformas.com.br';
-    config.to = data.email; // list of receivers
-    config.subject = 'Profissional C&V Reformas e Construções'; // Subject line
-    config.template = data.type; // The `.pug` or `.hbs` extension is appended automatically.
+    config.from = '<no-reply> system@medrouter.com.br';
+    config.to = data.data.email; // list of receivers
+    config.subject = 'Profisional MedRouter'; // Subject line
+    config.template = data.data.type; // The `.pug` or `.hbs` extension is appended automatically.
     config.replyTo = configService.getEmailReceivers().coo;
 
     this.sendEmail(job, config);
@@ -74,9 +74,9 @@ export class EmailConsumer {
 
     switch (data.type) {
       case EmailTopic.BUDGETS:
-        config.from = '<no-reply> system@cv.reformas.com.br';
+        config.from = '<no-reply> system@medrouter.com.br';
         config.to = configService.getEmailReceivers().coo; // list of receivers
-        config.subject = 'Sobre orçamentos'; // Subject line
+        config.subject = 'Sobre consultas'; // Subject line
         config.template = data.type; // The `.pug` or `.hbs` extension is appended automatically.
         config.replyTo = data.email;
         break;
@@ -90,7 +90,7 @@ export class EmailConsumer {
         break;
 
       case EmailTopic.FINANCIAL:
-        config.from = '<no-reply> system@cv.reformas.com.br';
+        config.from = '<no-reply> system@medrouter.com.br';
         config.to = configService.getEmailReceivers().cfo; // list of receivers
         config.subject = 'Financeiro'; // Subject line
         config.template = data.type; // The `.pug` or `.hbs` extension is appended automatically.
@@ -98,7 +98,7 @@ export class EmailConsumer {
         break;
 
       case EmailTopic.GENERAL:
-        config.from = '<no-reply> system@cv.reformas.com.br';
+        config.from = '<no-reply> system@medrouter.com.br';
         config.to = configService.getEmailReceivers().general; // list of receivers
         config.subject = 'Outros assuntos'; // Subject line
         config.template = data.type; // The `.pug` or `.hbs` extension is appended automatically.

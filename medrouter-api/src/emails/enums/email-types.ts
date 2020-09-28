@@ -11,4 +11,6 @@ export enum EmailTypes {
   APROVED = 'aproved', // budget aproved
   WELLCOME_PRO = 'wellcomepro', // bem vindo ao profissional a plataforma
   HIRED = 'hired', // professional add a project ?
+  APPOINTMENT = 'appointment', // new appointment
+  DOCTOR_APPOINTMENT = 'doctorappointment', // notification for doctor appointment
 }

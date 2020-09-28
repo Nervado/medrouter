@@ -15,7 +15,12 @@ export class EmailsService {
     const emailJob = new EmailJob(
       `${group}`,
       {
-        data: { ...data, admin: 'Camila', phoneNumber: '21972857728', type },
+        data: {
+          ...data,
+          admin: 'Administrador',
+          phoneNumber: '21989898989',
+          type,
+        },
         date: new Date(),
       },
       { delay: 200 },
@@ -26,9 +31,6 @@ export class EmailsService {
       emailJob.data,
       emailJob.opts,
     );
-
-    //this.logger.verbose('Add to queue...');
-    //this.logger.verbose(emailJob.data);
 
     return queed ? true : false;
   }

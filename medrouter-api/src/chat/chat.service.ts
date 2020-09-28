@@ -165,8 +165,6 @@ export class ChatService {
       return [];
     }
 
-    //console.log(messagesWithUser);
-
     const ids: string[] = messagesWithUser.map(msg => {
       if (msg.sender === id) {
         return msg.receiver;

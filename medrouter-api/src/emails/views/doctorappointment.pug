@@ -1,0 +1,42 @@
+doctype html
+html
+  head
+    block head
+      meta(charset="utf-8")
+      meta(name="viewport" content="width=device-width")
+      meta(http-equiv="X-UA-Compatible" content="IE=edge")
+      meta(name="x-apple-disable-message-reformatting")
+
+      style       
+        include ./styles/global.css
+        include ./styles/components/header.css
+        include ./styles/components/footer.css
+        include ./styles/pages/confirmation.css
+
+  body
+    table.table(cellpadding="0" cellspacing="0" )
+      tr
+        td
+          include ./components/header.pug   
+      tr
+        td  
+          p(class='gret') Ola, 
+            p(class='admin') #{data.doctor}
+      tr
+        td
+          p O paciente <span class='enfase'>#{data.user}</span>!
+      tr
+        td
+          p Solicitou uma consulta para a data <span class='enfase'>#{data.date}</span> as <span class='enfase'>#{data.hour}h</span>. 
+      tr
+        td
+          p Por favor click no link abaixo para acessar sua agenda de consultas!
+
+      tr 
+        td
+          p 
+            button 
+              a(href="https://medrouter.com.br/auth/signin") Ir para MedRouter
+      include ./components/footer.pug    
+
+

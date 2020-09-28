@@ -54,11 +54,15 @@ export class AppointmentFormComponent implements OnInit {
     NonClientAppointmentRequest
   > = new EventEmitter();
 
-  hours: string[];
+  hours: string[] = [];
 
   availables: Available[];
 
   availablesDays: number[] = [];
+
+  options: RadioOption[] = [];
+
+  faBriefCase = faBriefcase;
 
   requestAppointmentForm: FormGroup;
 
@@ -69,10 +73,6 @@ export class AppointmentFormComponent implements OnInit {
     private homeService: HomeService,
     private ns: NotificationService
   ) {}
-
-  options: RadioOption[] = [{ label: "opcao", value: "i" }];
-
-  faBriefCase = faBriefcase;
 
   ngOnInit(): void {
     this.isOpen = false;
@@ -96,12 +96,6 @@ export class AppointmentFormComponent implements OnInit {
       date: this.fb.control("", [Validators.required]),
       hour: this.fb.control("", [Validators.required]),
     });
-
-    this.availablesDays = [1, 2, 3, 4, 5, 6, 7, 8];
-
-    this.availables = [{ day: 7, hours: ["03:00", "16:00"] }];
-
-    this.hours = ["03:00", "16:00"];
   }
 
   confirm() {
@@ -121,14 +115,17 @@ export class AppointmentFormComponent implements OnInit {
       this.homeService
         .requestAppointment(this.requestAppointmentForm.value)
         .subscribe({
-          next: () =>
+          next: () => {
             this.ns.notify({
               message: `Agendamento solicitado ${
                 this.requestAppointmentForm.value.fullname.split(" ")[0]
               }, consulte o email informado e se necessário entre em contato por de nossos canais de atendimento.`,
               type: Types.SUCCESS,
               timer: 4000,
-            }),
+            });
+            this.isOpen = false;
+          },
+
           error: () =>
             this.ns.notify({
               message:
@@ -141,7 +138,11 @@ export class AppointmentFormComponent implements OnInit {
   }
 
   selecteDate(event) {
-    this.getAvailableDate(this.requestAppointmentForm.value.specialty, false);
+    this.getAvailableDate(
+      this.requestAppointmentForm.value.specialty,
+      false,
+      true
+    );
   }
 
   select(event: any) {
@@ -155,11 +156,7 @@ export class AppointmentFormComponent implements OnInit {
     this.getAvailableDate(event, true); //ok
   }
 
-  getAvailableDate(event: any, nav?: boolean) {
-    this.availablesDays = [1, 2, 3, 4, 5, 6, 7, 8];
-
-    this.availables = [{ day: 7, hours: ["03:00", "16:00"] }];
-
+  getAvailableDate(event: any, nav?: boolean, selectedDate?: boolean) {
     const specialty = !nav
       ? event
       : this.requestAppointmentForm.value.specialty;
@@ -184,11 +181,15 @@ export class AppointmentFormComponent implements OnInit {
 
           this.availablesDays = this.availables.map((day) => day.day);
 
-          this.hours = this.availables.find(
-            (d) =>
-              d.day ===
-              new Date(this.requestAppointmentForm.value.date || date).getDate()
-          ).hours;
+          if (selectedDate) {
+            this.hours = this.availables.find(
+              (d) =>
+                d.day ===
+                new Date(
+                  this.requestAppointmentForm.value.date || date
+                ).getDate()
+            ).hours;
+          }
         },
       });
   }

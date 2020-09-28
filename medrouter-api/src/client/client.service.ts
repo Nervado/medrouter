@@ -17,20 +17,41 @@ import { DocDto } from 'src/docs/dto/doc.dto';
 import { Role } from 'src/auth/enums/role.enum';
 import { PhotosService } from 'src/photos/photos.service';
 import { AppointmentDto } from 'src/appointments/dto/appointment.dto';
-import { ModuleRef } from '@nestjs/core';
+
 import { Appointment } from 'src/appointments/models/appointment.entity';
 import { AppointmentStatus } from 'src/appointments/enums/appointment.enum';
 import { ExamDto } from 'src/exams/dto/exam.dto';
 import { Exam } from 'src/exams/models/exam.entity';
 import { ExamStatus } from 'src/exams/enums/status.enum';
-import { getMidnight } from 'src/utils/getMidnight';
+import { getMidnight, isPast } from 'src/utils/getMidnight';
 import { PrescriptionDto } from 'src/prescriptions/dto/prescription.dto';
 import { Prescription } from 'src/prescriptions/models/prescription.entity';
 import { arrayFromObject } from 'src/utils/arrayFromObject';
 import { DataGraph, DataMonth } from './dtos/data-graph';
 
-import { subMonths, endOfDay, addDays } from 'date-fns';
+import {
+  subMonths,
+  addDays,
+  setDate,
+  setYear,
+  setMonth,
+  format,
+  isSameDay,
+} from 'date-fns';
 import { Months } from './dtos/data-graph';
+import { NonClientAppointmentRequest } from './dtos/non-client-dto';
+import { AvailableSearchDto } from './dtos/availablesearch-dto';
+import { AvailableHoursDto } from './dtos/availablehours-dto';
+import { Schedule } from 'src/doctors/models/schedule.entity';
+import { Doctor } from 'src/doctors/models/doctor.entity';
+
+import { NotificationsService } from 'src/notifications/notifications.service';
+import { NotificationTopics } from 'src/notifications/enums/notificaiton-topic.enum';
+import { Owner } from 'src/owner/models/owner.entity';
+import { EmailsService } from 'src/emails/emails.service';
+import { EmailTypes } from 'src/emails/enums/email-types';
+import { EmailsGroups } from 'src/emails/enums/emails-groups';
+
 @Injectable()
 export class ClientService {
   private months = Months;
@@ -38,6 +59,8 @@ export class ClientService {
   constructor(
     @Inject(forwardRef(() => UsersService)) private us: UsersService,
     private ps: PhotosService,
+    private ns: NotificationsService,
+    private es: EmailsService,
   ) {}
 
   async create(client: AuthSingUpDto): Promise<any> {
@@ -71,6 +94,34 @@ export class ClientService {
         await client.save();
       } catch (error) {
         throw new InternalServerErrorException('Fail at create client');
+      }
+
+      await this.ns.create({
+        receiver: client.user.userId,
+        message: `Bem vindo a clinica Medrouter ${client.user.username}`,
+        topic: NotificationTopics.PACIENT,
+        read: false,
+        date: new Date(),
+      });
+
+      //notify owners
+      const owners = (
+        await Owner.createQueryBuilder('owner')
+          .leftJoinAndSelect('owner.user', 'user')
+          .getMany()
+      ).map(owner => owner.user.userId);
+
+      // remove after tests
+      console.log(owners);
+
+      for (const id of owners) {
+        await this.ns.create({
+          receiver: id,
+          message: `O paciente ${client.user.username} é um novo cliente MedRouter`,
+          topic: NotificationTopics.PACIENT,
+          read: false,
+          date: new Date(),
+        });
       }
 
       return client;
@@ -247,7 +298,7 @@ export class ClientService {
       throw new UnauthorizedException('Acess not allowed at appointments list');
     }
 
-    return this.searchClientAppointments(id, search);
+    return await this.searchClientAppointments(id, search);
   }
 
   async searchClientAppointments(
@@ -647,5 +698,311 @@ export class ClientService {
     } catch (error) {
       throw new InternalServerErrorException('Fail at get prescriptions data');
     }
+  }
+
+  async searchAvailableSpecialtys(): Promise<string[]> {
+    const doctors = await Doctor.createQueryBuilder('doctor').getMany();
+
+    return [...new Set(doctors.map(doctor => doctor.specialty[0]))];
+  }
+
+  async searchAvailableSchedules(
+    search: AvailableSearchDto,
+  ): Promise<AvailableHoursDto[]> {
+    return await this.getFreeSchedules(search);
+  }
+
+  async createAppointmentAndNewClient(
+    nonClientRequest: NonClientAppointmentRequest,
+  ): Promise<void> {
+    const {
+      fullname,
+      email,
+      phoneNumber,
+      specialty,
+      hour,
+      date,
+    } = nonClientRequest;
+
+    const _user = await User.findOne({ where: { email } });
+
+    if (_user) {
+      throw new UnauthorizedException('Not alowed by current route');
+    }
+
+    const names = fullname.split(' ');
+
+    let surname = '';
+
+    for (let index = 1; index < names.length; index++) {
+      if (index === 1) {
+        surname = names[index];
+      } else {
+        surname = ' ' + names[index];
+      }
+    }
+
+    const client = await this.create({
+      username: names[0],
+      surname,
+      phoneNumber,
+      email,
+    });
+
+    // recheck free schedules
+
+    const _date = new Date(date);
+
+    const free = await this.getFreeSchedules({
+      specialty,
+      month: _date.getMonth(),
+      year: _date.getFullYear(),
+    });
+
+    if (
+      !free.find(
+        fs => fs.day === _date.getDate() && fs.hours.find(h => h === hour),
+      )
+    ) {
+      throw new BadRequestException('schedule alredy taken');
+    }
+
+    // create appointment
+
+    const schedules = await this.searchManySchedules({
+      specialty,
+      month: _date.getMonth(),
+      year: _date.getFullYear(),
+    });
+
+    const availables = schedules.filter(sch =>
+      isSameDay(sch.date, getMidnight(_date)),
+    );
+
+    const randInt = Math.floor(Math.random() * availables.length);
+
+    const schedule = availables[randInt];
+
+    if (schedule.doctor.user.userId === client.user.userId) {
+      throw new BadRequestException('Not allowed');
+    }
+
+    if (isPast(_date, hour)) {
+      throw new BadRequestException('Time travel is forbiden');
+    }
+
+    const appointment = new Appointment();
+
+    if (client.user.checked) {
+      appointment.status = AppointmentStatus.ONESCHEDULE;
+    }
+
+    Appointment.merge(appointment, {
+      doctor: schedule.doctor,
+      client,
+      date: getMidnight(_date),
+      hour: hour,
+      price: schedule.doctor.mh,
+    });
+
+    try {
+      await appointment.save();
+    } catch (error) {
+      throw new InternalServerErrorException('Fail to create appointment');
+    }
+
+    // send notification to confirm
+    appointment &&
+      (await this.ns.create({
+        receiver: client.user.userId,
+        message: `Olá ${client.user.username}, agendamemento com doutor (a) ${
+          appointment.doctor.user.fullname
+        } no dia ${format(
+          appointment.date,
+          'dd/MM/yyyy',
+        )} as ${hour}h foi solicitado.`,
+        topic: NotificationTopics.PACIENT,
+        read: false,
+        date: new Date(),
+      }));
+
+    // send notification to confirm
+    appointment &&
+      (await this.ns.create({
+        receiver: appointment.client.user.userId,
+        message: `Olá ${client.user.username}, agendamemento com doutor (a) ${
+          appointment.doctor.user.fullname
+        } no dia ${format(appointment.date, 'dd/MM/yyyy')} as ${hour}h foi ${
+          appointment.status === AppointmentStatus.ONESCHEDULE
+            ? 'confirmado'
+            : 'solicitado'
+        }.`,
+        topic: NotificationTopics.PACIENT,
+        read: false,
+        date: new Date(),
+      }));
+
+    appointment &&
+      (await this.ns.create({
+        receiver: appointment.doctor.user.userId,
+        message: `Olá o paciente ${
+          client.user.username
+        }, solicitou uma consulta com você no dia ${format(
+          appointment.date,
+          'dd/MM/yyyy',
+        )} as ${hour}h.`,
+        topic: NotificationTopics.PACIENT,
+        read: false,
+        date: new Date(),
+      }));
+
+    // send email to doctor
+
+    const data1 = {
+      doctor: appointment.doctor.user.fullname,
+      user: appointment.client.user.fullname,
+      //date: appointment.date,
+      hour: appointment.hour,
+      doctorEmail: appointment.doctor.user.email,
+      email: appointment.client.user.email,
+      message: `Olá ${client.user.username}, agendamemento com doutor (a) ${
+        appointment.doctor.user.fullname
+      } no dia ${format(appointment.date, 'dd/MM/yyyy')} as ${hour}h foi ${
+        appointment.status === AppointmentStatus.ONESCHEDULE
+          ? 'confirmado'
+          : 'solicitado'
+      }.`,
+      date: `${format(appointment.date, 'dd/MM/yyyy')}`,
+      status: appointment.status,
+    };
+
+    const data2 = {
+      doctor: appointment.doctor.user.fullname,
+      user: appointment.client.user.fullname,
+      //date: appointment.date,
+      hour: appointment.hour,
+      doctorEmail: appointment.doctor.user.email,
+      email: appointment.doctor.user.email,
+      message: `Olá o paciente ${
+        client.user.username
+      }, solicitou um consulta com você no dia ${format(
+        appointment.date,
+        'dd/MM/yyyy',
+      )} as ${hour}h.`,
+      date: `${format(appointment.date, 'dd/MM/yyyy')}`,
+    };
+
+    this.es.sendEmail(data1, EmailTypes.APPOINTMENT, EmailsGroups.CLIENTS);
+
+    this.es.sendEmail(
+      data2,
+      EmailTypes.DOCTOR_APPOINTMENT,
+      EmailsGroups.PROFESSIONALS,
+    );
+  }
+
+  // query to search available schedules
+  async getFreeSchedules(
+    search: AvailableSearchDto,
+  ): Promise<AvailableHoursDto[]> {
+    try {
+      const founds = await this.searchManySchedules(search);
+
+      const searchAppointments = await this.searchManyApp(search);
+
+      const schedules = [
+        ...founds.map(sc => {
+          const hours = sc.availablehours
+            .map(hour => {
+              const find = searchAppointments.find(
+                appointment =>
+                  appointment.hour === hour &&
+                  sc.date.toString() === appointment.date.toString() &&
+                  appointment.doctor.id === sc.doctor.id,
+              );
+
+              return { hour: hour, busy: find ? true : false };
+            })
+            .filter(sc => sc.busy === false);
+
+          return {
+            id: sc.id,
+            date: sc.date,
+            hours: hours.map(h => h.hour),
+          };
+        }),
+      ];
+
+      const results = [
+        ...new Set(schedules.map(sch => sch.date.getDate())),
+      ].map(day => {
+        const hours: any[] = schedules
+          .filter(sch => sch.date.getDate() === day)
+          .map(sch => sch.hours);
+
+        return {
+          day,
+          hours: [...new Set([].concat(...hours))],
+        };
+      });
+
+      return results;
+    } catch (error) {
+      throw new InternalServerErrorException('Fail to retrive schedule');
+    }
+  }
+
+  async searchManyApp(search: AvailableSearchDto): Promise<Appointment[]> {
+    const query = Appointment.createQueryBuilder('appointment');
+    const { year, month, specialty } = search;
+
+    const date = getMidnight(new Date());
+
+    const endDate = getMidnight(
+      setYear(setDate(setMonth(new Date(), month + 1), 1), year),
+    );
+
+    query.andWhere(`doctor.specialty <@ (:specialty)`, {
+      specialty: [specialty],
+    });
+
+    query.andWhere('status != :status', { status: AppointmentStatus.CANCELED });
+
+    query.andWhere('date >= :date', { date });
+
+    query.andWhere('date < :endDate', {
+      endDate,
+    });
+
+    return await query
+      .leftJoinAndSelect('appointment.doctor', 'doctor')
+      .orderBy('date', 'ASC')
+      .orderBy('hour', 'ASC')
+      .getMany();
+  }
+
+  async searchManySchedules(search: AvailableSearchDto): Promise<Schedule[]> {
+    const query = Schedule.createQueryBuilder('schedule');
+    const { year, month, specialty } = search;
+
+    query.andWhere(`doctor.specialty <@ (:specialty)`, {
+      specialty: [specialty],
+    });
+
+    const date = getMidnight(new Date());
+
+    const endDate = getMidnight(
+      setYear(setDate(setMonth(new Date(), month + 1), 1), year),
+    );
+
+    query.andWhere('date >= :date', { date });
+    query.andWhere('date < :endDate', {
+      endDate,
+    });
+
+    return await query
+      .leftJoinAndSelect('schedule.doctor', 'doctor')
+      .leftJoinAndSelect('doctor.user', 'user')
+      .getMany();
   }
 }

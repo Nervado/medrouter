@@ -3,9 +3,12 @@ import {
   UnauthorizedException,
   Logger,
   InternalServerErrorException,
+  BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthSingUpDto } from './dto/auth-signup.dto';
+
+import * as bcrypt from 'bcrypt';
 
 import { JwtPayload } from './jwt-payload.interface';
 import { CredentailsDto } from './dto/auth-credentials.dto';
@@ -18,6 +21,7 @@ import * as Redis from 'ioredis';
 import { AuthPasswordChange } from './dto/auth-password-change.dto';
 import { User } from 'src/users/models/user.entity';
 import { LoginDto } from './dto/auth-login.dto';
+import { generatePass } from 'src/utils/hash-pass';
 
 @Injectable()
 export class AuthService {
@@ -71,6 +75,40 @@ export class AuthService {
     } catch (error) {
       throw new InternalServerErrorException('Uknow user', error);
     }
+  }
+
+  async forgotPassword(email: string) {
+    const user = await this.userService.findByEmail(email);
+
+    if (!user) throw new BadRequestException('Not possible');
+
+    const password = generatePass();
+    const passwordConfirmation = password;
+
+    user.salt = await bcrypt.genSalt();
+    user.password = await this.hashPassword(password, user.salt);
+
+    try {
+      await user.save();
+    } catch (error) {
+      throw new InternalServerErrorException('Not possible save user');
+    }
+
+    const { username } = user;
+
+    try {
+      await this.userService.signUp(
+        { username, email, password, passwordConfirmation },
+        true,
+        user,
+      );
+    } catch (error) {
+      throw new InternalServerErrorException('Fail at retrive password', error);
+    }
+  }
+
+  private async hashPassword(password: string, salt: string): Promise<string> {
+    return bcrypt.hash(password, salt);
   }
 
   async changePassword(

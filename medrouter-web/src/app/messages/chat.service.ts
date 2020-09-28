@@ -72,8 +72,6 @@ export class ChatService {
   desconnect() {
     this.status.emit(false);
 
-    console.log(this.socket.emptyConfig);
-
     this.socket.emit("desconect");
 
     this.socket.disconnect();

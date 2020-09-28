@@ -9,6 +9,7 @@ import {
   Param,
   Render,
   Patch,
+  Put,
 } from '@nestjs/common';
 import { AuthSingUpDto } from './dto/auth-signup.dto';
 import { AuthService } from './auth.service';
@@ -40,6 +41,12 @@ export class AuthController {
   ): Promise<CredentailsDto> {
     console.log('change password', body);
     return this.authService.changePassword(body, user);
+  }
+
+  @Put('/signup')
+  @UseInterceptors(ClassSerializerInterceptor)
+  forgotPassword(@Body('email') email: string): Promise<void> {
+    return this.authService.forgotPassword(email);
   }
 
   @Post('/signin')

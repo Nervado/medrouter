@@ -44,6 +44,8 @@ export class AppointmentConfirmModalComponent implements OnInit {
 
   @Output() send: EventEmitter<boolean> = new EventEmitter();
 
+  fmrt = fmrt;
+
   ngOnInit(): void {}
 
   open(_content?, data?: NonClientAppointmentRequest) {
@@ -78,6 +80,4 @@ export class AppointmentConfirmModalComponent implements OnInit {
   prettyDate(date) {
     return format(date, "dd/MM/yyyy");
   }
-
-  fmrt = fmrt;
 }

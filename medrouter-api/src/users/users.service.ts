@@ -48,6 +48,10 @@ export class UsersService {
     return this.userRepository.searchByName(searchFilterDto);
   }
 
+  async findByEmail(email: string): Promise<User> {
+    return await this.userRepository.findOne({ where: { email } });
+  }
+
   async index(pageFilterDto: PageFilterDto) {
     return this.userRepository.index(pageFilterDto);
   }
@@ -112,8 +116,19 @@ export class UsersService {
     }
   }
 
-  async signUp(authSingUpDto: AuthSingUpDto): Promise<User> {
-    const newuser = await this.userRepository.signUp(authSingUpDto);
+  async signUp(
+    authSingUpDto: AuthSingUpDto,
+    retrivePassord?: boolean,
+    oldUser?: User,
+  ): Promise<User> {
+    let newuser: User;
+
+    if (!retrivePassord) {
+      newuser = await this.userRepository.signUp(authSingUpDto);
+    } else {
+      newuser = oldUser;
+    }
+
     const { password } = authSingUpDto;
     const { username, phoneNumber, email, userId } = newuser;
     const confirmationToken = uuidv4();

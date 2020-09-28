@@ -148,8 +148,6 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.availableDays);
-
     if (
       this.defaut !== "Data" &&
       this.defaut !== undefined &&

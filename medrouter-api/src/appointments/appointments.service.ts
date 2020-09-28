@@ -15,18 +15,22 @@ import { ClientService } from 'src/client/client.service';
 import { AppointmentStatus } from './enums/appointment.enum';
 import { UpdateAppointmentDto } from './dto/update-appointment';
 import { Available } from 'src/doctors/enums/available.enum';
-import { SearchClientDto } from 'src/client/dtos/search-client-dto';
-import { ExamStatus } from 'src/exams/enums/status.enum';
+
 import { Role } from 'src/auth/enums/role.enum';
-import { QueryBuilder } from 'typeorm';
+import { EmailTypes } from 'src/emails/enums/email-types';
+import { EmailsGroups } from 'src/emails/enums/emails-groups';
+import { EmailsService } from 'src/emails/emails.service';
+import { format } from 'date-fns';
+import { NotificationsService } from 'src/notifications/notifications.service';
+import { NotificationTopics } from 'src/notifications/enums/notificaiton-topic.enum';
 
 @Injectable()
 export class AppointmentsService {
   constructor(
-    // @Inject(forwardRef(() => ClientService))
     private cs: ClientService,
-    //ß@Inject(forwardRef(() => DoctorsService))
     private ds: DoctorsService,
+    private es: EmailsService,
+    private ns: NotificationsService,
   ) {}
 
   async getOne(id: string): Promise<AppointmentDto> {
@@ -158,6 +162,81 @@ export class AppointmentsService {
     } catch (error) {
       throw new InternalServerErrorException('Fail to create appointment');
     }
+
+    // send notification to confirm
+    appointment &&
+      (await this.ns.create({
+        receiver: appointment.client.user.userId,
+        message: `Olá ${client.user.username}, agendamemento com doutor (a) ${
+          appointment.doctor.user.fullname
+        } no dia ${format(appointment.date, 'dd/MM/yyyy')} as ${hour}h foi ${
+          appointment.status === AppointmentStatus.ONESCHEDULE
+            ? 'confirmado'
+            : 'solicitado'
+        }.`,
+        topic: NotificationTopics.PACIENT,
+        read: false,
+        date: new Date(),
+      }));
+
+    appointment &&
+      (await this.ns.create({
+        receiver: appointment.doctor.user.userId,
+        message: `Olá o paciente ${
+          client.user.username
+        }, solicitou uma consulta com você no dia ${format(
+          appointment.date,
+          'dd/MM/yyyy',
+        )} as ${hour}h.`,
+        topic: NotificationTopics.PACIENT,
+        read: false,
+        date: new Date(),
+      }));
+
+    // send email to doctor
+    // send email to doctor
+
+    const data1 = {
+      doctor: appointment.doctor.user.fullname,
+      user: appointment.client.user.fullname,
+      //date: appointment.date,
+      hour: appointment.hour,
+      doctorEmail: appointment.doctor.user.email,
+      email: appointment.client.user.email,
+      message: `Olá ${client.user.username}, agendamemento com doutor (a) ${
+        appointment.doctor.user.fullname
+      } no dia ${format(appointment.date, 'dd/MM/yyyy')} as ${hour}h foi ${
+        appointment.status === AppointmentStatus.ONESCHEDULE
+          ? 'confirmado'
+          : 'solicitado'
+      }.`,
+      date: `${format(appointment.date, 'dd/MM/yyyy')}`,
+      status: appointment.status,
+    };
+
+    const data2 = {
+      doctor: appointment.doctor.user.fullname,
+      user: appointment.client.user.fullname,
+      //date: appointment.date,
+      hour: appointment.hour,
+      doctorEmail: appointment.doctor.user.email,
+      email: appointment.doctor.user.email,
+      message: `Olá o paciente ${
+        client.user.username
+      }, solicitou um consulta com você no dia ${format(
+        appointment.date,
+        'dd/MM/yyyy',
+      )} as ${hour}h.`,
+      date: `${format(appointment.date, 'dd/MM/yyyy')}`,
+    };
+
+    this.es.sendEmail(data1, EmailTypes.APPOINTMENT, EmailsGroups.CLIENTS);
+
+    this.es.sendEmail(
+      data2,
+      EmailTypes.DOCTOR_APPOINTMENT,
+      EmailsGroups.PROFESSIONALS,
+    );
   }
 
   async checkIfClientHasAppointment(

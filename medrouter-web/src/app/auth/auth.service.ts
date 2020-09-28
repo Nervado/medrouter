@@ -72,6 +72,10 @@ export class AuthService {
       );
   }
 
+  forgot(email: string): Observable<void> {
+    return this.http.put<void>(`${MEDROUTER_API}/auth/signup`, { email });
+  }
+
   getUserPermissions() {
     this.user.user.role.forEach(
       async (rol, i) =>

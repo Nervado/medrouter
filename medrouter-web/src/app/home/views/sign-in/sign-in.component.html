@@ -44,10 +44,10 @@
           </app-input-container>
 
           <div
-            class="text-oposity check w-100 d-flex justify-content-center align-items-center mt-1"
-            style="height: 35px;"
+            class="py-1 text-oposity check w-100 d-flex justify-content-center align-items-center mt-1"
+            style="height: 35px"
           >
-            <label class="container-checkbox">
+            <label class="container-checkbox mx-1">
               <input
                 type="checkbox"
                 [(checked)]="rememberme"
@@ -55,6 +55,15 @@
               />
               <span class="checkmark-checkbox"></span>
               <span class="check">Lembrar-me</span>
+            </label>
+            <label class="container-checkbox mx-1">
+              <input
+                type="checkbox"
+                [(checked)]="forgot"
+                formControlName="forgot"
+              />
+              <span class="checkmark-checkbox"></span>
+              <span class="check">Esqueci minha senha</span>
             </label>
           </div>
 

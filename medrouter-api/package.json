@@ -25,7 +25,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "dev": "tsc-watch --onSuccess=\"yarn copy\"",
-    "copy": "cp -r  ./src/emails/templates ./dist/emails/templates"
+    "copy": "cp -r  ./src/emails/views ./dist/emails/views"
   },
   "dependencies": {
     "@akanass/nestjsx-crypto": "^1.0.0",

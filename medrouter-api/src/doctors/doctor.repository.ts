@@ -60,8 +60,6 @@ export class DoctorRepository extends Repository<Doctor>
         (value, i) => value.indexOf(up) > -1 || value.indexOf(down) > -1,
       );
 
-      console.log(specialtys);
-
       if (specialtys.length > 0) {
         query.andWhere(
           `user.username  ILIKE '%${username}%' OR user.surname  ILIKE '%${username}%' OR doctor.specialty <@ (:specialtys)`,
