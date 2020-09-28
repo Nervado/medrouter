@@ -93,11 +93,16 @@ export class AuthService {
                 );
               }
 
-              this.defaultRoute = DefaultRoutes[this.user.user.role[0]]; // setup default route
-              this.router.navigate([
-                this.defaultRoute,
-                this.getRuleId(this.user.user.role[0]),
-              ]);
+              const role = this.user.user.role.find((r) => r !== undefined);
+
+              if (!role) {
+                this.defaultRoute = "/";
+              } else {
+                this.defaultRoute = DefaultRoutes[role];
+              }
+              // setup default route
+
+              this.router.navigate([this.defaultRoute, this.getRuleId(role)]);
             }
           },
         })

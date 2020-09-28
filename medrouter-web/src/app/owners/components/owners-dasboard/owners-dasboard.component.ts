@@ -13,6 +13,8 @@ import { TotalDto } from "src/app/messages/toast/dto/total.dto";
 import { NotificationService } from "src/app/messages/notification.service";
 import { Types } from "src/app/messages/toast/enums/types";
 import { StatsDto } from "../../dtos/stats.dto";
+import { AuthService } from "src/app/auth/auth.service";
+import { Role } from "src/app/auth/enums/roles-types";
 
 @Component({
   selector: "app-owners-dasboard",
@@ -50,10 +52,16 @@ export class OwnersDasboardComponent implements OnInit {
   constructor(
     private os: OwnersService,
     private ar: ActivatedRoute,
-    private ns: NotificationService
+    private ns: NotificationService,
+    private as: AuthService
   ) {}
 
   ngOnInit(): void {
+    //const id = this.as.getRuleId(Role.OWNER);
+
+    //this.getTotals(id);
+    //this.getStats(id);
+
     this.ar.parent.params.subscribe({
       next: (params) => {
         this.getTotals(params["id"]);
