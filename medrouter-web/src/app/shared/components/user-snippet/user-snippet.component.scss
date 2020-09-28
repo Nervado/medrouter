@@ -20,6 +20,24 @@
       object-fit: cover;
     }
   }
+
+  @media screen and (max-device-width: 640px), screen and (max-width: 640px) {
+    .buttons {
+      fa-icon {
+        font-size: 1em;
+      }
+    }
+
+    .avatar-area {
+      img {
+        height: 40px;
+        width: 40px;
+      }
+    }
+    .grett {
+      font-size: 10px;
+    }
+  }
 }
 
 .online-marker {

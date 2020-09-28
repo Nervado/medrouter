@@ -1,16 +1,19 @@
-<div class="tool-bar h-100" [style.background-color]="bg">
-  <div class="too-bar-content">
-    <div class="page-icon">
+<div class="tool-bar pc" [style.background-color]="bg" [style.height]="height">
+  <div class="too-bar-content" #toolBarMenu>
+    <div class="page-icon cursor" (click)="toogle()">
       <a [routerLink]="link">
         <fa-icon
           [icon]="menuLinks[role].icon"
-          size="3x"
+          size="2x"
           class="text-oposity"
         ></fa-icon>
       </a>
     </div>
 
-    <div class="tool-bar-menu d-flex flex-column align-items-center">
+    <div
+      class="tool-bar-menu d-flex flex-column align-items-center"
+      *ngIf="showNavigation"
+    >
       <div class="my-3" *ngFor="let icon of menuIcons">
         <a [routerLink]="icon['path']">
           <fa-icon [icon]="icon.icon" class="fa-lg"></fa-icon>

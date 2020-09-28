@@ -6,7 +6,7 @@
           <fa-icon
             [icon]="faCommentAlt"
             class="fa-lg cursor"
-            [style.color]="mainColor"
+            [style.color]="!showChat ? mainColor : 'var(--oposity1)'"
             (click)="showChat = !showChat && online"
           >
           </fa-icon>
@@ -28,7 +28,7 @@
           <fa-icon
             [icon]="faBell"
             class="fa-lg cursor"
-            [style.color]="mainColor"
+            [style.color]="!showNotifications ? mainColor : 'var(--oposity1)'"
             (click)="showNotifications = !showNotifications && online"
           ></fa-icon>
           <app-badge

@@ -1,22 +1,43 @@
 .tool-bar {
   z-index: 10;
   width: 80px;
-  //min-height: 80px;
-  height: 100%;
+
+  border-radius: 0px 0px 4px 4px;
+
+  .page-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 5px;
+
+    min-height: 50px;
+
+    a {
+      fa-icon {
+        font-size: 1.6rem;
+      }
+    }
+  }
+
+  @media screen and (max-device-width: 640px), screen and (max-width: 640px) {
+    width: 40px;
+
+    .page-icon {
+      a {
+        fa-icon {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+
   position: fixed;
 
   box-shadow: 3px 3px 12px -3px rgba(0, 0, 0, 0.7);
 
   .text-oposity {
     transform: scale(1.5);
-  }
-
-  .page-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 80px;
-    width: 100%;
   }
 
   .logo-icon {
@@ -48,4 +69,8 @@
       }
     }
   }
+}
+
+.cursor {
+  cursor: pointer;
 }
