@@ -1,35 +1,38 @@
 <a name="begin"></a>
 <div class="main-header effect1">
   <div class="top-bar">
-    <div class="container d-flex h-100 justify-content-between">
-      <div class="d-flex align-items-center header-logo h-100">
+    <div
+      class="container d-flex h-100 justify-content-between align-items-center"
+    >
+      <div class="col-4 d-flex align-items-center header-logo h-100">
         <img src="../../assets/logo.svg" alt="logo" class="logo" />
         <span class="text-white ml-3 font-weight-bolder">MedRouter</span>
       </div>
       <div
-        class="top-bar-menu h-100 d-flex flex-column align-items-start justify-content-center"
+        class="top-bar-menu h-100 d-flex flex-column align-items-end justify-content-center"
       >
-        <div>
+        <div class="row-md-12 w-100">
           <fa-icon [icon]="faPhone" class="mx-2 icon"></fa-icon>
           <span class="info"> +55 (21) 97285-7728 </span> <br />
         </div>
 
-        <div>
+        <div class="d-none d-md-flex row-md-12">
           <fa-icon [icon]="faMapMarked" class="mx-2 icon"></fa-icon>
           <span class="info"> Rua das Lambretas, 45, Rio de Janeiro/Rj</span>
         </div>
       </div>
 
       <div
-        class="top-bar-menu h-100 d-flex flex-column align-items-start justify-content-center"
+        class="d-none d-md-flex col-md-4 col-sm-6 top-bar-menu h-100 flex-column align-items-end justify-content-center"
       >
-        <div>
+        <div class="row-12 d-flex aling-itens-center justify-content-end w-100">
           <fa-icon [icon]="faClock" class="mx-2 icon"></fa-icon>
           <span class="info">24h por dia</span> <br />
         </div>
-        <div>
+        <div class="row-12 d-flex aling-itens-center justify-content-end align">
           <fa-icon [icon]="faCalendar" class="mx-2 icon"></fa-icon>
-          <span class="info">7 dias por semana</span> <br />
+          <span class="info d-flex align-items-center">7 dias por semana</span>
+          <br />
         </div>
       </div>
     </div>

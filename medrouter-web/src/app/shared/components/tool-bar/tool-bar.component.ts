@@ -102,7 +102,7 @@ export class ToolBarComponent implements OnInit, AfterViewInit {
       this.minHeight = "50px";
     }
 
-    this.toogle();
+    this.height = this.showNavigation ? "100%" : this.minHeight;
   }
 
   toogle() {

@@ -41,4 +41,16 @@
       opacity: 0.6;
     }
   }
+
+  @media screen and (max-device-width: 640px), screen and (max-width: 640px) {
+    height: 110px;
+
+    .tool-bar {
+      height: 50px;
+    }
+
+    .top-bar-menu {
+      height: 60px;
+    }
+  }
 }
