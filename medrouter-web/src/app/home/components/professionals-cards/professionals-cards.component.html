@@ -1,19 +1,24 @@
-<a href="#begin">
-  <div class="bookmark"></div>
-</a>
 <div class="container">
+  <!-- 
+
+ <a href="#begin">
+    <div class="bookmark"></div>
+  </a>
+
+  -->
+
   <div class="d-flex justify-content-center my-2">
     <a name="professionals"> </a>
-    <h2 class="text-base text-justify text-uppercase">
+    <div class="text-base text-justify text-uppercase pro-title">
       Nossos Profissionais
-    </h2>
+    </div>
   </div>
 
   <div
     class="container professionals-cards d-flex align-items-center justify-content-lg-between"
   >
     <div
-      class="arrow d-flex flex-column align-content-center justify-content-center m-4"
+      class="arrow d-flex flex-column align-content-center justify-content-center m-4 m-sm-2"
     >
       <fa-icon
         [icon]="faArrowLeft"
@@ -24,7 +29,7 @@
     </div>
 
     <!-- cards -->
-    <div class="cards d-flex">
+    <div class="cards d-sm-flex flex-sm-column d-md-flex flex-md-row d-lg-flex">
       <app-professional-card
         *ngFor="let professional of professionals"
         [professional]="professional"
@@ -41,7 +46,7 @@
     <!-- cards -->
 
     <div
-      class="arrow d-flex flex-column align-content-center justify-content-center m-4"
+      class="arrow d-flex flex-column align-content-center justify-content-center m-4 m-sm-2"
     >
       <fa-icon
         [icon]="faArrowRight"
