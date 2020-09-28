@@ -31,7 +31,7 @@ import { Types } from "src/app/messages/toast/enums/types";
         "open",
         style({
           opacity: 1,
-          "max-height": "130px",
+          "max-height": "400px",
         })
       ),
       state(
@@ -46,7 +46,7 @@ import { Types } from "src/app/messages/toast/enums/types";
   ],
 })
 export class AppointmentFormComponent implements OnInit {
-  @Input() isOpen: boolean = false;
+  @Input() isOpen: boolean = true;
 
   faClock = faClock;
 

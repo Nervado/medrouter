@@ -76,3 +76,13 @@
 .hide {
   visibility: hidden;
 }
+
+@media screen and (max-device-width: 640px), screen and (max-width: 640px) {
+  .onfline-marker,
+  .online-marker {
+    &::before {
+      top: 2px;
+      right: 2px;
+    }
+  }
+}

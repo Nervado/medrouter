@@ -1,17 +1,42 @@
 .main {
   .main-home {
     background-image: url("../../../../assets/home.jpg");
-    background-attachment: fixed;
+    background-attachment: scroll;
     background-position: center 65%;
     background-repeat: no-repeat;
     background-size: 100%;
     height: 550px;
-    .banner {
+
+    .bannner {
+      width: 100%;
       height: 400px;
+      font-size: 2rem;
+    }
+
+    @media screen and (max-device-width: 1250px),
+      screen and (max-width: 1250px) {
+      background-position: center 10%;
+
+      .bannner {
+        width: 100%;
+        height: 350px;
+        font-size: 1.2em;
+      }
+    }
+
+    @media screen and (max-device-width: 640px), screen and (max-width: 640px) {
+      background-position: center 20%;
+      background-attachment: scroll;
+
+      .bannner {
+        width: 100%;
+        height: 350px;
+        font-size: 1rem;
+      }
     }
 
     .services {
-      font-size: 2.5em;
+      //font-size: 2.5em;
       font-family: "Open sans";
       font-weight: bolder;
       padding: 30px;
@@ -19,8 +44,10 @@
       background-color: rgba(0, 0, 0, 0.4);
       border-radius: 4px;
 
-      span {
+      div {
         color: var(--oposity);
+
+        text-align: center;
       }
     }
   }
@@ -52,4 +79,9 @@
 
 .border-text {
   margin-bottom: 2px;
+}
+
+a {
+  text-decoration: none;
+  color: var(--oposity);
 }

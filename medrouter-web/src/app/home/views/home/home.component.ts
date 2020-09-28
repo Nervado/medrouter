@@ -12,7 +12,6 @@ import {
   faArrowLeft,
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
-import { MEDICINES_API } from "src/app/api/app.api";
 import { AuthService } from "src/app/auth/auth.service";
 import { Role } from "src/app/auth/enums/roles-types";
 import { NonClientAppointmentRequest } from "../../components/appointment-form/dtos/appointment-nonclient-request.dto";

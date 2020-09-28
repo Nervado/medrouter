@@ -2,6 +2,8 @@
   font-size: 1em;
   height: 140px;
 
+  width: 100%;
+
   background-color: var(--oposity);
 
   .top-bar {
@@ -44,6 +46,15 @@
 
   @media screen and (max-device-width: 640px), screen and (max-width: 640px) {
     height: 110px;
+
+    .title {
+      font-size: 12px;
+    }
+
+    .top-bar {
+      font-size: 12px;
+      font-weight: bold;
+    }
 
     .tool-bar {
       height: 50px;

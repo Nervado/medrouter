@@ -1,9 +1,16 @@
 .container {
   background-color: var(--medium);
+  height: 100px;
+  @media screen and (max-device-width: 1115px), screen and (max-width: 1115px) {
+    width: 200px;
+    height: 350px;
+  }
 }
 
 .consultant {
   border-radius: 4px;
+  @media screen and (max-device-width: 1115px), screen and (max-width: 1115px) {
+  }
 
   .consultant-title {
     font-size: 1.2em;
@@ -11,6 +18,16 @@
 }
 .form {
   border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (max-device-width: 1115px), screen and (max-width: 1115px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 
   input,
   select {
@@ -40,8 +57,8 @@
   height: 25px;
   background-color: var(--oposity1);
   border-radius: 0px 4px 4px 0px;
-  padding: 0px 8px 0px 8px;
-  margin-left: -32px;
+  padding: 0px 10px 0px 10px;
+  //margin-left: -32px;
   display: flex;
   flex-direction: column;
   align-items: center;
