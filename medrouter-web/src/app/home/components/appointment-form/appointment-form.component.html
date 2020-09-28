@@ -25,18 +25,20 @@
       formControlName="phoneNumber"
     />
 
-    <select
-      class="in m-2 flex-shrink-1"
-      formControlName="specialty"
-      style="border: 1px solid var(--oposity); color: var(--oposity1)"
-      ngDefaultControl="oi"
-      (change)="select($event)"
-    >
-      <option value="" disabled selected hidden>Especialidade</option>
-      <option [value]="cat.value" *ngFor="let cat of options">
-        {{ cat.label }}
-      </option>
-    </select>
+    <div>
+      <select
+        class="in m-2 flex-shrink-1"
+        formControlName="specialty"
+        style="border: 1px solid var(--oposity); color: var(--oposity1)"
+        ngDefaultControl="oi"
+        (change)="select($event)"
+      >
+        <option value="" disabled selected hidden>Especialidade</option>
+        <option [value]="cat.value" *ngFor="let cat of options">
+          {{ cat.label }}
+        </option>
+      </select>
+    </div>
 
     <app-datepicker
       [height]="'25px'"
@@ -62,7 +64,7 @@
       </select>
       <div class="hour-select"><fa-icon [icon]="faClock"></fa-icon></div>
     </div>
-    <div>
+    <div class="button-area">
       <button
         class="btn-oposity1 text-white m-2 flex-shrink-1 send"
         (click)="confirm()"
