@@ -1,3 +1,11 @@
 .footer {
   border-top: 1px solid var(--oposity);
+
+  @media screen and (max-device-width: 1200px), screen and (max-width: 1200px) {
+    font-size: 13px;
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    font-size: 10px;
+  }
 }
