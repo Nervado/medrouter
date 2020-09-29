@@ -6,6 +6,10 @@
 
   width: 300px;
 
+  @media screen and (max-device-width: 320px), screen and (max-width: 320px) {
+    width: 250px;
+  }
+
   background-color: rgba(22, 46, 79, 0.8);
   border-radius: 2px;
   padding: 5px;

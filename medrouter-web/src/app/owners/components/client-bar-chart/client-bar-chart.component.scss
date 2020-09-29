@@ -32,7 +32,7 @@
     }
     .col {
       height: 110px;
-      width: 8px;
+      min-width: 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -42,7 +42,7 @@
 
       .value {
         height: 98px;
-        max-width: 5px;
+        min-width: 5px;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -73,6 +73,7 @@
         color: var(--client);
         font-weight: bold;
         font-size: 10px;
+        min-width: 10px;
       }
     }
   }
