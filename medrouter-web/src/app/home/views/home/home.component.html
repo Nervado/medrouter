@@ -1,5 +1,5 @@
 <div class="home d-flex flex-column justify-content-between h-100 w-100">
-  <app-header></app-header>
+  <app-header class="mb-2"></app-header>
   <a name="top"></a>
   <app-appointment-confirm-modal
     [appointmentResume]="appRequest"
@@ -58,12 +58,14 @@
       <div class="container">
         <div class="d-flex justify-content-center my-3">
           <a name="information"></a>
-          <h1 class="text-base">Informações aos nossos clientes</h1>
+          <div class="text-base pacient-title">
+            Informações aos nossos clientes
+          </div>
         </div>
 
-        <div class="d-flex">
+        <div class="d-md-flex d-sm-flex flex-sm-column flex-md-row">
           <div
-            class="grow col-4 text-justify card m-2 d-flex flex-column align-items-center"
+            class="grow col-md-4 col-sm-12 text-justify card m-2 d-flex flex-column align-items-center"
           >
             <h5 class="mt-1">Remarcação de consultas</h5>
             <span class="my-2 icon">
@@ -71,10 +73,10 @@
             </span>
 
             Remarcações automáticas de consultas poderão ser feitas com pelo
-            menos 24horas horas de antecedencia. .
+            menos 24horas horas de antecedencia.
           </div>
           <div
-            class="grow col-4 text-justify card m-2 d-flex flex-column align-items-center"
+            class="grow col-md-4 col-sm-12 text-justify card m-2 d-flex flex-column align-items-center"
           >
             <h5 class="mt-1">Resultados de exames</h5>
             <span class="my-2 icon">
@@ -85,7 +87,7 @@
             disponíveis em sua área pessoal.
           </div>
           <div
-            class="grow col-4 text-justify card m-2 d-flex flex-column align-items-center"
+            class="grow col-md-4 col-sm-12 text-justify card m-2 d-flex flex-column align-items-center"
           >
             <h5 class="mt-1">Telemedicina</h5>
             <span class="my-2 icon">
@@ -97,9 +99,9 @@
           </div>
         </div>
 
-        <div class="d-flex">
+        <div class="d-md-flex d-sm-flex flex-sm-column flex-md-row">
           <div
-            class="grow col-4 text-justify card m-2 d-flex flex-column align-items-center"
+            class="grow col-md-4 col-sm-12 text-justify card m-2 d-flex flex-column align-items-center"
           >
             <h5 class="mt-1">Agendamentos online</h5>
             <span class="my-2 icon">
@@ -110,7 +112,7 @@
             sua agenda de consultas.
           </div>
           <div
-            class="grow col-4 text-justify card m-2 d-flex flex-column align-items-center"
+            class="grow col-md-4 col-sm-12 text-justify card m-2 d-flex flex-column align-items-center"
           >
             <h5 class="mt-1">Pagamentos</h5>
             <span class="my-2 icon">
@@ -121,7 +123,7 @@
             com atraso de atualização de no máximo 24 horas.
           </div>
           <div
-            class="grow col-4 text-justify card m-2 d-flex flex-column align-items-center"
+            class="grow col-md-4 col-sm-12 text-justify card m-2 d-flex flex-column align-items-center"
           >
             <h5 class="mt-1">Plantão</h5>
             <span class="my-2 icon">

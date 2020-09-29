@@ -101,3 +101,17 @@ a {
   text-decoration: none;
   color: var(--oposity);
 }
+
+.pacient-title {
+  font-weight: bold;
+  font-size: 2em;
+  @media screen and (max-device-width: 640px), screen and (max-width: 640px) {
+    font-size: 1.5em;
+  }
+}
+
+.main-home-body {
+  @media screen and (max-device-width: 640px), screen and (max-width: 640px) {
+    font-size: 13px;
+  }
+}
