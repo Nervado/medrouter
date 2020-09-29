@@ -22,7 +22,6 @@
       <div><strong>Suporte</strong></div>
       <div class="value" [style.color]="color3">
         <fa-icon [icon]="faUsersCog"></fa-icon>
-
         {{ total.staff }}
       </div>
     </div>
@@ -36,13 +35,14 @@
   </div>
   <div class="content" *ngIf="stats.finished">
     <app-donut-chart
-      [radius]="100"
-      [stroke]="20"
+      [radius]="75"
+      [stroke]="15"
       [progress]="stats.finished?.percent"
       [color]="color"
       [title]="title"
     ></app-donut-chart>
     <app-client-bar-chart
+      class="w-100"
       [title]="title5"
       [data]="stats.finished?.stats"
       [color]="color"
@@ -50,13 +50,14 @@
   </div>
   <div class="content" *ngIf="stats.canceled">
     <app-donut-chart
-      [radius]="100"
-      [stroke]="20"
+      [radius]="75"
+      [stroke]="15"
       [progress]="stats.canceled?.percent"
       [color]="color2"
       [title]="title2"
     ></app-donut-chart>
     <app-client-bar-chart
+      class="w-100"
       [title]="title6"
       [data]="stats.canceled?.stats"
       [color]="color2"
@@ -64,13 +65,14 @@
   </div>
   <div class="content" *ngIf="stats.returned">
     <app-donut-chart
-      [radius]="100"
-      [stroke]="20"
+      [radius]="75"
+      [stroke]="15"
       [progress]="stats.returned?.percent"
       [color]="color3"
       [title]="title3"
     ></app-donut-chart>
     <app-client-bar-chart
+      class="w-100"
       [title]="title7"
       [data]="stats.returned?.stats"
       [color]="color3"
@@ -79,13 +81,14 @@
 
   <div class="content" *ngIf="stats.reschedule">
     <app-donut-chart
-      [radius]="100"
-      [stroke]="20"
+      [radius]="75"
+      [stroke]="15"
       [progress]="stats.reschedule?.percent"
       [color]="color4"
       [title]="title4"
     ></app-donut-chart>
     <app-client-bar-chart
+      class="w-100"
       [title]="title8"
       [data]="stats.reschedule?.stats"
       [color]="color4"
@@ -94,13 +97,14 @@
 
   <div class="content" *ngIf="stats.onscheduled">
     <app-donut-chart
-      [radius]="100"
-      [stroke]="20"
+      [radius]="75"
+      [stroke]="15"
       [progress]="stats.onscheduled?.percent"
       [color]="color5"
       [title]="title9"
     ></app-donut-chart>
     <app-client-bar-chart
+      class="w-100"
       [title]="title9"
       [data]="stats.onscheduled?.stats"
       [color]="color5"
