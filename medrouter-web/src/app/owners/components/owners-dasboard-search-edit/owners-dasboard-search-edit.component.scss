@@ -84,19 +84,31 @@
           object-fit: cover;
         }
 
-        div {
-          width: 200px;
-          //background-color: yellowgreen;
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-          overflow: hidden;
+        .username {
+          font-size: 12px;
+          font-weight: bold;
+        }
+        .small {
+          font-size: 8px;
         }
       }
     }
   }
   .cursor {
     cursor: pointer;
+  }
+
+  @media screen and (max-device-width: 900px), screen and (max-width: 900px) {
+    margin: 80px 40px 0px 80px;
+    font-size: 10px;
+  }
+
+  @media screen and (max-device-width: 320px), screen and (max-width: 320px) {
+    font-size: 10px;
+    margin: 0px;
+    padding: 0px;
+    padding-left: 30px;
+    padding-top: 40px;
   }
 }
 

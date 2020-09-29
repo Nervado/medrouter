@@ -14,8 +14,11 @@
 
 <div class="dashboard d-flex flex-wrap justify-content-between">
   <div class="main-data aside text-admin">
-    <form [formGroup]="searchForm" class="search-form">
-      <label for="search" class="text-owner">
+    <form
+      [formGroup]="searchForm"
+      class="search-form d-flex align-items-center justify-content-center w-100"
+    >
+      <label for="search" class="text-owner d-none d-md-flex w-100">
         <fa-icon [icon]="faUserMd" class="text-owner"></fa-icon>
         Equipe médica da clínica</label
       >
@@ -26,7 +29,7 @@
           type="text"
           placeholder="Nome do funcionário"
           autocomplete="off"
-          class="text-owner"
+          class="text-owner mb-2"
         />
         <div
           class="cursor text-owner d-flex align-items-center justify-content-between"
@@ -40,146 +43,150 @@
     </form>
 
     <div class="data">
-      <div class="table-header text-owner">
-        <div class="d-flex justify-content-start">Funcionário</div>
-        <div>Contratado em:</div>
-        <div>
-          Salário
-          <fa-icon [icon]="faCoins" class="ml-1"> </fa-icon>
-        </div>
-        <div>
-          Consulta
-          <fa-icon [icon]="faMoneyBill" class="ml-1"> </fa-icon>
-        </div>
-        <div>Especialidade</div>
-        <div>Editar</div>
-      </div>
-
       <div class="results">
         <div
           class="result active"
           *ngFor="let doctor of doctors"
           [ngClass]="{ dismiss: !doctor.ishired }"
         >
-          <div class="d-flex justify-content-start align-items-center item">
-            <ng-container *ngIf="doctor.user.avatar?.url; else avatarTemplate">
-              <img [src]="doctor.user.avatar?.url" alt="avatar" />
-            </ng-container>
-            <ng-template #avatarTemplate>
-              <img src="../../../../assets/avatarmale.png" alt="avatar" />
-            </ng-template>
-            <span>{{ doctor.user.username }}</span>
-          </div>
-
-          <div class="item">
-            <fa-icon [icon]="faCalendarPlus" class="mr-1"> </fa-icon>
-            {{ doctor.hireddate | date: "shortDate" }}
-          </div>
-
-          <div class="item">
-            {{ doctor.salary | currency: "BRL" }}
-          </div>
-          <form [formGroup]="specialtyForm" class="d-flex">
-            <div class="d-flex align-items-center item mx-2">
+          <div class="wrp-doctor">
+            <div class="item">
               <ng-container
-                *ngIf="doctor.edit && doctor.ishired; else editPrice"
+                *ngIf="doctor.user.avatar?.url; else avatarTemplate"
               >
-                <input
-                  class="mh"
-                  currencyMask
-                  [options]="{
-                    prefix: 'R$ ',
-                    thousands: '.',
-                    decimal: ',',
-                    align: 'left'
-                  }"
-                  formControlName="mh"
-                  #mh
-                  placeholder="Preço"
-                  autocomplete="off"
-                  class="in in-onwer"
-                  style="border: 1px solid var(--owner); color: var(--owner)"
-                />
-                <fa-icon
-                  [icon]="faSave"
-                  class="cursor text-success mx-1"
-                  (click)="patchStatus(doctor, mh.value)"
-                ></fa-icon>
+                <img [src]="doctor.user.avatar?.url" alt="avatar" />
               </ng-container>
-              <ng-template #editPrice>
-                {{ doctor?.mh | currency: "BRL" }}
+              <ng-template #avatarTemplate>
+                <img src="../../../../assets/avatarmale.png" alt="avatar" />
               </ng-template>
-              <!-- {{ doctor.mh | currency: "BRL" }}-->
-            </div>
 
-            <div class="d-flex align-items-center sp">
-              <ng-container *ngIf="doctor.edit && doctor.ishired; else editSM">
-                <app-mult-selector-drop-drown
-                  [width]="'150px'"
-                  [height]="'30px'"
-                  [states]="medicalSp"
-                  [mainColor]="mainColor"
-                  formControlName="specialty"
-                ></app-mult-selector-drop-drown>
-                <fa-icon
-                  [icon]="faSave"
-                  class="cursor text-success mx-1"
-                  (click)="putSpecialty(doctor)"
-                ></fa-icon>
-              </ng-container>
-              <ng-template #editSM>
-                <app-multi-list-view
-                  [tags]="doctor.specialty"
-                  [mainColor]="mainColor"
-                  [w]="'150px'"
-                  [h]="'30px'"
+              <div>
+                <div class="username">{{ doctor.user.username }}</div>
+
+                <div class="item i">
+                  <fa-icon [icon]="faCalendarPlus" class="mr-1"> </fa-icon>
+                  {{ doctor.hireddate | date: "shortDate" }}
+                </div>
+
+                <div class="item i">
+                  <fa-icon [icon]="faCoins" class="mr-1"> </fa-icon>
+                  {{ doctor.salary | currency: "BRL" }}
+                </div>
+
+                <div class="item i mr-1">
+                  <fa-icon [icon]="faMoneyBill" class="mr-1"> </fa-icon>
+                  {{ doctor?.mh | currency: "BRL" }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wrp d-none d-sm-flex">
+            <form [formGroup]="specialtyForm" class="d-flex alingx">
+              <div
+                class="d-sm-flex flex-sm-column align-items-sm-center d-md-flex flex-md-row align-items-center item mx-2"
+              >
+                <ng-container
+                  *ngIf="doctor.edit && doctor.ishired; else editPrice"
                 >
-                </app-multi-list-view>
-              </ng-template>
+                  <input
+                    class="mh"
+                    currencyMask
+                    [options]="{
+                      prefix: 'R$ ',
+                      thousands: '.',
+                      decimal: ',',
+                      align: 'left'
+                    }"
+                    formControlName="mh"
+                    #mh
+                    placeholder="Preço"
+                    autocomplete="off"
+                    class="in in-onwer"
+                    style="border: 1px solid var(--owner); color: var(--owner)"
+                  />
+                  <fa-icon
+                    [icon]="faSave"
+                    class="cursor text-success mx-1"
+                    (click)="patchStatus(doctor, mh.value)"
+                  ></fa-icon>
+                </ng-container>
+                <ng-template #editPrice> </ng-template>
+                <!-- {{ doctor.mh | currency: "BRL" }}-->
+              </div>
 
-              <fa-icon
-                [icon]="faEdit"
-                class="cursor text-medium mx-2"
-                (click)="editMode(doctor)"
-              ></fa-icon>
+              <div class="d-flex align-items-center sp">
+                <ng-container
+                  *ngIf="doctor.edit && doctor.ishired; else editSM"
+                >
+                  <app-mult-selector-drop-drown
+                    [width]="'150px'"
+                    [height]="'30px'"
+                    [states]="medicalSp"
+                    [mainColor]="mainColor"
+                    formControlName="specialty"
+                  ></app-mult-selector-drop-drown>
+                  <fa-icon
+                    [icon]="faSave"
+                    class="cursor text-success mx-1"
+                    (click)="putSpecialty(doctor)"
+                  ></fa-icon>
+                </ng-container>
+                <ng-template #editSM>
+                  <app-multi-list-view
+                    [tags]="doctor.specialty"
+                    [mainColor]="mainColor"
+                    [w]="'150px'"
+                    [h]="'30px'"
+                  >
+                  </app-multi-list-view>
+                </ng-template>
+
+                <fa-icon
+                  [icon]="faEdit"
+                  class="cursor text-medium mx-2"
+                  (click)="editMode(doctor)"
+                ></fa-icon>
+              </div>
+            </form>
+
+            <div class="actions item">
+              <ng-container *ngIf="doctor.ishired; else editMenu">
+                <fa-icon
+                  [icon]="faCoins"
+                  class="mr-2 cursor text-medium"
+                  (click)="edit(editModal, doctor)"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Editar Salário"
+                ></fa-icon>
+                <fa-icon
+                  [icon]="faTimes"
+                  class="cursor text-oposity1"
+                  (click)="remove(removeModal, doctor)"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Dispensar"
+                ></fa-icon>
+              </ng-container>
+              <ng-template #editMenu>
+                <fa-icon
+                  [icon]="faPlus"
+                  class="cursor text-success mr-2"
+                  (click)="rehire(doctor.id)"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Recontratar"
+                ></fa-icon>
+                <fa-icon
+                  [icon]="faTrash"
+                  class="cursor text-gray"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Remover"
+                ></fa-icon>
+              </ng-template>
             </div>
-          </form>
-          <div class="actions item">
-            <ng-container *ngIf="doctor.ishired; else editMenu">
-              <fa-icon
-                [icon]="faEdit"
-                class="mr-2 cursor text-medium"
-                (click)="edit(editModal, doctor)"
-                data-toggle="tooltip"
-                data-placement="bottom"
-                title="Editar Salário"
-              ></fa-icon>
-              <fa-icon
-                [icon]="faTimes"
-                class="cursor text-oposity1"
-                (click)="remove(removeModal, doctor)"
-                data-toggle="tooltip"
-                data-placement="bottom"
-                title="Dispensar"
-              ></fa-icon>
-            </ng-container>
-            <ng-template #editMenu>
-              <fa-icon
-                [icon]="faPlus"
-                class="cursor text-success mr-2"
-                (click)="rehire(doctor.id)"
-                data-toggle="tooltip"
-                data-placement="bottom"
-                title="Recontratar"
-              ></fa-icon>
-              <fa-icon
-                [icon]="faTrash"
-                class="cursor text-gray"
-                data-toggle="tooltip"
-                data-placement="bottom"
-                title="Remover"
-              ></fa-icon>
-            </ng-template>
           </div>
         </div>
       </div>

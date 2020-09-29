@@ -15,7 +15,10 @@
 <div class="dashboard d-flex flex-wrap justify-content-between">
   <div class="main-data aside text-admin">
     <form [formGroup]="searchForm" class="search-form">
-      <label for="search" class="text-owner">
+      <label
+        for="search"
+        class="text-owner d-none d-md-flex align-items-md-center"
+      >
         <fa-icon [icon]="faCrown" class="text-owner"></fa-icon>
         Diretoria</label
       >
@@ -40,16 +43,6 @@
     </form>
 
     <div class="data">
-      <div class="table-header text-owner">
-        <div class="d-flex justify-content-start">Funcionário</div>
-        <div>Contratado em:</div>
-        <div>
-          Salário
-          <fa-icon [icon]="faCoins" class="ml-1"> </fa-icon>
-        </div>
-        <div>Editar</div>
-      </div>
-
       <div class="results">
         <div
           class="result active"
@@ -64,17 +57,22 @@
               <img src="../../../../assets/avatarmale.png" alt="avatar" />
             </ng-template>
 
-            <span>{{ owner.user.username }}</span>
+            <div class="d-flex flex-column">
+              <div class="username">
+                <span>{{ owner.user.username }}</span>
+              </div>
+
+              <div class="small">
+                <fa-icon [icon]="faCalendarPlus" class="mr-1"> </fa-icon>
+                {{ owner.hireddate | date: "shortDate" }}
+              </div>
+              <div class="small">
+                <fa-icon [icon]="faCoins" class="mr-1"> </fa-icon>
+                {{ owner.salary | currency: "BRL" }}
+              </div>
+            </div>
           </div>
 
-          <div>
-            <fa-icon [icon]="faCalendarPlus" class="mr-1"> </fa-icon>
-            {{ owner.hireddate | date: "shortDate" }}
-          </div>
-
-          <div>
-            {{ owner.salary | currency: "BRL" }}
-          </div>
           <div class="actions">
             <ng-container *ngIf="owner.ishired; else notHired">
               <fa-icon

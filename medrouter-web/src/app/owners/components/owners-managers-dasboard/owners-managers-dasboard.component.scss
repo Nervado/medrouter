@@ -3,6 +3,7 @@
 // @media query here
 .dashboard {
   margin: 80px;
+
   padding-left: 80px;
 
   .main-data {
@@ -17,6 +18,7 @@
   .search-form {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     color: var(--admin);
     background-color: var(--adim);
     padding: 10px 20px 0px 20px;
@@ -87,7 +89,6 @@
         }
 
         div {
-          width: 200px;
           //background-color: yellowgreen;
           display: flex;
           align-items: center;
@@ -100,6 +101,18 @@
   .cursor {
     cursor: pointer;
   }
+
+  @media screen and (max-device-width: 900px), screen and (max-width: 900px) {
+    margin: 60px 0px 0px 0px;
+    font-size: 10px;
+  }
+
+  @media screen and (max-device-width: 320px), screen and (max-width: 320px) {
+    padding: 0px;
+    margin: 50px 0px 0px 40px;
+
+    font-size: 8px;
+  }
 }
 
 .active {
@@ -108,4 +121,8 @@
 
 .dismiss {
   color: rgba(120, 120, 120, 0.2);
+}
+
+.small {
+  font-size: 10px;
 }

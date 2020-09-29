@@ -14,13 +14,16 @@
 
 <div class="dashboard d-flex flex-wrap justify-content-between">
   <div class="main-data aside text-admin">
-    <form [formGroup]="searchForm" class="search-form">
-      <label for="search" class="text-owner">
+    <form
+      [formGroup]="searchForm"
+      class="search-form d-flex align-items-center"
+    >
+      <label for="search" class="text-owner d-none d-sm-flex">
         <fa-icon [icon]="faUserCog" class="text-owner"></fa-icon>
         Administração</label
       >
 
-      <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center h-100">
         <input
           formControlName="search"
           type="text"
@@ -40,16 +43,6 @@
     </form>
 
     <div class="data">
-      <div class="table-header text-owner">
-        <div class="d-flex justify-content-start">Funcionário</div>
-        <div>Contratado em:</div>
-        <div>
-          Salário
-          <fa-icon [icon]="faCoins" class="ml-1"> </fa-icon>
-        </div>
-        <div>Editar</div>
-      </div>
-
       <div class="results">
         <div
           class="result active"
@@ -64,17 +57,22 @@
               <img src="../../../../assets/avatarmale.png" alt="avatar" />
             </ng-template>
 
-            <span>{{ manager.user.username }}</span>
+            <div class="d-flex flex-column align-items-start">
+              <div>
+                <strong>{{ manager.user.username }}</strong>
+              </div>
+              <div class="small">
+                <fa-icon [icon]="faCalendarPlus" class="mr-1"> </fa-icon>
+                {{ manager.hireddate | date: "shortDate" }}
+              </div>
+
+              <div class="small">
+                <fa-icon [icon]="faCoins" class="mr-1"> </fa-icon>
+                {{ manager.salary | currency: "BRL" }}
+              </div>
+            </div>
           </div>
 
-          <div>
-            <fa-icon [icon]="faCalendarPlus" class="mr-1"> </fa-icon>
-            {{ manager.hireddate | date: "shortDate" }}
-          </div>
-
-          <div>
-            {{ manager.salary | currency: "BRL" }}
-          </div>
           <div class="actions">
             <ng-container *ngIf="manager.ishired; else notHired">
               <fa-icon
