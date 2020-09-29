@@ -81,8 +81,8 @@
             </div>
           </div>
 
-          <div class="wrp d-none d-sm-flex">
-            <form [formGroup]="specialtyForm" class="d-flex alingx">
+          <div class="wrp">
+            <form [formGroup]="specialtyForm" class="d-none d-sm-flex">
               <div
                 class="d-sm-flex flex-sm-column align-items-sm-center d-md-flex flex-md-row align-items-center item mx-2"
               >
@@ -150,7 +150,7 @@
               </div>
             </form>
 
-            <div class="actions item">
+            <div class="actions item d-sm-flex">
               <ng-container *ngIf="doctor.ishired; else editMenu">
                 <fa-icon
                   [icon]="faCoins"

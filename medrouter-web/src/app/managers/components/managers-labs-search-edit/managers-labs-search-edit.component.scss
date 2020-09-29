@@ -86,6 +86,87 @@
       }
     }
   }
+
+  @media screen and (max-device-width: 320px), screen and (max-width: 320px) {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+
+    .main-data {
+      width: 100%;
+      margin: 0px;
+      padding: 0px;
+      //padding-left: 40px;
+      //padding-top: 30px;
+      overflow-y: hidden;
+
+      .data {
+        margin: 0px;
+        padding: 0px;
+      }
+    }
+  }
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+
+    .main-data {
+      width: 100%;
+      margin: 0px;
+      padding: 0px;
+      padding-left: 40px;
+      padding-top: 50px;
+      overflow-y: hidden;
+    }
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+
+    .main-data {
+      width: 100%;
+      margin: 0px;
+      padding: 0px;
+      padding-left: 40px;
+      padding-top: 50px;
+      overflow-y: hidden;
+    }
+
+    .table-header {
+      font-size: 10px;
+    }
+  }
+
+  @media screen and (max-device-width: 1200px), screen and (max-width: 1200px) {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+
+    .main-data {
+      width: 100%;
+      margin: 0px;
+      padding: 0px;
+
+      overflow-y: hidden;
+    }
+
+    .results {
+      font-size: 10px;
+      margin: 0px;
+      padding: 0px;
+
+      .result {
+        display: flex;
+      }
+    }
+
+    .table-header {
+      display: none;
+    }
+  }
 }
 .cursor {
   cursor: pointer;

@@ -1,8 +1,14 @@
 // @media query here
 
 .dashboard {
+  width: 100%;
   margin: 80px 0px 0px 0px;
-  padding-left: 80px;
+  padding-left: 0px;
+  overflow-y: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   .main-data {
     width: 100%;
@@ -10,7 +16,8 @@
     background-color: var(--oposity);
     border-radius: 8px;
     box-shadow: 4px 4px 5px rgba(247, 209, 209, 0.1);
-    margin: 20px;
+    //margin-left: 20px;
+    padding-left: 80px;
   }
 
   .search-form {
@@ -119,7 +126,18 @@
   }
 
   @media screen and (max-device-width: 320px), screen and (max-width: 320px) {
-    margin: 40px 0px 0px 5px;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+
+    .main-data {
+      width: 100%;
+      margin: 0px;
+      padding: 0px;
+      padding-left: 40px;
+      padding-top: 30px;
+      overflow-y: hidden;
+    }
 
     padding: 10px;
 
@@ -128,19 +146,15 @@
     .result {
       margin: 5px 0px;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
+      align-items: center;
+
+      justify-content: space-between;
 
       .wrp-doctor {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
       }
 
       .wrp {
-        font-size: 8px;
+        font-size: 12px;
       }
 
       .mh {
@@ -160,7 +174,18 @@
     }
   }
   @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
-    margin: 40px 0px 0px 5px;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+
+    .main-data {
+      width: 100%;
+      margin: 0px;
+      padding: 0px;
+      padding-left: 40px;
+      padding-top: 50px;
+      overflow-y: hidden;
+    }
   }
 }
 

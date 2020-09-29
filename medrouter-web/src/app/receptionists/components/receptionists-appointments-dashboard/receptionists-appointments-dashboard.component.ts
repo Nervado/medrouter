@@ -150,7 +150,11 @@ export class ReceptionistsAppointmentsDashboardComponent implements OnInit {
 
   setSearch() {
     const search = this.doctor
-      ? { date: this.date, id: this.doctor.id }
+      ? {
+          date: this.date,
+          id: this.doctor.id,
+          username: this.doctor.user.username,
+        }
       : { date: this.date };
     this.findAppointments(search);
   }

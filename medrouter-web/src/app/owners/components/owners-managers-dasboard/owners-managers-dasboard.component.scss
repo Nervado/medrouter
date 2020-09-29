@@ -2,9 +2,14 @@
 
 // @media query here
 .dashboard {
-  margin: 80px;
+  width: 100%;
+  margin: 80px 0px 0px 0px;
+  padding-left: 0px;
+  overflow-y: hidden;
 
-  padding-left: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   .main-data {
     width: 100%;
@@ -12,7 +17,8 @@
     background-color: var(--oposity);
     border-radius: 8px;
     box-shadow: 4px 4px 5px rgba(247, 209, 209, 0.1);
-    margin: 20px;
+    //margin: 20px;
+    padding-left: 80px;
   }
 
   .search-form {
@@ -102,16 +108,68 @@
     cursor: pointer;
   }
 
-  @media screen and (max-device-width: 900px), screen and (max-width: 900px) {
-    margin: 60px 0px 0px 0px;
-    font-size: 10px;
-  }
-
   @media screen and (max-device-width: 320px), screen and (max-width: 320px) {
+    margin: 0px;
     padding: 0px;
-    margin: 50px 0px 0px 40px;
+    width: 100%;
 
-    font-size: 8px;
+    .main-data {
+      width: 100%;
+      margin: 0px;
+      padding: 0px;
+      padding-left: 40px;
+      padding-top: 30px;
+      overflow-y: hidden;
+    }
+
+    padding: 10px;
+
+    font-size: 10px;
+
+    .result {
+      margin: 5px 0px;
+      display: flex;
+      align-items: center;
+
+      justify-content: space-between;
+
+      .wrp-doctor {
+      }
+
+      .wrp {
+        font-size: 12px;
+      }
+
+      .mh {
+        input {
+          height: 15px;
+          background-color: red;
+          font-size: 10px;
+        }
+      }
+
+      .item {
+        input {
+          height: 20px;
+          background-color: red;
+        }
+      }
+    }
+  }
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+
+    .main-data {
+      width: 100%;
+      margin: 0px;
+      padding: 0px;
+      padding-left: 40px;
+
+      padding-top: 50px;
+      overflow-y: hidden;
+    }
   }
 }
 

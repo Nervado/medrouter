@@ -14,9 +14,12 @@
 
   .msg {
     height: 65px;
-
-    .icon {
-      cursor: pointer;
+    .message {
+      font-size: 12px;
+      align-items: center;
+      display: flex;
+      align-items: flex-end;
+      flex-wrap: wrap;
     }
   }
 
@@ -32,11 +35,21 @@
       height: 100%;
     }
   }
-}
 
-.message {
-  font-size: 11px;
-  display: flex;
-  align-items: flex-end;
-  flex-wrap: wrap;
+  @media screen and (max-device-width: 320px), screen and (max-width: 320px) {
+    height: 50px;
+    width: 200px;
+    font-size: 8px;
+
+    .msg {
+      height: 45px;
+
+      .message {
+        font-size: smaller;
+        display: flex;
+        align-items: flex-end;
+        flex-wrap: wrap;
+      }
+    }
+  }
 }

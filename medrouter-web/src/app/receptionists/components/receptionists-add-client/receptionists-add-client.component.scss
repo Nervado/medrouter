@@ -2,6 +2,40 @@
 .dashboard {
   margin: 80px;
   padding-left: 80px;
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    margin: 40px;
+    padding-left: 40px;
+
+    app-input-container {
+      width: 200px;
+    }
+
+    input {
+      width: 150px;
+    }
+  }
+
+  @media screen and (max-device-width: 400px), screen and (max-width: 400px) {
+    margin: 20px;
+    margin-top: 40px;
+    padding-left: 10px;
+  }
+
+  @media screen and (max-device-width: 320px), screen and (max-width: 320px) {
+    margin: 0px;
+    margin-top: 40px;
+    padding-left: 30px;
+    border: none;
+
+    app-input-container {
+      width: 200px;
+    }
+
+    input {
+      width: 150px;
+    }
+  }
 }
 
 .main-data {

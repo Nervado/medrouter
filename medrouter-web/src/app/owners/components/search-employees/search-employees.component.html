@@ -44,12 +44,12 @@
           <fa-icon
             [icon]="faFilter"
             size="1x"
-            class="mx-3"
+            class="mx-3 d-none d-md-flex"
             (click)="showFilters()"
           ></fa-icon>
         </div>
         <div
-          class="text-oposity mt-1 filters w-100"
+          class="text-oposity mt-1 filters w-100 d-none d-md-flex"
           [style.background-color]="mainColor"
         >
           <div class="search-filter-type p-2" *ngIf="showFilter">
@@ -134,10 +134,17 @@
           </div>
         </div>
       </form>
-      <div class="d-flex flex-column aling-items-center justify-content-center">
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="results-title">Resultados {{ users.length }}</div>
-          <div class="paginator" [style.background-color]="mainColor">
+      <div
+        class="d-flex flex-column aling-items-center justify-content-center resultsOut w-100"
+      >
+        <div
+          class="paginator-area w-100 d-sm-flex align-items-sm-center justify-content-sm-center d-md-flex align-items-md-center justify-content-md-between"
+        >
+          <div class="mx-sm-1 results-title">Resultados {{ users.length }}</div>
+          <div
+            class="mx-sm-1 paginator d-flex align-items-center justify-content-center"
+            [style.background-color]="mainColor"
+          >
             <fa-icon
               [icon]="faArrowLeft"
               class="mr-2"

@@ -905,6 +905,8 @@ export class ClientService {
   async getFreeSchedules(
     search: AvailableSearchDto,
   ): Promise<AvailableHoursDto[]> {
+    console.log(search);
+
     try {
       const founds = await this.searchManySchedules(search);
 
@@ -946,7 +948,9 @@ export class ClientService {
         };
       });
 
-      return results;
+      console.log(results);
+
+      return results.filter(r => r.hours.length > 0);
     } catch (error) {
       throw new InternalServerErrorException('Fail to retrive schedule');
     }
@@ -956,7 +960,9 @@ export class ClientService {
     const query = Appointment.createQueryBuilder('appointment');
     const { year, month, specialty } = search;
 
-    const date = getMidnight(new Date());
+    const date = getMidnight(
+      setYear(setDate(setMonth(new Date(), month), 1), year),
+    );
 
     const endDate = getMidnight(
       setYear(setDate(setMonth(new Date(), month + 1), 1), year),
@@ -989,11 +995,15 @@ export class ClientService {
       specialty: [specialty],
     });
 
-    const date = getMidnight(new Date());
+    const date = getMidnight(
+      setYear(setDate(setMonth(new Date(), month), 1), year),
+    );
 
     const endDate = getMidnight(
       setYear(setDate(setMonth(new Date(), month + 1), 1), year),
     );
+
+    console.log(date, endDate);
 
     query.andWhere('date >= :date', { date });
     query.andWhere('date < :endDate', {

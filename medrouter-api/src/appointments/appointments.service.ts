@@ -288,6 +288,8 @@ export class AppointmentsService {
   ): Promise<AppointmentDto[]> {
     const query = Appointment.createQueryBuilder('appointment');
 
+    console.log(search);
+
     if (search.date) {
       query.andWhere('date = :date', { date: getMidnight(search.date) });
     }

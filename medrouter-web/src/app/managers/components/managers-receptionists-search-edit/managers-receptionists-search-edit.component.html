@@ -15,7 +15,7 @@
 <div class="dashboard d-flex flex-wrap justify-content-between">
   <div class="main-data aside text-admin">
     <form [formGroup]="searchForm" class="search-form">
-      <label for="search" class="text-admin">
+      <label for="search" class="text-admin d-none d-md-flex">
         <fa-icon [icon]="faConciergeBell" class="text-admin"></fa-icon>
         Equipe de Atendimento</label
       >
@@ -40,16 +40,6 @@
     </form>
 
     <div class="data">
-      <div class="table-header text-admin">
-        <div class="d-flex justify-content-start">Funcionário</div>
-        <div>Contratado em:</div>
-        <div>
-          Salário
-          <fa-icon [icon]="faCoins" class="ml-1"> </fa-icon>
-        </div>
-        <div>Editar</div>
-      </div>
-
       <div class="results">
         <div
           class="result active"
@@ -66,17 +56,19 @@
               <img src="../../../../assets/avatarmale.png" alt="avatar" />
             </ng-template>
 
-            <span>{{ receptionist.user.username }}</span>
+            <div class="d-flex aling-items-center flex-column text-admin">
+              <div class="username">{{ receptionist.user.username }}</div>
+              <div>
+                <fa-icon [icon]="faCalendarPlus" class="mr-1"> </fa-icon>
+                {{ receptionist.hireddate | date: "shortDate" }}
+              </div>
+
+              <div>
+                {{ receptionist.salary | currency: "BRL" }}
+              </div>
+            </div>
           </div>
 
-          <div>
-            <fa-icon [icon]="faCalendarPlus" class="mr-1"> </fa-icon>
-            {{ receptionist.hireddate | date: "shortDate" }}
-          </div>
-
-          <div>
-            {{ receptionist.salary | currency: "BRL" }}
-          </div>
           <div class="actions">
             <ng-container *ngIf="receptionist.ishired; else notHired">
               <fa-icon

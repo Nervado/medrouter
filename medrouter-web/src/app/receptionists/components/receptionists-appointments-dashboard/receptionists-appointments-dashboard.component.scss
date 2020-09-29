@@ -158,16 +158,31 @@
           justify-content: center;
 
           .username {
-            width: 150px;
+            //width: 150px;
+            width: 100px;
             overflow: hidden;
             color: var(--recept);
             font-weight: bold;
+
+            @media screen and (max-device-width: 600px),
+              screen and (max-width: px) {
+              width: 50px;
+            }
 
             .hours {
               display: flex;
               justify-content: flex-start;
               align-items: center;
               font-weight: normal;
+
+              @media screen and (max-device-width: 400px),
+                screen and (max-width: 400px) {
+                font-size: 5px;
+              }
+              @media screen and (max-device-width: 900px),
+                screen and (max-width: 900px) {
+                font-size: 10px;
+              }
             }
           }
           .avatar {
@@ -178,6 +193,12 @@
               border-radius: 50%;
               border: 1px solid var(--medium);
               object-fit: cover;
+
+              @media screen and (max-device-width: 600px),
+                screen and (max-width: 600px) {
+                height: 30px;
+                width: 30px;
+              }
             }
           }
         }
@@ -216,7 +237,47 @@
             height: 1.5em;
             font-weight: bold;
             width: 100%;
+
+            @media screen and (max-device-width: 600px),
+              screen and (max-width: 600px) {
+              font-size: 10px;
+              height: 1.2em;
+            }
           }
+        }
+      }
+    }
+  }
+
+  @media screen and (max-device-width: 900px), screen and (max-width: 900px) {
+    .month {
+      font-size: 12px;
+    }
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    padding-left: 30px;
+
+    padding: 0px;
+    margin: 0px;
+    padding-top: 50px;
+    padding-left: 40px;
+    .month {
+      font-size: 10px;
+    }
+
+    font-size: 8px;
+
+    .username {
+      font-size: 8px;
+      width: 30px;
+    }
+
+    .appointments {
+      .avatar-area {
+        img {
+          height: 20px;
+          width: 20px;
         }
       }
     }

@@ -12,9 +12,9 @@
 <app-lab-edit-exams #editExamsModal (signOut)="exams($event)" [lab]="lab">
 </app-lab-edit-exams>
 
-<div class="main-data aside text-admin">
+<div class="main-data text-admin">
   <form [formGroup]="searchForm" class="search-form">
-    <label for="search" class="text-admin">
+    <label for="search" class="text-admin d-none d-md-flex">
       <fa-icon [icon]="faFlask"></fa-icon>
       Laboratórios Conveniados</label
     >
@@ -70,7 +70,7 @@
           <fa-icon [icon]="faCalendarPlus" class="ml-1"> </fa-icon>
         </div>
 
-        <div>
+        <div class="d-none d-xl-flex">
           <app-multi-list-view
             [tags]="usernames(lab.users)"
             [w]="'150px'"
@@ -80,7 +80,7 @@
           </app-multi-list-view>
         </div>
 
-        <div>
+        <div class="d-none d-lg-flex">
           <app-multi-list-view
             [tags]="lab.labcategory"
             [w]="'150px'"
@@ -89,7 +89,7 @@
           >
           </app-multi-list-view>
         </div>
-        <div>
+        <div class="d-none d-md-flex">
           <app-multi-list-view
             [tags]="lab.exams"
             [w]="'150px'"

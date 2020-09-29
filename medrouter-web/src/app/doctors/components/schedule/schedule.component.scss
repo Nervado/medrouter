@@ -63,7 +63,6 @@
           justify-content: center;
 
           .username {
-            width: 150px;
             overflow: hidden;
             color: var(--doctor);
             font-weight: bold;
@@ -98,6 +97,30 @@
           }
         }
       }
+    }
+  }
+
+  @media screen and (max-device-width: 900px), screen and (max-width: 900px) {
+    .month {
+      font-size: 12px;
+    }
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    padding: 0px;
+    margin: 0px;
+    padding-top: 50px;
+    padding-left: 50px;
+    .month {
+      font-size: 10px;
+    }
+  }
+
+  @media screen and (max-device-width: 320px), screen and (max-width: 320px) {
+    padding-left: 40px;
+
+    .username {
+      font-size: 11px;
     }
   }
 }

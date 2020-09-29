@@ -41,22 +41,22 @@ export const ToastVisibility = trigger("toast-visibility", [
           }),
           style({
             opacity: 1,
-            right: "130px",
+            right: "80px",
             visibility: "visible",
           }),
           style({
             opacity: 1,
-            right: "100px",
+            right: "50px",
             visibility: "visible",
           }),
           style({
             opacity: 1,
-            right: "130px",
+            right: "80px",
             visibility: "visible",
           }),
           style({
             opacity: 1,
-            right: "100px",
+            right: "50px",
             visibility: "visible",
           }),
         ])
@@ -72,13 +72,13 @@ export const ToastVisibility = trigger("toast-visibility", [
         keyframes([
           style({
             opacity: 1,
-            right: "150px",
+            right: "100px",
             visibility: "visible",
             //transform: "translateY(-10px)",
           }),
           style({
             opacity: 1,
-            right: "130px",
+            right: "80px",
             visibility: "visible",
             //transform: "translateY(-15px)",
           }),
