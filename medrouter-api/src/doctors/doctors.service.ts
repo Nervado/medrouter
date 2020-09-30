@@ -144,9 +144,9 @@ export class DoctorsService extends Service<
       if (new Date(schedule?.date).getTime() > getMidnight(now).getTime()) {
         const newSchedule = new Schedule();
 
-        newSchedule.date = new Date(
-          new Date(schedule.date).setHours(0, 0, 0, 0),
-        );
+        newSchedule.date = new Date(getMidnight(new Date(schedule.date)));
+
+        console.log(newSchedule.date);
 
         newSchedule.availablehours = [...schedule.availablehours];
 
