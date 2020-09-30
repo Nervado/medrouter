@@ -12,6 +12,14 @@
       font-size: 14px;
     }
   }
+
+  @media screen and (max-device-width: 400px), screen and (max-width: 400px) {
+    margin: 0px;
+    margin-top: 40px;
+    margin-left: 25px;
+    width: 270px;
+    height: 320px;
+  }
 }
 .appointments {
   width: 100%;
