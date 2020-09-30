@@ -35,6 +35,7 @@ export class LabsController {
   constructor(private labsService: LabsService) {}
 
   @Post()
+  @Roles('manager')
   @UseInterceptors(ClassSerializerInterceptor)
   createDoctor(@Body(ValidationPipe) body: LabDto) {
     return this.labsService.create(body);
@@ -76,7 +77,7 @@ export class LabsController {
   }
 
   @Patch('/:id')
-  @Roles('owner')
+  @Allow('manager')
   @UseInterceptors(ClassSerializerInterceptor)
   changeStatus(
     @Param('id') id: string,

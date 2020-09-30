@@ -40,7 +40,7 @@ export class ReceptionistController {
   }
 
   @Get()
-  @Allow('manager', 'owner')
+  @Allow('manager')
   @UseInterceptors(ClassSerializerInterceptor)
   getAll(
     @Query(ValidationPipe) search: SearchFilterDto,
@@ -56,7 +56,7 @@ export class ReceptionistController {
   }
 
   @Patch('/:id/status')
-  @Roles('owner')
+  @Roles('manager')
   @UseInterceptors(ClassSerializerInterceptor)
   changeStatus(
     @Param('id') id: string,
@@ -66,7 +66,7 @@ export class ReceptionistController {
   }
 
   @Patch('/:id/diff')
-  @Roles('owner')
+  @Roles('manager')
   @UseInterceptors(ClassSerializerInterceptor)
   changeSalary(
     @Param('id') id: string,
@@ -76,7 +76,7 @@ export class ReceptionistController {
   }
 
   @Delete('/:id')
-  @Roles('owner')
+  @Roles('manager')
   @UseInterceptors(ClassSerializerInterceptor)
   dismiss(@Param('id') id: string) {
     return this.receptionistService.delete(id);
