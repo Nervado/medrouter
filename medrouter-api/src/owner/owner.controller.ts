@@ -26,7 +26,7 @@ import { User } from 'src/users/models/user.entity';
 import { TotalDto } from './dtos/total.dto';
 import { StatsDto } from './dtos/stats.dto';
 
-@UseGuards(JwtAuthGuard, RolesGuard, AlowGuard)
+@UseGuards(JwtAuthGuard, AlowGuard, RolesGuard)
 @Controller('owners')
 export class OwnerController {
   constructor(private readonly os: OwnerService) {}

@@ -102,7 +102,8 @@ export class AuthService {
               }
               // setup default route
 
-              this.router.navigate([this.defaultRoute, this.getRuleId(role)]);
+              this.router.navigate(["/"]);
+              //this.router.navigate([this.defaultRoute, this.getRuleId(role)]);
             }
           },
         })

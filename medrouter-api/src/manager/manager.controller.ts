@@ -46,7 +46,7 @@ export class ManagerController {
   }
 
   @Get('/:id')
-  @Allow('manager')
+  @Roles('manager')
   @UseInterceptors(ClassSerializerInterceptor)
   getManager(@Param('id') id: any, @GetUser() user: User): Promise<Manager> {
     return this.managerService.getOne(id, user);
