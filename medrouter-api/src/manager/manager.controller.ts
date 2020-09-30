@@ -21,8 +21,10 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { SearchFilterDto } from 'src/users/dto/search-filter.dto';
 import { GetUser } from 'src/users/decorators/get-user.decorator';
 import { User } from 'src/users/models/user.entity';
+import { Allow } from 'src/auth/decorators/alow.decorator';
+import { AlowGuard } from 'src/auth/guards/allow-auth.guard';
 
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, AlowGuard, RolesGuard)
 @Controller('managers')
 export class ManagerController {
   constructor(private managerService: ManagerService) {}
@@ -44,7 +46,7 @@ export class ManagerController {
   }
 
   @Get('/:id')
-  @Roles('owner')
+  @Allow('manager')
   @UseInterceptors(ClassSerializerInterceptor)
   getManager(@Param('id') id: any, @GetUser() user: User): Promise<Manager> {
     return this.managerService.getOne(id, user);
