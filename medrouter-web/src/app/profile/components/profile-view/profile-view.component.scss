@@ -1,6 +1,6 @@
 .profile {
-  width: 800px;
-  height: 550px;
+  width: 100%;
+
   background-color: var(--oposity);
 
   border-radius: 4px;
@@ -15,6 +15,26 @@
       object-fit: cover;
       border-radius: 2px;
       border: 2px solid var(--profile);
+      object-fit: cover;
+      @media screen and (max-device-width: 1024px),
+        screen and (max-width: 1024px) {
+        height: 300px;
+        width: 200px;
+      }
+
+      @media screen and (max-device-width: 900px),
+        screen and (max-width: 900px) {
+        height: 200px;
+        width: 130px;
+        object-fit: cover;
+      }
+
+      @media screen and (max-device-width: 400px),
+        screen and (max-width: 40px) {
+        height: 120px;
+        width: 80px;
+        object-fit: cover;
+      }
     }
   }
 
@@ -41,6 +61,15 @@
     width: 100%;
     border-bottom: 2px solid var(--profile);
   }
+
+  @media screen and (max-device-width: 1024px), screen and (max-width: 1024px) {
+    font-size: 12px;
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    font-size: 12px;
+    padding-top: 40px;
+  }
 }
 
 .wrapper-component {
@@ -49,6 +78,44 @@
   padding-left: 80px;
 
   color: var(--profile);
+
+  @media screen and (max-device-width: 1200px), screen and (max-width: 1200px) {
+    margin-top: 100px;
+    padding-left: 20px;
+  }
+
+  @media screen and (max-device-width: 800px), screen and (max-width: 800px) {
+    font-size: 10px;
+    margin: 40px;
+
+    padding-left: 80px;
+    margin-top: 200px;
+    padding-left: 20px;
+  }
+
+  @media screen and (max-device-width: 900px), screen and (max-width: 900px) {
+    font-size: 10px;
+    margin: 40px;
+
+    padding-left: 80px;
+    margin-top: 100px;
+    padding-left: 20px;
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    font-size: 10px;
+    margin: 40px;
+    margin-top: 100px;
+    padding-left: 20px;
+  }
+
+  @media screen and (max-device-width: 400px), screen and (max-width: 400px) {
+    margin: 0px;
+    margin-top: 100px;
+
+    padding-left: 20px;
+    padding-right: 0px;
+  }
 }
 
 .header {
@@ -60,10 +127,28 @@
   .username {
     font-size: 26px;
     font-weight: bold;
+
+    @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+      font-size: 14px;
+    }
+
+    @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+      font-size: 12px;
+    }
   }
   .location {
     opacity: 0.6;
     font-size: 14px;
     margin-left: 20px;
+
+    @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+      font-size: 10px;
+      margin-left: 5px;
+    }
+
+    @media screen and (max-device-width: 400px), screen and (max-width: 400px) {
+      font-size: 8px;
+      margin-left: 2px;
+    }
   }
 }

@@ -11,6 +11,22 @@
     padding: 5px;
     box-shadow: 4px 4px 4px rgba(122, 122, 122, 0.2);
   }
+
+  @media screen and (max-device-width: 900px), screen and (max-width: 900px) {
+    margin: 0;
+    font-size: 12px;
+
+    padding-left: 80px;
+    margin-top: 80px;
+    padding-left: 20px;
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    margin: 0;
+    font-size: 12px;
+    margin-top: 40px;
+    margin-left: 10px;
+  }
 }
 
 .bt {
@@ -41,6 +57,24 @@
         width: 500px;
         object-fit: cover;
         border-radius: 2px;
+
+        @media screen and (max-device-width: 600px),
+          screen and (max-width: 600px) {
+          margin: 0;
+          font-size: 12px;
+
+          height: 250px;
+          width: 300px;
+        }
+
+        @media screen and (max-device-width: 400px),
+          screen and (max-width: 400px) {
+          margin: 0;
+          font-size: 12px;
+
+          height: 200px;
+          width: 250px;
+        }
       }
     }
 
@@ -52,6 +86,24 @@
       width: 500px;
       border-radius: 2px;
       cursor: pointer;
+
+      @media screen and (max-device-width: 600px),
+        screen and (max-width: 600px) {
+        margin: 0;
+        font-size: 12px;
+
+        height: 250px;
+        width: 300px;
+      }
+
+      @media screen and (max-device-width: 400px),
+        screen and (max-width: 400px) {
+        margin: 0;
+        font-size: 12px;
+
+        height: 200px;
+        width: 250px;
+      }
     }
 
     input {

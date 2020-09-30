@@ -1,11 +1,34 @@
 .wrapper-component {
-  height: 80%;
   margin: 80px;
   padding-left: 80px;
 
+  min-height: 400px;
+
+  @media screen and (max-device-width: 900px), screen and (max-width: 900px) {
+    margin: 0;
+    font-size: 14px;
+
+    padding-left: 80px;
+    margin-top: 80px;
+    padding-left: 20px;
+
+    .profile {
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    font-size: 10px;
+    margin-top: 40px;
+  }
+
+  @media screen and (max-device-width: 400px), screen and (max-width: 400px) {
+    font-size: 10px;
+    margin-top: 40px;
+    margin-left: 20px;
+  }
+
   .profile {
-    width: 800px;
-    height: 550px;
     background-color: var(--oposity);
     border-radius: 4px;
     padding: 20px;

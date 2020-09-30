@@ -1,9 +1,13 @@
-<div class="wrapper-component d-flex justify-content-center align-items-center">
+<div
+  class="wrapper-component d-flex justify-content-center align-items-center bg-profile"
+>
   <div
     class="row profile d-flex justify-content-center align-items-center bg-profile text-oposity"
   >
     <form [formGroup]="addressForm">
-      <div class="d-flex flex-wrap justify-content-between px-5 mx-3">
+      <div
+        class="d-flex flex-wrap justify-content-between px-5 mx-3 bg-profile"
+      >
         <div class="">
           <label for="streetName">Nome da rua</label>
           <app-input-container class="in-container in-container-base my-4">
@@ -161,9 +165,7 @@
             </button>
 
             <a [routerLink]="['/profile', userId]">
-              <button class="bt bt-base ml-2" id="buttons">
-                Cancelar
-              </button>
+              <button class="bt bt-base ml-2" id="buttons">Cancelar</button>
             </a>
           </div>
         </div>

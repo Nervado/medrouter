@@ -1,15 +1,39 @@
 .wrapper-component {
-  height: 80%;
-  margin: 80px;
   padding-left: 80px;
+  margin-top: 80px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 
   .profile {
-    width: 800px;
-    height: 550px;
+    width: 80%;
     background-color: var(--oposity);
+
     border-radius: 4px;
     padding: 20px;
     box-shadow: 4px 4px 4px rgba(122, 122, 122, 0.2);
+  }
+
+  @media screen and (max-device-width: 900px), screen and (max-width: 900px) {
+    margin: 0;
+    font-size: 10px;
+
+    padding-left: 80px;
+    margin-top: 80px;
+    padding-left: 20px;
+
+    .profile {
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    font-size: 10px;
+
+    margin-top: 40px;
+    padding-left: 30px;
   }
 }
 

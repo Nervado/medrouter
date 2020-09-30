@@ -4,7 +4,7 @@
   >
     <form [formGroup]="profileForm">
       <div class="d-flex flex-wrap justify-content-between px-5 mx-3">
-        <div class="">
+        <div class="bg-profile">
           <label for="username">Nome</label>
           <app-input-container class="in-container in-container-base my-4">
             <input
@@ -134,11 +134,9 @@
           </app-input-container>
         </div>
 
-        <div>
+        <div class="">
           <label for="birthdate">Data de nascimento</label>
-          <div
-            class="in-container in-container-base my-4 d-flex justify-content-start align-items-center"
-          >
+          <div class="my-4">
             <app-datepicker
               name="birthdate"
               [btColor]="btColor"
@@ -147,6 +145,7 @@
               [defaut]="birthdate"
               [width]="width"
               [height]="heigth"
+              class="d-flex"
             ></app-datepicker>
             <!--[old]="birthdate"-->
           </div>
