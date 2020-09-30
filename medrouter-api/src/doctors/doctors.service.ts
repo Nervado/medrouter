@@ -32,6 +32,7 @@ import { PrescriptionDto } from 'src/prescriptions/dto/prescription.dto';
 import { PrescriptionsService } from 'src/prescriptions/prescriptions.service';
 import { ExamDto } from 'src/exams/dto/exam.dto';
 import { ExamsService } from 'src/exams/exams.service';
+import { addDays } from 'date-fns';
 
 @Injectable()
 export class DoctorsService extends Service<
@@ -144,7 +145,9 @@ export class DoctorsService extends Service<
       if (new Date(schedule?.date).getTime() > getMidnight(now).getTime()) {
         const newSchedule = new Schedule();
 
-        newSchedule.date = new Date(getMidnight(new Date(schedule.date)));
+        newSchedule.date = new Date(
+          addDays(getMidnight(new Date(schedule.date)), 1),
+        );
 
         console.log(newSchedule.date);
 
