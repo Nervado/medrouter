@@ -28,10 +28,8 @@ export class LabChangesDto {
   cpf?: string;
 
   @IsOptional()
-  @IsEnum(ExamsEnum, { each: true })
   exams?: ExamsEnum[];
 
   @IsOptional()
-  @IsEnum(LabCategory, { each: true })
   labcategory?: LabCategory[];
 }

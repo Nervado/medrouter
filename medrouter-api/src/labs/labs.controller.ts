@@ -79,10 +79,7 @@ export class LabsController {
   @Patch('/:id')
   @Allow('manager')
   @UseInterceptors(ClassSerializerInterceptor)
-  changeStatus(
-    @Param('id') id: string,
-    @Body(ValidationPipe) body: LabChangesDto,
-  ) {
+  changeStatus(@Param('id') id: string, @Body() body: LabChangesDto) {
     return this.labsService.change(id, body);
   }
 }
