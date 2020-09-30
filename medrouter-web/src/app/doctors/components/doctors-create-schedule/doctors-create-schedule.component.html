@@ -21,7 +21,7 @@
     <div class="days">
       <div class="day-wrapper" *ngFor="let day of days">
         <div class="header-day">
-          <div>{{ day.name }}</div>
+          <div class="day-name">{{ day.name }}</div>
           <div class="number-day" [ngClass]="{ today: checkToday(day.date) }">
             {{ day.day }}
           </div>

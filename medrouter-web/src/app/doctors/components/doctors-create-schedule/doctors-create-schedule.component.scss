@@ -3,6 +3,35 @@
   margin: 80px;
   padding-left: 80px;
 
+  @media screen and (max-device-width: 1200px), screen and (max-width: 1200px) {
+    margin: 40px;
+    margin-top: 80px;
+    padding-left: 40px;
+    font-size: 11px;
+  }
+
+  @media screen and (max-device-width: 900px), screen and (max-width: 900px) {
+    font-size: 10px;
+    margin: 40px;
+    margin-top: 80px;
+    padding-left: 40px;
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    font-size: 10px;
+    margin: 40px;
+    margin-top: 40px;
+    padding-left: 20px;
+  }
+
+  @media screen and (max-device-width: 400px), screen and (max-width: 400px) {
+    margin: 0px;
+    margin-top: 40px;
+
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
   .main-data {
     width: 100%;
     background-color: var(--oposity);
@@ -20,6 +49,11 @@
       border-radius: 4px;
       color: var(--oposity);
       background-color: var(--doctor);
+
+      @media screen and (max-device-width: 600px),
+        screen and (max-width: 600px) {
+        font-size: 10px;
+      }
 
       .control {
         display: flex;
@@ -57,9 +91,16 @@
           justify-content: center;
           align-items: center;
           width: 60px;
+          font-size: 14px;
           margin-bottom: 5px;
           padding-bottom: 5px;
           border-bottom: 2px solid var(--doctor);
+
+          @media screen and (max-device-width: 600px),
+            screen and (max-width: 600px) {
+            font-size: 8px;
+            width: 20px;
+          }
 
           .number-day {
             //background-color: var(--doctor);
@@ -67,22 +108,26 @@
             font-weight: bold;
             border: 2px solid var(--doctor);
             font-size: 12px;
-            width: 26px;
-            height: 26px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             align-content: center;
+
+            @media screen and (max-device-width: 600px),
+              screen and (max-width: 600px) {
+              font-size: 8px;
+
+              width: 20px;
+              height: 20px;
+            }
           }
           .today {
             background-color: var(--doctor);
             color: var(--oposity);
             border: 2px solid var(--doctor);
-          }
-
-          div {
-            font-size: 14px;
           }
         }
 
@@ -93,6 +138,11 @@
           justify-content: center;
           align-items: center;
           font-size: 14px;
+
+          @media screen and (max-device-width: 600px),
+            screen and (max-width: 600px) {
+            font-size: 10px;
+          }
 
           .busy-hour {
             color: var(--oposity1);
@@ -110,6 +160,11 @@
         .busy {
           background-color: var(--oposity1);
         }
+      }
+
+      @media screen and (max-device-width: 600px),
+        screen and (max-width: 600px) {
+        font-size: 10px;
       }
     }
   }

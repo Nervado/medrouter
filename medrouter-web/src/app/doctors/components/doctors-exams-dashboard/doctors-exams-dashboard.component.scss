@@ -3,6 +3,27 @@
   margin: 80px;
   padding-left: 80px;
 
+  @media screen and (max-device-width: 1200px), screen and (max-width: 1200px) {
+    margin: 40px;
+    margin-top: 80px;
+    padding-left: 40px;
+    font-size: 11px;
+  }
+
+  @media screen and (max-device-width: 900px), screen and (max-width: 900px) {
+    font-size: 10px;
+    margin: 40px;
+    margin-top: 80px;
+    padding-left: 40px;
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    font-size: 10px;
+    margin: 40px;
+    margin-top: 40px;
+    padding-left: 20px;
+  }
+
   .main-data {
     width: 100%;
     border-radius: 8px;
@@ -188,6 +209,8 @@
         .body {
           width: 100%;
 
+          padding: 2px;
+
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -198,8 +221,6 @@
             align-items: center;
             overflow: hidden;
             flex-wrap: nowrap;
-
-            width: 200px;
 
             .data {
               display: flex;
@@ -221,6 +242,12 @@
               border: 1px solid var(--doctor);
               object-fit: cover;
               margin-right: 10px;
+
+              @media screen and (max-device-width: 900px),
+                screen and (max-width: 900px) {
+                width: 40px;
+                height: 40px;
+              }
             }
           }
 
@@ -248,6 +275,14 @@
               padding: 0px 2px;
               width: 150px;
               max-width: 150px;
+
+              padding: 2px;
+
+              @media screen and (max-device-width: 900px),
+                screen and (max-width: 900px) {
+                font-size: 8px;
+                width: 50px;
+              }
             }
             .no-result {
               color: var(--oposity1);
@@ -255,6 +290,11 @@
               font-size: 12px;
               text-align: center;
               margin-top: 5px;
+
+              @media screen and (max-device-width: 900px),
+                screen and (max-width: 900px) {
+                font-size: 8px;
+              }
             }
             .docs {
               display: flex;
@@ -349,6 +389,12 @@
               padding: 1px 3px;
               width: 90px;
               max-width: 90px;
+
+              @media screen and (max-device-width: 900px),
+                screen and (max-width: 900px) {
+                font-size: 8px;
+                width: 50px;
+              }
             }
           }
 
@@ -359,6 +405,24 @@
             fa-icon {
               margin-left: 5px;
             }
+          }
+
+          @media screen and (max-device-width: 600px),
+            screen and (max-width: 600px) {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-start;
+          }
+        }
+
+        @media screen and (max-device-width: 900px),
+          screen and (max-width: 900px) {
+          padding: 2px;
+          font-size: 12px;
+
+          .info {
+            font-size: 10px;
           }
         }
       }

@@ -83,4 +83,15 @@
     font-size: 10px;
     font-weight: bold;
   }
+
+  @media screen and (max-device-width: 400px), screen and (max-width: 400px) {
+    font-size: 8px;
+    flex-direction: column;
+
+    .info {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+  }
 }
