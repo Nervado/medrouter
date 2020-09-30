@@ -31,7 +31,7 @@ export class ReceptionistController {
   constructor(private receptionistService: ReceptionistService) {}
 
   @Post()
-  @Allow('admin', 'owner')
+  @Allow('manager', 'owner')
   @UseInterceptors(ClassSerializerInterceptor)
   createDoctor(
     @Body(ValidationPipe) body: ReceptionistDto,
@@ -40,7 +40,7 @@ export class ReceptionistController {
   }
 
   @Get()
-  @Allow('admin', 'owner')
+  @Allow('manager', 'owner')
   @UseInterceptors(ClassSerializerInterceptor)
   getAll(
     @Query(ValidationPipe) search: SearchFilterDto,
