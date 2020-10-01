@@ -2,4 +2,20 @@
 .dashboard {
   margin: 80px;
   padding-left: 80px;
+
+  @media screen and (max-device-width: 700px), screen and (max-width: 700px) {
+    margin: 70px;
+    padding-left: 50px;
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    margin: 50px;
+    padding: 0;
+  }
+
+  @media screen and (max-device-width: 550px), screen and (max-width: 550px) {
+    margin: 40px;
+    margin-left: 30px;
+    padding: 0;
+  }
 }

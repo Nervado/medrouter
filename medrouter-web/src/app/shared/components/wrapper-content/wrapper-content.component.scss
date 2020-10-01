@@ -1,4 +1,16 @@
 .content {
   height: 100vh;
   overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+    background: rgba(125, 125, 125, 0.4);
+    cursor: pointer;
+  }
+
+  &::-webkit-scrollbar-thumb:vertical {
+    background-color: rgba(125, 125, 125, 1);
+    border-radius: 10px;
+  }
 }

@@ -10,7 +10,7 @@
         [(ngModel)]="values"
         (dateSelect)="setValue($event)"
         [ngStyle]="{ color: btColor }"
-        [minDate]="{ year: 2010, month: 1, day: 1 }"
+        [minDate]="{ year: 1900, month: 1, day: 1 }"
         [maxDate]="{ year: 2048, month: 12, day: 31 }"
         [markDisabled]="isDisabled"
         (navigate)="navigate($event)"
