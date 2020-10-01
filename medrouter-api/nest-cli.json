@@ -3,5 +3,14 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "assets": ["**/*.hbs", "**/*.pug", "**/*.css", "**/*.svg", "**/*.png"]
-  }
+  },
+
+  "plugins": [
+    {
+      "name": "@nestjs/swagger/plugin",
+      "options": {
+        "classValidatorShim": true
+      }
+    }
+  ]
 }
