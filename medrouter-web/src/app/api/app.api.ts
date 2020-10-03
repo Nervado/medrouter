@@ -1,7 +1,7 @@
 import { SocketIoConfig } from "ngx-socket-io";
 
-//export const MEDROUTER_API = "http://18.230.199.185";
-export const MEDROUTER_API = "http://localhost:3001";
+export const MEDROUTER_API = "http://18.230.199.185";
+//export const MEDROUTER_API = "http://localhost:3001";
 
 export const MEDICINES_API = "https://scalr.api.appbase.io/medicines/_search";
 

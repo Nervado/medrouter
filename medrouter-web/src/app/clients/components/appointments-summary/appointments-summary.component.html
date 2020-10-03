@@ -1,8 +1,8 @@
 <div class="main-data">
   <div
-    class="px-3 py-2 title d-flex align-items-center justify-content-between px-2 py-1"
+    class="title d-flex align-items-center justify-content-between px-1 py-1"
   >
-    <h4 class="text-base">Agendamentos</h4>
+    <div class="text-base"><strong>Agendamentos</strong></div>
 
     <div class="cursor">
       <fa-icon
@@ -21,10 +21,10 @@
     </div>
   </div>
 
-  <div class="body d-flex flex-column justify-content-start appointments">
+  <div class="d-flex flex-column appointments">
     <div
       *ngFor="let app of appointments"
-      class="d-flex align-itens-center justify-content-between px-4 my-1"
+      class="appointment d-sm-flex flex-sm-column align-items-sm-center d-md-flex flex-md-row aling-items-md-center justify-content-md-between p-1 my-1"
     >
       <div class="avatar-area mx-2">
         <ng-container *ngIf="app.doctor.user.avatar?.url; else avatar">
@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <div class="actions ml-5">
+      <div class="actions">
         <fa-icon
           [icon]="faTimesCircle"
           (click)="cancel(app)"

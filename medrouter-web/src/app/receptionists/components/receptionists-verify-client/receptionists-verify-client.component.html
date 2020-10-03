@@ -44,8 +44,7 @@
 
           <div class="appointment-info d-flex flex-column text-recept">
             <div class="username">
-              {{ client.user.username }}
-
+              <strong> {{ client.user.username }} </strong>
               <fa-icon
                 [icon]="faCheck"
                 class="text-success"
@@ -54,19 +53,20 @@
             </div>
 
             <div class="add">
-              Gênero:
-              <strong>{{ client.user.sex }}</strong>
+              <small> Gênero:</small>
+
+              <small>{{ client.user.sex }}</small>
             </div>
 
             <div class="add">
-              Idade:
-              <strong
+              <small> Idade: </small>
+              <small
                 >{{
                   age(client.user.birthdate)
                     ? age(client.user.birthdate)
                     : "Não informado"
                 }}
-              </strong>
+              </small>
             </div>
           </div>
         </div>
@@ -74,11 +74,11 @@
         <div class="appointment-info email d-flex flex-column">
           <div>
             <fa-icon [icon]="faEnvelope"></fa-icon>
-            <strong class="ml-1">{{ client.user.email }}</strong>
+            <small class="ml-1">{{ client.user.email }}</small>
           </div>
           <div>
             <fa-icon [icon]="faPhone"></fa-icon>
-            <strong class="ml-1">{{ client.user.phoneNumber }}</strong>
+            <small class="ml-1">{{ client.user.phoneNumber }}</small>
           </div>
         </div>
 

@@ -20,7 +20,7 @@
 
     <form
       [formGroup]="actionsForm"
-      class="d-flex flex-column justify-content-center align-items-center"
+      class="d-flex flex-column justify-content-center align-items-start"
     >
       <div class="infos text-recept">
         <fa-icon [icon]="faUserMd"></fa-icon>
@@ -33,24 +33,22 @@
         {{ appointment.client.user.surname }}
       </div>
 
-      <div>
+      <div class="d-flex align-items-start flex-column">
         <label for="date" class="text-recept">
           <fa-icon [icon]="faCalendarDay" class="mr-1"></fa-icon>Nova
           data</label
         >
-        <div
-          class="text-recept in-container in-container-recept d-flex justify-content-start align-items-center"
-        >
-          <app-datepicker
-            class="datepicker text-recept"
-            name="date"
-            [btColor]="btColor"
-            [tick]="tick"
-            [defaut]="date"
-            formControlName="date"
-          ></app-datepicker>
-          <!--[old]="date  formControlName="birthdate""-->
-        </div>
+
+        <app-datepicker
+          class="datepicker text-recept"
+          name="date"
+          [btColor]="btColor"
+          [tick]="tick"
+          [defaut]="date"
+          formControlName="date"
+          [borderColor]="mainColor"
+        ></app-datepicker>
+        <!--[old]="date  formControlName="birthdate""-->
       </div>
 
       <div class="form-group text-recept mt-2">
@@ -65,11 +63,11 @@
           <select
             formControlName="hour"
             class="in in-recept"
-            style="border: 1px solid var(--recept); color: var(--recept);"
+            style="border: 1px solid var(--recept); color: var(--recept)"
           >
-            <option [value]="hour" *ngFor="let hour of hours"
-              >{{ hour }}h</option
-            >
+            <option [value]="hour" *ngFor="let hour of hours">
+              {{ hour }}h
+            </option>
           </select>
 
           <div
@@ -93,7 +91,7 @@
             placeholder="Senha"
             autocomplete="off"
             class="in in-recept"
-            style="border: 1px solid var(--recept); color: var(--recept);"
+            style="border: 1px solid var(--recept); color: var(--recept)"
           />
           <div
             class="d-flex mx-2 flex-column justify-content-center align-items-center"

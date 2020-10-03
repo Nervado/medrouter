@@ -126,22 +126,48 @@
 
         margin: 10px 5px;
 
+        border: 1px solid rgba(125, 125, 125, 0.1);
+        border-radius: 4px;
+        padding: 4x;
+
+        @media screen and (max-device-width: 900px),
+          screen and (max-width: 900px) {
+          font-size: 10px;
+
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+
         .user-info {
           display: flex;
           align-items: center;
           justify-content: center;
 
           .username {
-            width: 150px;
+            //width: 150px;
             overflow: hidden;
             color: var(--recept);
             //font-weight: bold;
+
+            @media screen and (max-device-width: 500px),
+              screen and (max-width: 500px) {
+              display: flex;
+              justify-content: flex-start;
+            }
 
             .hours {
               display: flex;
               justify-content: flex-start;
               align-items: center;
               font-weight: normal;
+            }
+          }
+
+          .add {
+            @media screen and (max-device-width: 900px),
+              screen and (max-width: 900px) {
+              font-size: 10px;
             }
           }
           .avatar {
@@ -152,13 +178,19 @@
               border-radius: 50%;
               border: 1px solid var(--medium);
               object-fit: cover;
+
+              @media screen and (max-device-width: 900px),
+                screen and (max-width: 900px) {
+                width: 50px;
+                height: 50px;
+              }
             }
           }
         }
 
         .appointment-info.email {
           color: var(--recept);
-          font-size: 14px;
+          font-size: 12px;
         }
         .appointment-info {
           display: flex;
@@ -177,8 +209,33 @@
             }
           }
         }
+
+        .appointment-info {
+          @media screen and (max-device-width: 900px),
+            screen and (max-width: 900px) {
+            font-size: 10px;
+          }
+        }
       }
     }
+  }
+
+  @media screen and (max-device-width: 800px), screen and (max-width: 800px) {
+    margin: 0px;
+
+    padding: 0px;
+
+    margin-left: 90px;
+    margin-top: 90px;
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    margin: 0px;
+
+    padding: 0px;
+
+    margin-left: 30px;
+    margin-top: 40px;
   }
 }
 

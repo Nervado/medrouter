@@ -5,24 +5,38 @@
   border-radius: 8px;
   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.1);
 
-  margin: 20px;
+  margin: 10px;
 
-  div {
-    h4 {
-      font-size: 14px;
-    }
+  @media screen and (max-device-width: 1400px), screen and (max-width: 1400px) {
+    width: 600px;
+    height: 300px;
+
+    padding: 0px;
+  }
+
+  @media screen and (max-device-width: 800px), screen and (max-width: 800px) {
+    width: 600px;
+    //height: 300px;
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    margin: 0px;
+    padding: 0px;
+    width: 450px;
+    margin-left: 0px;
+    margin-right: 0px;
   }
 
   @media screen and (max-device-width: 400px), screen and (max-width: 400px) {
     margin: 0px;
-    margin-top: 40px;
-    margin-left: 25px;
+    padding: 0px;
     width: 270px;
     height: 320px;
+    margin-left: 0px;
+    margin-right: 0px;
   }
 }
 .appointments {
-  width: 100%;
   overflow-y: scroll;
   height: 240px;
   padding: 5px;
@@ -45,7 +59,12 @@
   }
 }
 .appointment {
-  height: 70px;
+  /// height: 70px;
+
+  border-radius: 4px;
+  margin: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 2px;
 }
 
 .cursor {
@@ -75,8 +94,9 @@
 .actions {
   display: flex;
   flex-direction: column;
+
   align-items: flex-end;
-  width: 60px;
+  //width: 60px;
 
   .status {
     color: var(--oposity);

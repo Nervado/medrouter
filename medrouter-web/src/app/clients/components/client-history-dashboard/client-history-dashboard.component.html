@@ -1,4 +1,4 @@
-<div class="dashboard d-flex flex-wrap justify-content-between">
+<div class="dashboard d-flex justify-content-between">
   <div class="main-data aside text-client">
     <div class="header">
       <div class="control filter" *ngIf="doctor?.user.username">
@@ -89,7 +89,7 @@
     <div class="wrapper-results" *ngIf="prescriptions?.length > 0">
       <div *ngFor="let prescription of prescriptions" class="prescriptions">
         <header (click)="prescription.visible = !prescription.visible">
-          <div class="user">
+          <div class="m-1 user">
             <ng-container
               *ngIf="prescription.doctor.user.avatar?.url; else avatar"
             >
@@ -118,7 +118,7 @@
             </div>
           </div>
 
-          <div class="user">
+          <div class="m-1 user">
             <ng-container
               *ngIf="prescription.client.user.avatar?.url; else avatar"
             >

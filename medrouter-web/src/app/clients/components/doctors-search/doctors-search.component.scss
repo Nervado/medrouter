@@ -4,7 +4,8 @@
   height: 300px;
   border-radius: 8px;
   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
-  margin: 20px;
+  //margin: 20px;
+  margin: 10px;
   background-color: var(--oposity);
 
   .month {
@@ -24,6 +25,14 @@
 
       input {
         height: 25px;
+
+        @media screen and (max-device-width: 400px),
+          screen and (max-width: 400px) {
+          width: 120px;
+          ::placeholder {
+            font-size: small;
+          }
+        }
       }
       fa-icon {
         font-size: 1.2em;
@@ -81,6 +90,15 @@
 
       align-items: center;
       justify-content: space-between;
+
+      border: 1px solid rgba(0, 0, 0, 0.1);
+
+      @media screen and (max-device-width: 600px),
+        screen and (max-width: 600px) {
+        flex-direction: column;
+        justify-content: space-between;
+        height: 150px;
+      }
 
       // border: 1px solid rgba(0, 0, 0, 0.2);
 
@@ -209,12 +227,28 @@
     }
   }
 
+  @media screen and (max-device-width: 1400px), screen and (max-width: 1400px) {
+    width: 600px;
+    height: 300px;
+  }
+
+  @media screen and (max-device-width: 800px), screen and (max-width: 800px) {
+    width: 600px;
+    //height: 300px;
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    width: 450px;
+    // margin: 40px;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
   @media screen and (max-device-width: 400px), screen and (max-width: 400px) {
-    margin: 0px;
-    margin-top: 40px;
-    margin-left: 25px;
     width: 270px;
     height: 320px;
+    margin-left: 0px;
+    margin-right: 0px;
   }
 }
 

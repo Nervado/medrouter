@@ -125,11 +125,13 @@ export class DoctorsCreateScheduleComponent implements OnInit {
   }
 
   nextWeek() {
+    //this.schedules = [];
     this.today = addDays(this.today, 7);
     this.updateSchedule();
   }
 
   prevWeek() {
+    //this.schedules = [];
     this.today = subDays(this.today, 7);
     this.updateSchedule();
   }

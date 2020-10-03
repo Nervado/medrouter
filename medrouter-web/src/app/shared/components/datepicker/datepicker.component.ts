@@ -128,6 +128,9 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
   formater = new CustomDateParserFormatter();
 
   @Input() btColor: Colors = Colors.OPOSITY1;
+
+  @Input() borderColor: Colors = Colors.CLIENT;
+
   @Input() tick: boolean = false;
 
   @Input() height;
@@ -156,7 +159,7 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
       const currentDate = new Date(this.defaut);
       this.values = {
         year: currentDate.getFullYear(),
-        month: currentDate.getMonth(),
+        month: currentDate.getMonth() + 1,
         day: currentDate.getDate(),
       };
     }

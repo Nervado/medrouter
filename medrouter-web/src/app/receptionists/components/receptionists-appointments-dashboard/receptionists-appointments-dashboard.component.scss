@@ -3,6 +3,35 @@
   margin: 80px;
   padding-left: 80px;
 
+  @media screen and (max-device-width: 1200px), screen and (max-width: 1200px) {
+    margin: 40px;
+    margin-top: 80px;
+    padding-left: 40px;
+    font-size: 14px;
+  }
+
+  @media screen and (max-device-width: 900px), screen and (max-width: 900px) {
+    font-size: 12px;
+    margin: 40px;
+    margin-top: 80px;
+    padding-left: 40px;
+  }
+
+  @media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+    font-size: 10px;
+    margin: 40px;
+    margin-top: 40px;
+    padding-left: 20px;
+  }
+
+  @media screen and (max-device-width: 400px), screen and (max-width: 400px) {
+    margin: 0px;
+    margin-top: 40px;
+
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
   .main-data {
     width: 100%;
 
@@ -21,6 +50,11 @@
       border-radius: 4px;
       color: var(--oposity);
       background-color: var(--recept);
+
+      @media screen and (max-device-width: 600px),
+        screen and (max-width: 600px) {
+        font-size: 10px;
+      }
 
       .control {
         display: flex;
