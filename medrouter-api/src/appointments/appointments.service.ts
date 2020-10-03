@@ -157,6 +157,8 @@ export class AppointmentsService {
       price: doctor.mh,
     });
 
+    console.log('data', appointment.date, 'hour', appointment.hour);
+
     try {
       await appointment.save();
     } catch (error) {

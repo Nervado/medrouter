@@ -367,7 +367,7 @@ export class ClientService {
       throw new UnauthorizedException('Operation not allowed');
     }
 
-    if (getMidnight(app.date) <= getMidnight(today)) {
+    if (getMidnight(app.date).getTime() <= getMidnight(today).getTime()) {
       throw new BadRequestException('Appointment date is to close');
     }
 

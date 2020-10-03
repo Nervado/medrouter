@@ -1,7 +1,10 @@
+import { startOfDay } from 'date-fns';
 import { Available } from 'src/doctors/enums/available.enum';
 
 export function getMidnight(date: Date): Date {
-  return new Date(new Date(date).setHours(0, 0, 0, 0));
+  console.log(date, 'new date', startOfDay(new Date(date)));
+
+  return startOfDay(new Date(date));
 }
 
 export function isPast(date: Date, hour: Available | string): boolean {

@@ -141,12 +141,14 @@ export class DoctorsService extends Service<
 
     const now = new Date();
 
+    console.log(schedules);
+
     schedules.schedules.forEach(async schedule => {
       if (new Date(schedule?.date).getTime() > getMidnight(now).getTime()) {
         const newSchedule = new Schedule();
 
         newSchedule.date = new Date(
-          addDays(getMidnight(new Date(schedule.date)), 1),
+          addDays(getMidnight(new Date(schedule.date)), 0),
         );
 
         console.log(newSchedule.date);

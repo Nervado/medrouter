@@ -49,8 +49,6 @@ lerna-debug.log*
 
 !.env.example
 
+production.env
 
-development.env
-prod.env
-test.env
 
