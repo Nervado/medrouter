@@ -1,20 +1,20 @@
-# medrouter
+# Medrouter
 
 This is a educational project and was made as step to finish the web applications development course of PUC-Minas University
 
 
-# Arc
+# Architecture
 
-** Front-End: Angular 9 **
-** Back-End: Nest **
-** Databases **
+1. ** Front-End: Angular 9 **
+2. ** Back-End: Nest **
+3. ** Databases **
 
   - MongoDB
   - Redis
   - Postgres
   - Elastic Search
   
-** Others techs **
+4. ** Others techs **
  
  - Message Gateway and Notification service with socket.io
  - Mail queue using redis
