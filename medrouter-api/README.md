@@ -185,6 +185,7 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 [ ] Donwload Prescriptions
 [X] Search prescription by doctor name
 
+
 {/users, GET} route +4ms
 {/users/search, GET} route +1ms
 {/users/:id, GET} route +1ms
@@ -273,3 +274,5 @@ nest g module < ModuleName >s && nest g controller < ModuleName >s && nest g ser
 {/managers/:id/diff, PATCH} route +1ms
 {/medicines, POST} route +1ms
 {/medicines/:id, DELETE} route +0ms
+
+```
