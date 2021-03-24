@@ -8,10 +8,10 @@ This is a educational project and was made as step to finish the web application
 2. **Back-End: Nest**
 3. **Databases:**
 
-  - MongoDB
-  - Redis
-  - Postgres
-  - Elastic Search
+  - MongoDB (docker container)
+  - Redis (docker container)
+  - Postgres (docker container)
+  - Elastic Search ( web api: https://www.appbase.io/)
   
 4. **Other Technologies**
  
