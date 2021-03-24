@@ -13,7 +13,7 @@ This is a educational project and was made as step to finish the web application
   - Postgres
   - Elastic Search
   
-4. **Other Technologies **
+4. **Other Technologies**
  
  - Message Gateway and Notification service with socket.io
  - Mail queue using redis
